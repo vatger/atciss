@@ -1,0 +1,56 @@
+[tool.poetry]
+name = "atciss"
+version = "0.1.0"
+description = "VATSIM Germany ATCISS"
+authors = ["Franz Pletz <fpletz@fnordicwalking.de>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/a3li/atciss"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "~0.92"
+uvicorn = {extras = ["standard"], version = "~0.20"}
+click = "~8.1"
+gunicorn = "^20.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "~23.1"
+mypy = "~1.0"
+flake8 = "~6.0"
+flake8-import-order = "~0.18"
+flake8-docstrings = "~1.7"
+
+[tool.poetry.scripts]
+atciss = 'atciss.cli:cli'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+exclude = [
+  "atciss/config/gunicorn.py"
+]
+python_version = '3.10'
+show_error_codes = true
+follow_imports = 'silent'
+strict_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_any_generics = true
+check_untyped_defs = true
+no_implicit_reexport = true
+warn_unused_configs = true
+disallow_subclassing_any = true
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+implicit_optional = true
+
+[[tool.mypy.overrides]]
+module = [
+    "gunicorn.*",
+]
+ignore_missing_imports = true
