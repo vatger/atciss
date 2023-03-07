@@ -52,16 +52,8 @@
             pathsToLink = [ "/bin" ];
           };
 
-          runAsRoot = ''
-            #!${pkgs.runtimeShell}
-            ${pkgs.dockerTools.shadowSetup}
-            mkdir /tmp
-            chmod 777 -R /tmp
-            groupadd -r nonroot
-            useradd -r -g nonroot nonroot
-            mkdir -p /workspace
-            chown nonroot:nonroot /workspace
-          '';
+          uid = 1000;
+          gid = 1000;
 
           config = {
             Env = [
@@ -69,9 +61,8 @@
               "PYTHONDONTWRITEBYTECODE=1"
               "PYTHONUNBUFFERED=1"
             ];
-            User = "nonroot";
             WorkingDir = "/workspace";
-            Entrypoint = [ "${pkgs.atciss}/bin/atciss" ];
+            Entrypoint = [ "/bin/atciss" ];
           };
         };
       };
@@ -91,24 +82,24 @@
       };
 
       apps = {
-        metrics = {
+        lint = {
           type = "app";
-          program = toString (pkgs.writeScript "metrics" ''
+          program = toString (pkgs.writeScript "lint" ''
             export PATH="${pkgs.lib.makeBinPath [
                 pkgs.atciss-dev
                 pkgs.git
             ]}"
-            echo "[nix][metrics] Run atciss PEP 8 checks."
+            echo "[nix][lint] Run atciss PEP 8 checks."
             flake8 --select=E,W,I --max-line-length 88 --import-order-style pep8 --statistics --count atciss
-            echo "[nix][metrics] Run atciss PEP 257 checks."
+            echo "[nix][lint] Run atciss PEP 257 checks."
             flake8 --select=D --ignore D301,D100 --statistics --count atciss
-            echo "[nix][metrics] Run atciss pyflakes checks."
+            echo "[nix][lint] Run atciss pyflakes checks."
             flake8 --select=F --statistics --count atciss
-            echo "[nix][metrics] Run atciss code complexity checks."
+            echo "[nix][lint] Run atciss code complexity checks."
             flake8 --select=C901 --statistics --count atciss
-            echo "[nix][metrics] Run atciss open TODO checks."
+            echo "[nix][lint] Run atciss open TODO checks."
             flake8 --select=T --statistics --count atciss tests
-            echo "[nix][metrics] Run atciss black checks."
+            echo "[nix][lint] Run atciss black checks."
             black --check atciss
           '');
         };
