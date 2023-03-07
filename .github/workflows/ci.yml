@@ -22,8 +22,8 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Run `nix run .#lint`
         run: 'nix run .#lint'
-  docker:
-    name: Docker Image
+  mypy:
+    name: Static Code Checking
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -33,14 +33,5 @@ jobs:
         with:
           name: atciss
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - name: Log in to the Container registry
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Run `nix build .#image`
-        run: 'nix build .#image'
-      - name: Upload docker image
-        if: github.ref == 'refs/heads/master'
-        run: skopeo copy --insecure-policy docker-archive://$(readlink -f ./result) docker://ghcr.io/$CI_PROJECT_PATH/atciss:$GITHUB_SHA
+      - name: Run `nix run .#mypy`
+        run: 'nix run .#mypy'
