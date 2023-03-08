@@ -14,6 +14,10 @@ Resources:
     https://docs.gunicorn.org/en/20.1.0/
 """
 from .application import settings
+from .redis import redis
 
 
-__all__ = ("settings",)
+__all__ = (
+    "settings",
+    "redis",
+)

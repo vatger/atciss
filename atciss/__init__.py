@@ -1,4 +1,4 @@
-"""This project was generated with fastapi-mvc."""
+"""ATCISS."""
 import logging
 
 from .version import __version__
