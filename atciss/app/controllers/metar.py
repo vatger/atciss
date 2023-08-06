@@ -24,6 +24,7 @@ class MetarModel(BaseModel):
 async def metar_get(icao: str) -> MetarModel:
     """Get METAR for airport."""
     redis_client = RedisClient.open()
+    icao = icao.upper()
 
     metars = await redis_client.hmget("metar:{}".format(icao), "raw")
     if len(metars) < 1:
