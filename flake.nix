@@ -1,7 +1,7 @@
 {
   description = "VATSIM Germany ATCISS";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.poetry2nix = {
     url = "github:nix-community/poetry2nix";
@@ -9,7 +9,7 @@
     inputs.flake-utils.follows = "flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils, poetry2nix, ... }: rec {
+  outputs = { self, nixpkgs, flake-utils, poetry2nix, ... }: {
     overlays.default = nixpkgs.lib.composeManyExtensions [
       poetry2nix.overlay
       (final: prev: let python = final.python3; in {
@@ -67,11 +67,18 @@
         };
       };
 
-      devShells.default = pkgs.mkShell {
-        packages = [
-          pkgs.poetry
-          pkgs.python3
-          pkgs.curl
+      devShells.default = let
+        atcissPoetryEnv = pkgs.poetry2nix.mkPoetryEnv {
+          projectDir = ./.;
+          editablePackageSources = {
+            atciss = ./atciss;
+          };
+        };
+      in atcissPoetryEnv.env.overrideAttrs (oldAttrs: {
+        buildInputs = with pkgs; [
+          poetry python3
+          nodejs
+          curl
         ];
         shellHook = ''
           export POETRY_HOME=${pkgs.poetry}
@@ -79,7 +86,7 @@
           export POETRY_VIRTUALENVS_IN_PROJECT=true
           unset SOURCE_DATE_EPOCH
         '';
-      };
+      });
 
       apps = {
         lint = {
