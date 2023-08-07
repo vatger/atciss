@@ -67,16 +67,9 @@
         };
       };
 
-      devShells.default = let
-        atcissPoetryEnv = pkgs.poetry2nix.mkPoetryEnv {
-          projectDir = ./.;
-          editablePackageSources = {
-            atciss = ./atciss;
-          };
-        };
-      in atcissPoetryEnv.env.overrideAttrs (oldAttrs: {
+      devShells.default = pkgs.atciss-dev.env.overrideAttrs (oldAttrs: {
         buildInputs = with pkgs; [
-          poetry python3
+          poetry
           nodejs
           curl
         ];
