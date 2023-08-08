@@ -12,14 +12,21 @@
   outputs = { self, nixpkgs, flake-utils, poetry2nix, ... }: {
     overlays.default = nixpkgs.lib.composeManyExtensions [
       poetry2nix.overlay
-      (final: prev: let python = final.python3; in {
+      (final: prev: let
+        python = final.python3;
+        overrides = prev.poetry2nix.overrides.withDefaults (final: prev: {
+          pynotam = prev.pynotam.overridePythonAttrs (old: {
+            buildInputs = (old.buildInputs or [ ]) ++ [ prev.poetry ];
+          });
+        });
+      in {
         atciss = prev.poetry2nix.mkPoetryApplication {
-          inherit python;
+          inherit python overrides;
           projectDir = prev.poetry2nix.cleanPythonSources { src = ./.; };
           pythonImportCheck = [ "atciss" ];
         };
         atciss-dev = prev.poetry2nix.mkPoetryEnv {
-          inherit python;
+          inherit python overrides;
           projectDir = ./.;
           editablePackageSources = {
             app = ./.;
@@ -90,7 +97,7 @@
                 pkgs.git
             ]}"
             echo "[nix][lint] Run atciss PEP 8 checks."
-            flake8 --select=E,W,I --max-line-length 88 --import-order-style pep8 --statistics --count atciss
+            flake8 --select=E,W,I --ignore W503 --max-line-length 88 --import-order-style pep8 --statistics --count atciss
             echo "[nix][lint] Run atciss PEP 257 checks."
             flake8 --select=D --ignore D301,D100 --statistics --count atciss
             echo "[nix][lint] Run atciss pyflakes checks."

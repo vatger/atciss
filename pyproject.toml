@@ -9,12 +9,16 @@ repository = "https://github.com/a3li/atciss"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-fastapi = "^0.92"
-uvicorn = {extras = ["standard"], version = "^0.20"}
+fastapi = "^0.101"
+uvicorn = {extras = ["standard"], version = "^0.23"}
 click = "^8.1"
 gunicorn = "^20.1"
 aiohttp = "^3.8.4"
 redis = "^4.5.1"
+fastapi-utils = "^0.2.1"
+beautifulsoup4 = "^4.12.2"
+pynotam = { git = "https://github.com/globin/PyNotam", rev = "1c74987be4f99e73bdd1dcc9832551c88c101b07" }
+# pynotam = { path = "../pynotam" }
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1"
@@ -22,6 +26,7 @@ mypy = "^1.0"
 flake8 = "^6.0"
 flake8-import-order = "^0.18"
 flake8-docstrings = "^1.7"
+types-beautifulsoup4 = "^4.12.0.5"
 
 [tool.poetry.scripts]
 atciss = 'atciss.cli:cli'

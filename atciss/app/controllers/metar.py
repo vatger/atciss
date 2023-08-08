@@ -26,8 +26,8 @@ async def metar_get(icao: str) -> MetarModel:
     redis_client = RedisClient.open()
     icao = icao.upper()
 
-    metars = await redis_client.hmget("metar:{}".format(icao), "raw")
-    if len(metars) < 1:
+    metar = await redis_client.get("metar:{}".format(icao))
+    if metar is None:
         raise HTTPException(status_code=404)
 
-    return MetarModel(icao=icao, raw=metars[0])
+    return MetarModel(icao=icao, raw=metar)

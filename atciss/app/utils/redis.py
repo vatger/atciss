@@ -8,7 +8,7 @@ from ...config import redis as redis_conf
 class RedisClient(object):
     """Handling redis database connection."""
 
-    redis_client: aioredis.Redis = None
+    redis_client: aioredis.Redis | None = None
     log: logging.Logger = logging.getLogger(__name__)
 
     @classmethod
@@ -30,7 +30,7 @@ class RedisClient(object):
                 )
 
             if redis_conf.REDIS_USE_SENTINEL:
-                sentinel = aioredis.sentinel.Sentinel(
+                sentinel = aioredis.Sentinel(
                     [(redis_conf.REDIS_HOST, redis_conf.REDIS_PORT)],
                     sentinel_kwargs=redis_init_kwargs,
                 )
