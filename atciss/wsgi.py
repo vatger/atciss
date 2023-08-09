@@ -7,7 +7,7 @@ from gunicorn.app.base import BaseApplication
 from .config import gunicorn
 
 
-class ApplicationLoader(BaseApplication):
+class ApplicationLoader(BaseApplication): # type: ignore
     """Define gunicorn interface for any given web framework.
 
     Args:

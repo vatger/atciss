@@ -17,8 +17,7 @@ aiohttp = "^3.8.4"
 redis = "^4.5.1"
 fastapi-utils = "^0.2.1"
 beautifulsoup4 = "^4.12.2"
-pynotam = { git = "https://github.com/globin/PyNotam", rev = "1c74987be4f99e73bdd1dcc9832551c88c101b07" }
-# pynotam = { path = "../pynotam" }
+pynotam = { git = "https://github.com/globin/PyNotam", rev = "c727b72ee03779c96fa009b8d44208d1743190a9" }
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1"
