@@ -19,6 +19,7 @@ class RedisClient(object):
             redis_init_kwargs = {
                 "encoding": "utf-8",
                 "port": redis_conf.REDIS_PORT,
+                "decode_responses": True,
             }
 
             if redis_conf.REDIS_USERNAME and redis_conf.REDIS_PASSWORD:
