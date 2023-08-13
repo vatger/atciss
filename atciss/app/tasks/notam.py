@@ -1,10 +1,9 @@
 import logging
 
 from bs4 import BeautifulSoup
-from fastapi_utils.tasks import repeat_every
 from pynotam import Notam
 
-from ..utils import AiohttpClient, RedisClient
+from ..utils import AiohttpClient, RedisClient, repeat_every
 
 log = logging.getLogger(__name__)
 

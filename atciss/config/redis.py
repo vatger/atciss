@@ -1,7 +1,7 @@
 """Application configuration - Redis."""
 from typing import Optional
 
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 
 
 class Redis(BaseSettings):

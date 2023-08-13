@@ -1,8 +1,6 @@
 import csv
 
-from fastapi_utils.tasks import repeat_every
-
-from ..utils import RedisClient, AiohttpClient
+from ..utils import RedisClient, AiohttpClient, repeat_every
 
 
 @repeat_every(seconds=60)

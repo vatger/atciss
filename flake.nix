@@ -18,6 +18,27 @@
           pynotam = prev.pynotam.overridePythonAttrs (old: {
             buildInputs = (old.buildInputs or [ ]) ++ [ prev.poetry ];
           });
+          pydantic-settings = prev.pydantic-settings.overridePythonAttrs (old: {
+            buildInputs = (old.buildInputs or [ ]) ++ [ final.hatchling ];
+          });
+          hatchling = prev.hatchling.overridePythonAttrs (old: rec {
+            version = "1.18.0";
+            src = prev.fetchPypi {
+              inherit (old) pname;
+              inherit version;
+              hash = "sha256-UOmcMRDOCvw/e9ut/xxxwXdY5HZzHCdgeUDPpmhkico=";
+            };
+
+            propagatedBuildInputs = old.propagatedBuildInputs ++ [ final.trove-classifiers ];
+          });
+          trove-classifiers = prev.trove-classifiers.overridePythonAttrs (old: rec {
+            version = "2023.8.7";
+            src = prev.fetchPypi {
+              inherit (old) pname;
+              inherit version;
+              hash = "sha256-yfKgqF1UXlNi6Wfk8Gn1b939kSFeIv+kjGb7KDUhMZo=";
+            };
+          });
         });
       in {
         atciss = prev.poetry2nix.mkPoetryApplication {
