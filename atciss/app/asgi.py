@@ -3,12 +3,10 @@ import logging
 
 from fastapi import FastAPI
 
-from atciss.app.tasks.sectors import fetch_sector_data
-
 from ..config import settings
 from .router import root_api_router
 from .utils import RedisClient, AiohttpClient
-from .tasks import fetch_metar, fetch_notam
+from .tasks import fetch_loas, fetch_metar, fetch_notam, fetch_sector_data
 
 
 log = logging.getLogger(__name__)
@@ -29,7 +27,7 @@ def get_application() -> FastAPI:
         debug=settings.DEBUG,
         version=settings.VERSION,
         docs_url=settings.DOCS_URL,
-        on_startup=[fetch_metar, fetch_notam, fetch_sector_data],
+        on_startup=[fetch_loas, fetch_metar, fetch_notam, fetch_sector_data],
         on_shutdown=[on_shutdown],
     )
     log.debug("Add application routes.")
