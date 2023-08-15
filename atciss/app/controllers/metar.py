@@ -2,7 +2,7 @@
 from __future__ import annotations
 from datetime import datetime
 import logging
-from typing import List, Optional, Tuple
+from typing import List, Optional, Sequence, Tuple
 
 from fastapi import APIRouter, HTTPException
 from metar.Datatypes import distance
@@ -22,7 +22,7 @@ class RvrModel(BaseModel):
     high: Optional[float]
 
     @classmethod
-    def from_tuple(cls, parsed: Tuple[str, distance, Optional[distance], str]):
+    def from_tuple(cls, parsed: Tuple[str, distance, Optional[distance], str]) -> RvrModel:
         runway, low, high, _ = parsed
         return cls(runway=runway, low=low.value("M"), high=high.value("M") if high is not None else None)
 
@@ -33,7 +33,7 @@ class CloudModel(BaseModel):
     type: Optional[str]
 
     @classmethod
-    def from_tuple(cls, parsed: Tuple[str, Optional[distance], Optional[str]]):
+    def from_tuple(cls, parsed: Tuple[str, Optional[distance], Optional[str]]) -> CloudModel:
         cover, height, type = parsed
         return cls(cover=cover, height=height.value("FT") if height is not None else None, type=type)
 
@@ -54,10 +54,10 @@ class MetarModel(BaseModel):
     temp: float
     dewpt: float
     qnh: float
-    rvr: List[RvrModel]
-    weather: List[Tuple[str, Optional[str], str, Optional[str], Optional[str]]] # TODO intensity description precip obscuration other
-    recent_weather: List[Tuple[str, Optional[str], str, Optional[str], Optional[str]]] # TODO intensity description precip obscuration other
-    clouds: List[CloudModel]
+    rvr: Sequence[RvrModel]
+    weather: Sequence[Tuple[str, Optional[str], str, Optional[str], Optional[str]]] # TODO intensity description precip obscuration other
+    recent_weather: Sequence[Tuple[str, Optional[str], str, Optional[str], Optional[str]]] # TODO intensity description precip obscuration other
+    clouds: Sequence[CloudModel]
     # TODO trend?
 
 

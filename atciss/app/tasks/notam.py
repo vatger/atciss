@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 
 from bs4 import BeautifulSoup
 from pynotam import Notam
@@ -37,6 +38,15 @@ NOTAM_ICAO = [
 ]
 
 
+def convert_notam(n: str) -> Optional[Notam]:
+    try:
+        return Notam.from_str(f"({n.strip()})")
+    except Exception as e:
+        log.error(f"could not parse notam: {n}\n{e}")
+
+    return None
+
+
 @repeat_every(seconds=300, logger=log)
 async def fetch_notam() -> None:
     """Periodically fetch relevant NOTAMs."""
@@ -49,16 +59,15 @@ async def fetch_notam() -> None:
         + "&actionType=notamRetrievalByICAOs&submit=View+NOTAMs"
     )
     notam_html = BeautifulSoup(await res.text(), "html.parser")
-    notams = [notam_elem.string for notam_elem in notam_html.find_all("pre")]
+    notams = []
+    for notam_elem in notam_html.find_all("pre"):
+        notam = convert_notam(notam_elem.string)
+        if notam is not None and len(notam.location):
+            notams.append(notam)
 
     async with redis_client.pipeline() as pipe:
-        for n in notams:
-            try:
-                notam = Notam.from_str(f"({n})")
-                if notam.location is not None and len(notam.location):
-                    for location in notam.location:
-                        pipe.set(f"notam:{location}:{notam.notam_id}", notam.full_text)
-            except Exception as e:
-                log.error(f"could not parse notam: {n}\n{e}")
+        for notam in notams:
+            for location in notam.location:
+                pipe.set(f"notam:{location}:{notam.notam_id}", notam.full_text)
         log.info(f"NOTAMs: {len(notams)} received")
         await pipe.execute()
