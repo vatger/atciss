@@ -142,6 +142,14 @@
             mypy atciss
           '');
         };
+        backend-dev = {
+          type = "app";
+          program = toString (pkgs.writeScript "backend-dev" ''
+            export PATH="${pkgs.lib.makeBinPath [ pkgs.atciss-dev ]}"
+            echo "[nix][backend-dev] Run atciss backend in dev mode."
+            uvicorn --factory atciss.app.asgi:get_application --reload
+          '');
+        };
       };
     }
   ));
