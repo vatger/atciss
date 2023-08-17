@@ -1,6 +1,6 @@
 import { Box, Grid, ThemeUIStyleObject } from "theme-ui"
 
-const AtisAfw = ({ sx }: { sx: ThemeUIStyleObject }) => (
+const AtisAfw = ({ sx }: { sx?: ThemeUIStyleObject }) => (
   <Grid
     sx={{
       ...sx,
