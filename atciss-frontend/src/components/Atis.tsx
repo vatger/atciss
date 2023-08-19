@@ -1,5 +1,5 @@
 import { Text, Flex, ThemeUIStyleObject, Box } from "theme-ui"
-import { useGetByIcaoCodeQuery, xmc } from "../services/metarApi"
+import { hpaToInhg, tl, useGetByIcaoCodeQuery, xmc } from "../services/metarApi"
 import { ReactNode } from "react"
 
 const AERODROME = "EDDN"
@@ -59,7 +59,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
             Rwy: <Text variant="atisL">18L 18R</Text>
           </Box>
           <Box>
-            TL: <Text variant="atisL">10</Text>
+            TL: <Text variant="atisL">{tl(metar)}</Text>
           </Box>
           <Box>
             WX-Type: <Text sx={{ fontSize: 5 }}>METAR</Text>
@@ -96,8 +96,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         <AtisRow>
           <Text>QNH:</Text>
           <Text>
-            <Text variant="atisL">{z4(metar.qnh)}</Text>
-            /29.12
+            <Text variant="atisL">{z4(metar.qnh)}</Text>/{hpaToInhg(metar.qnh).toFixed(2)}
           </Text>
           <Text>QFE: {z4(12)}/27.65</Text>
         </AtisRow>
