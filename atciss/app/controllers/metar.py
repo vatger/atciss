@@ -2,7 +2,7 @@
 from __future__ import annotations
 from datetime import datetime
 import logging
-from typing import List, Optional, Sequence, Tuple
+from typing import Optional, Sequence, Tuple
 
 from fastapi import APIRouter, HTTPException
 from metar.Datatypes import distance
@@ -58,7 +58,7 @@ class MetarModel(BaseModel):
     weather: Sequence[Tuple[str, Optional[str], str, Optional[str], Optional[str]]] # TODO intensity description precip obscuration other
     recent_weather: Sequence[Tuple[str, Optional[str], str, Optional[str], Optional[str]]] # TODO intensity description precip obscuration other
     clouds: Sequence[CloudModel]
-    # TODO trend?
+    trend: str
 
 
     @classmethod
@@ -73,7 +73,7 @@ class MetarModel(BaseModel):
             wind_gust=parsed.wind_gust.value("KT") if parsed.wind_gust is not None else None,
             wind_dir_from=parsed.wind_dir_from.value() if parsed.wind_dir_from is not None else None,
             wind_dir_to=parsed.wind_dir_to.value() if parsed.wind_dir_to is not None else None,
-            vis=parsed.vis.value("M"),
+            vis=min(parsed.vis.value("M"), 9999),
             temp=parsed.temp.value("C"),
             dewpt=parsed.dewpt.value("C"),
             qnh=parsed.press.value("HPA"),
@@ -81,6 +81,7 @@ class MetarModel(BaseModel):
             weather=parsed.weather,
             recent_weather=parsed.recent,
             clouds=[CloudModel.from_tuple(clouds) for clouds in parsed.sky],
+            trend=parsed.trend()
         )
 
         return model
