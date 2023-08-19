@@ -4,7 +4,9 @@ export const theme: Theme = {
   colors: {
     text: "#000",
     background: "#fff",
-    primary: "#4651ff",
+    primary: "#4375a3",
+    darkshadow: "#22384c",
+    brightshadow: "#9bbbd1"
   },
   text: {
     atisXL: {
@@ -20,4 +22,5 @@ export const theme: Theme = {
       color: "primary",
     },
   },
+  space: ["0px", "4px", "8px", "16px", "32px", "48px", "64px"],
 }
