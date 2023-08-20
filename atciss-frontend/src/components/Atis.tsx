@@ -90,7 +90,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         </AtisRow>
         <AtisRow>
           <Box>
-            Rwy: <Text variant="atisL">18L 18R</Text>
+            Rwy: <Text variant="atisL">{atis?.runways_in_use.join(" ")}</Text>
           </Box>
           <Box>
             TL: <Text variant="atisL">{tl(metar)}</Text>
@@ -113,7 +113,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           </Text>
           <Text>/ {z4(metar.vis)}</Text>
         </AtisRow>
-        <AtisRow>Weather: +TSGRRA</AtisRow>
+        <AtisRow>Weather: {metar.weather.join(" ")}</AtisRow>
         <AtisRow>
           <Text>
             Temp/Dew: {z2(metar.temp)}/{z2(metar.dewpt)}

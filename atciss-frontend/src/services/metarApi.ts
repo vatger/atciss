@@ -1,7 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
-export interface Weather {}
-
 export interface Clouds {
   cover: "NSC" | "NCD" | "FEW" | "SCT" | "BKN" | "OVC"
   height: number | null
@@ -24,8 +22,8 @@ export interface Metar {
   dewpt: number
   qnh: number
   rvr: Rvr[]
-  weather: Weather[]
-  recent_weather: Weather[]
+  weather: string[]
+  recent_weather: string[]
   clouds: Clouds[]
   trend: string
 }
