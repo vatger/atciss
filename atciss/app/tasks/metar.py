@@ -1,9 +1,11 @@
 import csv
+import logging
 
 from ..utils import RedisClient, AiohttpClient, repeat_every
 
+log = logging.getLogger(__name__)
 
-@repeat_every(seconds=60)
+@repeat_every(seconds=60, logger=log)
 async def fetch_metar() -> None:
     """Periodically fetch METARs."""
     redis_client = await RedisClient.open()
@@ -14,6 +16,8 @@ async def fetch_metar() -> None:
         + "metars.cache.csv"
     )
     metars_csv = csv.reader((await res.text()).split("\n"), delimiter=",")
+
+    log.info("METARs received")
 
     async with redis_client.pipeline() as pipe:
         for m in metars_csv:

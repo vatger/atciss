@@ -72,6 +72,7 @@ async def fetch_sector_data() -> None:
         )
         data[region] = TypeAdapter(SectorData).validate_python(await res.json(content_type="text/plain"))
 
+    log.info("Sector data received")
 
     async with redis_client.pipeline() as pipe:
         for region in data:

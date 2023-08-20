@@ -31,12 +31,21 @@ async def fetch_loas() -> None:
 
     res = await aiohttp_client.get("https://loa.vatsim-germany.org/api/v1/conditions")
 
-    loas_per_fir = defaultdict(list)
-    for loa in TypeAdapter(List[LoaItem]).validate_python(await res.json()):
-        loas_per_fir[loa.from_fir].append(loa)
-        loas_per_fir[loa.to_fir].append(loa)
+    loas = TypeAdapter(List[LoaItem]).validate_python(await res.json()) 
+    loas_per_fir_or_sector = defaultdict(list)
+    for loa in loas:
+        if loa.from_sector:
+            loas_per_fir_or_sector[loa.from_sector].append(loa)
+        else:
+            loas_per_fir_or_sector[loa.from_fir].append(loa)
+        if loa.to_sector:
+            loas_per_fir_or_sector[loa.to_sector].append(loa)
+        else:
+            loas_per_fir_or_sector[loa.to_fir].append(loa)
+
+    log.info(f"LoAs: {len(loas)} received")
 
     async with redis_client.pipeline() as pipe:
-        for fir, loas in loas_per_fir.items():
+        for fir, loas in loas_per_fir_or_sector.items():
             pipe.set(f"loa:{fir}", TypeAdapter(List[LoaItem]).dump_json(loas))
         await pipe.execute()
