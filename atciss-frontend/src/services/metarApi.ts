@@ -88,4 +88,8 @@ export const metarApi = createApi({
   }),
 })
 
-export const { useGetByIcaoCodeQuery } = metarApi
+export const usePollMetarByIcaoCode: typeof metarApi.useGetByIcaoCodeQuery = (
+  icao,
+  options,
+) =>
+  metarApi.useGetByIcaoCodeQuery(icao, { pollingInterval: 60000, ...options })

@@ -1,8 +1,14 @@
 import { Text, Flex, ThemeUIStyleObject, Box } from "theme-ui"
-import { hpaToInhg, tl, useGetByIcaoCodeQuery, xmc } from "../services/metarApi"
+import {
+  Clouds,
+  hpaToInhg,
+  tl,
+  usePollMetarByIcaoCode,
+  xmc,
+} from "../services/metarApi"
 import { ReactNode } from "react"
 
-const AERODROME = "EDDN"
+const AERODROME = "EDDM"
 
 const zn = (n: number) => (x: number) => String(x).padStart(n, "0")
 const z2 = zn(2)
@@ -22,7 +28,7 @@ const AtisRow = ({
 )
 
 const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
-  const { data: metar, isLoading, error } = useGetByIcaoCodeQuery(AERODROME)
+  const { data: metar, isLoading, error } = usePollMetarByIcaoCode(AERODROME)
 
   if (!isLoading && metar) {
     const obs = new Date(`${metar.time}`)
