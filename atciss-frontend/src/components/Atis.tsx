@@ -12,7 +12,7 @@ import { useLocation, useSearchParams } from "react-router-dom"
 
 const DEFAULT_AERODROME = "EDDM"
 
-const zn = (n: number) => (x: number) => String(x).padStart(n, "0")
+const zn = (n: number) => (x: number | string) => String(x).padStart(n, "0")
 const z2 = zn(2)
 const z3 = zn(3)
 const z4 = zn(4)
@@ -57,7 +57,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         ? "CAVOK"
         : metar.clouds
             .map((clouds: Clouds) =>
-              clouds.cover === "NCD"
+              ["NCD", "NSC"].includes(clouds.cover)
                 ? clouds.cover
                 : `${clouds.cover}${
                     clouds.height ? z3(clouds.height / 100) : "///"
@@ -125,7 +125,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         <AtisRow>
           <Text>QNH:</Text>
           <Text>
-            <Text variant="atisL">{z4(metar.qnh)}</Text>/
+            <Text variant="atisL">{z4(metar.qnh.toFixed(0))}</Text>/
             {hpaToInhg(metar.qnh).toFixed(2)}
           </Text>
           <Text>QFE: {z4(12)}/27.65</Text>

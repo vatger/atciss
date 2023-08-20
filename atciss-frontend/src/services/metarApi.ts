@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 export interface Weather {}
 
 export interface Clouds {
-  cover: "NCD" | "FEW" | "SCT" | "BKN" | "OVC"
+  cover: "NSC" | "NCD" | "FEW" | "SCT" | "BKN" | "OVC"
   height: number | null
   type: string | null
 }
