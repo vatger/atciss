@@ -31,12 +31,13 @@ const Clock = () => {
         borderLeftColor: "darkshadow",
         borderBottomColor: "brightshadow",
         borderRightColor: "brightshadow",
+        letterSpacing: ".15rem",
       }}
     >
       <Text sx={{ fontSize: "1.8rem" }}>
         {hours}:{mins}
       </Text>
-      <Text>{secs}</Text>
+      <Text sx={{ fontSize: "1.2rem" }}>{secs}</Text>
     </Box>
   )
 }
