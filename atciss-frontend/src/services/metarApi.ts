@@ -60,7 +60,8 @@ export const tl: (metar: Metar) => number = (metar) => {
   }
 }
 
-export const hpaToInhg: (qnh: number) => number = (qnh) => qnh * 0.02952998057228486
+export const hpaToInhg: (qnh: number) => number = (qnh) =>
+  qnh * 0.02952998057228486
 
 // const initialState: MetarState = {
 //   atis: "X",

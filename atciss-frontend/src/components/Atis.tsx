@@ -44,6 +44,8 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         sx={{
           ...sx,
           flexDirection: "column",
+          fontSize: 3,
+          fontFamily: "monospace",
         }}
       >
         <AtisRow>
@@ -71,7 +73,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
             WX-Type: <Text sx={{ fontSize: 5 }}>METAR</Text>
           </Box>
         </AtisRow>
-        <Text sx={{ flexGrow: 1 }}>
+        <Text sx={{ flexGrow: 1, borderStyle: "inset" }}>
           Info: INDEPENDENT DEPENDENT RNAV APPROACHES IN PROGRESS
         </Text>
         <AtisRow>
@@ -91,7 +93,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
             <Text>Clouds: </Text>
             <Text>
               {metar.clouds.map(
-                (clouds) =>
+                (clouds: Clouds) =>
                   `${clouds.cover}${clouds.height ?? "///"}${
                     clouds.type ?? ""
                   }`,
@@ -102,7 +104,8 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         <AtisRow>
           <Text>QNH:</Text>
           <Text>
-            <Text variant="atisL">{z4(metar.qnh)}</Text>/{hpaToInhg(metar.qnh).toFixed(2)}
+            <Text variant="atisL">{z4(metar.qnh)}</Text>/
+            {hpaToInhg(metar.qnh).toFixed(2)}
           </Text>
           <Text>QFE: {z4(12)}/27.65</Text>
         </AtisRow>
