@@ -39,6 +39,19 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         ? `${z3(metar.wind_dir_from)}V${z3(metar.wind_dir_to)} `
         : ""
 
+    const clouds =
+      metar.clouds.length === 0
+        ? "CAVOK"
+        : metar.clouds
+            .map((clouds: Clouds) =>
+              clouds.cover === "NCD"
+                ? clouds.cover
+                : `${clouds.cover}${
+                    clouds.height ? z3(clouds.height / 100) : "///"
+                  }${clouds.type ?? ""}`,
+            )
+            .join(" ")
+
     return (
       <Flex
         sx={{
@@ -90,15 +103,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
             Temp/Dew: {z2(metar.temp)}/{z2(metar.dewpt)}
           </Text>
           <Box>
-            <Text>Clouds: </Text>
-            <Text>
-              {metar.clouds.map(
-                (clouds: Clouds) =>
-                  `${clouds.cover}${clouds.height ?? "///"}${
-                    clouds.type ?? ""
-                  }`,
-              )}
-            </Text>
+            <Text>Clouds: {clouds}</Text>
           </Box>
         </AtisRow>
         <AtisRow>
