@@ -5,6 +5,7 @@ from ..utils import RedisClient, AiohttpClient, repeat_every
 
 log = logging.getLogger(__name__)
 
+
 @repeat_every(seconds=60, logger=log)
 async def fetch_metar() -> None:
     """Periodically fetch METARs."""

@@ -8,9 +8,10 @@ from ..utils import AiohttpClient, RedisClient, repeat_every
 
 log = logging.getLogger(__name__)
 
+
 @dataclass
 class LoaItem:
-    aerodrome: str # FIXME: should be List[str]
+    aerodrome: str  # FIXME: should be List[str]
     adep_ades: Literal["ADEP"] | Literal["ADES"] | None
     cop: str
     level: int
@@ -31,7 +32,7 @@ async def fetch_loas() -> None:
 
     res = await aiohttp_client.get("https://loa.vatsim-germany.org/api/v1/conditions")
 
-    loas = TypeAdapter(List[LoaItem]).validate_python(await res.json()) 
+    loas = TypeAdapter(List[LoaItem]).validate_python(await res.json())
     loas_per_fir_or_sector = defaultdict(list)
     for loa in loas:
         if loa.from_sector:
