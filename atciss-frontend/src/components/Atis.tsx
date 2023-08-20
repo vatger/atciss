@@ -54,9 +54,9 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           </Text>
           <Text variant="atisXL">X</Text>
           <Text>
-            OBS: {z2(obs.getUTCDay())}
-            {z2(obs.getUTCHours())}
-            {z2(obs.getUTCMinutes())}
+            OBS: {z2(obs.getDate())}
+            {z2(obs.getHours())}
+            {z2(obs.getMinutes())}
           </Text>
           <Text variant="primary">{xmc(metar)}</Text>
           <Text>SR: 0000</Text>
