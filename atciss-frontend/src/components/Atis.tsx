@@ -7,8 +7,10 @@ import {
   xmc,
 } from "../services/metarApi"
 import { ReactNode } from "react"
+import { usePollAtisByIcaoCode } from "../services/atisApi"
+import { useLocation, useSearchParams } from "react-router-dom"
 
-const AERODROME = "EDDM"
+const DEFAULT_AERODROME = "EDDM"
 
 const zn = (n: number) => (x: number) => String(x).padStart(n, "0")
 const z2 = zn(2)
@@ -28,9 +30,20 @@ const AtisRow = ({
 )
 
 const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
-  const { data: metar, isLoading, error } = usePollMetarByIcaoCode(AERODROME)
+  const [query] = useSearchParams()
+  const aerodrome = query.get("icao") ?? DEFAULT_AERODROME
+  const {
+    data: metar,
+    isLoading: metarIsLoading,
+    error: metarError,
+  } = usePollMetarByIcaoCode(aerodrome)
+  const {
+    data: atis,
+    isLoading: atisIsLoading,
+    error: atisError,
+  } = usePollAtisByIcaoCode(aerodrome)
 
-  if (!isLoading && metar) {
+  if (!metarIsLoading && metar && !atisIsLoading) {
     const obs = new Date(`${metar.time}`)
     const wind = metar.wind_dir ? z3(metar.wind_dir) : "VRB"
     const wind_gust = metar.wind_gust ? `G${z2(metar.wind_gust)}` : ""
@@ -63,9 +76,9 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       >
         <AtisRow>
           <Text variant="atisL" sx={{ fontWeight: "bold" }}>
-            {AERODROME}
+            {aerodrome}
           </Text>
-          <Text variant="atisXL">X</Text>
+          <Text variant="atisXL">{atis?.atis_code ?? "-"}</Text>
           <Text>
             OBS: {z2(obs.getUTCDate())}
             {z2(obs.getUTCHours())}
@@ -86,9 +99,12 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
             WX-Type: <Text sx={{ fontSize: 5 }}>METAR</Text>
           </Box>
         </AtisRow>
-        <Text sx={{ flexGrow: 1, borderStyle: "inset" }}>
-          Info: INDEPENDENT DEPENDENT RNAV APPROACHES IN PROGRESS
-        </Text>
+        <Flex sx={{ flexGrow: 1, gap: 1 }}>
+          Info:
+          <Text sx={{ flexGrow: 1, borderStyle: "inset" }}>
+            {atis?.text_atis ?? "Offline"}
+          </Text>
+        </Flex>
         <AtisRow>
           <Text>
             Wind/Vis.: {wind}
@@ -118,7 +134,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       </Flex>
     )
   } else {
-    return <>{error}</>
+    return <>{metarError}</>
   }
 }
 
