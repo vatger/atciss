@@ -4,9 +4,9 @@ export const theme: Theme = {
   colors: {
     text: "#000",
     background: "#fff",
-    primary: "#4375a3",
-    darkshadow: "#22384c",
-    brightshadow: "#9bbbd1",
+    primary: "#0082b3",
+    darkshadow: "#003e59",
+    brightshadow: "#90c6da",
   },
   text: {
     atisXL: {
