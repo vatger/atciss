@@ -8,7 +8,7 @@ import {
 } from "../services/metarApi"
 import { ReactNode } from "react"
 import { usePollAtisByIcaoCode } from "../services/atisApi"
-import { useLocation, useSearchParams } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 
 const DEFAULT_AERODROME = "EDDM"
 
@@ -45,7 +45,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
 
   if (!metarIsLoading && metar && !atisIsLoading) {
     const obs = new Date(`${metar.time}`)
-    const wind = metar.wind_dir ? z3(metar.wind_dir) : "VRB"
+    const wind = metar.wind_dir !== null ? z3(metar.wind_dir) : "VRB"
     const wind_gust = metar.wind_gust ? `G${z2(metar.wind_gust)}` : ""
     const wind_from_to =
       metar?.wind_dir_from && metar.wind_dir_to
@@ -80,61 +80,91 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           </Text>
           <Text variant="atisXL">{atis?.atis_code ?? "-"}</Text>
           <Text>
-            OBS: {z2(obs.getUTCDate())}
+            <Text variant="atisLabel">OBS: </Text>
+            {z2(obs.getUTCDate())}
             {z2(obs.getUTCHours())}
             {z2(obs.getUTCMinutes())}
           </Text>
           <Text variant="primary">{xmc(metar)}</Text>
-          <Text>SR: 0000</Text>
-          <Text>SS: 2359</Text>
+          <Text>{/*<Text variant="atisLabel">SR:</Text> 0000*/}</Text>
+          <Text>{/*<Text variant="atisLabel">SS:</Text> 2359*/}</Text>
         </AtisRow>
         <AtisRow>
           <Box>
-            Rwy: <Text variant="atisL">{atis?.runways_in_use.join(" ")}</Text>
+            <Text variant="atisLabel">Rwy: </Text>
+            <Text variant="atisL">{atis?.runways_in_use.join(" ")}</Text>
           </Box>
           <Box>
-            TL: <Text variant="atisL">{tl(metar)}</Text>
+            <Text variant="atisLabel">TL: </Text>
+            <Text variant="atisL">{tl(metar)}</Text>
           </Box>
           <Box>
-            WX-Type: <Text sx={{ fontSize: 5 }}>METAR</Text>
+            <Text variant="atisLabel">WX-Type: </Text>
+            <Text sx={{ fontSize: 5 }}>METAR</Text>
           </Box>
         </AtisRow>
         <Flex sx={{ flexGrow: 1, gap: 1 }}>
-          Info:
-          <Text sx={{ flexGrow: 1, borderStyle: "inset" }}>
+          <Text variant="atisLabel" sx={{ display: "block", flexShrink: 0 }}>
+            Info:
+          </Text>
+          <Text sx={{ flexGrow: 1, borderStyle: "inset", display: "block" }}>
             {atis?.text_atis ?? "Offline"}
           </Text>
         </Flex>
         <AtisRow>
           <Text>
-            Wind/Vis.: {wind}
+            <Text variant="atisLabel">Wind/Vis.:</Text> {wind}
             {z2(metar.wind_speed)}
             {wind_gust}KT {wind_from_to}
           </Text>
           <Text>/ {z4(metar.vis)}</Text>
         </AtisRow>
-        <AtisRow>Weather: {metar.weather.join(" ")}</AtisRow>
+        <AtisRow>
+          <Text variant="atisLabel">Weather:</Text> {metar.weather.join(" ")}
+        </AtisRow>
         <AtisRow>
           <Text>
-            Temp/Dew: {z2(metar.temp)}/{z2(metar.dewpt)}
+            <Text variant="atisLabel">Temp/Dew:</Text> {z2(metar.temp)}/
+            {z2(metar.dewpt)}
           </Text>
           <Box>
-            <Text>Clouds: {clouds}</Text>
+            <Text>
+              <Text variant="atisLabel">Clouds:</Text> {clouds}
+            </Text>
           </Box>
         </AtisRow>
         <AtisRow>
-          <Text>QNH:</Text>
+          <Text variant="atisLabel">QNH:</Text>
           <Text>
-            <Text variant="atisL">{z4(metar.qnh.toFixed(0))}</Text>/
-            {hpaToInhg(metar.qnh).toFixed(2)}
+            <Text
+              variant="atisL"
+              sx={{
+                borderColor: "red",
+                borderWidth: 2,
+                paddingX: 4,
+                paddingY: 1,
+                borderStyle: "solid",
+              }}
+            >
+              {z4(metar.qnh.toFixed(0))}
+            </Text>
+            /{hpaToInhg(metar.qnh).toFixed(2)}
           </Text>
-          <Text>QFE: {z4(12)}/27.65</Text>
+          <Text>
+            {/*<Text variant="atisLabel">QFE:</Text> {z4(12)}/27.65*/}
+          </Text>
         </AtisRow>
-        <AtisRow>Trend: {metar.trend}</AtisRow>
+        <AtisRow>
+          <Text variant="atisLabel">Trend:</Text> {metar.trend}
+        </AtisRow>
       </Flex>
     )
   } else {
-    return <>{metarError}</>
+    return metarError?.data?.detail
+      ? metarError.data.detail
+      : metarIsLoading
+      ? "Loading..."
+      : "Unknown Error"
   }
 }
 

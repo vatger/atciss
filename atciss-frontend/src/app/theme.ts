@@ -6,7 +6,7 @@ export const theme: Theme = {
     background: "#fff",
     primary: "#4375a3",
     darkshadow: "#22384c",
-    brightshadow: "#9bbbd1"
+    brightshadow: "#9bbbd1",
   },
   text: {
     atisXL: {
@@ -17,6 +17,10 @@ export const theme: Theme = {
     atisL: {
       color: "primary",
       fontSize: "5",
+    },
+    atisLabel: {
+      fontWeight: "bold",
+      fontFamily: "sans-serif",
     },
     primary: {
       color: "primary",
