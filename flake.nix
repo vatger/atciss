@@ -1,7 +1,7 @@
 {
   description = "VATSIM Germany ATCISS";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.poetry2nix = {
     url = "github:nix-community/poetry2nix";
@@ -16,28 +16,13 @@
         python = final.python3;
         overrides = prev.poetry2nix.overrides.withDefaults (final: prev: {
           pynotam = prev.pynotam.overridePythonAttrs (old: {
-            buildInputs = (old.buildInputs or [ ]) ++ [ prev.poetry ];
+            nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ prev.poetry ];
           });
           pydantic-settings = prev.pydantic-settings.overridePythonAttrs (old: {
-            buildInputs = (old.buildInputs or [ ]) ++ [ final.hatchling ];
+            nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ final.hatchling ];
           });
-          hatchling = prev.hatchling.overridePythonAttrs (old: rec {
-            version = "1.18.0";
-            src = prev.fetchPypi {
-              inherit (old) pname;
-              inherit version;
-              hash = "sha256-UOmcMRDOCvw/e9ut/xxxwXdY5HZzHCdgeUDPpmhkico=";
-            };
-
-            propagatedBuildInputs = old.propagatedBuildInputs ++ [ final.trove-classifiers ];
-          });
-          trove-classifiers = prev.trove-classifiers.overridePythonAttrs (old: rec {
-            version = "2023.8.7";
-            src = prev.fetchPypi {
-              inherit (old) pname;
-              inherit version;
-              hash = "sha256-yfKgqF1UXlNi6Wfk8Gn1b939kSFeIv+kjGb7KDUhMZo=";
-            };
+          gunicorn = prev.gunicorn.overridePythonAttrs (old: {
+            nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ final.packaging ];
           });
         });
       in {
@@ -96,11 +81,11 @@
       };
 
       devShells.default = pkgs.atciss-dev.env.overrideAttrs (oldAttrs: {
-        buildInputs = with pkgs; [
+        nativeBuildInputs = oldAttrs.nativeBuildInputs ++ (with pkgs; [
           poetry
           nodejs
           curl
-        ];
+        ]);
         shellHook = ''
           export POETRY_HOME=${pkgs.poetry}
           export POETRY_BINARY=${pkgs.poetry}/bin/poetry
