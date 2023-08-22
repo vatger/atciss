@@ -3,6 +3,7 @@ import { AtisAfw } from "./views/AtisAfw"
 import { Map } from "./views/Map"
 import { Wx } from "./views/Wx"
 import { App } from "./App"
+import { Notam } from "./views/Notam"
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: "wx",
         element: <Wx />,
+      },
+      {
+        path: "notam",
+        element: <Notam />,
       },
     ],
   },

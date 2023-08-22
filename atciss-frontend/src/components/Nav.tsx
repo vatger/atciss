@@ -24,7 +24,7 @@ const Nav = () => {
             navigate("/")
           }}
         >
-          ATISAfw
+          ATIS-AFW
         </NavButton>
         <NavButton
           onClick={() => {
@@ -44,6 +44,13 @@ const Nav = () => {
           }}
         >
           Wx
+        </NavButton>
+        <NavButton
+          onClick={() => {
+            navigate("/notam")
+          }}
+        >
+          NOTAM
         </NavButton>
       </Grid>
     </Flex>

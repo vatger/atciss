@@ -1,10 +1,10 @@
 """Application controllers - metar."""
 import logging
-from typing import cast
+from typing import Annotated, Dict, List, cast
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 
-from ..views.notam import NotamModel, NotamsPerLocationModel
+from ..views.notam import NotamModel
 
 from ..utils.redis import RedisClient
 
@@ -13,20 +13,22 @@ log = logging.getLogger(__name__)
 
 
 @router.get(
-    "/notam/{icao}",
+    "/notam/",
     tags=["notam"],
 )
-async def noram_get(icao: str) -> NotamsPerLocationModel:
+async def noram_get(icao: Annotated[List[str], Query(...)]) -> Dict[str, List[NotamModel]]:
     """Get METAR for airport."""
     redis_client = RedisClient.open()
-    icao = icao.upper()
+    notams = {}
 
-    notam_keys = await redis_client.keys("notam:{}:*".format(icao))
-    notams = await redis_client.mget(notam_keys)
-    notams = cast(list[str], notams)
+    for i in icao:
+        i = i.upper()
+        notam_keys = await redis_client.keys("notam:{}:*".format(i))
+        i_notams = cast(list[str], await redis_client.mget(notam_keys))
+        i_notams = [NotamModel.from_str(n) for n in i_notams]
+        notams[i] = i_notams
+
     if len(notams) < 1:
         raise HTTPException(status_code=404)
 
-    notams = [NotamModel.from_str(n) for n in notams]
-
-    return NotamsPerLocationModel(icao=icao, notams=notams)
+    return notams

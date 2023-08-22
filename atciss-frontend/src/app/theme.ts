@@ -18,7 +18,7 @@ export const theme: Theme = {
       color: "primary",
       fontSize: "5",
     },
-    atisLabel: {
+    label: {
       fontWeight: "bold",
       fontFamily: "sans-serif",
     },

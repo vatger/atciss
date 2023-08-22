@@ -66,10 +66,3 @@ class NotamModel(BaseModel):
         # indices_item_e: Optional[Tuple[int, int]] = None
         # indices_item_f: Optional[Tuple[int, int]] = None
         # indices_item_g: Optional[Tuple[int, int]] = None
-
-
-class NotamsPerLocationModel(BaseModel):
-    """METAR response model."""
-
-    icao: str
-    notams: List[NotamModel]

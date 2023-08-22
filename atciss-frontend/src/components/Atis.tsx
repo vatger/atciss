@@ -80,31 +80,31 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           </Text>
           <Text variant="atisXL">{atis?.atis_code ?? "-"}</Text>
           <Text>
-            <Text variant="atisLabel">OBS: </Text>
+            <Text variant="label">OBS: </Text>
             {z2(obs.getUTCDate())}
             {z2(obs.getUTCHours())}
             {z2(obs.getUTCMinutes())}
           </Text>
           <Text variant="primary">{xmc(metar)}</Text>
-          <Text>{/*<Text variant="atisLabel">SR:</Text> 0000*/}</Text>
-          <Text>{/*<Text variant="atisLabel">SS:</Text> 2359*/}</Text>
+          <Text>{/*<Text variant="label">SR:</Text> 0000*/}</Text>
+          <Text>{/*<Text variant="label">SS:</Text> 2359*/}</Text>
         </AtisRow>
         <AtisRow>
           <Box>
-            <Text variant="atisLabel">Rwy: </Text>
+            <Text variant="label">Rwy: </Text>
             <Text variant="atisL">{atis?.runways_in_use.join(" ")}</Text>
           </Box>
           <Box>
-            <Text variant="atisLabel">TL: </Text>
+            <Text variant="label">TL: </Text>
             <Text variant="atisL">{tl(metar)}</Text>
           </Box>
           <Box>
-            <Text variant="atisLabel">WX-Type: </Text>
+            <Text variant="label">WX-Type: </Text>
             <Text sx={{ fontSize: 5 }}>METAR</Text>
           </Box>
         </AtisRow>
         <Flex sx={{ flexGrow: 1, gap: 1 }}>
-          <Text variant="atisLabel" sx={{ display: "block", flexShrink: 0 }}>
+          <Text variant="label" sx={{ display: "block", flexShrink: 0 }}>
             Info:
           </Text>
           <Text sx={{ flexGrow: 1, borderStyle: "inset", display: "block" }}>
@@ -113,28 +113,28 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         </Flex>
         <AtisRow>
           <Text>
-            <Text variant="atisLabel">Wind/Vis.:</Text> {wind}
+            <Text variant="label">Wind/Vis.:</Text> {wind}
             {z2(metar.wind_speed)}
             {wind_gust}KT {wind_from_to}
           </Text>
           <Text>/ {z4(metar.vis)}</Text>
         </AtisRow>
         <AtisRow>
-          <Text variant="atisLabel">Weather:</Text> {metar.weather.join(" ")}
+          <Text variant="label">Weather:</Text> {metar.weather.join(" ")}
         </AtisRow>
         <AtisRow>
           <Text>
-            <Text variant="atisLabel">Temp/Dew:</Text> {z2(metar.temp)}/
+            <Text variant="label">Temp/Dew:</Text> {z2(metar.temp)}/
             {z2(metar.dewpt)}
           </Text>
           <Box>
             <Text>
-              <Text variant="atisLabel">Clouds:</Text> {clouds}
+              <Text variant="label">Clouds:</Text> {clouds}
             </Text>
           </Box>
         </AtisRow>
         <AtisRow>
-          <Text variant="atisLabel">QNH:</Text>
+          <Text variant="label">QNH:</Text>
           <Text>
             <Text
               variant="atisL"
@@ -151,11 +151,11 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
             /{hpaToInhg(metar.qnh).toFixed(2)}
           </Text>
           <Text>
-            {/*<Text variant="atisLabel">QFE:</Text> {z4(12)}/27.65*/}
+            {/*<Text variant="label">QFE:</Text> {z4(12)}/27.65*/}
           </Text>
         </AtisRow>
         <AtisRow>
-          <Text variant="atisLabel">Trend:</Text> {metar.trend}
+          <Text variant="label">Trend:</Text> {metar.trend}
         </AtisRow>
       </Flex>
     )
