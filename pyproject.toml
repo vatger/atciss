@@ -24,9 +24,7 @@ pydantic-settings = "^2.0.2"
 [tool.poetry.group.dev.dependencies]
 black = "^23.1"
 mypy = "^1.0"
-flake8 = "^6.0"
-flake8-import-order = "^0.18"
-flake8-docstrings = "^1.7"
+pylint = "^2.17"
 types-beautifulsoup4 = "^4.12.0.5"
 
 [tool.poetry.scripts]
@@ -61,5 +59,24 @@ implicit_optional = true
 module = [
     "gunicorn.*",
     "redis.*",
+    "parsimonious.*",
 ]
 ignore_missing_imports = true
+
+[tool.pylint.format]
+jobs = 0
+disable = [
+  "W1203", # logging-fstring-interpolation
+  "R0902", # too-many-instance-attributes
+  "R0903", # too-few-public-methods
+  "C0114", # missing-module-docstring
+  "C0115", # missing-class-docstring
+  "C0116", # missing-function-docstring
+  "W0511", # fixme
+  "C0103", # invalid-name
+]
+ignore = [
+  "gunicorn.py"
+]
+output-format = "colorized"
+max-line-length = "88"

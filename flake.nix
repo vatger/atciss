@@ -117,16 +117,8 @@
                 pkgs.atciss-dev
                 pkgs.git
             ]}"
-            echo "[nix][lint] Run atciss PEP 8 checks."
-            flake8 --select=E,W,I --ignore W503 --max-line-length 88 --import-order-style pep8 --statistics --count atciss
-            echo "[nix][lint] Run atciss PEP 257 checks."
-            flake8 --select=D --ignore D301,D100 --statistics --count atciss
-            echo "[nix][lint] Run atciss pyflakes checks."
-            flake8 --select=F --statistics --count atciss
-            echo "[nix][lint] Run atciss code complexity checks."
-            flake8 --select=C901 --statistics --count atciss
-            echo "[nix][lint] Run atciss open TODO checks."
-            flake8 --select=T --statistics --count atciss tests
+            echo "[nix][lint] Run atciss pylint checks."
+            pylint -f colorized -r y atciss
             echo "[nix][lint] Run atciss black checks."
             black --check atciss
           '');
