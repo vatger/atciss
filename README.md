@@ -8,7 +8,7 @@ using [Nix Flakes](https://nixos.wiki/wiki/Flakes) and
 ## Run the API
 
 ```
-poetry run atciss
+poetry run atciss serve
 ```
 
 ## Build docker image
