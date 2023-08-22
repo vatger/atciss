@@ -24,7 +24,7 @@ class ReadyResponse(BaseModel):
         """Override model config."""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any]) -> None:
+        def json_schema_extra(schema: Dict[str, Any]) -> None:
             """Override extra schema."""
             # Override schema description, by default is taken from docstring.
             schema["description"] = "Ready response model."
