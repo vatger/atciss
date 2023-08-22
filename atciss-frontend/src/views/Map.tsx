@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, ThemeUIStyleObject } from "theme-ui"
+import { Box, Flex, ThemeUIStyleObject } from "theme-ui"
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
 import { LatLngTuple } from "leaflet"
 import "leaflet/dist/leaflet.css"
