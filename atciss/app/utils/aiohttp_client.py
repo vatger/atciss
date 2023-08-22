@@ -8,7 +8,7 @@ import aiohttp
 SIZE_POOL_AIOHTTP = 100
 
 
-class AiohttpClient(object):
+class AiohttpClient:
     """Aiohttp session client utility."""
 
     aiohttp_client: Optional[aiohttp.ClientSession] = None

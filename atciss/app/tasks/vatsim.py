@@ -95,7 +95,6 @@ class Prefile:
     cid: int
     name: str
     callsign: str
-    name: str
     flight_plan: FlightPlan
     last_updated: datetime
 
@@ -134,9 +133,10 @@ async def fetch_vatsim_data() -> None:
     data = TypeAdapter(VatsimData).validate_python(await res.json())
 
     controllers = [c for c in data.controllers if c.facility > 0]
-    atis = data.atis
 
-    log.info(f"Vatsim data received: {len(controllers)} controllers, {len(atis)} ATIS")
+    log.info(
+        f"Vatsim data received: {len(controllers)} controllers, {len(data.atis)} ATIS"
+    )
 
     async with redis_client.pipeline() as pipe:
         keys = await redis_client.keys("vatsim:atis:*")
@@ -144,7 +144,7 @@ async def fetch_vatsim_data() -> None:
         if len(keys):
             await redis_client.delete(*keys)
 
-        for a in atis:
-            pipe.set(f"vatsim:atis:{a.callsign}", TypeAdapter(Atis).dump_json(a))
+        for atis in data.atis:
+            pipe.set(f"vatsim:atis:{atis.callsign}", TypeAdapter(Atis).dump_json(atis))
 
         await pipe.execute()

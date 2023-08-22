@@ -18,8 +18,7 @@ from starlette.concurrency import run_in_threadpool
 NoArgsNoReturnFuncT = Callable[[], None]
 NoArgsNoReturnAsyncFuncT = Callable[[], Coroutine[Any, Any, None]]
 NoArgsNoReturnDecorator = Callable[
-    [Union[NoArgsNoReturnFuncT, NoArgsNoReturnAsyncFuncT]],
-    NoArgsNoReturnAsyncFuncT
+    [Union[NoArgsNoReturnFuncT, NoArgsNoReturnAsyncFuncT]], NoArgsNoReturnAsyncFuncT
 ]
 
 
@@ -87,14 +86,10 @@ def repeat_every(
                         else:
                             _ = await run_in_threadpool(func)
                         repetitions += 1
-                    except Exception as exc:
+                    except Exception as exc:  # pylint: disable=broad-exception-caught
                         if logger is not None:
                             formatted_exception = "".join(
-                                format_exception(
-                                    type(exc),
-                                    exc,
-                                    exc.__traceback__
-                                )
+                                format_exception(type(exc), exc, exc.__traceback__)
                             )
                             logger.error(formatted_exception)
                         if raise_exceptions:

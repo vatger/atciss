@@ -23,5 +23,5 @@ async def fetch_metar() -> None:
     async with redis_client.pipeline() as pipe:
         for m in metars_csv:
             if len(m) >= 2:
-                pipe.set("metar:{}".format(m[1]), m[0])
+                pipe.set(f"metar:{m[1]}", m[0])
         await pipe.execute()

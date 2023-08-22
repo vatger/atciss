@@ -4,6 +4,7 @@ from typing import Optional
 from bs4 import BeautifulSoup
 
 from pynotam import Notam
+from parsimonious import ParseError
 
 from ..utils import AiohttpClient, RedisClient, repeat_every
 
@@ -42,7 +43,7 @@ NOTAM_ICAO = [
 def convert_notam(n: str) -> Optional[Notam]:
     try:
         return Notam.from_str(f"({n.strip()})")
-    except Exception as e:
+    except ParseError as e:
         log.error(f"could not parse notam: {n}\n{e}")
 
     return None
@@ -63,7 +64,7 @@ async def fetch_notam() -> None:
     notams = []
     for notam_elem in notam_html.find_all("pre"):
         notam = convert_notam(notam_elem.string)
-        if notam is not None and len(notam.location):
+        if notam is not None and len(notam.location) > 0:
             notams.append(notam)
 
     async with redis_client.pipeline() as pipe:

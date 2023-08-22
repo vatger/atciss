@@ -25,7 +25,7 @@ class ApplicationLoader(BaseApplication):  # type: ignore
     def __init__(self, application: Any, overrides: Optional[Dict[str, Any]] = None):
         """Initialize ApplicationLoader class object instance."""
         if not overrides:
-            overrides = dict()
+            overrides = {}
 
         self._overrides = overrides
         self._application = application
@@ -40,15 +40,15 @@ class ApplicationLoader(BaseApplication):  # type: ignore
         Raises:
             Exception: Raised on config error.
         """
-        for k, v in cfg.items():
+        for k, val in cfg.items():
             # Ignore unknown names
             if k not in self.cfg.settings:
                 continue
 
             try:
-                self.cfg.set(k.lower(), v)
+                self.cfg.set(k.lower(), val)
             except Exception as ex:
-                self.logger.error(f"Invalid value for {k}: {v}")
+                self.logger.error(f"Invalid value for {k}: {val}")
                 raise ex
 
     def load_config(self) -> None:
@@ -63,7 +63,6 @@ class ApplicationLoader(BaseApplication):  # type: ignore
 
     def init(self, parser: Any, opts: Any, args: Any) -> None:
         """Patch required but not needed base class method."""
-        pass
 
     def load(self) -> Any:
         """Load WSGI application."""

@@ -5,7 +5,7 @@ from redis import asyncio as aioredis
 from ...config import redis as redis_conf
 
 
-class RedisClient(object):
+class RedisClient:
     """Handling redis database connection."""
 
     redis_client: aioredis.Redis | None = None

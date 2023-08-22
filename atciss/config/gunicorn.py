@@ -74,7 +74,7 @@ backlog = 2048
 #
 #       True or False
 
-workers = int(os.getenv("FASTAPI_WORKERS", 1))
+workers = int(os.getenv("FASTAPI_WORKERS", "1"))
 worker_class = "uvicorn.workers.UvicornWorker"
 worker_connections = 1000
 timeout = 30
@@ -202,12 +202,7 @@ def post_fork(server, worker):
     server.log.info("Worker spawned (pid: %s)", worker.pid)
 
 
-def pre_fork(server, worker):
-    """Execute before a worker is forked."""
-    pass
-
-
-def pre_exec(server):
+def pre_exec(server) -> None:
     """Execute before a new master process is forked."""
     server.log.info("Forked child, re-executing.")
 

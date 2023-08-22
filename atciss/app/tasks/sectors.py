@@ -73,7 +73,8 @@ async def fetch_sector_data() -> None:
     data: Dict[str, SectorData] = {}
     for region in SECTOR_REGIONS:
         res = await aiohttp_client.get(
-            f"https://raw.githubusercontent.com/lennycolton/vatglasses-data/main/data/{region}.json"
+            "https://raw.githubusercontent.com/lennycolton/vatglasses-data/main/data"
+            + f"/{region}.json"
         )
         data[region] = TypeAdapter(SectorData).validate_python(
             await res.json(content_type="text/plain")
@@ -82,17 +83,17 @@ async def fetch_sector_data() -> None:
     log.info("Sector data received")
 
     async with redis_client.pipeline() as pipe:
-        for region in data:
-            for airport, ap_data in data[region].airports.items():
+        for region_data in data.values():
+            for airport, ap_data in region_data.airports.items():
                 pipe.set(
                     f"sector:airport:{airport}", TypeAdapter(Airport).dump_json(ap_data)
                 )
-            for position, pos_data in data[region].positions.items():
+            for position, pos_data in region_data.positions.items():
                 pipe.set(
                     f"sector:position:{position}",
                     TypeAdapter(Position).dump_json(pos_data),
                 )
-            for airspace in data[region].airspace:
+            for airspace in region_data.airspace:
                 pipe.set(
                     f"sector:airspace:{airspace.id}",
                     TypeAdapter(Airspace).dump_json(airspace),

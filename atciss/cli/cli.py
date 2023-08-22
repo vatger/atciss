@@ -7,10 +7,10 @@ import click
 from .serve import serve
 
 
-cmd_help = "ATCISS CLI root."
+CMD_HELP = "ATCISS CLI root."
 
 
-@click.group(help=cmd_help)
+@click.group(help=CMD_HELP)
 @click.option(
     "-v",
     "--verbose",

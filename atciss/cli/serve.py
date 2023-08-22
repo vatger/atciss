@@ -7,18 +7,16 @@ import click
 from .. import ApplicationLoader
 from ..app import get_application
 
-# from example.cli.utils import validate_directory
 
-
-cmd_short_help = "Run production server."
-cmd_help = """\
+CMD_SHORT_HELP = "Run production server."
+CMD_HELP = """\
 Run production gunicorn (WSGI) server with uvicorn (ASGI) workers.
 """
 
 
 @click.command(
-    help=cmd_help,
-    short_help=cmd_short_help,
+    help=CMD_HELP,
+    short_help=CMD_SHORT_HELP,
 )
 @click.option(
     "--bind",
@@ -53,14 +51,6 @@ Run production gunicorn (WSGI) server with uvicorn (ASGI) workers.
     multiple=True,
     required=False,
 )
-# @click.option(
-#    "--pid",
-#    "pidfile",
-#    help="Specifies the PID file.",
-#    type=click.Path(),
-#    callback=validate_directory,
-#    required=False,
-# )
 @click.pass_context
 def serve(ctx: click.Context, **options: Dict[str, Any]) -> None:
     """Define command-line interface serve command.
@@ -70,7 +60,7 @@ def serve(ctx: click.Context, **options: Dict[str, Any]) -> None:
         options (typing.Dict[str, typing.Any]): Map of command option names to
             their parsed values.
     """
-    overrides = dict()
+    overrides = {}
 
     for key, value in options.items():
         source = ctx.get_parameter_source(key)
