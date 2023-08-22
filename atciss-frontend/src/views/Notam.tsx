@@ -43,8 +43,13 @@ const Notam = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                           variant="label"
                           sx={{ color: active ? "green" : "blue" }}
                         >
-                          {active ? "Active, expires" : "Will be active"}{" "}
-                          {(active ? n.valid_till : n.valid_from).toRelative()}
+                          {active
+                            ? `Active, ${
+                                n.valid_till.year !== 9999
+                                  ? `expires ${n.valid_till.toRelative()}`
+                                  : "permanent"
+                              }`
+                            : `Will be active ${n.valid_from.toRelative()}`}
                         </Text>
                       </Box>
                       <Text variant="label">
