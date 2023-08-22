@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import List, Optional, Sequence, Tuple, cast
+from typing import Any, List, Optional, Sequence, Tuple, cast
 
 from metar.Datatypes import distance
 from metar.Metar import Metar
@@ -19,7 +19,9 @@ class RvrModel:
 
     @classmethod
     def from_tuple(
-        cls, parsed: Tuple[str, distance, Optional[distance], str]
+        cls,
+        # FIXME should be: Tuple[str, distance, Optional[distance], str]
+        parsed: List[Any],
     ) -> RvrModel:
         runway, low, high, _ = parsed
         return cls(
@@ -39,11 +41,11 @@ class CloudModel:
     def from_tuple(
         cls, parsed: Tuple[str, Optional[distance], Optional[str]]
     ) -> CloudModel:
-        cover, height, type = parsed
+        cover, height, typ = parsed
         return cls(
             cover=cover,
             height=height.value("FT") if height is not None else None,
-            type=type,
+            type=typ,
         )
 
 
@@ -51,23 +53,23 @@ class MetarModel(BaseModel):
     """METAR response model."""
 
     raw: str
-    station_id: str
+    station_id: Optional[str]
     time: AwareDatetime
     wind_dir: Optional[float]
-    wind_speed: float
+    wind_speed: Optional[float]
     wind_gust: Optional[float]
     wind_dir_from: Optional[float]
     wind_dir_to: Optional[float]
-    vis: float
+    vis: Optional[float]
     # vis_dir
     # TODO max_vis?
     # max_vis_dir
-    temp: float
-    dewpt: float
-    qnh: float
+    temp: Optional[float]
+    dewpt: Optional[float]
+    qnh: Optional[float]
     rvr: Sequence[RvrModel]
-    weather: List[str]
-    recent_weather: List[str]
+    weather: List[Tuple[str, str, str, str, str]]
+    recent_weather: List[Tuple[str, str, str, str, str]]
     clouds: Sequence[CloudModel]
     trend: str
 
@@ -84,7 +86,9 @@ class MetarModel(BaseModel):
             raw=raw_metar,
             time=cast(datetime, parsed.time).replace(tzinfo=timezone.utc),
             wind_dir=parsed.wind_dir.value() if parsed.wind_dir is not None else None,
-            wind_speed=parsed.wind_speed.value("KT"),
+            wind_speed=parsed.wind_speed.value("KT")
+            if parsed.wind_speed is not None
+            else None,
             wind_gust=parsed.wind_gust.value("KT")
             if parsed.wind_gust is not None
             else None,
@@ -94,10 +98,10 @@ class MetarModel(BaseModel):
             wind_dir_to=parsed.wind_dir_to.value()
             if parsed.wind_dir_to is not None
             else None,
-            vis=min(parsed.vis.value("M"), 9999),
-            temp=parsed.temp.value("C"),
-            dewpt=parsed.dewpt.value("C"),
-            qnh=parsed.press.value("HPA"),
+            vis=min(parsed.vis.value("M"), 9999) if parsed.vis is not None else None,
+            temp=parsed.temp.value("C") if parsed.temp is not None else None,
+            dewpt=parsed.dewpt.value("C") if parsed.dewpt is not None else None,
+            qnh=parsed.press.value("HPA") if parsed.press is not None else None,
             rvr=[RvrModel.from_tuple(rvr) for rvr in parsed.runway],
             weather=parsed.weather,
             recent_weather=parsed.recent,
