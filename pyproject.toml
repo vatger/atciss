@@ -12,9 +12,9 @@ python = "^3.10"
 fastapi = "^0.101"
 uvicorn = {extras = ["standard"], version = "^0.23"}
 click = "^8.1"
-gunicorn = "^20.1"
+gunicorn = "^21.2"
 aiohttp = "^3.8.4"
-redis = "^4.5.1"
+redis = "^5.0.0"
 beautifulsoup4 = "^4.12.2"
 pynotam = { git = "https://github.com/globin/PyNotam", rev = "84b741863d09aaa616e6f378a2e6e5eab8df706f" }
 metar = "^1.11.0"
