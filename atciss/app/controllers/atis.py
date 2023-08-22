@@ -1,10 +1,12 @@
 """Application controllers - metar."""
+
 from fastapi import APIRouter, HTTPException
+
 from pydantic import TypeAdapter
 
+from ..utils.redis import RedisClient
 from ..views.atis import Atis
 
-from ..utils.redis import RedisClient
 
 router = APIRouter()
 

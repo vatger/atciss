@@ -1,7 +1,8 @@
+import logging
 from collections import defaultdict
 from dataclasses import dataclass
-import logging
 from typing import List, Literal, Optional
+
 from pydantic import TypeAdapter
 
 from ..utils import AiohttpClient, RedisClient, repeat_every

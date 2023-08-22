@@ -1,8 +1,8 @@
 from __future__ import annotations
-import re
-import logging
 
-from typing import Any, List, Optional, Union, cast
+import logging
+import re
+from typing import Any, List, Optional
 
 from pydantic import AwareDatetime, BaseModel, field_validator, model_validator
 

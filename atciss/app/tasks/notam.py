@@ -2,6 +2,7 @@ import logging
 from typing import Optional
 
 from bs4 import BeautifulSoup
+
 from pynotam import Notam
 
 from ..utils import AiohttpClient, RedisClient, repeat_every

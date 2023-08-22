@@ -6,7 +6,8 @@ from typing import List, Optional, Sequence, Tuple, cast
 
 from metar.Datatypes import distance
 from metar.Metar import Metar
-from pydantic import BaseModel, AwareDatetime, field_validator
+
+from pydantic import AwareDatetime, BaseModel, field_validator
 
 
 @dataclass

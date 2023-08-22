@@ -1,13 +1,13 @@
+import logging
 from dataclasses import dataclass
 from datetime import datetime
-import logging
 from typing import List, Optional
+
 from pydantic import TypeAdapter
 
+from ..utils import AiohttpClient, RedisClient, repeat_every
 from ..views.atis import Atis
 from ..views.controller import Controller
-
-from ..utils import AiohttpClient, RedisClient, repeat_every
 
 log = logging.getLogger(__name__)
 
@@ -122,7 +122,6 @@ class VatsimData:
     ratings: List[Rating]
     pilot_ratings: List[PilotRating]
     military_ratings: List[MilitaryRating]
-    facilities: List[Facility]
 
 
 @repeat_every(seconds=30, logger=log)
