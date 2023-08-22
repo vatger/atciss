@@ -35,7 +35,7 @@ class Atis(BaseModel):
         if isinstance(data, dict):
             text_atis = data.get('text_atis', [])
             try:
-                data["text_atis"] = text_atis if isinstance(text_atis, str) else "\n".join(text_atis)
+                data["text_atis"] = text_atis if isinstance(text_atis, str) else "\n".join(text_atis or "")
             except Exception as e:
                 logger.error(f"{e}, {data}")
 
