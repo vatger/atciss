@@ -75,7 +75,6 @@ class MetarModel(BaseModel):
     def weather_validator(cls, v: List[List[Optional[str]]]) -> List[str]:
         return ["".join([ws for ws in w if ws is not None]) for w in v]
 
-
     @classmethod
     def from_str(cls, raw_metar: str) -> MetarModel:
         parsed = Metar(raw_metar)

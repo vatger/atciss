@@ -29,17 +29,28 @@ class Atis(BaseModel):
     def callsign_validator(cls, v: str) -> str:
         return v.removesuffix("_ATIS")
 
-    @model_validator(mode='before')
+    @model_validator(mode="before")
     @classmethod
     def atis_validator(cls, data: Any) -> Any:
         if isinstance(data, dict):
-            text_atis = data.get('text_atis', [])
+            text_atis = data.get("text_atis", [])
             try:
-                data["text_atis"] = text_atis if isinstance(text_atis, str) else "\n".join(text_atis or "")
+                data["text_atis"] = (
+                    text_atis
+                    if isinstance(text_atis, str)
+                    else "\n".join(text_atis or "")
+                )
             except Exception as e:
                 logger.error(f"{e}, {data}")
 
-            matches = re.search(r'RUNWAYS? IN USE ([0-9]{2}[A-Z]?)(?: AND ([0-9]{2}[A-Z]?))?', data['text_atis'])
-            data["runways_in_use"] = [] if matches is None else [r for r in matches.groups() if r is not None]
+            matches = re.search(
+                r"RUNWAYS? IN USE ([0-9]{2}[A-Z]?)(?: AND ([0-9]{2}[A-Z]?))?",
+                data["text_atis"],
+            )
+            data["runways_in_use"] = (
+                []
+                if matches is None
+                else [r for r in matches.groups() if r is not None]
+            )
 
         return data
