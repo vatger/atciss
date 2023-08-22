@@ -125,7 +125,7 @@ class VatsimData:
     facilities: List[Facility]
 
 
-@repeat_every(seconds=15, logger=log)
+@repeat_every(seconds=30, logger=log)
 async def fetch_vatsim_data() -> None:
     """Periodically fetch sector data."""
     redis_client = await RedisClient.open()
