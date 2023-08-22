@@ -6,7 +6,7 @@ import { Footer } from "./components/Footer"
 const App = () => (
   <Flex sx={{ flexDirection: "column", height: "100vh" }}>
     <Nav />
-    <Flex sx={{ flexGrow: "1", padding: "1em" }}>
+    <Flex sx={{ flexGrow: "1", padding: "1em", height: 0, overflow: "auto" }}>
       <Outlet />
     </Flex>
     <Footer />
