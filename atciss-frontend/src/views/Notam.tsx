@@ -38,7 +38,13 @@ const Notam = ({ sx }: { sx?: ThemeUIStyleObject }) => {
 
                   return (
                     <Box sx={{ padding: 2, fontFamily: "monospace" }}>
-                      <Box>
+                      <Box
+                        title={`${n.valid_from.toFormat("y-MM-dd HH:mm")}-${
+                          n.valid_till.year !== 9999
+                            ? n.valid_till.toFormat("y-MM-dd HH:mm")
+                            : "permanent"
+                        }`}
+                      >
                         <Text
                           variant="label"
                           sx={{ color: active ? "green" : "blue" }}
