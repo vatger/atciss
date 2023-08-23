@@ -18,7 +18,7 @@ async def airspace_get(fir: str) -> Atis:
     redis_client = RedisClient.open()
     fir = fir.upper()
 
-    atis = await redis_client.get("vatsim:atis:{}".format(icao))
+    atis = await redis_client.get("vatsim:atis:{}".format(fir))
     if atis is None:
         raise HTTPException(status_code=404)
 

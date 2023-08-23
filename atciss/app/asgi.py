@@ -3,16 +3,19 @@ import logging
 
 from fastapi import FastAPI
 
+from atciss.app.tasks.loa import fetch_loas
+
+from atciss.app.tasks.metar import fetch_metar
+
+from atciss.app.tasks.notam import fetch_notam
+
+from atciss.app.tasks.sectors import fetch_sector_data
+
+from atciss.app.tasks.vatsim import fetch_vatsim_data
+
 from ..config import settings
 from .router import root_api_router
 from .utils import RedisClient, AiohttpClient
-from .tasks import (
-    fetch_loas,
-    fetch_metar,
-    fetch_notam,
-    fetch_sector_data,
-    fetch_vatsim_data,
-)
 
 
 log = logging.getLogger(__name__)
