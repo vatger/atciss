@@ -68,8 +68,8 @@ class MetarModel(BaseModel):
     dewpt: Optional[float]
     qnh: Optional[float]
     rvr: Sequence[RvrModel]
-    weather: List[Tuple[str, str, str, str, str]]
-    recent_weather: List[Tuple[str, str, str, str, str]]
+    weather: List[str]
+    recent_weather: List[str]
     clouds: Sequence[CloudModel]
     trend: str
 
@@ -81,32 +81,38 @@ class MetarModel(BaseModel):
     @classmethod
     def from_str(cls, raw_metar: str) -> MetarModel:
         parsed = Metar(raw_metar)
-        model = cls(
-            station_id=parsed.station_id,
-            raw=raw_metar,
-            time=cast(datetime, parsed.time).replace(tzinfo=timezone.utc),
-            wind_dir=parsed.wind_dir.value() if parsed.wind_dir is not None else None,
-            wind_speed=parsed.wind_speed.value("KT")
-            if parsed.wind_speed is not None
-            else None,
-            wind_gust=parsed.wind_gust.value("KT")
-            if parsed.wind_gust is not None
-            else None,
-            wind_dir_from=parsed.wind_dir_from.value()
-            if parsed.wind_dir_from is not None
-            else None,
-            wind_dir_to=parsed.wind_dir_to.value()
-            if parsed.wind_dir_to is not None
-            else None,
-            vis=min(parsed.vis.value("M"), 9999) if parsed.vis is not None else None,
-            temp=parsed.temp.value("C") if parsed.temp is not None else None,
-            dewpt=parsed.dewpt.value("C") if parsed.dewpt is not None else None,
-            qnh=parsed.press.value("HPA") if parsed.press is not None else None,
-            rvr=[RvrModel.from_tuple(rvr) for rvr in parsed.runway],
-            weather=parsed.weather,
-            recent_weather=parsed.recent,
-            clouds=[CloudModel.from_tuple(clouds) for clouds in parsed.sky],
-            trend=parsed.trend(),
+        model = MetarModel.model_validate(
+            {
+                "station_id": parsed.station_id,
+                "raw": raw_metar,
+                "time": cast(datetime, parsed.time).replace(tzinfo=timezone.utc),
+                "wind_dir": parsed.wind_dir.value()
+                if parsed.wind_dir is not None
+                else None,
+                "wind_speed": parsed.wind_speed.value("KT")
+                if parsed.wind_speed is not None
+                else None,
+                "wind_gust": parsed.wind_gust.value("KT")
+                if parsed.wind_gust is not None
+                else None,
+                "wind_dir_from": parsed.wind_dir_from.value()
+                if parsed.wind_dir_from is not None
+                else None,
+                "wind_dir_to": parsed.wind_dir_to.value()
+                if parsed.wind_dir_to is not None
+                else None,
+                "vis": min(parsed.vis.value("M"), 9999)
+                if parsed.vis is not None
+                else None,
+                "temp": parsed.temp.value("C") if parsed.temp is not None else None,
+                "dewpt": parsed.dewpt.value("C") if parsed.dewpt is not None else None,
+                "qnh": parsed.press.value("HPA") if parsed.press is not None else None,
+                "rvr": [RvrModel.from_tuple(rvr) for rvr in parsed.runway],
+                "weather": parsed.weather,
+                "recent_weather": parsed.recent,
+                "clouds": [CloudModel.from_tuple(clouds) for clouds in parsed.sky],
+                "trend": parsed.trend(),
+            }
         )
 
         return model
