@@ -3,17 +3,20 @@ import { setupListeners } from "@reduxjs/toolkit/dist/query"
 import { metarApi } from "../services/metarApi"
 import { atisApi } from "../services/atisApi"
 import { notamApi } from "../services/notamApi"
+import { adApi } from "../services/adApi"
 
 export const store = configureStore({
   reducer: {
     [metarApi.reducerPath]: metarApi.reducer,
     [atisApi.reducerPath]: atisApi.reducer,
     [notamApi.reducerPath]: notamApi.reducer,
+    [adApi.reducerPath]: adApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(metarApi.middleware)
       .concat(atisApi.middleware)
+      .concat(adApi.middleware)
       .concat(notamApi.middleware),
 })
 

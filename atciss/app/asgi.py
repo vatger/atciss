@@ -3,15 +3,12 @@ import logging
 
 from fastapi import FastAPI
 
-from atciss.app.tasks.loa import fetch_loas
-
-from atciss.app.tasks.metar import fetch_metar
-
-from atciss.app.tasks.notam import fetch_notam
-
-from atciss.app.tasks.sectors import fetch_sector_data
-
-from atciss.app.tasks.vatsim import fetch_vatsim_data
+from .tasks.dfs_ad import fetch_dfs_ad_data
+from .tasks.loa import fetch_loas
+from .tasks.metar import fetch_metar
+from .tasks.notam import fetch_notam
+from .tasks.sectors import fetch_sector_data
+from .tasks.vatsim import fetch_vatsim_data
 
 from ..config import settings
 from .router import root_api_router
@@ -42,6 +39,7 @@ def get_application() -> FastAPI:
             fetch_notam,
             fetch_sector_data,
             fetch_vatsim_data,
+            fetch_dfs_ad_data,
         ],
         on_shutdown=[on_shutdown],
     )

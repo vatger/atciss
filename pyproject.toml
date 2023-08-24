@@ -16,10 +16,13 @@ gunicorn = "^21.2"
 aiohttp = "^3.8.4"
 redis = "^5.0.0"
 beautifulsoup4 = "^4.12.2"
+pyaixm = { git = "https://github.com/volkerp/pyaixm", rev = "00112765b7ca767d45af9e743b0264e14ac25d1b" }
 pynotam = { git = "https://github.com/globin/PyNotam", rev = "84b741863d09aaa616e6f378a2e6e5eab8df706f" }
 metar = "^1.11.0"
 pydantic = "^2"
 pydantic-settings = "^2.0.2"
+lxml = "^4.9.3"
+astral = "^3.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1"

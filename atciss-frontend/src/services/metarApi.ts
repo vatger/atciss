@@ -1,7 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
-export interface Weather {}
-
 export interface Clouds {
   cover: "FEW" | "SCT" | "BKN" | "OVC"
   height: number | null
@@ -24,8 +22,8 @@ export interface Metar {
   dewpt: number
   qnh: number
   rvr: Rvr[]
-  weather: Weather[]
-  recent_weather: Weather[]
+  weather: string[]
+  recent_weather: string[]
   clouds: Clouds[]
   trend: string
 }
@@ -60,23 +58,8 @@ export const tl: (metar: Metar) => number = (metar) => {
   }
 }
 
-export const hpaToInhg: (qnh: number) => number = (qnh) => qnh * 0.02952998057228486
-
-// const initialState: MetarState = {
-//   atis: "X",
-//   state: "VMC",
-//   transitionLevel: 70,
-//   runways: ["26L", "26R"],
-//   metar: "EDDM 010820Z AUTO 25006KT 210V270 9999 SCT016 18/14 Q1013",
-//   winds: "25006KT",
-//   temperature: 18,
-//   dewPoint: 14,
-//   visibility: 9999,
-//   qnh: 1013,
-//   qfe: 1013 - 25.879322442072 * 1487,
-//   sunrise: "0443",
-//   sunset: "1743",
-// }
+export const hpaToInhg: (qnh: number) => number = (qnh) =>
+  qnh * 0.02952998057228486
 
 export const metarApi = createApi({
   reducerPath: "metar",

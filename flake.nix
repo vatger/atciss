@@ -39,6 +39,13 @@
           gunicorn = prev.gunicorn.overridePythonAttrs (old: {
             nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ final.packaging ];
           });
+          pyaixm = prev.pyaixm.overridePythonAttrs (old: {
+            nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ final.setuptools ];
+            propagatedBuildInputs = (old.propagatedBuildInputs or []) ++ [ final.pyyaml final.lxml ];
+          });
+          astral = prev.astral.overridePythonAttrs (old: {
+            nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ final.poetry ];
+          });
         });
       in {
         atciss = prev.poetry2nix.mkPoetryApplication {
@@ -52,6 +59,7 @@
           editablePackageSources = {
             app = ./.;
           };
+          extraPackages = ps: [ ps.ipython ];
         };
       })
     ];

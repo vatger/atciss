@@ -9,6 +9,7 @@ import {
 import { ReactNode } from "react"
 import { usePollAtisByIcaoCode } from "../services/atisApi"
 import { useSearchParams } from "react-router-dom"
+import { usePollAdByIcaoCode } from "../services/adApi"
 
 const DEFAULT_AERODROME = "EDDM"
 
@@ -42,8 +43,13 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
     isLoading: atisIsLoading,
     error: atisError,
   } = usePollAtisByIcaoCode(aerodrome)
+  const {
+    data: ad,
+    isLoading: adIsLoading,
+    error: adError,
+  } = usePollAdByIcaoCode(aerodrome)
 
-  if (!metarIsLoading && metar && !atisIsLoading) {
+  if (!metarIsLoading && metar && !atisIsLoading && !adIsLoading && ad) {
     const obs = new Date(`${metar.time}`)
     const wind = metar.wind_dir !== null ? z3(metar.wind_dir) : "VRB"
     const wind_gust = metar.wind_gust ? `G${z2(metar.wind_gust)}` : ""
@@ -51,6 +57,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       metar?.wind_dir_from && metar.wind_dir_to
         ? `${z3(metar.wind_dir_from)}V${z3(metar.wind_dir_to)} `
         : ""
+    const qfe = metar.qnh - (12.017 * (ad.elevation / 3.28084)) / 100
 
     const clouds =
       metar.clouds.length === 0
@@ -86,8 +93,12 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
             {z2(obs.getUTCMinutes())}
           </Text>
           <Text variant="primary">{xmc(metar)}</Text>
-          <Text>{/*<Text variant="label">SR:</Text> 0000*/}</Text>
-          <Text>{/*<Text variant="label">SS:</Text> 2359*/}</Text>
+          <Text>
+            <Text variant="label">SR:</Text> {ad.sunrise.toFormat("HHMM")}
+          </Text>
+          <Text>
+            <Text variant="label">SS:</Text> {ad.sunset.toFormat("HHMM")}
+          </Text>
         </AtisRow>
         <AtisRow>
           <Box>
@@ -146,12 +157,13 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                 borderStyle: "solid",
               }}
             >
-              {z4(metar.qnh.toFixed(0))}
+              {metar.qnh.toFixed(0)}
             </Text>
             /{hpaToInhg(metar.qnh).toFixed(2)}
           </Text>
           <Text>
-            {/*<Text variant="label">QFE:</Text> {z4(12)}/27.65*/}
+            <Text variant="label">QFE:</Text> {qfe.toFixed(0)}/
+            {hpaToInhg(qfe).toFixed(2)}
           </Text>
         </AtisRow>
         <AtisRow>
