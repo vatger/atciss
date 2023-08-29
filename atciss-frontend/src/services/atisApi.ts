@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { fetchWithAuth } from "../app/auth"
 
 export interface Atis {
   cid: number
@@ -12,10 +13,10 @@ export interface Atis {
 
 export const atisApi = createApi({
   reducerPath: "atis",
-  baseQuery: fetchBaseQuery({ baseUrl: "/api/atis/" }),
+  baseQuery: fetchWithAuth,
   endpoints: (builder) => ({
     getByIcaoCode: builder.query<Atis, string>({
-      query: (icao) => icao,
+      query: (icao) => `atis/${icao}`,
     }),
   }),
 })

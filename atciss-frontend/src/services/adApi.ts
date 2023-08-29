@@ -1,32 +1,22 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import { DateTime } from "luxon"
-
-type AerodromeIn = Omit<Aerodrome, "sunrise" | "sunset"> & {
-  sunrise: string
-  sunset: string
-}
+import { LOCAL_STORAGE_JWT_KEY } from "../app/auth/slice"
+import { fetchWithAuth } from "../app/auth"
 
 export interface Aerodrome {
   locationIndicatorICAO: string
   latitude: number
   longitude: number
   elevation: number
-  sunrise: DateTime
-  sunset: DateTime
+  sunrise: string
+  sunset: string
 }
 
 export const adApi = createApi({
   reducerPath: "ad",
-  baseQuery: fetchBaseQuery({ baseUrl: "/api/ad/" }),
+  baseQuery: fetchWithAuth,
   endpoints: (builder) => ({
     getByIcaoCode: builder.query<Aerodrome, string>({
-      query: (icao) => icao,
-      transformResponse: (ad: AerodromeIn) =>
-        ({
-          ...ad,
-          sunrise: DateTime.fromISO(ad.sunrise).toUTC(),
-          sunset: DateTime.fromISO(ad.sunset).toUTC(),
-        } as Aerodrome),
+      query: (icao) => `ad/${icao}`,
     }),
   }),
 })

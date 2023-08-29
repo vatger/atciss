@@ -21,13 +21,13 @@ class Aerodrome(BaseModel):
     longitude: float
     elevation: float
 
-    @computed_field # type: ignore[misc]
+    @computed_field  # type: ignore[misc]
     @property
     def sunrise(self) -> AwareDatetime:
         # elevation in Observer is prominece not elevation above MSL
         return sunrise(Observer(self.latitude, self.longitude, 0))
 
-    @computed_field # type: ignore[misc]
+    @computed_field  # type: ignore[misc]
     @property
     def sunset(self) -> AwareDatetime:
         # elevation in Observer is prominece not elevation above MSL

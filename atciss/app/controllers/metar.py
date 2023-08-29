@@ -1,5 +1,8 @@
 """Application controllers - metar."""
-from fastapi import APIRouter, HTTPException
+from typing import Annotated
+from fastapi import APIRouter, Depends, HTTPException
+
+from atciss.app.controllers.auth import get_cid
 
 from ..views.metar import MetarModel
 
@@ -12,7 +15,7 @@ router = APIRouter()
     "/metar/{icao}",
     tags=["wx"],
 )
-async def metar_get(icao: str) -> MetarModel:
+async def metar_get(icao: str, cid: Annotated[str, Depends(get_cid)]) -> MetarModel:
     """Get METAR for airport."""
     redis_client = RedisClient.open()
     icao = icao.upper()

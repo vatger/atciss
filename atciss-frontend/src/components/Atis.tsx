@@ -10,6 +10,7 @@ import { ReactNode } from "react"
 import { usePollAtisByIcaoCode } from "../services/atisApi"
 import { useSearchParams } from "react-router-dom"
 import { usePollAdByIcaoCode } from "../services/adApi"
+import { DateTime } from "luxon"
 
 const DEFAULT_AERODROME = "EDDM"
 
@@ -94,10 +95,12 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           </Text>
           <Text variant="primary">{xmc(metar)}</Text>
           <Text>
-            <Text variant="label">SR:</Text> {ad.sunrise.toFormat("HHMM")}
+            <Text variant="label">SR:</Text>{" "}
+            {DateTime.fromISO(ad.sunrise).toUTC().toFormat("HHMM")}
           </Text>
           <Text>
-            <Text variant="label">SS:</Text> {ad.sunset.toFormat("HHMM")}
+            <Text variant="label">SS:</Text>{" "}
+            {DateTime.fromISO(ad.sunset).toUTC().toFormat("HHMM")}
           </Text>
         </AtisRow>
         <AtisRow>

@@ -32,16 +32,21 @@ const Notam = ({ sx }: { sx?: ThemeUIStyleObject }) => {
             <details>
               <summary>{icao}</summary>
               {notams
-                .filter((n) => DateTime.utc() <= n.valid_till)
+                .filter(
+                  (n) =>
+                    DateTime.utc() <= DateTime.fromISO(n.valid_till).toUTC(),
+                )
                 .map((n) => {
-                  const active = DateTime.utc() >= n.valid_from
+                  const valid_till = DateTime.fromISO(n.valid_till).toUTC()
+                  const valid_from = DateTime.fromISO(n.valid_from).toUTC()
+                  const active = DateTime.utc() >= valid_from
 
                   return (
                     <Box sx={{ padding: 2, fontFamily: "monospace" }}>
                       <Box
-                        title={`${n.valid_from.toFormat("y-MM-dd HH:mm")}-${
-                          n.valid_till.year !== 9999
-                            ? n.valid_till.toFormat("y-MM-dd HH:mm")
+                        title={`${valid_from.toFormat("y-MM-dd HH:mm")}-${
+                          valid_till.year !== 9999
+                            ? valid_till.toFormat("y-MM-dd HH:mm")
                             : "permanent"
                         }`}
                       >
@@ -51,11 +56,11 @@ const Notam = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                         >
                           {active
                             ? `Active, ${
-                                n.valid_till.year !== 9999
-                                  ? `expires ${n.valid_till.toRelative()}`
+                                valid_till.year !== 9999
+                                  ? `expires ${valid_till.toRelative()}`
                                   : "permanent"
                               }`
-                            : `Will be active ${n.valid_from.toRelative()}`}
+                            : `Will be active ${valid_from.toRelative()}`}
                         </Text>
                       </Box>
                       <Text variant="label">
@@ -117,7 +122,11 @@ const Notam = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                       <Flex sx={{ gap: 5 }}>
                         <Box>
                           <Text variant="label">Created</Text>{" "}
-                          {n.created ? n.created.toFormat("y-MM-dd HH:mm") : ""}
+                          {n.created
+                            ? DateTime.fromISO(n.created)
+                                .toUTC()
+                                .toFormat("y-MM-dd HH:mm")
+                            : ""}
                         </Box>
                         <Box>
                           <Text variant="label">Source</Text> {n.source}

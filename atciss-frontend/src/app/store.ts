@@ -4,6 +4,7 @@ import { metarApi } from "../services/metarApi"
 import { atisApi } from "../services/atisApi"
 import { notamApi } from "../services/notamApi"
 import { adApi } from "../services/adApi"
+import { authReducer } from "./auth/slice"
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     [atisApi.reducerPath]: atisApi.reducer,
     [notamApi.reducerPath]: notamApi.reducer,
     [adApi.reducerPath]: adApi.reducer,
+    auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()

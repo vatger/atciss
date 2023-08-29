@@ -30,6 +30,11 @@ class Application(BaseSettings):
     PROJECT_NAME: str = "atciss"
     VERSION: str = __version__
     DOCS_URL: str = "/"
+    SECRET_KEY: str = "dc3101ed2074e87e3bf2b158fd0934cc538a5d667a96e0d400d8b4f6f572c33d"
+    VATSIM_AUTH_URL: str = "https://auth-dev.vatsim.net"
+    VATSIM_CLIENT_ID: str = "592"
+    VATSIM_CLIENT_SECRET: str = "UR3n0xnjzP4KAbB3enMDCGVD4qbyLvIoSAQtzVm2"
+    VATSIM_REDIRECT_URL: str = "http://localhost:5173/auth/callback"
 
     class Config:
         """Config sub-class needed to customize BaseSettings settings.

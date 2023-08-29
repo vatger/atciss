@@ -1,9 +1,11 @@
 """Application controllers - metar."""
-from fastapi import APIRouter, HTTPException
+from typing import Annotated
+from fastapi import APIRouter, Depends, HTTPException
 
-from atciss.app.tasks.dfs_ad import Aerodrome
-
+from ..tasks.dfs_ad import Aerodrome
 from ..utils.redis import RedisClient
+
+from .auth import get_cid
 
 router = APIRouter()
 
@@ -12,7 +14,7 @@ router = APIRouter()
     "/ad/{icao}",
     tags=["wx"],
 )
-async def ad_get(icao: str) -> Aerodrome:
+async def ad_get(icao: str, cid: Annotated[str, Depends(get_cid)]) -> Aerodrome:
     """Get METAR for airport."""
     redis_client = RedisClient.open()
     icao = icao.upper()

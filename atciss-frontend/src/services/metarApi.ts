@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { fetchWithAuth } from "../app/auth"
 
 export interface Clouds {
   cover: "FEW" | "SCT" | "BKN" | "OVC"
@@ -63,10 +64,10 @@ export const hpaToInhg: (qnh: number) => number = (qnh) =>
 
 export const metarApi = createApi({
   reducerPath: "metar",
-  baseQuery: fetchBaseQuery({ baseUrl: "/api/metar/" }),
+  baseQuery: fetchWithAuth,
   endpoints: (builder) => ({
     getByIcaoCode: builder.query<Metar, string>({
-      query: (icao) => icao,
+      query: (icao) => `metar/${icao}`,
     }),
   }),
 })

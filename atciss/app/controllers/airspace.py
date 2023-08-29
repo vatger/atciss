@@ -1,6 +1,9 @@
 """Application controllers - metar."""
-from fastapi import APIRouter, HTTPException
+from typing import Annotated
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import TypeAdapter
+
+from atciss.app.controllers.auth import get_cid
 
 from ..views.atis import Atis
 
@@ -13,7 +16,7 @@ router = APIRouter()
     "/airspace/{fir}",
     tags=["airspace"],
 )
-async def airspace_get(fir: str) -> Atis:
+async def ad_get(fir: str, cid: Annotated[str, Depends(get_cid)]) -> Atis:
     """Get METAR for airport."""
     redis_client = RedisClient.open()
     fir = fir.upper()

@@ -23,6 +23,7 @@ pydantic = "^2"
 pydantic-settings = "^2.0.2"
 lxml = "^4.9.3"
 astral = "^3.2"
+python-jose = "^3.3.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1"
