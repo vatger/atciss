@@ -46,6 +46,12 @@
           astral = prev.astral.overridePythonAttrs (old: {
             nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ final.poetry ];
           });
+          types-pyasn1 = prev.types-pyasn1.overridePythonAttrs (old: {
+            nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ final.setuptools ];
+          });
+          types-python-jose = prev.types-python-jose.overridePythonAttrs (old: {
+            nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ final.setuptools ];
+          });
         });
       in {
         atciss = prev.poetry2nix.mkPoetryApplication {

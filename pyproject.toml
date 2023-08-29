@@ -30,6 +30,7 @@ black = "^23.1"
 mypy = "^1.0"
 pylint = "^2.17"
 types-beautifulsoup4 = "^4.12.0.5"
+types-python-jose = "^3.3.4.8"
 
 [tool.poetry.scripts]
 atciss = 'atciss.cli:cli'
@@ -63,8 +64,9 @@ implicit_optional = true
 [[tool.mypy.overrides]]
 module = [
     "gunicorn.*",
-    "redis.*",
     "parsimonious.*",
+    "pyaixm.*",
+    "redis.*",
 ]
 ignore_missing_imports = true
 
