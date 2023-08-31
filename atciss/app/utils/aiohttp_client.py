@@ -23,7 +23,7 @@ class AiohttpClient:
         """
         if cls.aiohttp_client is None:
             cls.log.debug("Initialize AiohttpClient session.")
-            timeout = aiohttp.ClientTimeout(total=5)
+            timeout = aiohttp.ClientTimeout(total=15)
             connector = aiohttp.TCPConnector(
                 family=AF_INET,
                 limit_per_host=SIZE_POOL_AIOHTTP,

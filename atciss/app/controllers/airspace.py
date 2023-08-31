@@ -1,11 +1,10 @@
 """Application controllers - metar."""
-from typing import Annotated
+from typing import Annotated, Dict, List
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import TypeAdapter
 
 from atciss.app.controllers.auth import get_cid
-
-from ..views.atis import Atis
+from atciss.app.tasks.sectors import Airport, Airspace, Position, SectorData
 
 from ..utils.redis import RedisClient
 
@@ -13,16 +12,23 @@ router = APIRouter()
 
 
 @router.get(
-    "/airspace/{fir}",
+    "/airspace/{region}",
     tags=["airspace"],
 )
-async def ad_get(fir: str, cid: Annotated[str, Depends(get_cid)]) -> Atis:
+async def airspace_get(region: str, cid: Annotated[str, Depends(get_cid)]) -> SectorData:
     """Get METAR for airport."""
     redis_client = RedisClient.open()
-    fir = fir.upper()
 
-    atis = await redis_client.get("vatsim:atis:{}".format(fir))
-    if atis is None:
+    region = "germany"
+    airports_json = await redis_client.get(f"sector:airports:{region}")
+    positions_json = await redis_client.get( f"sector:positions:{region}")
+    airspaces_json = await redis_client.get( f"sector:airspaces:{region}")
+    if airports_json is None or positions_json is None or airspaces_json is None:
         raise HTTPException(status_code=404)
 
-    return TypeAdapter(Atis).validate_json(atis)
+    airports = TypeAdapter(Dict[str, Airport]).validate_json(airports_json)
+    positions = TypeAdapter(Dict[str, Position]).validate_json(positions_json)
+    airspaces = TypeAdapter(List[Airspace]).validate_json(airspaces_json)
+
+
+    return SectorData(airspace=airspaces, groups={}, positions=positions, callsigns={}, airports=airports)

@@ -1,5 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import { LOCAL_STORAGE_JWT_KEY } from "../app/auth/slice"
+import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithAuth } from "../app/auth"
 
 export interface Aerodrome {
