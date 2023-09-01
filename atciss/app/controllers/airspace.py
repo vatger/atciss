@@ -19,7 +19,6 @@ async def airspace_get(region: str, cid: Annotated[str, Depends(get_cid)]) -> Se
     """Get METAR for airport."""
     redis_client = RedisClient.open()
 
-    region = "germany"
     airports_json = await redis_client.get(f"sector:airports:{region}")
     positions_json = await redis_client.get( f"sector:positions:{region}")
     airspaces_json = await redis_client.get( f"sector:airspaces:{region}")

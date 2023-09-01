@@ -9,8 +9,9 @@ from ..utils import AiohttpClient, RedisClient, repeat_every
 log = logging.getLogger(__name__)
 
 # check https://github.com/lennycolton/vatglasses-data/tree/main/data
-SECTOR_REGIONS = ["austria", "czechia", "germany", "poland"]
-# TODO add italy and switzerland when available
+SECTOR_REGIONS = [ "czechia", "germany" ]
+# TODO: LOWZ has rwy-dependent config "austria",
+# TODO add italy, poland and switzerland when available
 
 Coordinate = Tuple[str, str] | Tuple[float, float]
 
@@ -53,7 +54,7 @@ class Position:
 class Airport:
     callsign: str
     coord: Coordinate
-    topdown: List[str]
+    topdown: List[str] = field(default_factory=list)
 
 
 @dataclass

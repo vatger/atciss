@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden
 }
 
 code {
@@ -15,4 +16,8 @@ code {
 summary {
   outline: none;
   cursor: pointer;
+}
+
+*:focus {
+ outline: none
 }
