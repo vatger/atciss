@@ -85,9 +85,9 @@ const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           const controllingSector = owner.find((pos) => activePositions[pos])
 
           return controllingSector ? (
-            sectors.map(({ points, min, max }) => (
+            sectors.map(({ points, min, max }, index) => (
               <Polygon
-                key={name}
+                key={`${name}-${min}-${max}-${index}`}
                 pathOptions={{
                   color: data?.positions[controllingSector].colours[0].hex,
                   weight: 1,

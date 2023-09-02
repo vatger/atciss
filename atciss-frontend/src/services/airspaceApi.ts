@@ -1,10 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithAuth } from "../app/auth"
-
-export type Coordinate = [string, string]
+import { LatLngExpression } from "leaflet"
 
 export type Sector = {
-  points: Coordinate[]
+  points: LatLngExpression[]
   min: number | null
   max: number | null
 }
@@ -18,7 +17,7 @@ export type Airspace = {
 
 export type Airport = {
   callsign: string
-  coord: Coordinate
+  coord: LatLngExpression
   topdown: string[]
 }
 
