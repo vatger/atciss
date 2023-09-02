@@ -49,28 +49,8 @@ const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
     .map(({ id: name, owner, sectors }) => ({
       name,
       owner,
-      sectors: sectors.filter(levelFilter).map(({ min, max, points }) => ({
-        min,
-        max,
-        points: points.map(
-          ([lat, lng]) =>
-            [parseFloat(lat) / 10000, parseFloat(lng) / 10000] as LatLngTuple,
-        ),
-      })),
+      sectors: sectors.filter(levelFilter),
     }))
-
-  const stringToColour = (str: string) => {
-    let hash = 0
-    str.split("").forEach((char) => {
-      hash = char.charCodeAt(0) + ((hash << 5) - hash)
-    })
-    let colour = "#"
-    for (let i = 0; i < 3; i++) {
-      const value = (hash >> (i * 8)) & 0xff
-      colour += value.toString(16).padStart(2, "0")
-    }
-    return colour
-  }
 
   const activePositionChanged: (
     id: string,

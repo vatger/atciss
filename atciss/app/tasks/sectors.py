@@ -1,8 +1,8 @@
 import logging
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, cast
 
-from pydantic import TypeAdapter
+from pydantic import TypeAdapter, BaseModel, field_validator
 
 from ..utils import AiohttpClient, RedisClient, repeat_every
 
@@ -13,14 +13,33 @@ SECTOR_REGIONS = [ "czechia", "germany" ]
 # TODO: LOWZ has rwy-dependent config "austria",
 # TODO add italy, poland and switzerland when available
 
-Coordinate = Tuple[str, str] | Tuple[float, float]
+Coordinate = Tuple[float, float]
 
 
-@dataclass
-class Sector:
+def convert_coordinate(input: str) -> float:
+    sec = int(input[-2:], 10)
+    min = int(input[-4:-2], 10)
+    deg = int(input[:-4], 10)
+
+    return deg + min / 60 + sec / 3600
+
+
+def convert_point(point: Tuple[str, str] | Coordinate) -> Coordinate:
+    if isinstance(point[0], float):
+        return point
+
+    return cast(Coordinate, [convert_coordinate(coord) for coord in point])
+
+
+class Sector(BaseModel):
     points: List[Coordinate]
     min: Optional[int] = None
     max: Optional[int] = None
+
+    @field_validator("points", mode="before")
+    @classmethod
+    def point_validator(cls, input: List[Tuple[str, str] | Coordinate]) -> List[Coordinate]:
+        return [convert_point(point) for point in input]
 
 
 @dataclass
