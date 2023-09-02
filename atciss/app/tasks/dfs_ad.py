@@ -63,6 +63,7 @@ async def fetch_dfs_ad_data() -> None:
     keys = await redis_client.keys("dfs:ad:*")
 
     if len(keys):
+        log.info("DFS data already found, not fetching")
         return
 
     aixm_url = await get_dfs_aixm_url("AirportHeliport")
