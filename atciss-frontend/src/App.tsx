@@ -5,11 +5,11 @@ import { Footer } from "./components/Footer"
 
 const App = () => (
   <Flex sx={{ flexDirection: "column", height: "100vh" }}>
-    <Nav />
-    <Flex sx={{ flexGrow: "1", padding: "1em", height: 0, overflow: "auto" }}>
+    <Nav sx={{ flex: "none" }} />
+    <Flex sx={{ flex: "auto", padding: "1em", overflow: "auto" }}>
       <Outlet />
     </Flex>
-    <Footer />
+    <Footer sx={{ flex: "none" }} />
   </Flex>
 )
 

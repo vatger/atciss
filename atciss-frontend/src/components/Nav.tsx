@@ -1,14 +1,20 @@
-import { Flex, Grid } from "theme-ui"
+import { Flex, Grid, ThemeUIStyleObject } from "theme-ui"
 import { Clock } from "./Clock"
 import { NavButton } from "./NavButton"
 import { useNavigate } from "react-router-dom"
 
-const Nav = () => {
+const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const navigate = useNavigate()
 
   return (
     <Flex
-      sx={{ backgroundColor: "primary", p: 2, gap: 2, alignItems: "start" }}
+      sx={{
+        ...sx,
+        backgroundColor: "primary",
+        p: 2,
+        gap: 2,
+        alignItems: "start",
+      }}
     >
       <Clock />
       <Grid
@@ -16,7 +22,7 @@ const Nav = () => {
           gap: ".5rem",
           gridTemplateColumns: "repeat(auto-fit, 6rem)",
           gridTemplateRows: "2rem 2rem",
-          flexGrow: "1",
+          flex: "auto",
         }}
       >
         <NavButton

@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <AtisAfw sx={{ flexGrow: "1" }} />,
+        element: <AtisAfw sx={{ flex: "auto" }} />,
       },
       {
         path: "map",

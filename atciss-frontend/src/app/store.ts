@@ -6,6 +6,7 @@ import { notamApi } from "../services/notamApi"
 import { adApi } from "../services/adApi"
 import { authReducer } from "./auth/slice"
 import { sectorApi } from "../services/airspaceApi"
+import { activePositionReducer } from "../services/activePositionSlice"
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     [adApi.reducerPath]: adApi.reducer,
     [sectorApi.reducerPath]: sectorApi.reducer,
     auth: authReducer,
+    activePositions: activePositionReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()

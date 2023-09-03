@@ -1,8 +1,7 @@
-import { Flex, Grid, Text } from "theme-ui"
-import { Clock } from "./Clock"
+import { Flex, Text, ThemeUIStyleObject } from "theme-ui"
 
-const Footer = () => (
-  <Flex sx={{ backgroundColor: "primary", p: ".5em" }}>
+const Footer = ({ sx }: { sx?: ThemeUIStyleObject }) => (
+  <Flex sx={{ ...sx, backgroundColor: "primary", p: ".5em" }}>
     <Text>ATCISS</Text>
   </Flex>
 )

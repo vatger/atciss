@@ -1,7 +1,5 @@
 import {
   Box,
-  Button,
-  Checkbox,
   Flex,
   Grid,
   Input,
@@ -14,32 +12,21 @@ import { MapContainer, Polygon, TileLayer, Tooltip } from "react-leaflet"
 import { LatLngTuple } from "leaflet"
 import "leaflet/dist/leaflet.css"
 import { Sector, sectorApi } from "../services/airspaceApi"
-import { ChangeEventHandler, useEffect, useId, useState } from "react"
+import { useId, useState } from "react"
 import { z3 } from "../app/utils"
+import { SectorChoice } from "../components/map/SectorChoice"
+import { useAppSelector } from "../app/hooks"
+import { selectActivePositions } from "../services/activePositionSlice"
 
 const position = [49.2646, 11.4134] as LatLngTuple
 
 const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
-  const { data, isSuccess, error } = sectorApi.useGetByRegionQuery("germany")
+  const { data } = sectorApi.useGetByRegionQuery("germany")
   const [level, setLevel] = useState("200")
-  const [activePositions, setActivePositions] = useState<{
-    [id: string]: boolean
-  }>({})
+
+  const activePositions = useAppSelector(selectActivePositions)
 
   const levelSliderId = useId()
-
-  useEffect(() => {
-    if (isSuccess && data) {
-      setActivePositions(
-        Object.keys(data.positions)
-          .filter((id) => !["MMC", "WWC", "GGC"].includes(id))
-          .reduce(
-            (acc, id) => ({ ...acc, [id]: true }),
-            {} as { [id: string]: boolean },
-          ),
-      )
-    }
-  }, [data, isSuccess])
 
   const levelFilter = (s: Sector) =>
     (s.min ?? 0) <= parseInt(level) && parseInt(level) < (s.max ?? 999)
@@ -51,12 +38,6 @@ const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       owner,
       sectors: sectors.filter(levelFilter),
     }))
-
-  const activePositionChanged: (
-    id: string,
-  ) => ChangeEventHandler<HTMLInputElement> = (id) => (e) => {
-    setActivePositions({ ...activePositions, [id]: e.target.checked })
-  }
 
   return (
     <Grid
@@ -84,36 +65,34 @@ const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         {sectors?.map(({ name, sectors, owner }) => {
           const controllingSector = owner.find((pos) => activePositions[pos])
 
-          return controllingSector ? (
-            sectors.map(({ points, min, max }, index) => (
-              <Polygon
-                key={`${name}-${min}-${max}-${index}`}
-                pathOptions={{
-                  color: data?.positions[controllingSector].colours[0].hex,
-                  weight: 1,
-                  opacity: 0.5,
-                }}
-                positions={points}
-              >
-                <Tooltip>
-                  <Box>
-                    <Text variant="label">{name}</Text> by {controllingSector}
-                  </Box>
-                  <Box>
-                    FL{z3(min ?? 0)}-FL{z3(max ?? 660)}
-                  </Box>
-                </Tooltip>
-              </Polygon>
-            ))
-          ) : (
-            <></>
-          )
+          return controllingSector
+            ? sectors.map(({ points, min, max }, index) => (
+                <Polygon
+                  key={`${name}-${min}-${max}-${index}`}
+                  pathOptions={{
+                    color: data?.positions[controllingSector].colours[0].hex,
+                    weight: 1,
+                    opacity: 0.5,
+                  }}
+                  positions={points}
+                >
+                  <Tooltip>
+                    <Box>
+                      <Text variant="label">{name}</Text> by {controllingSector}
+                    </Box>
+                    <Box>
+                      FL{z3(min ?? 0)}-FL{z3(max ?? 660)}
+                    </Box>
+                  </Tooltip>
+                </Polygon>
+              ))
+            : []
         })}
       </MapContainer>
       <Flex sx={{ flexDirection: "column", gap: 3, overflow: "hidden" }}>
         <Grid
           sx={{
-            flexGrow: "1",
+            flex: "none",
             gap: 3,
             gridAutoFlow: "column",
             justifyContent: "space-between",
@@ -141,66 +120,7 @@ const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
             onChange={(e) => setLevel(e.target.value)}
           />
         </Grid>
-        <Flex sx={{ justifyContent: "space-between" }}>
-          <Button
-            onClick={() =>
-              setActivePositions(
-                Object.keys(activePositions).reduce(
-                  (acc, key) => ({ ...acc, [key]: true }),
-                  {},
-                ),
-              )
-            }
-          >
-            Select All
-          </Button>
-          <Button
-            onClick={() =>
-              setActivePositions(
-                Object.keys(activePositions).reduce(
-                  (acc, key) => ({ ...acc, [key]: false }),
-                  {},
-                ),
-              )
-            }
-          >
-            Deselect All
-          </Button>
-        </Flex>
-        <Flex sx={{ flexWrap: "wrap", overflow: "auto" }}>
-          {data &&
-            Object.keys(activePositions).length &&
-            Object.entries(
-              Object.entries(data.positions)
-                .filter(([id]) => !["MMC", "WWC", "GGC"].includes(id))
-                .reduce((acc, [id, p]) => {
-                  return {
-                    ...acc,
-                    [p.pre[0]]: [...(acc[p.pre[0]] ?? []), id],
-                  }
-                }, {} as { [index: string]: string[] }),
-            ).map(([group, positions]) => (
-              <>
-                <Text
-                  variant="label"
-                  sx={{ marginTop: 2, marginBottom: 1, flexBasis: "100%" }}
-                >
-                  {group}
-                </Text>
-                {positions.map((id) => (
-                  <Flex key={id} sx={{ flexBasis: "50%" }}>
-                    <Label>
-                      <Checkbox
-                        checked={activePositions[id]}
-                        onChange={activePositionChanged(id)}
-                      />
-                      {id}
-                    </Label>
-                  </Flex>
-                ))}
-              </>
-            ))}
-        </Flex>
+        <SectorChoice />
       </Flex>
     </Grid>
   )
