@@ -42,11 +42,7 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         <NavButton
           sx={{ gridRow: "2/3" }}
           onClick={() => {
-            window.open(
-              "https://www.windy.com/?700h,49.667,11.236,8",
-              "atciss-windy",
-              "popup=true",
-            )
+            navigate("/wx")
           }}
         >
           Wx
