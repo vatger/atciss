@@ -79,7 +79,7 @@ worker_class = "uvicorn.workers.UvicornWorker"
 worker_connections = 1000
 timeout = 30
 keepalive = 2
-reload = False
+reload = bool(os.getenv("FASTAPI_RELOAD", ""))
 
 #
 #   spew - Install a trace function that spews every line of Python

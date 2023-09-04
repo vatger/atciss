@@ -1,0 +1,26 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      FASTAPI_REDIS_HOST: redis
+      FASTAPI_RELOAD: true
+    x-develop:
+      watch:
+        - action: sync
+          path: ./atciss
+          target: /code/atciss
+  db:
+    image: postgres:15
+    env_file:
+      - .env
+    volumes:
+      - atciss-db-data:/var/lib/postgresql/data/pgdata
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+  redis:
+    image: redis:alpine
+
+volumes:
+  atciss-db-data:

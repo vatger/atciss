@@ -134,6 +134,7 @@
           poetry
           nodejs
           curl
+          docker-compose
         ]);
         shellHook = ''
           export POETRY_HOME=${pkgs.poetry}
