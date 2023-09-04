@@ -95,6 +95,8 @@
       };
     in
     {
+      legacyPackages = pkgs;
+
       packages = {
         default = pkgs.atciss;
 
