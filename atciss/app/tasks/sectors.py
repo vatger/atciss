@@ -9,7 +9,7 @@ from ..utils import AiohttpClient, RedisClient, repeat_every
 log = logging.getLogger(__name__)
 
 # check https://github.com/lennycolton/vatglasses-data/tree/main/data
-SECTOR_REGIONS = [ "czechia", "germany" ]
+SECTOR_REGIONS = ["czechia", "germany"]
 # TODO: LOWZ has rwy-dependent config "austria",
 # TODO add italy, poland and switzerland when available
 
@@ -38,7 +38,9 @@ class Sector(BaseModel):
 
     @field_validator("points", mode="before")
     @classmethod
-    def point_validator(cls, input: List[Tuple[str, str] | Coordinate]) -> List[Coordinate]:
+    def point_validator(
+        cls, input: List[Tuple[str, str] | Coordinate]
+    ) -> List[Coordinate]:
         return [convert_point(point) for point in input]
 
 
@@ -106,7 +108,8 @@ async def fetch_sector_data() -> None:
     async with redis_client.pipeline() as pipe:
         for region, region_data in data.items():
             pipe.set(
-                f"sector:airports:{region}", TypeAdapter(Dict[str, Airport]).dump_json(region_data.airports)
+                f"sector:airports:{region}",
+                TypeAdapter(Dict[str, Airport]).dump_json(region_data.airports),
             )
             pipe.set(
                 f"sector:positions:{region}",
