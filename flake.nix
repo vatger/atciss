@@ -13,7 +13,7 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     flake-utils.url = "github:numtide/flake-utils";
     poetry2nix = {
       url = "github:nix-community/poetry2nix";
@@ -28,13 +28,31 @@
     overlays.default = nixpkgs.lib.composeManyExtensions [
       poetry2nix.overlay
       (final: prev: let
-        python = final.python3;
+        python = final.python311;
         overrides = prev.poetry2nix.overrides.withDefaults (final: prev: {
           pynotam = prev.pynotam.overridePythonAttrs (old: {
             nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ prev.poetry ];
           });
           pydantic-settings = prev.pydantic-settings.overridePythonAttrs (old: {
             nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ final.hatchling ];
+          });
+          hatchling = prev.hatchling.overridePythonAttrs (old: rec {
+            version = "1.18.0";
+            src = prev.fetchPypi {
+              inherit (old) pname;
+              inherit version;
+              hash = "sha256-UOmcMRDOCvw/e9ut/xxxwXdY5HZzHCdgeUDPpmhkico=";
+            };
+
+            propagatedBuildInputs = old.propagatedBuildInputs ++ [ final.trove-classifiers ];
+          });
+          trove-classifiers = prev.trove-classifiers.overridePythonAttrs (old: rec {
+            version = "2023.8.7";
+            src = prev.fetchPypi {
+              inherit (old) pname;
+              inherit version;
+              hash = "sha256-yfKgqF1UXlNi6Wfk8Gn1b939kSFeIv+kjGb7KDUhMZo=";
+            };
           });
           gunicorn = prev.gunicorn.overridePythonAttrs (old: {
             nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ final.packaging ];
