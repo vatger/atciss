@@ -31,7 +31,7 @@
         python = final.python311;
         overrides = prev.poetry2nix.overrides.withDefaults (final: prev: {
           pynotam = prev.pynotam.overridePythonAttrs (old: {
-            nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ prev.poetry ];
+            nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ final.poetry ];
           });
           pydantic-settings = prev.pydantic-settings.overridePythonAttrs (old: {
             nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ final.hatchling ];
@@ -68,6 +68,9 @@
             nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ final.setuptools ];
           });
           types-python-jose = prev.types-python-jose.overridePythonAttrs (old: {
+            nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ final.setuptools ];
+          });
+          sqlalchemy-stubs = prev.sqlalchemy-stubs.overridePythonAttrs (old: {
             nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ final.setuptools ];
           });
         });
