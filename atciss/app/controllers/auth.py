@@ -121,8 +121,8 @@ async def get_cid(token: Annotated[str, Depends(oauth2_scheme)]) -> str:
 )
 async def auth_config() -> AuthInfoModel:
     return AuthInfoModel(
-        client_id = settings.VATSIM_CLIENT_ID,
-        auth_url = settings.VATSIM_AUTH_URL,
+        client_id=settings.VATSIM_CLIENT_ID,
+        auth_url=settings.VATSIM_AUTH_URL,
     )
 
 
