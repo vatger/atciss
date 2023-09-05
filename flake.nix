@@ -227,6 +227,8 @@
           };
         };
 
+        formatter = pkgs.alejandra;
+
         checks = {
           pre-commit-check = pre-commit-hooks.lib.${system}.run {
             src = ./.;
