@@ -24,7 +24,7 @@ import os
 #       range.
 #
 
-bind = os.getenv("FASTAPI_BIND", "127.0.0.1:8000")
+bind = os.getenv("ATCISS_BIND", "127.0.0.1:8000")
 backlog = 2048
 
 #
@@ -74,12 +74,12 @@ backlog = 2048
 #
 #       True or False
 
-workers = int(os.getenv("FASTAPI_WORKERS", "1"))
+workers = int(os.getenv("ATCISS_WORKERS", "1"))
 worker_class = "uvicorn.workers.UvicornWorker"
 worker_connections = 1000
 timeout = 30
 keepalive = 2
-reload = bool(os.getenv("FASTAPI_RELOAD", ""))
+reload = bool(os.getenv("ATCISS_RELOAD", ""))
 
 #
 #   spew - Install a trace function that spews every line of Python
@@ -156,10 +156,10 @@ tmp_upload_dir = None
 #
 
 errorlog = "-"
-loglevel = os.getenv("FASTAPI_GUNICORN_LOG_LEVEL", "info")
+loglevel = os.getenv("ATCISS_GUNICORN_LOG_LEVEL", "info")
 accesslog = "-"
 access_log_format = os.getenv(
-    "FASTAPI_GUNICORN_LOG_FORMAT",
+    "ATCISS_GUNICORN_LOG_FORMAT",
     '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"',
 )
 

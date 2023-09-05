@@ -12,11 +12,11 @@ class Redis(BaseSettings):
     still be used if the matching environment variable is not set.
 
     Environment variables:
-        * FASTAPI_REDIS_HOTS
-        * FASTAPI_REDIS_PORT
-        * FASTAPI_REDIS_USERNAME
-        * FASTAPI_REDIS_PASSWORD
-        * FASTAPI_REDIS_USE_SENTINEL
+        * ATCISS_REDIS_HOTS
+        * ATCISS_REDIS_PORT
+        * ATCISS_REDIS_USERNAME
+        * ATCISS_REDIS_PASSWORD
+        * ATCISS_REDIS_USE_SENTINEL
 
     Attributes:
         REDIS_HOTS (str): Redis host.
@@ -45,7 +45,7 @@ class Redis(BaseSettings):
         """
 
         case_sensitive = True
-        env_prefix = "FASTAPI_"
+        env_prefix = "ATCISS_"
 
 
 redis = Redis()
