@@ -7,7 +7,7 @@ import {
   Text,
   ThemeUIStyleObject,
 } from "theme-ui"
-import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet"
+import { CircleMarker, MapContainer, TileLayer, Tooltip } from "react-leaflet"
 import { LatLngTuple } from "leaflet"
 import "leaflet/dist/leaflet.css"
 import { Sector, sectorApi } from "../services/airspaceApi"
