@@ -195,11 +195,11 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       </Flex>
     )
   } else {
-    return metarError?.data?.detail
-      ? metarError.data.detail
-      : metarIsLoading
-      ? "Loading..."
-      : "Unknown Error"
+    return "Unknown Error"
+      //metarError?.data?.detail
+      //? metarError.data.detail
+      //: metarIsLoading
+      //? "Loading..."
   }
 }
 
