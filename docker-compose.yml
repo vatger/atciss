@@ -4,6 +4,7 @@ services:
     ports:
       - "8000:8000"
     environment:
+      FASTAPI_BIND: "[::]:8000"
       FASTAPI_REDIS_HOST: redis
       FASTAPI_RELOAD: true
     x-develop:
