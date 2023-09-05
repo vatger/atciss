@@ -22,9 +22,16 @@
         flake-utils.follows = "flake-utils";
       };
     };
+    napalm = {
+      url = "github:nix-community/napalm/pull/58/head";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+      };
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils, poetry2nix, ... }: {
+  outputs = { self, nixpkgs, flake-utils, poetry2nix, napalm, ... }: {
     overlays.default = nixpkgs.lib.composeManyExtensions [
       poetry2nix.overlay
       (final: prev: let
@@ -102,6 +109,19 @@
 
       packages = {
         default = pkgs.atciss;
+        backend = pkgs.atciss;
+
+        frontend = napalm.legacyPackages."${system}".buildPackage ./atciss-frontend {
+          NODE_ENV = "production";
+          nodejs = pkgs.nodejs_20;
+          npmCommands = [
+            "npm install --include=dev --nodedir=${pkgs.nodejs_20}/include/node --loglevel verbose --ignore-scripts"
+            "npm run build"
+          ];
+          installPhase = ''
+            mv build $out
+          '';
+        };
 
         image = pkgs.dockerTools.buildImage {
           name = "atciss";
@@ -135,7 +155,7 @@
       devShells.default = pkgs.atciss-dev.env.overrideAttrs (oldAttrs: {
         nativeBuildInputs = oldAttrs.nativeBuildInputs ++ (with pkgs; [
           poetry
-          nodejs
+          nodejs_20
           curl
           docker-compose
         ]);
