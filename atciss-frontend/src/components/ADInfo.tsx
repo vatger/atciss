@@ -7,7 +7,10 @@ import { usePollAtisByIcaoCodes } from "../services/atisApi"
 
 export const ADinfo = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const activeEbg = useAppSelector(selectActiveEbg)
-  const aerodromes: string[] = EBG_SETTINGS[activeEbg]?.aerodromes ?? []
+  const aerodromes: string[] = [
+    ...EBG_SETTINGS[activeEbg].aerodromes,
+    ...EBG_SETTINGS[activeEbg].relevantAerodromes,
+  ]
   const { data: metars } = usePollMetarByIcaoCodes(aerodromes)
   const { data: atis } = usePollAtisByIcaoCodes(aerodromes)
 

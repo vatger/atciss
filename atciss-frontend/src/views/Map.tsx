@@ -1,5 +1,13 @@
-import { Flex, Grid, Input, Label, Slider, ThemeUIStyleObject } from "theme-ui"
-import { MapContainer, TileLayer } from "react-leaflet"
+import {
+  Flex,
+  Grid,
+  Input,
+  Label,
+  Slider,
+  Text,
+  ThemeUIStyleObject,
+} from "theme-ui"
+import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet"
 import { LatLngTuple } from "leaflet"
 import "leaflet/dist/leaflet.css"
 import { Sector, sectorApi } from "../services/airspaceApi"
@@ -8,6 +16,9 @@ import { SectorChoice } from "../components/map/SectorChoice"
 import { useAppSelector } from "../app/hooks"
 import { selectActivePositions } from "../services/activePositionSlice"
 import { SectorPolygon } from "../components/map/SectorPolygon"
+import { adApi } from "../services/adApi"
+import { selectActiveEbg } from "../services/configSlice"
+import { EBG_SETTINGS } from "../app/config"
 
 const position = [49.2646, 11.4134] as LatLngTuple
 
@@ -17,7 +28,19 @@ const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
 
   const activePositions = useAppSelector(selectActivePositions)
 
+  const activeEbg = useAppSelector(selectActiveEbg)
+
   const levelSliderId = useId()
+  const { data: aerodromes } = adApi.useGetByIcaoCodesQuery([
+    ...new Set(
+      [
+        ...EBG_SETTINGS[activeEbg].majorAerodromes,
+        ...EBG_SETTINGS[activeEbg].aerodromes,
+        ...EBG_SETTINGS[activeEbg].minorAerodromes,
+        ...Object.keys(data?.airports ?? {}),
+      ].filter((ad) => ad.startsWith("ED")),
+    ),
+  ])
 
   const levelFilter = (s: Sector) =>
     (s.min ?? 0) <= parseInt(level) && parseInt(level) < (s.max ?? 999)
@@ -66,6 +89,22 @@ const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                 />
               ))
             : []
+        })}
+        {Object.values(aerodromes ?? {}).map((ad) => {
+          const station = data?.airports?.[
+            ad.locationIndicatorICAO
+          ]?.topdown?.find((pos) => activePositions[pos])
+          return (
+            <Marker
+              position={[ad.latitude, ad.longitude]}
+              key={ad.locationIndicatorICAO}
+            >
+              <Tooltip>
+                <Text variant="label">{ad.locationIndicatorICAO}</Text>
+                {station ? ` by ${station}` : ""}
+              </Tooltip>
+            </Marker>
+          )
         })}
       </MapContainer>
       <Flex sx={{ flexDirection: "column", gap: 3, overflow: "hidden" }}>

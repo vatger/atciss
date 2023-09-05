@@ -65,7 +65,7 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         onChange={(e) => dispatch(setActiveEbg(e.target.value))}
       >
         {Object.keys(EBG_SETTINGS).map((ebg) => (
-          <option>{ebg}</option>
+          <option key={ebg}>{ebg}</option>
         ))}
       </select>
     </Flex>

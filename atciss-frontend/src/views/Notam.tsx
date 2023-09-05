@@ -13,6 +13,8 @@ const Notam = ({ sx }: { sx?: ThemeUIStyleObject }) => {
     EBG_SETTINGS[activeEbg].fir,
     EBG_SETTINGS[activeEbg].uir,
     ...EBG_SETTINGS[activeEbg].aerodromes,
+    ...EBG_SETTINGS[activeEbg].minorAerodromes,
+    ...EBG_SETTINGS[activeEbg].relevantAerodromes,
   ])
 
   // TODO:
