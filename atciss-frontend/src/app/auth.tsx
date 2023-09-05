@@ -6,7 +6,6 @@ import {
   useNavigate,
 } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "./hooks"
-import { VATSIM_AUTH_URL, VATSIM_CLIENT_ID } from "./config"
 import { LOCAL_STORAGE_JWT_KEY, login, logout, selectUser } from "./auth/slice"
 import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query"
 
@@ -25,11 +24,20 @@ export const RequireAuth = ({ children }: { children?: JSX.Element }) => {
 }
 
 export const authLoader = async () => {
-  window.location.replace(
-    `${VATSIM_AUTH_URL}/oauth/authorize?client_id=${VATSIM_CLIENT_ID}&redirect_uri=${window.location.protocol}//${window.location.host}%2Fauth%2Fcallback&response_type=code&scope=vatsim_details+country`,
-  )
+  const response = await fetch(`/api/auth`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  const text = await response.text()
+  const data = text.length ? JSON.parse(text) : null
 
-  return null
+  if (data !== null) {
+    window.location.replace(
+      `${data.auth_url}/oauth/authorize?client_id=${data.client_id}&redirect_uri=${window.location.protocol}//${window.location.host}%2Fauth%2Fcallback&response_type=code&scope=vatsim_details+country`,
+    )
+  }
 }
 
 export const Auth = () => {

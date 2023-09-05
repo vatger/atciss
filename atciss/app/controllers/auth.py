@@ -65,6 +65,12 @@ class UserResponse:
 
 
 @dataclass
+class AuthInfoModel:
+    client_id: str
+    auth_url: str
+
+
+@dataclass
 class AuthModel:
     jwt: str
 
@@ -104,9 +110,20 @@ async def get_cid(token: Annotated[str, Depends(oauth2_scheme)]) -> str:
         cid: Optional[str] = payload.get("sub")
         if cid is None:
             raise credentials_exception
-    except JWTError:
-        raise credentials_exception
+    except JWTError as exc:
+        raise credentials_exception from exc
     return cid
+
+
+@router.get(
+    "/auth",
+    tags=["user"],
+)
+async def auth_config() -> AuthInfoModel:
+    return AuthInfoModel(
+        client_id = settings.VATSIM_CLIENT_ID,
+        auth_url = settings.VATSIM_AUTH_URL,
+    )
 
 
 @router.post(
@@ -129,8 +146,8 @@ async def auth(req: AuthRequest) -> AuthModel:
     )
 
     if res.status >= 400:
-        logger.warn(f"Not authorized: {await res.text()}")
-        raise HTTPException(401, f"Not Authorised by VATSIM")
+        logger.warning(f"Not authorized: {await res.text()}")
+        raise HTTPException(401, "Not Authorised by VATSIM")
 
     auth_response = TypeAdapter(AuthResponse).validate_python(await res.json())
 
