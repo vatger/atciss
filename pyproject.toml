@@ -91,3 +91,29 @@ ignore = [
 ]
 output-format = "colorized"
 max-line-length = "88"
+
+[tool.pyright]
+include = ["atciss"]
+ignore = ["atciss/config/gunicorn.py", "atciss/wsgi.py"]
+
+pythonVersion = "3.10"
+pythonPlatform = "Linux"
+
+typeCheckingMode = "strict"
+
+reportIncompatibleVariableOverride = false
+reportMissingTypeArgument = false
+reportUnknownArgumentType = false
+reportUnknownMemberType = false
+reportUnknownVariableType = false
+
+reportCallInDefaultInitializer = "error"
+reportImplicitOverride = "error"
+reportImplicitStringConcatenation = "error"
+reportImportCycles = "error"
+reportMissingSuperCall = "error"
+reportPropertyTypeMismatch = "error"
+reportShadowedImports = "error"
+reportUninitializedInstanceVariable = "error"
+# reportUnnecessaryTypeIgnoreComment = "error"
+reportUnusedCallResult = "error"
