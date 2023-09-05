@@ -1,12 +1,12 @@
-from astral import Observer
-from astral.sun import sunrise, sunset
 import io
 import logging
-import pyaixm
 import re
 from typing import Optional, cast
 from urllib.parse import urljoin
 
+import pyaixm
+from astral import Observer
+from astral.sun import sunrise, sunset
 from bs4 import BeautifulSoup, Tag
 from pydantic import AwareDatetime, BaseModel, computed_field, field_validator
 
@@ -74,8 +74,8 @@ async def fetch_dfs_ad_data() -> None:
 
     aiohttp_client = AiohttpClient.get()
     res = await aiohttp_client.get(aixm_url)
-    bytes = io.BytesIO(await res.read())
-    ad_data = pyaixm.parse(bytes, resolve_xlinks=False)
+    byts = io.BytesIO(await res.read())
+    ad_data = pyaixm.parse(byts, resolve_xlinks=False)
 
     arps = {
         ad.locationIndicatorICAO: ad.ARP

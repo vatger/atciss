@@ -57,7 +57,8 @@ class NotamModel(BaseModel):
             created=notam.created,
         )
 
-        # The following contain [start,end) indices for their corresponding NOTAM items (if such exist).
+        # The following contain [start,end) indices for their corresponding
+        # NOTAM items (if such exist).
         # They can be used to index into Notam.full_text.
         # indices_item_a: Optional[Tuple[int, int]] = None
         # indices_item_b: Optional[Tuple[int, int]] = None
