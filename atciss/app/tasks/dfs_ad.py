@@ -10,7 +10,7 @@ from astral.sun import sunrise, sunset
 from bs4 import BeautifulSoup, Tag
 from pydantic import AwareDatetime, BaseModel, computed_field, field_validator
 
-from ..utils import AiohttpClient, RedisClient
+from ..utils import AiohttpClient, ClientConnectorError, RedisClient
 
 log = logging.getLogger(__name__)
 
@@ -60,22 +60,27 @@ async def fetch_dfs_ad_data() -> None:
     """Periodically fetch sector data."""
     redis_client = await RedisClient.open()
 
-    keys = await redis_client.keys("dfs:ad:*")
+    try:
+        keys = await redis_client.keys("dfs:ad:*")
 
-    if len(keys):
-        log.info("DFS data already found, not fetching")
+        if len(keys):
+            log.info("DFS data already found, not fetching")
+            return
+
+        aixm_url = await get_dfs_aixm_url("AirportHeliport")
+
+        if aixm_url is None:
+            log.error("Could not find AirportHeliport URL")
+            return
+
+        aiohttp_client = AiohttpClient.get()
+        res = await aiohttp_client.get(aixm_url)
+        byts = io.BytesIO(await res.read())
+        ad_data = pyaixm.parse(byts, resolve_xlinks=False)
+
+    except ClientConnectorError as e:
+        log.error(f"Could not connect: {str(e)}")
         return
-
-    aixm_url = await get_dfs_aixm_url("AirportHeliport")
-
-    if aixm_url is None:
-        log.error("Could not find AirportHeliport URL")
-        return
-
-    aiohttp_client = AiohttpClient.get()
-    res = await aiohttp_client.get(aixm_url)
-    byts = io.BytesIO(await res.read())
-    ad_data = pyaixm.parse(byts, resolve_xlinks=False)
 
     arps = {
         ad.locationIndicatorICAO: ad.ARP

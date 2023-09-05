@@ -4,7 +4,7 @@ from typing import Dict, List, Optional, Tuple, cast
 
 from pydantic import TypeAdapter, BaseModel, field_validator
 
-from ..utils import AiohttpClient, RedisClient, repeat_every
+from ..utils import AiohttpClient, ClientConnectorError, RedisClient, repeat_every
 
 log = logging.getLogger(__name__)
 
@@ -95,10 +95,15 @@ async def fetch_sector_data() -> None:
 
     data: Dict[str, SectorData] = {}
     for region in SECTOR_REGIONS:
-        res = await aiohttp_client.get(
-            "https://raw.githubusercontent.com/lennycolton/vatglasses-data/main/data"
-            + f"/{region}.json"
-        )
+        try:
+            res = await aiohttp_client.get(
+                "https://raw.githubusercontent.com/lennycolton/vatglasses-data/main/data"
+                + f"/{region}.json"
+            )
+        except ClientConnectorError as e:
+            log.error(f"Could not connect {str(e)}")
+            return
+
         data[region] = TypeAdapter(SectorData).validate_python(
             await res.json(content_type="text/plain")
         )

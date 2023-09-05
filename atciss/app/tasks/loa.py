@@ -5,7 +5,7 @@ from typing import List, Literal, Optional
 
 from pydantic import TypeAdapter
 
-from ..utils import AiohttpClient, RedisClient, repeat_every
+from ..utils import AiohttpClient, ClientConnectorError, RedisClient, repeat_every
 
 log = logging.getLogger(__name__)
 
@@ -31,7 +31,13 @@ async def fetch_loas() -> None:
     redis_client = await RedisClient.open()
     aiohttp_client = AiohttpClient.get()
 
-    res = await aiohttp_client.get("https://loa.vatsim-germany.org/api/v1/conditions")
+    try:
+        res = await aiohttp_client.get(
+            "https://loa.vatsim-germany.org/api/v1/conditions"
+        )
+    except ClientConnectorError as e:
+        log.error(f"Could not connect {str(e)}")
+        return
 
     loas = TypeAdapter(List[LoaItem]).validate_python(await res.json())
     loas_per_fir_or_sector = defaultdict(list)

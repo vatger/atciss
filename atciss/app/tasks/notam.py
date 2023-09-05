@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from pynotam import Notam
 from parsimonious import ParseError
 
-from ..utils import AiohttpClient, RedisClient, repeat_every
+from ..utils import AiohttpClient, ClientConnectorError, RedisClient, repeat_every
 
 log = logging.getLogger(__name__)
 
@@ -56,11 +56,16 @@ async def fetch_notam() -> None:
     redis_client = await RedisClient.open()
     aiohttp_client = AiohttpClient.get()
 
-    res = await aiohttp_client.get(
-        "https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do"
-        + f"?reportType=Raw&retrieveLocId={'+'.join(NOTAM_ICAO)}"
-        + "&actionType=notamRetrievalByICAOs&submit=View+NOTAMs"
-    )
+    try:
+        res = await aiohttp_client.get(
+            "https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do"
+            + f"?reportType=Raw&retrieveLocId={'+'.join(NOTAM_ICAO)}"
+            + "&actionType=notamRetrievalByICAOs&submit=View+NOTAMs"
+        )
+    except ClientConnectorError as e:
+        log.error(f"Could not connect {str(e)}")
+        return
+
     notam_html = BeautifulSoup(await res.text(), "html.parser")
     notams = []
     for notam_elem in notam_html.find_all("pre"):

@@ -54,6 +54,7 @@
     {
       overlays.default = nixpkgs.lib.composeManyExtensions [
         poetry2nix.overlay
+        napalm.overlays.default
         (final: prev: let
           python = final.python311;
           overrides = final.poetry2nix.overrides.withDefaults (final: prev: {
@@ -107,6 +108,7 @@
             projectDir = final.poetry2nix.cleanPythonSources {src = ./.;};
             pythonImportCheck = ["atciss"];
           };
+
           atciss-dev = final.poetry2nix.mkPoetryEnv {
             inherit python overrides;
             pyproject = ./pyproject.toml;
@@ -116,8 +118,79 @@
             };
             extraPackages = ps: [ps.ipython];
           };
+
+          atciss-frontend = final.napalm.buildPackage ./atciss-frontend {
+            NODE_ENV = "production";
+            nodejs = final.nodejs_20;
+            npmCommands = [
+              "npm install --include=dev --nodedir=${final.nodejs_20}/include/node --loglevel verbose --ignore-scripts"
+              "npm run build"
+            ];
+            installPhase = ''
+              mv build $out
+            '';
+          };
         })
       ];
+
+      nixosModules.default = {
+        lib,
+        config,
+        pkgs,
+        ...
+      }: let
+        cfg = config.services.atciss;
+      in {
+        options = {
+          services.atciss = {
+            enable = lib.mkEnableOption "ATCISS";
+            host = lib.mkOption {
+              type = lib.types.str;
+            };
+            tls = lib.mkOption {
+              type = lib.types.bool;
+              default = true;
+            };
+            environmentFile = lib.mkOption {
+              type = lib.types.path;
+            };
+          };
+        };
+
+        config = lib.mkIf cfg.enable {
+          services.nginx = {
+            enable = true;
+            virtualHosts."${cfg.host}" = {
+              forceSSL = cfg.tls;
+              enableACME = cfg.tls;
+              locations."/" = {
+                root = pkgs.atciss-frontend;
+                extraConfig = ''
+                  try_files $uri /index.html;
+                '';
+              };
+              locations."/openapi.json" = {
+                proxyPass = "http://localhost:8000";
+              };
+              locations."/api" = {
+                proxyPass = "http://localhost:8000";
+              };
+            };
+          };
+
+          systemd.services.atciss = {
+            wantedBy = ["multi-user.target"];
+
+            serviceConfig = {
+              ExecStart = "${pkgs.atciss}/bin/atciss serve";
+              DynamicUser = true;
+              Restart = "always";
+              RestartSec = "1s";
+              EnvironmentFile = cfg.environmentFile;
+            };
+          };
+        };
+      };
     }
     // (flake-utils.lib.eachDefaultSystem (
       system: let
@@ -131,18 +204,7 @@
         packages = {
           default = pkgs.atciss;
           backend = pkgs.atciss;
-
-          frontend = napalm.legacyPackages."${system}".buildPackage ./atciss-frontend {
-            NODE_ENV = "production";
-            nodejs = pkgs.nodejs_20;
-            npmCommands = [
-              "npm install --include=dev --nodedir=${pkgs.nodejs_20}/include/node --loglevel verbose --ignore-scripts"
-              "npm run build"
-            ];
-            installPhase = ''
-              mv build $out
-            '';
-          };
+          frontend = pkgs.atciss-frontend;
 
           image = pkgs.dockerTools.buildImage {
             name = "atciss";
@@ -239,6 +301,37 @@
               black.enable = true;
             };
           };
+          nixosTest = let
+            testing = import "${nixpkgs}/nixos/lib/testing-python.nix" {inherit system pkgs;};
+          in
+            testing.makeTest {
+              name = "atciss";
+
+              nodes = {
+                machine = {pkgs, ...}: {
+                  imports = [self.nixosModules.default];
+                  nixpkgs.overlays = [self.overlays.default];
+
+                  services.redis.servers."".enable = true;
+
+                  services.atciss = {
+                    enable = true;
+                    host = "localhost";
+                    environmentFile = "/dev/null";
+                    tls = false;
+                  };
+                };
+              };
+
+              testScript = ''
+                machine.start()
+                machine.wait_for_unit("nginx.service")
+                machine.wait_for_open_port(80)
+                machine.wait_for_unit("atciss.service")
+                machine.wait_for_open_port(8000)
+                machine.succeed("curl http://localhost/api/ready | ${pkgs.jq}/bin/jq -e '.status == \"ok\"'")
+              '';
+            };
         };
       }
     ));

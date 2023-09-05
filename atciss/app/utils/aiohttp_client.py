@@ -3,6 +3,7 @@ from typing import Optional
 from socket import AF_INET
 
 import aiohttp
+from aiohttp.client_exceptions import ClientConnectorError
 
 
 SIZE_POOL_AIOHTTP = 100

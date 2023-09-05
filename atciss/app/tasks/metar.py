@@ -1,7 +1,7 @@
 import csv
 import logging
 
-from ..utils import RedisClient, AiohttpClient, repeat_every
+from ..utils import RedisClient, ClientConnectorError, AiohttpClient, repeat_every
 
 log = logging.getLogger(__name__)
 
@@ -12,10 +12,15 @@ async def fetch_metar() -> None:
     redis_client = await RedisClient.open()
     aiohttp_client = AiohttpClient.get()
 
-    res = await aiohttp_client.get(
-        "https://www.aviationweather.gov/adds/dataserver_current/current/"
-        + "metars.cache.csv"
-    )
+    try:
+        res = await aiohttp_client.get(
+            "https://www.aviationweather.gov/adds/dataserver_current/current/"
+            + "metars.cache.csv"
+        )
+    except ClientConnectorError as e:
+        log.error(f"Could not connect {str(e)}")
+        return
+
     metars_csv = csv.reader((await res.text()).split("\n"), delimiter=",")
 
     log.info("METARs received")

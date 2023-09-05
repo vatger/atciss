@@ -5,7 +5,7 @@ from typing import List, Optional
 
 from pydantic import TypeAdapter
 
-from ..utils import AiohttpClient, RedisClient, repeat_every
+from ..utils import AiohttpClient, ClientConnectorError, RedisClient, repeat_every
 from ..views.atis import Atis
 from ..views.controller import Controller
 
@@ -129,7 +129,12 @@ async def fetch_vatsim_data() -> None:
     redis_client = await RedisClient.open()
     aiohttp_client = AiohttpClient.get()
 
-    res = await aiohttp_client.get("https://data.vatsim.net/v3/vatsim-data.json")
+    try:
+        res = await aiohttp_client.get("https://data.vatsim.net/v3/vatsim-data.json")
+    except ClientConnectorError as e:
+        log.error(f"Could not connect {str(e)}")
+        return
+
     data = TypeAdapter(VatsimData).validate_python(await res.json())
 
     controllers = [c for c in data.controllers if c.facility > 0]

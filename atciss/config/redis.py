@@ -12,7 +12,7 @@ class Redis(BaseSettings):
     still be used if the matching environment variable is not set.
 
     Environment variables:
-        * ATCISS_REDIS_HOTS
+        * ATCISS_REDIS_HOST
         * ATCISS_REDIS_PORT
         * ATCISS_REDIS_USERNAME
         * ATCISS_REDIS_PASSWORD
