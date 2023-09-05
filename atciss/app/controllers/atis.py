@@ -1,7 +1,7 @@
 """Application controllers - metar."""
 
-from typing import Annotated
-from fastapi import APIRouter, Depends, HTTPException
+from typing import Annotated, Dict, List, Optional, cast
+from fastapi import APIRouter, Depends, Query
 
 from pydantic import TypeAdapter
 
@@ -15,16 +15,21 @@ router = APIRouter()
 
 
 @router.get(
-    "/atis/{icao}",
+    "/atis/",
     tags=["wx"],
 )
-async def atis_get(icao: str, cid: Annotated[str, Depends(get_cid)]) -> Atis:
-    """Get METAR for airport."""
+async def atis_get(
+    icao: Annotated[List[str], Query(...)], cid: Annotated[str, Depends(get_cid)]
+) -> Dict[str, Atis]:
+    """Get Atis for airport."""
     redis_client = RedisClient.open()
-    icao = icao.upper()
 
-    atis = await redis_client.get("vatsim:atis:{}".format(icao))
-    if atis is None:
-        raise HTTPException(status_code=404)
+    atis = {}
+    for i in icao:
+        i = i.upper()
+        atis_json = cast(Optional[str], await redis_client.get(f"vatsim:atis:{i}"))
+        if atis_json is None:
+            continue
+        atis[i] = TypeAdapter(Atis).validate_json(atis_json)
 
-    return TypeAdapter(Atis).validate_json(atis)
+    return atis

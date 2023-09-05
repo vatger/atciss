@@ -1,22 +1,13 @@
-import {
-  Box,
-  Flex,
-  Grid,
-  Input,
-  Label,
-  Slider,
-  Text,
-  ThemeUIStyleObject,
-} from "theme-ui"
-import { MapContainer, Polygon, TileLayer, Tooltip } from "react-leaflet"
+import { Flex, Grid, Input, Label, Slider, ThemeUIStyleObject } from "theme-ui"
+import { MapContainer, TileLayer } from "react-leaflet"
 import { LatLngTuple } from "leaflet"
 import "leaflet/dist/leaflet.css"
 import { Sector, sectorApi } from "../services/airspaceApi"
 import { useId, useState } from "react"
-import { z3 } from "../app/utils"
 import { SectorChoice } from "../components/map/SectorChoice"
 import { useAppSelector } from "../app/hooks"
 import { selectActivePositions } from "../services/activePositionSlice"
+import { SectorPolygon } from "../components/map/SectorPolygon"
 
 const position = [49.2646, 11.4134] as LatLngTuple
 
@@ -66,25 +57,13 @@ const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           const controllingSector = owner.find((pos) => activePositions[pos])
 
           return controllingSector
-            ? sectors.map(({ points, min, max }, index) => (
-                <Polygon
-                  key={`${name}-${min}-${max}-${index}`}
-                  pathOptions={{
-                    color: data?.positions[controllingSector].colours[0].hex,
-                    weight: 1,
-                    opacity: 0.5,
-                  }}
-                  positions={points}
-                >
-                  <Tooltip>
-                    <Box>
-                      <Text variant="label">{name}</Text> by {controllingSector}
-                    </Box>
-                    <Box>
-                      FL{z3(min ?? 0)}-FL{z3(max ?? 660)}
-                    </Box>
-                  </Tooltip>
-                </Polygon>
+            ? sectors.map((sector, index) => (
+                <SectorPolygon
+                  key={index}
+                  sector={sector}
+                  name={name}
+                  controllingSector={controllingSector}
+                />
               ))
             : []
         })}

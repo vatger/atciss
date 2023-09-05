@@ -1,6 +1,6 @@
 """Application controllers - metar."""
-from typing import Annotated
-from fastapi import APIRouter, Depends, HTTPException
+from typing import Annotated, Dict, List, cast
+from fastapi import APIRouter, Depends, Query
 
 from ..tasks.dfs_ad import Aerodrome
 from ..utils.redis import RedisClient
@@ -11,17 +11,19 @@ router = APIRouter()
 
 
 @router.get(
-    "/ad/{icao}",
+    "/aerodrome/",
     tags=["wx"],
 )
-async def ad_get(icao: str, cid: Annotated[str, Depends(get_cid)]) -> Aerodrome:
+async def ad_get(
+    icao: Annotated[List[str], Query(...)], cid: Annotated[str, Depends(get_cid)]
+) -> Dict[str, Aerodrome]:
     """Get METAR for airport."""
     redis_client = RedisClient.open()
-    icao = icao.upper()
 
-    ad = await redis_client.get(f"dfs:ad:{icao}")
+    ads = {}
+    for i in icao:
+        i = i.upper()
+        ad_json = cast(str, await redis_client.get(f"dfs:ad:{i}"))
+        ads[i] = Aerodrome.model_validate_json(ad_json)
 
-    if ad is None:
-        raise HTTPException(status_code=404)
-
-    return Aerodrome.model_validate_json(ad)
+    return ads

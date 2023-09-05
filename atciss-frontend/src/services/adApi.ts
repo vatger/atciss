@@ -14,13 +14,16 @@ export const adApi = createApi({
   reducerPath: "ad",
   baseQuery: fetchWithAuth,
   endpoints: (builder) => ({
-    getByIcaoCode: builder.query<Aerodrome, string>({
-      query: (icao) => `ad/${icao}`,
+    getByIcaoCodes: builder.query<{ [id: string]: Aerodrome }, string[]>({
+      query: (icaoList) => ({
+        url: "aerodrome/",
+        params: icaoList.map((icao) => ["icao", icao]),
+      }),
     }),
   }),
 })
 
-export const usePollAdByIcaoCode: typeof adApi.useGetByIcaoCodeQuery = (
+export const usePollAdByIcaoCodes: typeof adApi.useGetByIcaoCodesQuery = (
   icao,
   options,
-) => adApi.useGetByIcaoCodeQuery(icao, { pollingInterval: 60000, ...options })
+) => adApi.useGetByIcaoCodesQuery(icao, { pollingInterval: 60000, ...options })

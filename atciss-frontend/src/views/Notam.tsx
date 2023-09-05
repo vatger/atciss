@@ -1,23 +1,18 @@
 import { Box, Flex, Text, ThemeUIStyleObject } from "theme-ui"
 import { usePollNotamByIcaoCodes } from "../services/notamApi"
 import { DateTime } from "luxon"
+import { useAppSelector } from "../app/hooks"
+import { selectActiveEbg } from "../services/configSlice"
+import { EBG_SETTINGS } from "../app/config"
 
 const Notam = ({ sx }: { sx?: ThemeUIStyleObject }) => {
+  const activeEbg = useAppSelector(selectActiveEbg)
+
   const { data: notams } = usePollNotamByIcaoCodes([
-    "EDDM",
-    "EDMA",
-    "EDMO",
-    "EDMX",
-    "EDPR",
-    "EDME",
-    "EDMS",
-    "EDJA",
-    "EDNY",
-    "ETHL",
-    "ETSI",
-    "ETSL",
-    "ETSN",
-    "EDMM",
+    ...EBG_SETTINGS[activeEbg].majorAerodromes,
+    EBG_SETTINGS[activeEbg].fir,
+    EBG_SETTINGS[activeEbg].uir,
+    ...EBG_SETTINGS[activeEbg].aerodromes,
   ])
 
   // TODO:

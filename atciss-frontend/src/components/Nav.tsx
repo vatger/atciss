@@ -2,9 +2,14 @@ import { Flex, Grid, ThemeUIStyleObject } from "theme-ui"
 import { Clock } from "./Clock"
 import { NavButton } from "./NavButton"
 import { useNavigate } from "react-router-dom"
+import { EBG_SETTINGS } from "../app/config"
+import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { selectActiveEbg, setActiveEbg } from "../services/configSlice"
 
 const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const activeEbg = useAppSelector(selectActiveEbg)
 
   return (
     <Flex
@@ -55,6 +60,14 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           NOTAM
         </NavButton>
       </Grid>
+      <select
+        value={activeEbg}
+        onChange={(e) => dispatch(setActiveEbg(e.target.value))}
+      >
+        {Object.keys(EBG_SETTINGS).map((ebg) => (
+          <option>{ebg}</option>
+        ))}
+      </select>
     </Flex>
   )
 }

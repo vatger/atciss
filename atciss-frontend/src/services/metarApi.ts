@@ -66,14 +66,17 @@ export const metarApi = createApi({
   reducerPath: "metar",
   baseQuery: fetchWithAuth,
   endpoints: (builder) => ({
-    getByIcaoCode: builder.query<Metar, string>({
-      query: (icao) => `metar/${icao}`,
+    getByIcaoCodes: builder.query<{ [id: string]: Metar }, string[]>({
+      query: (icaoList) => ({
+        url: `metar/`,
+        params: icaoList.map((icao) => ["icao", icao]),
+      }),
     }),
   }),
 })
 
-export const usePollMetarByIcaoCode: typeof metarApi.useGetByIcaoCodeQuery = (
+export const usePollMetarByIcaoCodes: typeof metarApi.useGetByIcaoCodesQuery = (
   icao,
   options,
 ) =>
-  metarApi.useGetByIcaoCodeQuery(icao, { pollingInterval: 60000, ...options })
+  metarApi.useGetByIcaoCodesQuery(icao, { pollingInterval: 60000, ...options })

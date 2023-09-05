@@ -12,6 +12,7 @@ log = logging.getLogger(__name__)
 
 NOTAM_ICAO = [
     "EDMM",
+    "EDUU",
     "EDDC",
     "EDDE",
     "EDDM",

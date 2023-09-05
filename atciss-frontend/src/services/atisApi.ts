@@ -15,13 +15,16 @@ export const atisApi = createApi({
   reducerPath: "atis",
   baseQuery: fetchWithAuth,
   endpoints: (builder) => ({
-    getByIcaoCode: builder.query<Atis, string>({
-      query: (icao) => `atis/${icao}`,
+    getByIcaoCodes: builder.query<{ [id: string]: Atis }, string[]>({
+      query: (icaoList) => ({
+        url: `atis/`,
+        params: icaoList.map((icao) => ["icao", icao]),
+      }),
     }),
   }),
 })
 
-export const usePollAtisByIcaoCode: typeof atisApi.useGetByIcaoCodeQuery = (
+export const usePollAtisByIcaoCodes: typeof atisApi.useGetByIcaoCodesQuery = (
   icao,
   options,
-) => atisApi.useGetByIcaoCodeQuery(icao, { pollingInterval: 60000, ...options })
+) => atisApi.useGetByIcaoCodesQuery(icao, { pollingInterval: 60000, ...options })

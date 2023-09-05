@@ -44,7 +44,7 @@ export const SectorChoice = () => {
                 <Flex key={id} sx={{ flexBasis: "33%" }}>
                   <Label>
                     <Checkbox
-                      checked={activePositions[id]}
+                      checked={activePositions[id] ?? false}
                       onChange={(e) =>
                         dispatch(setPosition({ id, active: e.target.checked }))
                       }
