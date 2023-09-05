@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Flex, Label, Text } from "theme-ui"
+import { Box, Button, Flex, Text } from "theme-ui"
 import { sectorApi } from "../../services/airspaceApi"
 import {
   disableAllPositions,
@@ -42,15 +42,16 @@ export const SectorChoice = () => {
               </Text>
               {positions.map((id) => (
                 <Flex key={id} sx={{ flexBasis: "33%" }}>
-                  <Label>
-                    <Checkbox
+                  <label>
+                    <input
+                      type="checkbox"
                       checked={activePositions[id] ?? false}
                       onChange={(e) =>
                         dispatch(setPosition({ id, active: e.target.checked }))
                       }
                     />
                     {id}
-                  </Label>
+                  </label>
                 </Flex>
               ))}
             </Flex>
