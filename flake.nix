@@ -36,7 +36,7 @@
       poetry2nix.overlay
       (final: prev: let
         python = final.python311;
-        overrides = prev.poetry2nix.overrides.withDefaults (final: prev: {
+        overrides = final.poetry2nix.overrides.withDefaults (final: prev: {
           pynotam = prev.pynotam.overridePythonAttrs (old: {
             nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ final.poetry ];
           });
@@ -82,16 +82,17 @@
           });
         });
       in {
-        atciss = prev.poetry2nix.mkPoetryApplication {
+        atciss = final.poetry2nix.mkPoetryApplication {
           inherit python overrides;
-          projectDir = prev.poetry2nix.cleanPythonSources { src = ./.; };
+          projectDir = final.poetry2nix.cleanPythonSources { src = ./.; };
           pythonImportCheck = [ "atciss" ];
         };
-        atciss-dev = prev.poetry2nix.mkPoetryEnv {
+        atciss-dev = final.poetry2nix.mkPoetryEnv {
           inherit python overrides;
-          projectDir = ./.;
+          pyproject = ./pyproject.toml;
+          poetrylock = ./poetry.lock;
           editablePackageSources = {
-            app = ./.;
+            app = "./atciss";
           };
           extraPackages = ps: [ ps.ipython ];
         };
