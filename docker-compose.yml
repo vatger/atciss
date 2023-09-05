@@ -22,6 +22,9 @@ services:
       - PGDATA=/var/lib/postgresql/data/pgdata
   redis:
     image: redis:alpine
+    volumes:
+      - atciss-redis-data:/data
 
 volumes:
   atciss-db-data:
+  atciss-redis-data:
