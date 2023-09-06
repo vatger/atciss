@@ -2,12 +2,10 @@
   description = "VATSIM Germany ATCISS";
 
   nixConfig = {
-    substituters = [
-      "https://cache.nixos.org"
+    extra-substituters = [
       "https://atciss.cachix.org"
     ];
-    trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    extra-trusted-public-keys = [
       "atciss.cachix.org-1:5YxebJMhVUPoSmO/f+KYNp2fDa6f8navGGWzCSKCI0A="
     ];
   };
