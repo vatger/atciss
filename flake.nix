@@ -81,6 +81,7 @@
             sqlalchemy-stubs = pyprev.sqlalchemy-stubs.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
             });
+            ruff = null;
           });
         in {
           atciss = final.poetry2nix.mkPoetryApplication {
@@ -220,6 +221,7 @@
             oldAttrs.nativeBuildInputs
             ++ (with pkgs; [
               poetry
+              ruff
               nodejs_20
               curl
               docker-compose
