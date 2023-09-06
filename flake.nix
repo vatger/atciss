@@ -11,7 +11,7 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
     pre-commit-hooks = {
@@ -24,7 +24,7 @@
     };
 
     poetry2nix = {
-      url = "github:nix-community/poetry2nix";
+      url = "github:nix-community/poetry2nix/pull/1290/head";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
@@ -55,49 +55,31 @@
         napalm.overlays.default
         (final: prev: let
           python = final.python311;
-          overrides = final.poetry2nix.overrides.withDefaults (final: prev: {
-            pynotam = prev.pynotam.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [final.poetry];
+          overrides = final.poetry2nix.overrides.withDefaults (pyfinal: pyprev: {
+            pynotam = pyprev.pynotam.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry];
             });
-            pydantic-settings = prev.pydantic-settings.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [final.hatchling];
+            pydantic-settings = pyprev.pydantic-settings.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.hatchling];
             });
-            hatchling = prev.hatchling.overridePythonAttrs (old: rec {
-              version = "1.18.0";
-              src = prev.fetchPypi {
-                inherit (old) pname;
-                inherit version;
-                hash = "sha256-UOmcMRDOCvw/e9ut/xxxwXdY5HZzHCdgeUDPpmhkico=";
-              };
-
-              propagatedBuildInputs = old.propagatedBuildInputs ++ [final.trove-classifiers];
+            gunicorn = pyprev.gunicorn.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.packaging];
             });
-            trove-classifiers = prev.trove-classifiers.overridePythonAttrs (old: rec {
-              version = "2023.8.7";
-              src = prev.fetchPypi {
-                inherit (old) pname;
-                inherit version;
-                hash = "sha256-yfKgqF1UXlNi6Wfk8Gn1b939kSFeIv+kjGb7KDUhMZo=";
-              };
+            pyaixm = pyprev.pyaixm.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
+              propagatedBuildInputs = (old.propagatedBuildInputs or []) ++ [pyfinal.pyyaml pyfinal.lxml];
             });
-            gunicorn = prev.gunicorn.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [final.packaging];
+            astral = pyprev.astral.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry];
             });
-            pyaixm = prev.pyaixm.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [final.setuptools];
-              propagatedBuildInputs = (old.propagatedBuildInputs or []) ++ [final.pyyaml final.lxml];
+            types-pyasn1 = pyprev.types-pyasn1.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
             });
-            astral = prev.astral.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [final.poetry];
+            types-python-jose = pyprev.types-python-jose.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
             });
-            types-pyasn1 = prev.types-pyasn1.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [final.setuptools];
-            });
-            types-python-jose = prev.types-python-jose.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [final.setuptools];
-            });
-            sqlalchemy-stubs = prev.sqlalchemy-stubs.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [final.setuptools];
+            sqlalchemy-stubs = pyprev.sqlalchemy-stubs.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
             });
           });
         in {

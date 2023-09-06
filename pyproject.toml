@@ -30,11 +30,11 @@ sqlalchemy = "^2.0.20"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1"
-mypy = "^1.0"
 pylint = "^2.17"
 types-beautifulsoup4 = "^4.12.0.5"
 types-python-jose = "^3.3.4.8"
 sqlalchemy-stubs = "^0.4"
+mypy = "^1.5.1"
 
 [tool.poetry.scripts]
 atciss = 'atciss.cli:cli'
@@ -48,7 +48,7 @@ exclude = [
   "atciss/config/gunicorn.py",
   "atciss/app/views/notam.py",
 ]
-python_version = '3.10'
+python_version = '3.11'
 show_error_codes = true
 follow_imports = 'silent'
 strict_optional = true
