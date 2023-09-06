@@ -11,7 +11,7 @@ env:
 jobs:
   lint:
     name: Code Lint
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Install Nix
@@ -20,18 +20,25 @@ jobs:
         with:
           name: atciss
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - name: Run `nix run .#lint`
-        run: 'nix run .#lint'
-  mypy:
-    name: Static Code Checking
-    runs-on: ubuntu-22.04
+      - name: Run pylint
+        run: 'nix run .#pylint'
+      - name: Run black
+        run: 'nix run .#black'
+      - name: Run ruff
+        run: 'nix run .#ruff'
+  flake-check:
+    name: nix flake check
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Check Nix flake inputs
+        uses: DeterminateSystems/flake-checker-action@v5
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v4
       - uses: cachix/cachix-action@v12
         with:
           name: atciss
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - name: Run `nix run .#mypy`
-        run: 'nix run .#mypy'
+      - name: Run flake check
+        run: nix flake check --no-update-lock-file

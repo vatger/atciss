@@ -237,28 +237,35 @@
         });
 
         apps = {
-          lint = {
+          pylint = {
             type = "app";
             program = toString (pkgs.writeScript "lint" ''
               export PATH="${pkgs.lib.makeBinPath [
                 pkgs.atciss-dev
-                pkgs.git
               ]}"
               echo "[nix][lint] Run atciss pylint checks."
               pylint -f colorized -r y atciss
-              echo "[nix][lint] Run atciss black checks."
-              black --check atciss
             '');
           };
-          mypy = {
+          ruff = {
             type = "app";
-            program = toString (pkgs.writeScript "mypy" ''
+            program = toString (pkgs.writeScript "lint" ''
               export PATH="${pkgs.lib.makeBinPath [
                 pkgs.atciss-dev
-                pkgs.git
+                pkgs.ruff
               ]}"
-              echo "[nix][mypy] Run atciss mypy checks."
-              mypy atciss
+              echo "[nix][lint] Run atciss ruff checks."
+              ruff
+            '');
+          };
+          black = {
+            type = "app";
+            program = toString (pkgs.writeScript "lint" ''
+              export PATH="${pkgs.lib.makeBinPath [
+                pkgs.atciss-dev
+              ]}"
+              echo "[nix][lint] Run atciss black checks."
+              black --check atciss
             '');
           };
           backend-dev = {
