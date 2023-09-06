@@ -95,15 +95,16 @@ const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
             ad.locationIndicatorICAO
           ]?.topdown?.find((pos) => activePositions[pos])
           return (
-            <Marker
-              position={[ad.latitude, ad.longitude]}
+            <CircleMarker
+              center={[ad.latitude, ad.longitude]}
+              radius={3}
               key={ad.locationIndicatorICAO}
             >
               <Tooltip>
                 <Text variant="label">{ad.locationIndicatorICAO}</Text>
                 {station ? ` by ${station}` : ""}
               </Tooltip>
-            </Marker>
+            </CircleMarker>
           )
         })}
       </MapContainer>
