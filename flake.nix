@@ -255,7 +255,7 @@
                 pkgs.ruff
               ]}"
               echo "[nix][lint] Run atciss ruff checks."
-              ruff
+              ruff check atciss
             '');
           };
           black = {
