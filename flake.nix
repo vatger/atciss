@@ -179,43 +179,32 @@
             + self.checks.${system}.pre-commit-check.shellHook;
         });
 
-        apps = {
-          pylint = {
+        apps = let
+          mkCIApp = name: packages: script: {
             type = "app";
-            program = toString (pkgs.writeScript "lint" ''
-              export PATH="${pkgs.lib.makeBinPath [
-                pkgs.atciss-dev
-              ]}"
-              echo "[nix][lint] Run atciss pylint checks."
-              pylint -f colorized -r y atciss
+            program = toString (pkgs.writeScript name ''
+              export PATH="${pkgs.lib.makeBinPath (
+                [pkgs.atciss-dev] ++ packages
+              )}"
             '');
           };
-          ruff = {
-            type = "app";
-            program = toString (pkgs.writeScript "lint" ''
-              export PATH="${pkgs.lib.makeBinPath [
-                pkgs.atciss-dev
-                pkgs.ruff
-              ]}"
-              echo "[nix][lint] Run atciss ruff checks."
-              ruff check atciss
-            '');
-          };
-          black = {
-            type = "app";
-            program = toString (pkgs.writeScript "lint" ''
-              export PATH="${pkgs.lib.makeBinPath [
-                pkgs.atciss-dev
-              ]}"
-              echo "[nix][lint] Run atciss black checks."
-              black --check atciss
-            '');
-          };
+        in {
+          pylint = mkCIApp "pylint" [] ''
+            echo "[nix][lint] Run atciss pylint checks."
+            pylint -f colorized -r y atciss
+          '';
+          ruff = mkCIApp "ruff" [pkgs.ruff] ''
+            echo "[nix][lint] Run atciss ruff checks."
+            ruff check atciss
+          '';
+          black = mkCIApp "black" [pkgs.black] ''
+            echo "[nix][lint] Run atciss black checks."
+            black --check atciss
+          '';
           backend-dev = {
             type = "app";
             program = toString (pkgs.writeScript "backend-dev" ''
               export PATH="${pkgs.lib.makeBinPath [pkgs.atciss-dev]}"
-              echo "[nix][backend-dev] Run atciss backend in dev mode."
               uvicorn --factory atciss.app.asgi:get_application --reload
             '');
           };
