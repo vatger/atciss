@@ -48,7 +48,7 @@
     napalm,
     pre-commit-hooks,
     ...
-  }:
+  } @ inputs:
     {
       overlays.default = nixpkgs.lib.composeManyExtensions [
         poetry2nix.overlay
@@ -114,64 +114,7 @@
         })
       ];
 
-      nixosModules.default = {
-        lib,
-        config,
-        pkgs,
-        ...
-      }: let
-        cfg = config.services.atciss;
-      in {
-        options = {
-          services.atciss = {
-            enable = lib.mkEnableOption "ATCISS";
-            host = lib.mkOption {
-              type = lib.types.str;
-            };
-            tls = lib.mkOption {
-              type = lib.types.bool;
-              default = true;
-            };
-            environmentFile = lib.mkOption {
-              type = lib.types.path;
-            };
-          };
-        };
-
-        config = lib.mkIf cfg.enable {
-          services.nginx = {
-            enable = true;
-            virtualHosts."${cfg.host}" = {
-              forceSSL = cfg.tls;
-              enableACME = cfg.tls;
-              locations."/" = {
-                root = pkgs.atciss-frontend;
-                extraConfig = ''
-                  try_files $uri /index.html;
-                '';
-              };
-              locations."/openapi.json" = {
-                proxyPass = "http://localhost:8000";
-              };
-              locations."/api" = {
-                proxyPass = "http://localhost:8000";
-              };
-            };
-          };
-
-          systemd.services.atciss = {
-            wantedBy = ["multi-user.target"];
-
-            serviceConfig = {
-              ExecStart = "${pkgs.atciss}/bin/atciss serve";
-              DynamicUser = true;
-              Restart = "always";
-              RestartSec = "1s";
-              EnvironmentFile = cfg.environmentFile;
-            };
-          };
-        };
-      };
+      nixosModules.default = import ./nixos/module.nix;
     }
     // (flake-utils.lib.eachDefaultSystem (
       system: let
@@ -290,37 +233,11 @@
               black.enable = true;
             };
           };
-          nixosTest = let
-            testing = import "${nixpkgs}/nixos/lib/testing-python.nix" {inherit system pkgs;};
-          in
-            testing.makeTest {
-              name = "atciss";
+        };
 
-              nodes = {
-                machine = {pkgs, ...}: {
-                  imports = [self.nixosModules.default];
-                  nixpkgs.overlays = [self.overlays.default];
-
-                  services.redis.servers."".enable = true;
-
-                  services.atciss = {
-                    enable = true;
-                    host = "localhost";
-                    environmentFile = "/dev/null";
-                    tls = false;
-                  };
-                };
-              };
-
-              testScript = ''
-                machine.start()
-                machine.wait_for_unit("nginx.service")
-                machine.wait_for_open_port(80)
-                machine.wait_for_unit("atciss.service")
-                machine.wait_for_open_port(8000)
-                machine.succeed("curl http://localhost/api/ready | ${pkgs.jq}/bin/jq -e '.status == \"ok\"'")
-              '';
-            };
+        failingChecks = {
+          # FIXME: needs kvm on builder
+          nixosTest = import ./nixos/test.nix {inherit inputs pkgs;};
         };
       }
     ));
