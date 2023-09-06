@@ -5,6 +5,7 @@ from socket import AF_INET
 import aiohttp
 from aiohttp.client_exceptions import ClientConnectorError
 
+__all__ = ["AiohttpClient", "ClientConnectorError"]
 
 SIZE_POOL_AIOHTTP = 100
 
