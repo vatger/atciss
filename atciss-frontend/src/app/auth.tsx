@@ -38,6 +38,8 @@ export const authLoader = async () => {
       `${data.auth_url}/oauth/authorize?client_id=${data.client_id}&redirect_uri=${window.location.protocol}//${window.location.host}%2Fauth%2Fcallback&response_type=code&scope=vatsim_details+country`,
     )
   }
+
+  return null
 }
 
 export const Auth = () => {

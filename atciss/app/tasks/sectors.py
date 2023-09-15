@@ -1,10 +1,11 @@
 import logging
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple, cast
+from aiohttp import ClientConnectorError
 
 from pydantic import TypeAdapter, BaseModel, field_validator
 
-from ..utils import AiohttpClient, ClientConnectorError, RedisClient, repeat_every
+from ..utils import AiohttpClient, RedisClient, repeat_every
 
 log = logging.getLogger(__name__)
 
@@ -26,9 +27,9 @@ def convert_coordinate(input: str) -> float:
 
 def convert_point(point: Tuple[str, str] | Coordinate) -> Coordinate:
     if isinstance(point[0], float):
-        return point
+        return cast(Coordinate, point)
 
-    return cast(Coordinate, [convert_coordinate(coord) for coord in point])
+    return cast(Coordinate, [convert_coordinate(cast(str, coord)) for coord in point])
 
 
 class Sector(BaseModel):
@@ -47,6 +48,7 @@ class Sector(BaseModel):
 @dataclass
 class Airspace:
     id: str
+    remark: str
     group: str
     owner: List[str]
     sectors: List[Sector] = field(default_factory=list)
@@ -97,7 +99,7 @@ async def fetch_sector_data() -> None:
     for region in SECTOR_REGIONS:
         try:
             res = await aiohttp_client.get(
-                "https://raw.githubusercontent.com/lennycolton/vatglasses-data/main/data"
+                "https://raw.githubusercontent.com/globin/vatglasses-data/germany-sector-abbrv/data"
                 + f"/{region}.json"
             )
         except ClientConnectorError as e:

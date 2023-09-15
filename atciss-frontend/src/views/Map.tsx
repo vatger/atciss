@@ -14,11 +14,15 @@ import { Sector, sectorApi } from "../services/airspaceApi"
 import { useId, useState } from "react"
 import { SectorChoice } from "../components/map/SectorChoice"
 import { useAppSelector } from "../app/hooks"
-import { selectActivePositions } from "../services/activePositionSlice"
+import {
+  selectActivePositions,
+  selectSyncedToOnline,
+} from "../services/activePositionSlice"
 import { SectorPolygon } from "../components/map/SectorPolygon"
 import { adApi } from "../services/adApi"
 import { selectActiveEbg } from "../services/configSlice"
 import { EBG_SETTINGS } from "../app/config"
+import { usePollControllers } from "../services/controllerApi"
 
 const position = [49.2646, 11.4134] as LatLngTuple
 
@@ -26,7 +30,10 @@ const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const { data } = sectorApi.useGetByRegionQuery("germany")
   const [level, setLevel] = useState("200")
 
+  usePollControllers()
+
   const activePositions = useAppSelector(selectActivePositions)
+  const syncedToOnline = useAppSelector(selectSyncedToOnline)
 
   const activeEbg = useAppSelector(selectActiveEbg)
 
@@ -77,7 +84,11 @@ const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png"
         />
         {sectors?.map(({ name, sectors, owner }) => {
-          const controllingSector = owner.find((pos) => activePositions[pos])
+          const controllingSector = owner.find((pos) =>
+            syncedToOnline
+              ? activePositions[pos]?.online
+              : activePositions[pos]?.manual,
+          )
 
           return controllingSector
             ? sectors.map((sector, index) => (

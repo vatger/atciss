@@ -1,7 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithAuth } from "../app/auth"
 import { LatLngExpression } from "leaflet"
-import { setAvailablePositions } from "./activePositionSlice"
 
 export type Sector = {
   points: LatLngExpression[]
@@ -11,6 +10,7 @@ export type Sector = {
 
 export type Airspace = {
   id: string
+  remark: string
   group: string
   owner: string[]
   sectors: Sector[]
@@ -44,10 +44,6 @@ export const sectorApi = createApi({
       query: (region) => ({
         url: `airspace/${region}`,
       }),
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        const { data } = await queryFulfilled
-        dispatch(setAvailablePositions(data.positions))
-      },
     }),
   }),
 })

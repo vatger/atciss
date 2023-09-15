@@ -4,26 +4,48 @@ import {
   disableAllPositions,
   enableAllPositions,
   selectActivePositions,
+  selectSyncedToOnline,
   setPosition,
+  setSyncedToOnline,
 } from "../../services/activePositionSlice"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { usePollControllers } from "../../services/controllerApi"
 
 export const SectorChoice = () => {
   const dispatch = useAppDispatch()
 
   const { data } = sectorApi.useGetByRegionQuery("germany")
+  usePollControllers()
+
   const activePositions = useAppSelector(selectActivePositions)
+  const syncedToOnline = useAppSelector(selectSyncedToOnline)
 
   return (
     <>
       <Flex sx={{ flex: "none", justifyContent: "space-between" }}>
-        <Button onClick={() => dispatch(enableAllPositions())}>
+        <Button
+          onClick={() => dispatch(enableAllPositions())}
+          disabled={syncedToOnline}
+        >
           Select All
         </Button>
-        <Button onClick={() => dispatch(disableAllPositions())}>
+        <Button
+          onClick={() => dispatch(disableAllPositions())}
+          disabled={syncedToOnline}
+        >
           Deselect All
         </Button>
       </Flex>
+      <Box>
+        <label>
+          <input
+            type="checkbox"
+            checked={syncedToOnline}
+            onChange={(e) => dispatch(setSyncedToOnline(e.target.checked))}
+          />
+          Sync to Online Controllers
+        </label>
+      </Box>
       <Box sx={{ overflow: "auto", flex: "auto" }}>
         {data &&
           Object.entries(
@@ -45,7 +67,12 @@ export const SectorChoice = () => {
                   <label>
                     <input
                       type="checkbox"
-                      checked={activePositions[id] ?? false}
+                      checked={
+                        (syncedToOnline
+                          ? activePositions[id]?.online
+                          : activePositions[id]?.manual) ?? false
+                      }
+                      disabled={syncedToOnline}
                       onChange={(e) =>
                         dispatch(setPosition({ id, active: e.target.checked }))
                       }

@@ -8,6 +8,7 @@ import { authReducer } from "./auth/slice"
 import { sectorApi } from "../services/airspaceApi"
 import { activePositionReducer } from "../services/activePositionSlice"
 import { configReducer } from "../services/configSlice"
+import { controllerApi } from "../services/controllerApi"
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     [notamApi.reducerPath]: notamApi.reducer,
     [adApi.reducerPath]: adApi.reducer,
     [sectorApi.reducerPath]: sectorApi.reducer,
+    [controllerApi.reducerPath]: controllerApi.reducer,
     auth: authReducer,
     activePositions: activePositionReducer,
     config: configReducer,
@@ -26,7 +28,8 @@ export const store = configureStore({
       .concat(atisApi.middleware)
       .concat(adApi.middleware)
       .concat(notamApi.middleware)
-      .concat(sectorApi.middleware),
+      .concat(sectorApi.middleware)
+      .concat(controllerApi.middleware),
 })
 
 setupListeners(store.dispatch)

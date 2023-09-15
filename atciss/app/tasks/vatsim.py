@@ -2,10 +2,11 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime
 from typing import List, Optional
+from aiohttp import ClientConnectorError
 
 from pydantic import TypeAdapter
 
-from ..utils import AiohttpClient, ClientConnectorError, RedisClient, repeat_every
+from ..utils import AiohttpClient, RedisClient, repeat_every
 from ..views.atis import Atis
 from ..views.controller import Controller
 
@@ -145,11 +146,18 @@ async def fetch_vatsim_data() -> None:
 
     async with redis_client.pipeline() as pipe:
         keys = await redis_client.keys("vatsim:atis:*")
+        keys.extend(await redis_client.keys("vatsim:controller:*"))
 
         if len(keys):
-            await redis_client.delete(*keys)
+            _ = await redis_client.delete(*keys)
 
         for atis in data.atis:
             pipe.set(f"vatsim:atis:{atis.callsign}", TypeAdapter(Atis).dump_json(atis))
+
+        for controller in controllers:
+            pipe.set(
+                f"vatsim:controller:{controller.callsign}",
+                TypeAdapter(Controller).dump_json(controller),
+            )
 
         await pipe.execute()

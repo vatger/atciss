@@ -215,11 +215,15 @@
         checks = {
           pre-commit-check = pre-commit-hooks.lib.${system}.run {
             src = ./.;
+            settings.pylint.binPath = "${pkgs.atciss-dev}/bin/pylint";
             hooks = {
               alejandra.enable = true;
-              statix.enable = true;
+              # statix.enable = true;
               nil.enable = true;
               black.enable = true;
+              eslint.enable = true;
+              # pylint.enable = true;
+              # pyright.enable = true;
             };
           };
         };

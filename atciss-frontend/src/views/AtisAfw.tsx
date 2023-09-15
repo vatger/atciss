@@ -1,6 +1,7 @@
 import { Box, Grid, ThemeUIStyleObject } from "theme-ui"
 import { Atis } from "../components/Atis"
 import { ADinfo } from "../components/ADInfo"
+import { SectorStatus } from "../components/SectorStatus"
 
 const AtisAfw = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   return (
@@ -13,7 +14,7 @@ const AtisAfw = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       <Atis sx={{ gridColumnEnd: "span 2" }} />
       <Box>notes</Box>
       <Box>areas</Box>
-      <Box>sectors</Box>
+      <SectorStatus />
       <ADinfo />
     </Grid>
   )
