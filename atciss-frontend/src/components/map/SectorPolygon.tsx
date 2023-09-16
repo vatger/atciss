@@ -21,7 +21,8 @@ export const SectorPolygon = ({
       pathOptions={{
         color: data?.positions[controllingSector].colours[0].hex,
         weight: 1,
-        opacity: 0.5,
+        opacity: 0.8,
+        fillOpacity: 0.3,
       }}
       positions={points}
     >

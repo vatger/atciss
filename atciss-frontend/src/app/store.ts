@@ -9,6 +9,7 @@ import { sectorApi } from "../services/airspaceApi"
 import { activePositionReducer } from "../services/activePositionSlice"
 import { configReducer } from "../services/configSlice"
 import { controllerApi } from "../services/controllerApi"
+import { mapReducer } from "../services/mapSlice"
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
     auth: authReducer,
     activePositions: activePositionReducer,
     config: configReducer,
+    map: mapReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
