@@ -2,6 +2,8 @@
 import logging
 
 from fastapi import FastAPI
+from fastapi_async_sqlalchemy import SQLAlchemyMiddleware
+from fastapi_async_sqlalchemy import db
 
 from .tasks.dfs_ad import fetch_dfs_ad_data
 from .tasks.loa import fetch_loas
@@ -42,6 +44,16 @@ def get_application() -> FastAPI:
             fetch_dfs_ad_data,
         ],
         on_shutdown=[on_shutdown],
+    )
+    app.add_middleware(
+        SQLAlchemyMiddleware,
+        db_url=f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}/{settings.POSTGRES_DB}",
+        engine_args={  # engine arguments example
+            "echo": True,
+            "pool_pre_ping": True,
+            "pool_size": 5,
+            "max_overflow": 10,
+        },
     )
     log.debug("Add application routes.")
     app.include_router(root_api_router)

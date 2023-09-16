@@ -36,6 +36,11 @@ class Application(BaseSettings):
     VATSIM_CLIENT_SECRET: str = "UR3n0xnjzP4KAbB3enMDCGVD4qbyLvIoSAQtzVm2"
     VATSIM_REDIRECT_URL: str = "http://localhost:5173/auth/callback"
 
+    POSTGRES_HOST: str = "db"
+    POSTGRES_USER: str = "postgres"
+    POSTGRES_PASSWORD: str = "fnord"
+    POSTGRES_DB: str = "atciss"
+
     class Config:
         """Config sub-class needed to customize BaseSettings settings.
 

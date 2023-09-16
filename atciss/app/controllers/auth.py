@@ -7,9 +7,12 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2AuthorizationCodeBearer
 from jose import JWTError, jwt
 from pydantic import TypeAdapter
+from sqlmodel import Session, select
+from fastapi_async_sqlalchemy import db
 
 from ..utils.aiohttp_client import AiohttpClient
 from ...config import settings
+from ..models import User
 
 logger = logging.getLogger(__name__)
 
@@ -33,30 +36,42 @@ class OAuthData:
 
 
 @dataclass
+class UserIdNameData:
+    id: Optional[str]
+    name: Optional[str]
+
+
+@dataclass
+class UserRatingData:
+    id: int
+    short: str
+    long: str
+
+
+@dataclass
+class UserPersonalData:
+    name_first: str
+    name_last: str
+    name_full: str
+    email: str
+    country: UserIdNameData
+
+
+@dataclass
+class UserVatsimData:
+    region: UserIdNameData
+    division: UserIdNameData
+    subdivision: UserIdNameData
+    rating: UserRatingData
+    pilotrating: UserRatingData
+
+
+@dataclass
 class UserData:
     cid: str
+    personal: UserPersonalData
+    vatsim: UserVatsimData
     oauth: OAuthData
-    # personal":{
-    #   "name_first":"Web",
-    #   "name_last":"Team",
-    #   "name_full":"Web Team",
-    #   "email":"web@vatsim.net",
-    #   "country":{
-    #      "id":"AU",
-    #      "name":"Australia"
-    # vatsim:
-    #   "division":{
-    #      "id":"PAC",
-    #      "name":"Australia (VATPAC)"
-    #   },
-    #   "region":{
-    #      "id":"APAC",
-    #      "name":"Asia Pacific"
-    #   },
-    #   "subdivision":{
-    #      "id":null,
-    #      "name":null
-    #   }
 
 
 @dataclass
@@ -99,7 +114,7 @@ oauth2_scheme = OAuth2AuthorizationCodeBearer(
 )
 
 
-async def get_cid(token: Annotated[str, Depends(oauth2_scheme)]) -> str:
+async def get_user(token: Annotated[str, Depends(oauth2_scheme)]) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -110,9 +125,20 @@ async def get_cid(token: Annotated[str, Depends(oauth2_scheme)]) -> str:
         cid: Optional[str] = payload.get("sub")
         if cid is None:
             raise credentials_exception
+
+        user: Optional[User] = None
+        async with db():
+            stmt = select(User).where(User.cid == int(cid))
+            results = await db.session.execute(stmt)
+            user = results.first()
+
+        if user is None:
+            raise HTTPException(500, "User not not found in database")
+
     except JWTError as exc:
         raise credentials_exception from exc
-    return cid
+
+    return user
 
 
 @router.get(
@@ -131,7 +157,7 @@ async def auth_config() -> AuthInfoModel:
     tags=["user"],
 )
 async def auth(req: AuthRequest) -> AuthModel:
-    """Get METAR for airport."""
+    """Authenticate with VATSIM."""
     aioclient = AiohttpClient.get()
 
     res = await aioclient.post(
@@ -147,7 +173,7 @@ async def auth(req: AuthRequest) -> AuthModel:
 
     if res.status >= 400:
         logger.warning(f"Not authorized: {await res.text()}")
-        raise HTTPException(401, "Not Authorised by VATSIM")
+        raise HTTPException(401, "Not authorised by VATSIM")
 
     auth_response = TypeAdapter(AuthResponse).validate_python(await res.json())
 
@@ -155,11 +181,31 @@ async def auth(req: AuthRequest) -> AuthModel:
         f"{settings.VATSIM_AUTH_URL}/api/user",
         headers={"Authorization": f"Bearer {auth_response.access_token}"},
     )
-    user_response = TypeAdapter(UserResponse).validate_python(await res.json())
+    user_response_json = await res.json()
+    user_response = TypeAdapter(UserResponse).validate_python(user_response_json)
 
     if not user_response.data.oauth.token_valid:
-        logger.warn(f"Not authorized: {await res.text()}")
-        raise HTTPException(401, "Not Authorised by VATSIM")
+        logger.warning(f"No valid token: {await res.text()}")
+        raise HTTPException(401, "No valid token from VATSIM")
+
+    async with db():
+        cid = int(user_response.data.cid)
+        user = await db.session.get(User, cid)
+
+        user_data = {
+            "name": user_response.data.personal.name_full,
+            "rating": user_response.data.vatsim.rating.short,
+        }
+
+        if user is None:
+            user = User(cid=cid, **user_data)
+        else:
+            for k, v in user_data.items():
+                setattr(user, k, v)
+
+        db.session.add(user)
+
+        await db.session.commit()
 
     return AuthModel(
         jwt=create_jwt(user_response.data.cid, auth_response.refresh_token)

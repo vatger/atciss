@@ -5,7 +5,8 @@ from fastapi import APIRouter, Depends, Query
 
 from pydantic import TypeAdapter
 
-from atciss.app.controllers.auth import get_cid
+from ..controllers.auth import get_user
+from ..models import User
 
 from ..utils.redis import RedisClient
 from ..views.atis import Atis
@@ -19,7 +20,8 @@ router = APIRouter()
     tags=["wx"],
 )
 async def atis_get(
-    icao: Annotated[List[str], Query(...)], cid: Annotated[str, Depends(get_cid)]
+    icao: Annotated[List[str], Query(...)],
+    user: Annotated[User, Depends(get_user)],
 ) -> Dict[str, Atis]:
     """Get Atis for airport."""
     redis_client = RedisClient.open()

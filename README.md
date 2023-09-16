@@ -16,3 +16,10 @@ poetry run atciss serve
 ```
 nix build .#image
 ```
+
+## Migrations
+
+```
+alembic revision --autogenerate -m comment
+alembic upgrade head
+```

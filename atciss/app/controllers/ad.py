@@ -2,10 +2,11 @@
 from typing import Annotated, Dict, List, cast
 from fastapi import APIRouter, Depends, Query
 
+from ..controllers.auth import get_user
+from ..models import User
+
 from ..tasks.dfs_ad import Aerodrome
 from ..utils.redis import RedisClient
-
-from .auth import get_cid
 
 router = APIRouter()
 
@@ -15,7 +16,8 @@ router = APIRouter()
     tags=["wx"],
 )
 async def ad_get(
-    icao: Annotated[List[str], Query(...)], cid: Annotated[str, Depends(get_cid)]
+    icao: Annotated[List[str], Query(...)],
+    user: Annotated[User, Depends(get_user)],
 ) -> Dict[str, Aerodrome]:
     """Get METAR for airport."""
     redis_client = RedisClient.open()

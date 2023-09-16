@@ -81,6 +81,11 @@
             sqlalchemy-stubs = pyprev.sqlalchemy-stubs.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
             });
+            fastapi-async-sqlalchemy = pyprev.fastapi-async-sqlalchemy.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
+            });
+
+            # use ruff from nixpkgs below in devShell
             ruff = null;
           });
         in {

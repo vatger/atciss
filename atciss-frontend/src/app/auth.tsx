@@ -35,7 +35,7 @@ export const authLoader = async () => {
 
   if (data !== null) {
     window.location.replace(
-      `${data.auth_url}/oauth/authorize?client_id=${data.client_id}&redirect_uri=${window.location.protocol}//${window.location.host}%2Fauth%2Fcallback&response_type=code&scope=vatsim_details+country`,
+      `${data.auth_url}/oauth/authorize?client_id=${data.client_id}&redirect_uri=${window.location.protocol}//${window.location.host}%2Fauth%2Fcallback&response_type=code&scope=full_name+email+vatsim_details+country`,
     )
   }
 

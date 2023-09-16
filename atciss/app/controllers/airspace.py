@@ -3,8 +3,10 @@ from typing import Annotated, Dict, List
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import TypeAdapter
 
-from atciss.app.controllers.auth import get_cid
 from atciss.app.tasks.sectors import Airport, Airspace, Position, SectorData
+
+from ..controllers.auth import get_user
+from ..models import User
 
 from ..utils.redis import RedisClient
 
@@ -16,7 +18,8 @@ router = APIRouter()
     tags=["airspace"],
 )
 async def airspace_get(
-    region: str, cid: Annotated[str, Depends(get_cid)]
+    region: str,
+    user: Annotated[User, Depends(get_user)],
 ) -> SectorData:
     """Get METAR for airport."""
     redis_client = RedisClient.open()

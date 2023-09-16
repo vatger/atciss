@@ -6,7 +6,8 @@ from fastapi import APIRouter, Depends
 
 from pydantic import TypeAdapter
 
-from atciss.app.controllers.auth import get_cid
+from ..controllers.auth import get_user
+from ..models import User
 
 from ..utils.redis import RedisClient
 
@@ -18,7 +19,9 @@ router = APIRouter()
     "/controller/",
     tags=["vatsim"],
 )
-async def controller_get(cid: Annotated[str, Depends(get_cid)]) -> List[Controller]:
+async def controller_get(
+    user: Annotated[User, Depends(get_user)],
+) -> List[Controller]:
     """Get online Vatsim controllers."""
     redis_client = RedisClient.open()
 
