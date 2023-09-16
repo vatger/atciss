@@ -22,9 +22,11 @@ const mapSlice = createSlice({
     },
     setOpenFlightmaps(state, { payload: active }: PayloadAction<boolean>) {
       state.ofm = active
+      state.dfs = state.dfs && !active
     },
     setDFS(state, { payload: active }: PayloadAction<boolean>) {
       state.dfs = active
+      state.ofm = state.ofm && !active
     },
     setSectors(state, { payload: active }: PayloadAction<boolean>) {
       state.sectors = active
