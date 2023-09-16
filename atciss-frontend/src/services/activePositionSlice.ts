@@ -5,6 +5,7 @@ import { Controller, controllerApi } from "./controllerApi"
 
 type Position = {
   frequency: string
+  prefix: string[]
   online: boolean
   manual: boolean
 }
@@ -67,6 +68,7 @@ const activePositionSlice = createSlice({
                 ...acc,
                 [id]: {
                   frequency: position.frequency,
+                  prefix: position.pre,
                   online: false,
                   manual: true,
                 },
@@ -80,7 +82,11 @@ const activePositionSlice = createSlice({
     builder.addMatcher(
       controllerApi.endpoints.get.matchFulfilled,
       (state, { payload: controllers }: PayloadAction<Controller[]>) => {
-        const onlineFrequencies = controllers.map((c) => c.frequency)
+        const onlineStations = controllers.map(
+          (c) =>
+            `${c.callsign.slice(0, c.callsign.indexOf("_"))}${c.frequency}`,
+        )
+
         return {
           ...state,
           positions: Object.entries(state.positions).reduce(
@@ -88,7 +94,11 @@ const activePositionSlice = createSlice({
               ...acc,
               [id]: {
                 ...acc[id],
-                online: onlineFrequencies.indexOf(position.frequency) !== -1,
+                online: position.prefix.some(
+                  (prefix) =>
+                    onlineStations.indexOf(`${prefix}${position.frequency}`) !==
+                    -1,
+                ),
               },
             }),
             state.positions,
