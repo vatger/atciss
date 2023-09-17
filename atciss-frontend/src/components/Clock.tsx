@@ -20,6 +20,7 @@ const Clock = () => {
   return (
     <Box
       sx={{
+        cursor: "default",
         fontFamily: "monospace",
         fontWeight: "bold",
         backgroundColor: "#565964",
