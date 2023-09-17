@@ -174,6 +174,7 @@
               export POETRY_HOME=${pkgs.poetry}
               export POETRY_BINARY=${pkgs.poetry}/bin/poetry
               export POETRY_VIRTUALENVS_IN_PROJECT=true
+              export PYTHONPATH=${pkgs.atciss-dev}/${pkgs.atciss-dev.sitePackages}
               unset SOURCE_DATE_EPOCH
             ''
             + self.checks.${system}.pre-commit-check.shellHook;
