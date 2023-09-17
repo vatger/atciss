@@ -16,6 +16,9 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       sx={{
         ...sx,
         backgroundColor: "primary",
+        borderBottom: 2,
+        borderBottomColor: "darkShadow",
+        borderBottomStyle: "solid",
         p: 2,
         gap: 2,
         alignItems: "start",
@@ -58,6 +61,14 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           }}
         >
           NOTAM
+        </NavButton>
+        <NavButton
+          sx={{ gridRow: "2/3" }}
+          onClick={() => {
+            navigate("/ac")
+          }}
+        >
+          A/C-Type
         </NavButton>
       </Grid>
       <select
