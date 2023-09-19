@@ -229,7 +229,7 @@
               black.enable = true;
               eslint.enable = true;
               # pylint.enable = true;
-              pyright.enable = true;
+              # pyright.enable = true;
             };
           };
         };
