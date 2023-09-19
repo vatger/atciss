@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Grid, Input, Label, Slider, Text } from "theme-ui"
-import { sectorApi } from "../../services/airspaceApi"
+import { sectorApi } from "../services/airspaceApi"
 import {
   disableAllPositions,
   enableAllPositions,
@@ -7,11 +7,11 @@ import {
   selectSyncedToOnline,
   setPosition,
   setSyncedToOnline,
-} from "../../services/activePositionSlice"
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { usePollControllers } from "../../services/controllerApi"
+} from "../services/activePositionSlice"
+import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { usePollControllers } from "../services/controllerApi"
 import { useId } from "react"
-import { selectLevel, selectSectors, setLevel } from "../../services/mapSlice"
+import { selectLevel, selectSectors, setLevel } from "../services/mapSlice"
 
 export const SectorControls = () => {
   const dispatch = useAppDispatch()

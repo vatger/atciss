@@ -1,15 +1,14 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { RootState } from "../app/store"
-import { SectorData, sectorApi } from "./airspaceApi"
+import { Position, SectorData, sectorApi } from "./airspaceApi"
 import { Controller, controllerApi } from "./controllerApi"
 
-type Position = {
-  frequency: string
-  prefix: string[]
+type PositionStatus = {
+  position: Position
   online: boolean
   manual: boolean
 }
-type Positions = { [id: string]: Position }
+type Positions = { [id: string]: PositionStatus }
 type ActivePositionState = {
   positions: Positions
   syncedToOnline: boolean
@@ -67,8 +66,7 @@ const activePositionSlice = createSlice({
               (acc, [id, position]) => ({
                 ...acc,
                 [id]: {
-                  frequency: position.frequency,
-                  prefix: position.pre,
+                  position,
                   online: false,
                   manual: true,
                 },
@@ -90,11 +88,11 @@ const activePositionSlice = createSlice({
         return {
           ...state,
           positions: Object.entries(state.positions).reduce(
-            (acc, [id, position]) => ({
+            (acc, [id, { position }]) => ({
               ...acc,
               [id]: {
                 ...acc[id],
-                online: position.prefix.some(
+                online: position.pre.some(
                   (prefix) =>
                     onlineStations.indexOf(`${prefix}${position.frequency}`) !==
                     -1,
@@ -113,6 +111,9 @@ export const selectActivePositions = (store: RootState) =>
   store.activePositions.positions
 export const selectSyncedToOnline = (store: RootState) =>
   store.activePositions.syncedToOnline
+export const selectControlledSectors =
+  (controller: Position) => (store: RootState) =>
+    store.activePositions.syncedToOnline
 
 export const {
   setPosition,

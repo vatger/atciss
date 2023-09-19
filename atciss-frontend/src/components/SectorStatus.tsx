@@ -29,7 +29,7 @@ export const SectorStatus = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           )
           ?.owner.find((owner) => activePositions[owner]?.online)
         return (
-          <Box>
+          <Box key={sectorName}>
             <Text variant="label">{sectorName}</Text>
             {controllingSector
               ? ` by ${controllingSector} (${sectors?.positions[controllingSector].frequency})`

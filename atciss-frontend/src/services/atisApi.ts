@@ -27,4 +27,5 @@ export const atisApi = createApi({
 export const usePollAtisByIcaoCodes: typeof atisApi.useGetByIcaoCodesQuery = (
   icao,
   options,
-) => atisApi.useGetByIcaoCodesQuery(icao, { pollingInterval: 60000, ...options })
+) =>
+  atisApi.useGetByIcaoCodesQuery(icao, { pollingInterval: 60000, ...options })

@@ -1,28 +1,13 @@
 import logging
 from collections import defaultdict
-from dataclasses import dataclass
-from typing import List, Literal, Optional
+from typing import List
 
 from pydantic import TypeAdapter
 
+from ..views.loa import LoaItem
 from ..utils import AiohttpClient, ClientConnectorError, RedisClient, repeat_every
 
 log = logging.getLogger(__name__)
-
-
-@dataclass
-class LoaItem:
-    aerodrome: str  # FIXME: should be List[str]
-    adep_ades: Literal["ADEP"] | Literal["ADES"] | None
-    cop: str
-    level: int
-    feet: bool
-    xc: Optional[str]
-    special_conditions: str
-    from_sector: str
-    to_sector: str
-    from_fir: str
-    to_fir: str
 
 
 @repeat_every(seconds=3600, logger=log)
@@ -33,10 +18,10 @@ async def fetch_loas() -> None:
 
     try:
         res = await aiohttp_client.get(
-            "https://loa.vatsim-germany.org/api/v1/conditions"
+            "https://loa.vatsim-germany.org/api/v1/conditions",
         )
     except ClientConnectorError as e:
-        log.error(f"Could not connect {str(e)}")
+        log.exception(f"Could not connect {e!s}")
         return
 
     loas = TypeAdapter(List[LoaItem]).validate_python(await res.json())
@@ -44,12 +29,10 @@ async def fetch_loas() -> None:
     for loa in loas:
         if loa.from_sector:
             loas_per_fir_or_sector[loa.from_sector].append(loa)
-        else:
-            loas_per_fir_or_sector[loa.from_fir].append(loa)
+        loas_per_fir_or_sector[loa.from_fir].append(loa)
         if loa.to_sector:
             loas_per_fir_or_sector[loa.to_sector].append(loa)
-        else:
-            loas_per_fir_or_sector[loa.to_fir].append(loa)
+        loas_per_fir_or_sector[loa.to_fir].append(loa)
 
     log.info(f"LoAs: {len(loas)} received")
 

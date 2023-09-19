@@ -9,7 +9,7 @@ import {
   setOpenFlightmaps,
   setSectors,
 } from "../../services/mapSlice"
-import { SectorControls } from "./SectorChoice"
+import { SectorControls } from "../SectorControls"
 
 export const MapControls = () => {
   const dispatch = useAppDispatch()
