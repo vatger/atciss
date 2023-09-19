@@ -48,6 +48,13 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           Map
         </NavButton>
         <NavButton
+          onClick={() => {
+            navigate("/loa")
+          }}
+        >
+          LOA
+        </NavButton>
+        <NavButton
           sx={{ gridRow: "2/3" }}
           onClick={() => {
             navigate("/wx")

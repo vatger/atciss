@@ -1,17 +1,18 @@
-import { Box, Button, Flex, Grid, Input, Label, Slider, Text } from "theme-ui"
+import { Box, Button, Flex, Text } from "theme-ui"
 import { sectorApi } from "../services/airspaceApi"
 import {
   disableAllPositions,
   enableAllPositions,
   selectActivePositions,
+  selectSelectedPosition,
   selectSyncedToOnline,
   setPosition,
+  setSelectedPosition,
   setSyncedToOnline,
 } from "../services/activePositionSlice"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { usePollControllers } from "../services/controllerApi"
-import { useId } from "react"
-import { selectLevel, selectSectors, setLevel } from "../services/mapSlice"
+import { selectSectors } from "../services/mapSlice"
 
 export const SectorControls = () => {
   const dispatch = useAppDispatch()
@@ -19,47 +20,15 @@ export const SectorControls = () => {
   const { data } = sectorApi.useGetByRegionQuery("germany")
   usePollControllers()
 
-  const level = useAppSelector(selectLevel)
   const sectors = useAppSelector(selectSectors)
 
   const activePositions = useAppSelector(selectActivePositions)
   const syncedToOnline = useAppSelector(selectSyncedToOnline)
-
-  const levelSliderId = useId()
+  const selectedPosition = useAppSelector(selectSelectedPosition)
 
   return (
     sectors && (
       <>
-        <Grid
-          sx={{
-            flex: "none",
-            gap: 3,
-            gridAutoFlow: "column",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Label sx={{ fontWeight: "bold" }} htmlFor={levelSliderId}>
-            Level
-          </Label>
-          <Slider
-            id={levelSliderId}
-            sx={{ display: "block" }}
-            min="0"
-            max="660"
-            step="10"
-            value={level}
-            onChange={(e) => dispatch(setLevel(parseInt(e.target.value)))}
-          />
-          <Input
-            type="number"
-            min="0"
-            max="660"
-            step="10"
-            value={level}
-            onChange={(e) => dispatch(setLevel(parseInt(e.target.value)))}
-          />
-        </Grid>
         <Box>
           <label>
             <input
@@ -68,6 +37,21 @@ export const SectorControls = () => {
               onChange={(e) => dispatch(setSyncedToOnline(e.target.checked))}
             />
             Sync to Online Controllers
+          </label>
+        </Box>
+        <Box>
+          <label>
+            Me
+            <select
+              value={selectedPosition ?? undefined}
+              onChange={(e) => dispatch(setSelectedPosition(e.target.value))}
+            >
+              {Object.entries(activePositions)
+                .filter(([_, p]) => p[syncedToOnline ? "online" : "manual"])
+                .map(([id, p]) => (
+                  <option key={id}>{id}</option>
+                ))}
+            </select>
           </label>
         </Box>
         <Flex sx={{ flex: "none", justifyContent: "space-between" }}>

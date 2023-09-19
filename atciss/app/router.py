@@ -1,7 +1,7 @@
 """Application configuration - root APIRouter."""
 from fastapi import APIRouter
 
-from .controllers import ready, metar, notam, atis, ad, auth, airspace, controller
+from .controllers import ready, metar, notam, atis, ad, auth, airspace, controller, loa
 
 
 root_api_router = APIRouter(prefix="/api")
@@ -14,3 +14,4 @@ root_api_router.include_router(ad.router, tags=["wx"])
 root_api_router.include_router(auth.router, tags=["user"])
 root_api_router.include_router(airspace.router, tags=["airspace"])
 root_api_router.include_router(controller.router, tags=["airspace"])
+root_api_router.include_router(loa.router, tags=["airspace"])

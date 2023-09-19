@@ -10,6 +10,7 @@ import {
   setSectors,
 } from "../../services/mapSlice"
 import { SectorControls } from "../SectorControls"
+import { LevelChoice } from "./LevelChoice"
 
 export const MapControls = () => {
   const dispatch = useAppDispatch()
@@ -52,7 +53,12 @@ export const MapControls = () => {
           Sectors
         </Text>
       </Box>
-      {sectors && <SectorControls />}
+      {sectors && (
+        <>
+          <LevelChoice />
+          <SectorControls />
+        </>
+      )}
     </>
   )
 }

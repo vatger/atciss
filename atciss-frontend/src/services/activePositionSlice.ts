@@ -12,12 +12,14 @@ type Positions = { [id: string]: PositionStatus }
 type ActivePositionState = {
   positions: Positions
   syncedToOnline: boolean
+  selectedPosition: string | null
 }
 
 const activePositionSlice = createSlice({
-  name: "auth",
+  name: "activePositions",
   initialState: {
     positions: {},
+    selectedPosition: null,
     syncedToOnline: true,
   } as ActivePositionState,
   reducers: {
@@ -30,10 +32,10 @@ const activePositionSlice = createSlice({
       state.positions[id].manual = active
     },
     setSyncedToOnline(state, { payload: synced }: PayloadAction<boolean>) {
-      return {
-        ...state,
-        syncedToOnline: synced,
-      }
+      state.syncedToOnline = synced
+    },
+    setSelectedPosition(state, { payload: pos }: PayloadAction<string>) {
+      state.selectedPosition = pos
     },
     enableAllPositions(state) {
       return {
@@ -57,12 +59,21 @@ const activePositionSlice = createSlice({
   extraReducers: (builder) => {
     builder.addMatcher(
       sectorApi.endpoints.getByRegion.matchFulfilled,
-      (state, { payload: { positions } }: PayloadAction<SectorData>) => ({
-        ...state,
-        positions: {
-          ...Object.entries(positions)
-            .filter(([id]) => !["MMC", "WWC", "GGC"].includes(id))
-            .reduce(
+      (
+        state,
+        {
+          payload: { positions: positionsWithSupercenter },
+        }: PayloadAction<SectorData>,
+      ) => {
+        const positions = Object.entries(positionsWithSupercenter).filter(
+          ([id]) => !["MMC", "WWC", "GGC"].includes(id),
+        )
+
+        return {
+          ...state,
+          selectedPosition: state.selectedPosition ?? positions[0][0],
+          positions: {
+            ...positions.reduce(
               (acc, [id, position]) => ({
                 ...acc,
                 [id]: {
@@ -73,9 +84,10 @@ const activePositionSlice = createSlice({
               }),
               {} as Positions,
             ),
-          ...state.positions,
-        },
-      }),
+            ...state.positions,
+          },
+        }
+      },
     )
     builder.addMatcher(
       controllerApi.endpoints.get.matchFulfilled,
@@ -107,18 +119,50 @@ const activePositionSlice = createSlice({
   },
 })
 
-export const selectActivePositions = (store: RootState) =>
-  store.activePositions.positions
-export const selectSyncedToOnline = (store: RootState) =>
-  store.activePositions.syncedToOnline
-export const selectControlledSectors =
-  (controller: Position) => (store: RootState) =>
-    store.activePositions.syncedToOnline
+export const selectActivePositions = (state: RootState) =>
+  state.activePositions.positions
+export const selectSyncedToOnline = (state: RootState) =>
+  state.activePositions.syncedToOnline
+export const selectSelectedPosition = (state: RootState) =>
+  state.activePositions.selectedPosition
+export const selectSectorToOwner = (state: RootState) => {
+  // FIXME hardcoded germany
+  const sectors =
+    sectorApi.endpoints.getByRegion.select("germany")(state).data?.airspace ??
+    []
+  const positions = state.activePositions.positions
+  const online = state.activePositions.syncedToOnline
+  return (
+    sectors?.reduce(
+      (acc, s) => ({
+        ...acc,
+        [s.remark ?? s.id]:
+          s.owner.find(
+            (owner) => positions[owner]?.[online ? "online" : "manual"],
+          ) ?? null,
+      }),
+      {} as { [id: string]: string | null },
+    ) ?? {}
+  )
+}
+export const selectOwnerToSector = (state: RootState) => {
+  const sectorToOwner = selectSectorToOwner(state)
+  return Object.entries(sectorToOwner)
+    .filter(([_, owner]) => owner !== null)
+    .reduce((acc, [sector, ownerIsFiltered]) => {
+      const owner = ownerIsFiltered as string
+      return {
+        ...acc,
+        [owner]: [...(acc[owner] ?? []), sector],
+      }
+    }, {} as { [id: string]: string[] })
+}
 
 export const {
   setPosition,
   enableAllPositions,
   disableAllPositions,
   setSyncedToOnline,
+  setSelectedPosition,
 } = activePositionSlice.actions
 export const { reducer: activePositionReducer } = activePositionSlice

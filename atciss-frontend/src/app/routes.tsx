@@ -12,6 +12,7 @@ import {
   authCallbackLoader,
   authLoader,
 } from "./auth"
+import { LOA } from "../views/LOA"
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "notam",
         element: <Notam />,
+      },
+      {
+        path: "loa",
+        element: <LOA />,
       },
     ],
   },
