@@ -41,7 +41,7 @@ export const SectorControls = () => {
         </Box>
         <Box>
           <label>
-            Me
+            <Text variant="label">Selected Position </Text>
             <select
               value={selectedPosition ?? undefined}
               onChange={(e) => dispatch(setSelectedPosition(e.target.value))}
@@ -49,7 +49,9 @@ export const SectorControls = () => {
               {Object.entries(activePositions)
                 .filter(([_, p]) => p[syncedToOnline ? "online" : "manual"])
                 .map(([id, p]) => (
-                  <option key={id}>{id}</option>
+                  <option key={id} value={id}>
+                    {id} ({p.position.frequency})
+                  </option>
                 ))}
             </select>
           </label>

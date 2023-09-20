@@ -28,3 +28,17 @@ summary {
 *:focus {
  outline: none
 }
+
+tr:nth-child(even) {
+  background-color: #eee;
+}
+
+td, th {
+  padding: .2em;
+}
+
+th {
+  text-align: start;
+  padding-top: 1em;
+}
+

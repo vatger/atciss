@@ -2,6 +2,8 @@ import { Polygon, Tooltip } from "react-leaflet"
 import { Box, Text } from "theme-ui"
 import { z3 } from "../../app/utils"
 import { Sector, sectorApi } from "../../services/airspaceApi"
+import { useAppSelector } from "../../app/hooks"
+import { selectSelectedPosition } from "../../services/activePositionSlice"
 
 type SectorPolygonProps = {
   sector: Sector
@@ -15,14 +17,15 @@ export const SectorPolygon = ({
   controllingSector,
 }: SectorPolygonProps) => {
   const { data } = sectorApi.useGetByRegionQuery("germany")
+  const selectedPosition = useAppSelector(selectSelectedPosition)
 
   return (
     <Polygon
       pathOptions={{
         color: data?.positions[controllingSector].colours[0].hex,
-        weight: 1,
-        opacity: 0.8,
-        fillOpacity: 0.3,
+        weight: controllingSector === selectedPosition ? 5 : 1,
+        opacity: 0.5,
+        fillOpacity: controllingSector === selectedPosition ? 0.5 : 0.3,
       }}
       positions={points}
     >

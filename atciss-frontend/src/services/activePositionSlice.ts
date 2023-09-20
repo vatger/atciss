@@ -8,12 +8,24 @@ type PositionStatus = {
   online: boolean
   manual: boolean
 }
-type Positions = { [id: string]: PositionStatus }
+export type Positions = { [id: string]: PositionStatus }
 type ActivePositionState = {
   positions: Positions
   syncedToOnline: boolean
   selectedPosition: string | null
 }
+
+const findSelectedPosition = (
+  previousSelected: string | null,
+  positions: Positions,
+  syncedToOnline: boolean,
+): string | null =>
+  previousSelected &&
+  positions[previousSelected][syncedToOnline ? "online" : "manual"]
+    ? previousSelected
+    : Object.entries(positions).find(
+        ([_, p]) => p[syncedToOnline ? "online" : "manual"],
+      )?.[0] ?? null
 
 const activePositionSlice = createSlice({
   name: "activePositions",
@@ -30,28 +42,50 @@ const activePositionSlice = createSlice({
       }: PayloadAction<{ id: string; active: boolean }>,
     ) {
       state.positions[id].manual = active
+      state.selectedPosition = findSelectedPosition(
+        state.selectedPosition,
+        state.positions,
+        state.syncedToOnline,
+      )
     },
     setSyncedToOnline(state, { payload: synced }: PayloadAction<boolean>) {
       state.syncedToOnline = synced
+      state.selectedPosition = findSelectedPosition(
+        state.selectedPosition,
+        state.positions,
+        state.syncedToOnline,
+      )
     },
     setSelectedPosition(state, { payload: pos }: PayloadAction<string>) {
       state.selectedPosition = pos
     },
     enableAllPositions(state) {
+      const positions = Object.keys(state.positions).reduce(
+        (acc, key) => ({ ...acc, [key]: { ...acc[key], manual: true } }),
+        state.positions,
+      )
       return {
         ...state,
-        positions: Object.keys(state.positions).reduce(
-          (acc, key) => ({ ...acc, [key]: { ...acc[key], manual: true } }),
-          state.positions,
+        positions,
+        selectedPosition: findSelectedPosition(
+          state.selectedPosition,
+          positions,
+          state.syncedToOnline,
         ),
       }
     },
     disableAllPositions(state) {
+      const positions = Object.keys(state.positions).reduce(
+        (acc, key) => ({ ...acc, [key]: { ...acc[key], manual: false } }),
+        state.positions,
+      )
       return {
         ...state,
-        positions: Object.keys(state.positions).reduce(
-          (acc, key) => ({ ...acc, [key]: { ...acc[key], manual: false } }),
-          state.positions,
+        positions,
+        selectedPosition: findSelectedPosition(
+          state.selectedPosition,
+          positions,
+          state.syncedToOnline,
         ),
       }
     },
@@ -65,15 +99,10 @@ const activePositionSlice = createSlice({
           payload: { positions: positionsWithSupercenter },
         }: PayloadAction<SectorData>,
       ) => {
-        const positions = Object.entries(positionsWithSupercenter).filter(
-          ([id]) => !["MMC", "WWC", "GGC"].includes(id),
-        )
-
-        return {
-          ...state,
-          selectedPosition: state.selectedPosition ?? positions[0][0],
-          positions: {
-            ...positions.reduce(
+        const positions = {
+          ...Object.entries(positionsWithSupercenter)
+            .filter(([id]) => !["MMC", "WWC", "GGC"].includes(id))
+            .reduce(
               (acc, [id, position]) => ({
                 ...acc,
                 [id]: {
@@ -84,8 +113,17 @@ const activePositionSlice = createSlice({
               }),
               {} as Positions,
             ),
-            ...state.positions,
-          },
+          ...state.positions,
+        }
+
+        return {
+          ...state,
+          selectedPosition: findSelectedPosition(
+            state.selectedPosition,
+            positions,
+            state.syncedToOnline,
+          ),
+          positions,
         }
       },
     )
@@ -96,23 +134,29 @@ const activePositionSlice = createSlice({
           (c) =>
             `${c.callsign.slice(0, c.callsign.indexOf("_"))}${c.frequency}`,
         )
+        const positions = Object.entries(state.positions).reduce(
+          (acc, [id, { position }]) => ({
+            ...acc,
+            [id]: {
+              ...acc[id],
+              online: position.pre.some(
+                (prefix) =>
+                  onlineStations.indexOf(`${prefix}${position.frequency}`) !==
+                  -1,
+              ),
+            },
+          }),
+          state.positions,
+        )
 
         return {
           ...state,
-          positions: Object.entries(state.positions).reduce(
-            (acc, [id, { position }]) => ({
-              ...acc,
-              [id]: {
-                ...acc[id],
-                online: position.pre.some(
-                  (prefix) =>
-                    onlineStations.indexOf(`${prefix}${position.frequency}`) !==
-                    -1,
-                ),
-              },
-            }),
-            state.positions,
+          selectedPosition: findSelectedPosition(
+            state.selectedPosition,
+            positions,
+            state.syncedToOnline,
           ),
+          positions,
         }
       },
     )

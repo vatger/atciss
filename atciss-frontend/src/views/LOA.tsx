@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, ThemeUIStyleObject } from "theme-ui"
+import { Box, Flex, Grid, Input, ThemeUIStyleObject } from "theme-ui"
 import { SectorControls } from "../components/SectorControls"
 import { useAppSelector } from "../app/hooks"
 import {
@@ -7,6 +7,11 @@ import {
 } from "../services/activePositionSlice"
 import { LoaItem, loaApi } from "../services/loaApi"
 import { LoaRow } from "../components/LoaRow"
+import { useState } from "react"
+
+const filterFn = (filter: string, loa: LoaItem) =>
+  loa.aerodrome.toLowerCase().includes(filter.toLowerCase()) ||
+  loa.cop.toLowerCase().includes(filter.toLowerCase())
 
 export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const ownerToSector = useAppSelector(selectOwnerToSector)
@@ -16,14 +21,15 @@ export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const relevantLoas = loaApi.useGetBySectorsQuery(ownedSectors, {
     skip: ownedSectors.length == 0,
   })
+  const [filter, setFilter] = useState("")
 
   const sortBy = (attrs: (keyof LoaItem)[]) => (a: LoaItem, b: LoaItem) => {
     for (const attr of attrs) {
-      if (a[attr] === null) continue
+      if (a[attr] === null || typeof a[attr] === "boolean") continue
       const comp =
         typeof a[attr] === "string"
           ? (a[attr] as string).localeCompare(b[attr] as string)
-          : a[attr] - b[attr]
+          : (a[attr] as number) - (b[attr] as number)
       if (comp !== 0) return comp
     }
 
@@ -34,16 +40,18 @@ export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
     ?.filter(
       (loa) =>
         ownedSectors.includes(loa.from_sector) &&
-        !ownedSectors.includes(loa.to_sector),
+        !ownedSectors.includes(loa.to_sector) &&
+        filterFn(filter, loa),
     )
-    ?.sort(sortBy(["from_sector", "to_sector", "cop"]))
+    ?.sort(sortBy(["from_sector", "to_sector", "to_fir", "cop"]))
   const nLoas = relevantLoas.data
     ?.filter(
       (loa) =>
         ownedSectors.includes(loa.to_sector) &&
-        !ownedSectors.includes(loa.from_sector),
+        !ownedSectors.includes(loa.from_sector) &&
+        filterFn(filter, loa),
     )
-    ?.sort(sortBy(["to_sector", "from_sector", "cop"]))
+    ?.sort(sortBy(["to_sector", "from_sector", "from_fir", "cop"]))
 
   return (
     <Grid
@@ -67,15 +75,13 @@ export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
             </tr>
           </thead>
           <tbody>
-            {xLoas?.map((loa) => (
+            {xLoas?.map((loa, idx) => (
               <LoaRow
-                key={`${loa.cop}-${loa.aerodrome}-${loa.adep_ades}-${loa.from_sector}-${loa.to_sector}`}
+                key={`${loa.cop}-${loa.aerodrome}-${loa.adep_ades}-${loa.from_sector}-${loa.to_sector}-${idx}`}
                 loa={loa}
               />
             ))}
           </tbody>
-        </table>
-        <table style={{ width: "100%" }}>
           <thead>
             <tr>
               <th>COPN</th>
@@ -97,6 +103,11 @@ export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         </table>
       </Box>
       <Flex sx={{ flexDirection: "column", gap: 3, overflow: "hidden" }}>
+        <Input
+          placeholder="Filter"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+        />
         <SectorControls />
       </Flex>
     </Grid>
