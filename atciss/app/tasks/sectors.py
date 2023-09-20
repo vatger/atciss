@@ -7,11 +7,9 @@ from ..views.sector import Airport, Airspace, Position, SectorData
 
 from ..utils import AiohttpClient, RedisClient, repeat_every
 
-log = logging.getLogger(__name__)
+from ...config import settings
 
-# check https://github.com/lennycolton/vatglasses-data/tree/main/data
-SECTOR_REGIONS = ["austria", "czechia", "germany"]
-# TODO add italy, poland and switzerland when available
+log = logging.getLogger(__name__)
 
 
 @repeat_every(seconds=3600, logger=log)
@@ -21,7 +19,7 @@ async def fetch_sector_data() -> None:
     aiohttp_client = AiohttpClient.get()
 
     data: dict[str, SectorData] = {}
-    for region in SECTOR_REGIONS:
+    for region in settings.SECTOR_REGIONS:
         try:
             res = await aiohttp_client.get(
                 "https://raw.githubusercontent.com/globin/vatglasses-data/germany-sector-abbrv/data"

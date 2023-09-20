@@ -41,6 +41,18 @@ class Application(BaseSettings):
     POSTGRES_PASSWORD: str = "fnord"
     POSTGRES_DB: str = "atciss"
 
+    # check https://github.com/lennycolton/vatglasses-data/tree/main/data
+    # TODO add italy, poland and switzerland when available
+    SECTOR_REGIONS: list[str] = [
+        "germany",
+        "austria",
+        "czechia",
+        "belux",
+        "denmark",
+        "france",
+        "nl",
+    ]
+
     class Config:
         """Config sub-class needed to customize BaseSettings settings.
 

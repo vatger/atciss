@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2AuthorizationCodeBearer
 from jose import JWTError, jwt
 from pydantic import TypeAdapter
-from sqlmodel import Session, select
+from sqlmodel import select
 from fastapi_async_sqlalchemy import db
 
 from ..utils.aiohttp_client import AiohttpClient
