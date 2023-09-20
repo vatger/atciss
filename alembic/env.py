@@ -25,10 +25,10 @@ target_metadata = SQLModel.metadata
 
 
 def get_url() -> str:
-    user = os.getenv("POSTGRES_USER", "postgres")
-    password = os.getenv("POSTGRES_PASSWORD", "fnord")
-    server = os.getenv("POSTGRES_SERVER", "db")
-    db = os.getenv("POSTGRES_DB", "atciss")
+    user = os.getenv("ATCISS_POSTGRES_USER", "postgres")
+    password = os.getenv("ATCISS_POSTGRES_PASSWORD", "fnord")
+    server = os.getenv("ATCISS_POSTGRES_HOST", "db")
+    db = os.getenv("ATCISS_POSTGRES_DB", "atciss")
     return f"postgresql+asyncpg://{user}:{password}@{server}/{db}"
 
 
