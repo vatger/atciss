@@ -1,0 +1,91 @@
+from dataclasses import dataclass, field
+from typing import Optional, Tuple, cast
+
+from pydantic import BaseModel, field_validator
+
+
+Coordinate = Tuple[float, float]
+
+
+def convert_coordinate(input: str) -> float:
+    sec = int(input[-2:], 10)
+    min = int(input[-4:-2], 10)
+    deg = int(input[:-4], 10)
+
+    return deg + min / 60 + sec / 3600
+
+
+def convert_point(point: Tuple[str, str] | Coordinate) -> Coordinate:
+    if isinstance(point[0], float):
+        return cast(Coordinate, point)
+
+    return cast(Coordinate, [convert_coordinate(cast(str, coord)) for coord in point])
+
+
+class Sector(BaseModel):
+    points: list[Coordinate]
+    min: Optional[int] = None
+    max: Optional[int] = None
+
+    @field_validator("points", mode="before")
+    @classmethod
+    def point_validator(
+        cls, input: list[Tuple[str, str] | Coordinate]
+    ) -> list[Coordinate]:
+        return [convert_point(point) for point in input]
+
+
+@dataclass
+class Airspace:
+    id: str
+    group: str
+    owner: list[str]
+    remark: Optional[str] = None
+    sectors: list[Sector] = field(default_factory=list)
+
+
+@dataclass
+class SectorGroup:
+    name: str
+
+
+@dataclass
+class Colour:
+    hex: str
+
+
+@dataclass
+class Position:
+    pre: list[str]
+    type: str
+    frequency: str
+    callsign: str
+    colours: list[Colour] = field(default_factory=list)
+
+
+@dataclass
+class Runway:
+    icao: str
+    runway: str
+
+
+@dataclass
+class RwyDependantTopDown:
+    runway: Runway
+    topdown: list[str]
+
+
+@dataclass
+class Airport:
+    callsign: str
+    coord: Coordinate
+    topdown: list[str | RwyDependantTopDown] = field(default_factory=list)
+
+
+@dataclass
+class SectorData:
+    airspace: list[Airspace]
+    groups: dict[str, SectorGroup]
+    positions: dict[str, Position]
+    callsigns: dict[str, dict[str, str]]
+    airports: dict[str, Airport]
