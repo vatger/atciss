@@ -39,7 +39,7 @@ types-beautifulsoup4 = "^4.12.0.5"
 types-python-jose = "^3.3.4.8"
 sqlalchemy-stubs = "^0.4"
 mypy = "^1.5.1"
-pyright = "1.1.326"
+pyright = "1.1.327"
 ruff = "^0.0.290"
 
 [tool.poetry.scripts]
