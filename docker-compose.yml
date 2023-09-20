@@ -1,14 +1,57 @@
 services:
   backend:
-    build: .
+    image: atciss-backend
+    build:
+      context: .
+      target: dev
+    command: ["serve"]
     ports:
       - "8000:8000"
     environment:
       ATCISS_BIND: "[::]:8000"
       ATCISS_REDIS_HOST: redis
-      ATCISS_RELOAD: true
     volumes:
       - ./atciss:/code/atciss
+    depends_on:
+      - db
+      - redis
+
+  worker:
+    image: atciss-backend
+    build:
+      context: .
+      target: dev
+    entrypoint:
+      - "celery"
+      - "-A"
+      - "atciss"
+      - "worker"
+      - "--loglevel=info"
+      #- "--pool=gevent"
+    environment:
+      ATCISS_REDIS_HOST: redis
+    volumes:
+      - ./atciss:/code/atciss
+    depends_on:
+      - redis
+
+  beat:
+    image: atciss-backend
+    build:
+      context: .
+      target: dev
+    entrypoint:
+      - "celery"
+      - "-A"
+      - "atciss"
+      - "beat"
+      - "--loglevel=info"
+    environment:
+      ATCISS_REDIS_HOST: redis
+    volumes:
+      - ./atciss:/code/atciss
+    depends_on:
+      - redis
 
   db:
     image: postgres:15

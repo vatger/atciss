@@ -5,12 +5,12 @@ from typing import List
 from pydantic import TypeAdapter
 
 from ..views.loa import LoaItem
-from ..utils import AiohttpClient, ClientConnectorError, RedisClient, repeat_every
+from ..utils import AiohttpClient, ClientConnectorError, RedisClient
 
 log = logging.getLogger(__name__)
 
 
-@repeat_every(seconds=3600, logger=log)
+# @repeat_every(seconds=3600, logger=log)
 async def fetch_loas() -> None:
     """Periodically fetch loa data."""
     redis_client = await RedisClient.open()

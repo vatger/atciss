@@ -5,14 +5,14 @@ from pydantic import TypeAdapter
 
 from ..views.sector import Airport, Airspace, Position, SectorData
 
-from ..utils import AiohttpClient, RedisClient, repeat_every
+from ..utils import AiohttpClient, RedisClient
 
 from ...config import settings
 
 log = logging.getLogger(__name__)
 
 
-@repeat_every(seconds=3600, logger=log)
+# @repeat_every(seconds=3600, logger=log)
 async def fetch_sector_data() -> None:
     """Periodically fetch sector data."""
     redis_client = await RedisClient.open()

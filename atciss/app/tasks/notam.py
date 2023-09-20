@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from pynotam import Notam
 from parsimonious import ParseError
 
-from ..utils import AiohttpClient, ClientConnectorError, RedisClient, repeat_every
+from ..utils import AiohttpClient, ClientConnectorError, RedisClient
 
 log = logging.getLogger(__name__)
 
@@ -50,7 +50,7 @@ def convert_notam(n: str) -> Optional[Notam]:
     return None
 
 
-@repeat_every(seconds=300, logger=log)
+# @repeat_every(seconds=300, logger=log)
 async def fetch_notam() -> None:
     """Periodically fetch relevant NOTAMs."""
     redis_client = await RedisClient.open()

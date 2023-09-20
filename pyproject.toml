@@ -14,7 +14,7 @@ uvicorn = {extras = ["standard"], version = "^0.23"}
 click = "^8.1"
 gunicorn = "^21.2"
 aiohttp = "^3.8.4"
-redis = "^5.0.0"
+redis = "^4.5.6"
 beautifulsoup4 = "^4.12.2"
 pyaixm = { git = "https://github.com/volkerp/pyaixm", rev = "00112765b7ca767d45af9e743b0264e14ac25d1b" }
 pynotam = { git = "https://github.com/globin/PyNotam", rev = "84b741863d09aaa616e6f378a2e6e5eab8df706f" }
@@ -32,6 +32,8 @@ asyncpg = "^0.28.0"
 python-dateutil = "^2.8.2"
 fastapi-async-sqlalchemy = "^0.6.0"
 prometheus-fastapi-instrumentator = "^6.1.0"
+celery = {version = "^5.3.4", extras = ["redis,gevent"]}
+asgiref = "^3.7.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.9"

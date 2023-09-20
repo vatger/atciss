@@ -1,12 +1,14 @@
 import csv
 import logging
 
-from ..utils import RedisClient, ClientConnectorError, AiohttpClient, repeat_every
+from ..utils import RedisClient, ClientConnectorError, AiohttpClient
+
+# from atciss.celery import app as celery_app
 
 log = logging.getLogger(__name__)
 
 
-@repeat_every(seconds=60, logger=log)
+# @celery_app.task(name="update_metar")
 async def fetch_metar() -> None:
     """Periodically fetch METARs."""
     redis_client = await RedisClient.open()

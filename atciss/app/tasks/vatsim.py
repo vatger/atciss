@@ -6,7 +6,7 @@ from aiohttp import ClientConnectorError
 
 from pydantic import TypeAdapter
 
-from ..utils import AiohttpClient, RedisClient, repeat_every
+from ..utils import AiohttpClient, RedisClient
 from ..views.atis import Atis
 from ..views.vatsim import Controller
 
@@ -124,7 +124,7 @@ class VatsimData:
     military_ratings: List[MilitaryRating]
 
 
-@repeat_every(seconds=30, logger=log)
+# @repeat_every(seconds=30, logger=log)
 async def fetch_vatsim_data() -> None:
     """Periodically fetch sector data."""
     redis_client = await RedisClient.open()

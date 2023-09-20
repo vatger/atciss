@@ -36,14 +36,14 @@ def get_application() -> FastAPI:
         debug=settings.DEBUG,
         version=settings.VERSION,
         docs_url=settings.DOCS_URL,
-        on_startup=[
-            fetch_loas,
-            fetch_metar,
-            fetch_notam,
-            fetch_sector_data,
-            fetch_vatsim_data,
-            fetch_dfs_ad_data,
-        ],
+        # on_startup=[
+        #    fetch_loas,
+        #    fetch_metar,
+        #    fetch_notam,
+        #    fetch_sector_data,
+        #    fetch_vatsim_data,
+        #    fetch_dfs_ad_data,
+        # ],
         on_shutdown=[on_shutdown],
     )
 
