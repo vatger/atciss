@@ -4,7 +4,7 @@ from typing import Annotated, List, Optional, cast
 from fastapi import APIRouter, Depends, Query
 from pydantic import TypeAdapter
 
-from .auth import get_cid
+from .auth import get_user
 from ..views.loa import LoaItem
 
 from ..utils.redis import RedisClient
@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
     tags=["loa"],
 )
 async def metar_get(
-    sector: Annotated[List[str], Query(...)], cid: Annotated[str, Depends(get_cid)]
+    sector: Annotated[List[str], Query(...)], cid: Annotated[str, Depends(get_user)]
 ) -> List[LoaItem]:
     """Get LOA for sector."""
     redis_client = RedisClient.open()
