@@ -3,19 +3,11 @@ import logging
 
 from fastapi import FastAPI
 from fastapi_async_sqlalchemy import SQLAlchemyMiddleware
-from fastapi_async_sqlalchemy import db
 from prometheus_fastapi_instrumentator import Instrumentator as PrometheusInstrumentator
-
-from .tasks.dfs_ad import fetch_dfs_ad_data
-from .tasks.loa import fetch_loas
-from .tasks.metar import fetch_metar
-from .tasks.notam import fetch_notam
-from .tasks.sectors import fetch_sector_data
-from .tasks.vatsim import fetch_vatsim_data
 
 from ..config import settings
 from .router import root_api_router
-from .utils import RedisClient, AiohttpClient
+from .utils import RedisClient
 
 
 log = logging.getLogger(__name__)
@@ -25,7 +17,6 @@ async def on_shutdown() -> None:
     """Shutdown event handler."""
     log.debug("Execute FastAPI shutdown event handler")
     await RedisClient.close()
-    await AiohttpClient.close()
 
 
 def get_application() -> FastAPI:
@@ -36,14 +27,6 @@ def get_application() -> FastAPI:
         debug=settings.DEBUG,
         version=settings.VERSION,
         docs_url=settings.DOCS_URL,
-        # on_startup=[
-        #    fetch_loas,
-        #    fetch_metar,
-        #    fetch_notam,
-        #    fetch_sector_data,
-        #    fetch_vatsim_data,
-        #    fetch_dfs_ad_data,
-        # ],
         on_shutdown=[on_shutdown],
     )
 

@@ -11,11 +11,15 @@ app.conf.result_backend = f"redis://{redis.REDIS_HOST}:{redis.REDIS_PORT}"
 app.conf.broker_connection_retry_on_startup = False
 
 app.conf.beat_schedule = {
-    "update_notam": {"task": "update_notam", "schedule": crontab(minute="*/2")},
-    "update_los": {"task": "update_loa", "schedule": crontab(minute="*/60")},
-    "update_sectors": {"task": "update_sectors", "schedule": crontab(minute="*/60")},
-    "update_vatsim": {"task": "update_vatsim", "schedule": crontab(minute="*/1")},
-    "update_metar": {"task": "update_metar", "schedule": crontab(minute="*/1")},
+    "update_notam": {"task": "update_notam", "schedule": crontab(minute="*")},
+    "update_loa": {"task": "update_loa", "schedule": crontab(hour="*")},
+    "update_sectors": {"task": "update_sectors", "schedule": crontab(hour="*")},
+    "update_vatsim": {"task": "update_vatsim", "schedule": crontab(minute="*")},
+    "update_metar": {"task": "update_metar", "schedule": crontab(minute="*")},
+    "update_dfs_ad_data": {
+        "task": "update_dfs_ad_data",
+        "schedule": crontab(day_of_week="1"),
+    },
 }
 
 
@@ -56,4 +60,12 @@ def update_metar() -> bool:
     from atciss.app.tasks.metar import fetch_metar
 
     async_to_sync(fetch_metar)()
+    return True
+
+
+@app.task(name="update_dfs_ad_data")
+def update_dfs_ad_data() -> bool:
+    from atciss.app.tasks.dfs_ad import fetch_dfs_ad_data
+
+    async_to_sync(fetch_dfs_ad_data)()
     return True

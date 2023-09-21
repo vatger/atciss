@@ -23,24 +23,15 @@ class AiohttpClient:
         Returns:
             aiohttp.ClientSession: ClientSession object instance.
         """
-        if cls.aiohttp_client is None:
-            cls.log.debug("Initialize AiohttpClient session.")
-            timeout = aiohttp.ClientTimeout(total=15)
-            connector = aiohttp.TCPConnector(
-                family=AF_INET,
-                limit_per_host=SIZE_POOL_AIOHTTP,
-            )
-            cls.aiohttp_client = aiohttp.ClientSession(
-                timeout=timeout,
-                connector=connector,
-            )
+        cls.log.debug("Initialize AiohttpClient session.")
+        timeout = aiohttp.ClientTimeout(total=15)
+        connector = aiohttp.TCPConnector(
+            family=AF_INET,
+            limit_per_host=SIZE_POOL_AIOHTTP,
+        )
+        aiohttp_client = aiohttp.ClientSession(
+            timeout=timeout,
+            connector=connector,
+        )
 
-        return cls.aiohttp_client
-
-    @classmethod
-    async def close(cls) -> None:
-        """Close aiohttp client session."""
-        if cls.aiohttp_client:
-            cls.log.debug("Close AiohttpClient session.")
-            await cls.aiohttp_client.close()
-            cls.aiohttp_client = None
+        return aiohttp_client

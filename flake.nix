@@ -72,6 +72,9 @@
             astral = pyprev.astral.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry];
             });
+            celery-types = pyprev.celery-types.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry];
+            });
             types-pyasn1 = pyprev.types-pyasn1.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
             });

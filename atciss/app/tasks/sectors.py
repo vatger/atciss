@@ -12,26 +12,25 @@ from ...config import settings
 log = logging.getLogger(__name__)
 
 
-# @repeat_every(seconds=3600, logger=log)
 async def fetch_sector_data() -> None:
     """Periodically fetch sector data."""
-    redis_client = await RedisClient.open()
-    aiohttp_client = AiohttpClient.get()
+    redis_client = await RedisClient.get()
 
-    data: dict[str, SectorData] = {}
-    for region in settings.SECTOR_REGIONS:
-        try:
-            res = await aiohttp_client.get(
-                "https://raw.githubusercontent.com/globin/vatglasses-data/germany-sector-abbrv/data"
-                + f"/{region}.json"
+    async with AiohttpClient.get() as aiohttp_client:
+        data: dict[str, SectorData] = {}
+        for region in settings.SECTOR_REGIONS:
+            try:
+                res = await aiohttp_client.get(
+                    "https://raw.githubusercontent.com/globin/vatglasses-data/germany-sector-abbrv/data"
+                    + f"/{region}.json"
+                )
+            except ClientConnectorError as e:
+                log.error(f"Could not connect {str(e)}")
+                return
+
+            data[region] = TypeAdapter(SectorData).validate_python(
+                await res.json(content_type="text/plain")
             )
-        except ClientConnectorError as e:
-            log.error(f"Could not connect {str(e)}")
-            return
-
-        data[region] = TypeAdapter(SectorData).validate_python(
-            await res.json(content_type="text/plain")
-        )
 
     log.info("Sector data received")
 

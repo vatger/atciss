@@ -44,6 +44,8 @@ sqlalchemy-stubs = "^0.4"
 mypy = "^1.5.1"
 pyright = "1.1.326"
 ruff = "^0.0.290"
+celery-types = "^0.20.0"
+flower = "^2.0.1"
 
 [tool.poetry.scripts]
 atciss = 'atciss.cli:cli'

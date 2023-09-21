@@ -27,7 +27,6 @@ services:
       - "atciss"
       - "worker"
       - "--loglevel=info"
-      #- "--pool=gevent"
     environment:
       ATCISS_REDIS_HOST: redis
     volumes:

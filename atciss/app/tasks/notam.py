@@ -50,28 +50,27 @@ def convert_notam(n: str) -> Optional[Notam]:
     return None
 
 
-# @repeat_every(seconds=300, logger=log)
 async def fetch_notam() -> None:
     """Periodically fetch relevant NOTAMs."""
-    redis_client = await RedisClient.open()
-    aiohttp_client = AiohttpClient.get()
+    redis_client = await RedisClient.get()
 
-    try:
-        res = await aiohttp_client.get(
-            "https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do"
-            + f"?reportType=Raw&retrieveLocId={'+'.join(NOTAM_ICAO)}"
-            + "&actionType=notamRetrievalByICAOs&submit=View+NOTAMs"
-        )
-    except ClientConnectorError as e:
-        log.error(f"Could not connect {str(e)}")
-        return
+    async with AiohttpClient.get() as aiohttp_client:
+        try:
+            res = await aiohttp_client.get(
+                "https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do"
+                + f"?reportType=Raw&retrieveLocId={'+'.join(NOTAM_ICAO)}"
+                + "&actionType=notamRetrievalByICAOs&submit=View+NOTAMs"
+            )
+        except ClientConnectorError as e:
+            log.error(f"Could not connect {str(e)}")
+            return
 
-    notam_html = BeautifulSoup(await res.text(), "html.parser")
-    notams = []
-    for notam_elem in notam_html.find_all("pre"):
-        notam = convert_notam(notam_elem.string)
-        if notam is not None and len(notam.location) > 0:
-            notams.append(notam)
+        notam_html = BeautifulSoup(await res.text(), "html.parser")
+        notams = []
+        for notam_elem in notam_html.find_all("pre"):
+            notam = convert_notam(notam_elem.string)
+            if notam is not None and len(notam.location) > 0:
+                notams.append(notam)
 
     async with redis_client.pipeline() as pipe:
         for notam in notams:

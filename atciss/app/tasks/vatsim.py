@@ -124,19 +124,20 @@ class VatsimData:
     military_ratings: List[MilitaryRating]
 
 
-# @repeat_every(seconds=30, logger=log)
 async def fetch_vatsim_data() -> None:
     """Periodically fetch sector data."""
-    redis_client = await RedisClient.open()
-    aiohttp_client = AiohttpClient.get()
+    redis_client = await RedisClient.get()
 
-    try:
-        res = await aiohttp_client.get("https://data.vatsim.net/v3/vatsim-data.json")
-    except ClientConnectorError as e:
-        log.error(f"Could not connect {str(e)}")
-        return
+    async with AiohttpClient.get() as aiohttp_client:
+        try:
+            res = await aiohttp_client.get(
+                "https://data.vatsim.net/v3/vatsim-data.json"
+            )
+        except ClientConnectorError as e:
+            log.error(f"Could not connect {str(e)}")
+            return
 
-    data = TypeAdapter(VatsimData).validate_python(await res.json())
+        data = TypeAdapter(VatsimData).validate_python(await res.json())
 
     controllers = [c for c in data.controllers if c.facility > 0]
 

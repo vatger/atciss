@@ -40,11 +40,11 @@ class Aerodrome(BaseModel):
 
 
 async def get_dfs_aixm_url(dataset: str) -> Optional[str]:
-    aiohttp_client = AiohttpClient.get()
-    res = await aiohttp_client.get(
-        "https://aip.dfs.de/datasets/scripts/getAmdtData.php?amdt=0"
-    )
-    html = BeautifulSoup(await res.text(), "html.parser")
+    async with AiohttpClient.get() as aiohttp_client:
+        res = await aiohttp_client.get(
+            "https://aip.dfs.de/datasets/scripts/getAmdtData.php?amdt=0"
+        )
+        html = BeautifulSoup(await res.text(), "html.parser")
     sibling_section = html.find("span", string=re.compile(f".*{dataset}.*"))
 
     if sibling_section:
@@ -58,7 +58,7 @@ async def get_dfs_aixm_url(dataset: str) -> Optional[str]:
 
 async def fetch_dfs_ad_data() -> None:
     """Periodically fetch sector data."""
-    redis_client = await RedisClient.open()
+    redis_client = await RedisClient.get()
 
     try:
         keys = await redis_client.keys("dfs:ad:*")
@@ -73,9 +73,9 @@ async def fetch_dfs_ad_data() -> None:
             log.error("Could not find AirportHeliport URL")
             return
 
-        aiohttp_client = AiohttpClient.get()
-        res = await aiohttp_client.get(aixm_url)
-        byts = io.BytesIO(await res.read())
+        async with AiohttpClient.get() as aiohttp_client:
+            res = await aiohttp_client.get(aixm_url)
+            byts = io.BytesIO(await res.read())
         ad_data = pyaixm.parse(byts, resolve_xlinks=False)
 
     except ClientConnectorError as e:

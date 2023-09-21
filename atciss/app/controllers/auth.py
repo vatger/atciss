@@ -156,35 +156,34 @@ async def auth_config() -> AuthInfoModel:
 )
 async def auth(req: AuthRequest) -> AuthModel:
     """Authenticate with VATSIM."""
-    aioclient = AiohttpClient.get()
+    async with AiohttpClient.get() as aiohttp_client:
+        res = await aiohttp_client.post(
+            f"{settings.VATSIM_AUTH_URL}/oauth/token",
+            data={
+                "grant_type": "authorization_code",
+                "client_id": settings.VATSIM_CLIENT_ID,
+                "client_secret": settings.VATSIM_CLIENT_SECRET,
+                "redirect_uri": settings.VATSIM_REDIRECT_URL,
+                "code": req.code,
+            },
+        )
 
-    res = await aioclient.post(
-        f"{settings.VATSIM_AUTH_URL}/oauth/token",
-        data={
-            "grant_type": "authorization_code",
-            "client_id": settings.VATSIM_CLIENT_ID,
-            "client_secret": settings.VATSIM_CLIENT_SECRET,
-            "redirect_uri": settings.VATSIM_REDIRECT_URL,
-            "code": req.code,
-        },
-    )
+        if res.status >= 400:
+            logger.warning(f"Not authorized: {await res.text()}")
+            raise HTTPException(401, "Not authorised by VATSIM")
 
-    if res.status >= 400:
-        logger.warning(f"Not authorized: {await res.text()}")
-        raise HTTPException(401, "Not authorised by VATSIM")
+        auth_response = TypeAdapter(AuthResponse).validate_python(await res.json())
 
-    auth_response = TypeAdapter(AuthResponse).validate_python(await res.json())
+        res = await aiohttp_client.get(
+            f"{settings.VATSIM_AUTH_URL}/api/user",
+            headers={"Authorization": f"Bearer {auth_response.access_token}"},
+        )
+        user_response_json = await res.json()
+        user_response = TypeAdapter(UserResponse).validate_python(user_response_json)
 
-    res = await aioclient.get(
-        f"{settings.VATSIM_AUTH_URL}/api/user",
-        headers={"Authorization": f"Bearer {auth_response.access_token}"},
-    )
-    user_response_json = await res.json()
-    user_response = TypeAdapter(UserResponse).validate_python(user_response_json)
-
-    if not user_response.data.oauth.token_valid:
-        logger.warning(f"No valid token: {await res.text()}")
-        raise HTTPException(401, "No valid token from VATSIM")
+        if not user_response.data.oauth.token_valid:
+            logger.warning(f"No valid token: {await res.text()}")
+            raise HTTPException(401, "No valid token from VATSIM")
 
     async with db():
         cid = int(user_response.data.cid)
