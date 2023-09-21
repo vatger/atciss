@@ -23,8 +23,9 @@ export const SectorLayer = () => {
 
   const sectors = data?.airspace
     .filter((a) => a.sectors.some(levelFilter))
-    .map(({ id: name, owner, sectors }) => ({
+    .map(({ id: name, remark, owner, sectors }) => ({
       name,
+      remark,
       owner,
       sectors: sectors.filter(levelFilter),
     }))
@@ -32,7 +33,7 @@ export const SectorLayer = () => {
   return (
     <LayerGroup>
       {displaySectors &&
-        sectors?.map(({ name, sectors, owner }) => {
+        sectors?.map(({ name, remark, sectors, owner }) => {
           const controllingSector = owner.find((pos) =>
             syncedToOnline
               ? activePositions[pos]?.online
@@ -45,6 +46,7 @@ export const SectorLayer = () => {
                   key={index}
                   sector={sector}
                   name={name}
+                  remark={remark}
                   controllingSector={controllingSector}
                 />
               ))

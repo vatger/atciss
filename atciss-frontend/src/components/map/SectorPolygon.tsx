@@ -8,12 +8,14 @@ import { selectSelectedPosition } from "../../services/activePositionSlice"
 type SectorPolygonProps = {
   sector: Sector
   name: string
+  remark: string
   controllingSector: string
 }
 
 export const SectorPolygon = ({
   sector: { points, min, max },
   name,
+  remark,
   controllingSector,
 }: SectorPolygonProps) => {
   const { data } = sectorApi.useGetByRegionQuery()
@@ -31,7 +33,8 @@ export const SectorPolygon = ({
     >
       <Tooltip>
         <Box>
-          <Text variant="label">{name}</Text> by {controllingSector}
+          <Text variant="label">{name}</Text>
+          {remark && ` (${remark})`} by {controllingSector}
         </Box>
         <Box>
           FL{z3(min ?? 0)}-FL{z3(max ?? 660)}
