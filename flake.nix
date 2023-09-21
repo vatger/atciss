@@ -87,16 +87,29 @@
             fastapi-async-sqlalchemy = pyprev.fastapi-async-sqlalchemy.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
             });
+            alembic = pyprev.alembic.overridePythonAttrs (old: {
+              meta = old.meta // {priority = -1;};
+            });
+            celery = pyprev.celery.overridePythonAttrs (old: {
+              meta = old.meta // {priority = -1;};
+            });
 
             # use ruff from nixpkgs below in devShell
             ruff = null;
           });
         in {
-          atciss = final.poetry2nix.mkPoetryApplication {
-            inherit python overrides;
-            projectDir = final.poetry2nix.cleanPythonSources {src = ./.;};
-            pythonImportCheck = ["atciss"];
-          };
+          atciss =
+            (final.poetry2nix.mkPoetryApplication {
+              inherit python overrides;
+              projectDir = final.poetry2nix.cleanPythonSources {src = ./.;};
+              pythonImportCheck = ["atciss"];
+            })
+            .overrideAttrs (attrs: {
+              postInstall = ''
+                install -Dt $out/share/atciss alembic.ini
+                cp -r alembic $out/share/atciss
+              '';
+            });
 
           atciss-dev = final.poetry2nix.mkPoetryEnv {
             inherit python overrides;

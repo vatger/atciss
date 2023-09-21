@@ -49,6 +49,8 @@ flower = "^2.0.1"
 
 [tool.poetry.scripts]
 atciss = 'atciss.cli:cli'
+celery = 'celery.__main__:main'
+alembic = 'alembic.config:main'
 
 [build-system]
 requires = ["poetry-core"]

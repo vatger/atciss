@@ -43,15 +43,67 @@ in {
       };
     };
 
+    services.postgresql = {
+      enable = true;
+      ensureDatabases = ["atciss"];
+      enableTCPIP = true;
+      authentication = pkgs.lib.mkOverride 10 ''
+        local all      all     trust
+        host  all      all     127.0.0.1/32   trust
+        host  all      all     ::1/128        trust
+      '';
+      ensureUsers = [
+        {
+          name = "atciss";
+          ensurePermissions = {
+            "DATABASE atciss" = "ALL PRIVILEGES";
+          };
+        }
+      ];
+    };
+
     systemd.services.atciss = {
       wantedBy = ["multi-user.target"];
 
+      environment = {
+        ATCISS_BASE_URL = "https://${cfg.host}";
+        ATCISS_POSTGRES_HOST = "localhost";
+      };
+
       serviceConfig = {
+        ExecStartPre = "${pkgs.atciss}/bin/alembic upgrade head";
         ExecStart = "${pkgs.atciss}/bin/atciss serve";
         DynamicUser = true;
         Restart = "always";
         RestartSec = "1s";
         EnvironmentFile = cfg.environmentFile;
+        WorkingDirectory = "${pkgs.atciss}/share/atciss";
+      };
+    };
+
+    systemd.services.atciss-worker = {
+      wantedBy = ["multi-user.target"];
+
+      serviceConfig = {
+        ExecStart = "${pkgs.atciss}/bin/celery -A atciss worker --loglevel=INFO";
+        DynamicUser = true;
+        Restart = "always";
+        RestartSec = "1s";
+        StateDirectory = "atciss-worker";
+        WorkingDirectory = "/var/lib/atciss-worker";
+      };
+    };
+
+    systemd.services.atciss-beat = {
+      wantedBy = ["multi-user.target"];
+
+      serviceConfig = {
+        ExecStart = "${pkgs.atciss}/bin/celery -A atciss beat --loglevel=INFO";
+        DynamicUser = true;
+        Restart = "always";
+        RestartSec = "1s";
+        StateDirectory = "atciss-beat";
+        WorkingDirectory = "/var/lib/atciss-beat";
       };
     };
   };
