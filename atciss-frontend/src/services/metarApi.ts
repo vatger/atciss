@@ -68,7 +68,7 @@ export const metarApi = createApi({
   endpoints: (builder) => ({
     getByIcaoCodes: builder.query<{ [id: string]: Metar }, string[]>({
       query: (icaoList) => ({
-        url: `metar/`,
+        url: `metar`,
         params: icaoList.map((icao) => ["icao", icao]),
       }),
     }),

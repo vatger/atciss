@@ -22,7 +22,7 @@ export const controllerApi = createApi({
   endpoints: (builder) => ({
     get: builder.query<Controller[], void>({
       query: () => ({
-        url: `controller/`,
+        url: `vatsim/controllers`,
       }),
     }),
   }),

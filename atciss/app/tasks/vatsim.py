@@ -8,7 +8,7 @@ from pydantic import TypeAdapter
 
 from ..utils import AiohttpClient, RedisClient, repeat_every
 from ..views.atis import Atis
-from ..views.controller import Controller
+from ..views.vatsim import Controller
 
 log = logging.getLogger(__name__)
 

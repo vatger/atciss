@@ -2,12 +2,16 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Any, List, Optional, Sequence, Tuple, cast
+from typing import Annotated, Any, List, Optional, Sequence, Tuple, cast
+from pydantic import AwareDatetime, BaseModel, StringConstraints, field_validator
 
 from metar.Datatypes import distance
 from metar.Metar import Metar
 
-from pydantic import AwareDatetime, BaseModel, field_validator
+
+AirportIcao = Annotated[
+    str, StringConstraints(min_length=4, max_length=4, to_upper=True)
+]
 
 
 @dataclass
