@@ -119,6 +119,10 @@
               mv build $out
             '';
           };
+
+          poetry = prev.poetry.override (_: {
+            inherit python;
+          });
         })
       ];
 
