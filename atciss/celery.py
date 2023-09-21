@@ -12,8 +12,8 @@ app.conf.broker_connection_retry_on_startup = False
 
 app.conf.beat_schedule = {
     "update_notam": {"task": "update_notam", "schedule": crontab(minute="*")},
-    "update_loa": {"task": "update_loa", "schedule": crontab(hour="*")},
-    "update_sectors": {"task": "update_sectors", "schedule": crontab(hour="*")},
+    "update_loa": {"task": "update_loa", "schedule": crontab(minute="*/60")},
+    "update_sectors": {"task": "update_sectors", "schedule": crontab(minute="*/60")},
     "update_vatsim": {"task": "update_vatsim", "schedule": crontab(minute="*")},
     "update_metar": {"task": "update_metar", "schedule": crontab(minute="*")},
     "update_dfs_ad_data": {
