@@ -4,6 +4,7 @@ import logging
 from fastapi import FastAPI
 from fastapi_async_sqlalchemy import SQLAlchemyMiddleware
 from fastapi_async_sqlalchemy import db
+from prometheus_fastapi_instrumentator import Instrumentator as PrometheusInstrumentator
 
 from .tasks.dfs_ad import fetch_dfs_ad_data
 from .tasks.loa import fetch_loas
@@ -45,6 +46,9 @@ def get_application() -> FastAPI:
         ],
         on_shutdown=[on_shutdown],
     )
+
+    _ = PrometheusInstrumentator().instrument(app).expose(app, tags=["monitoring"])
+
     app.add_middleware(
         SQLAlchemyMiddleware,
         db_url=f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}/{settings.POSTGRES_DB}",
@@ -55,6 +59,7 @@ def get_application() -> FastAPI:
             "max_overflow": 10,
         },
     )
+
     log.debug("Add application routes.")
     app.include_router(root_api_router)
 
