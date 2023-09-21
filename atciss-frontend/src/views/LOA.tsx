@@ -11,6 +11,11 @@ import { useState } from "react"
 
 const filterFn = (filter: string, loa: LoaItem) =>
   loa.aerodrome.toLowerCase().includes(filter.toLowerCase()) ||
+  loa.from_sector.toLowerCase().includes(filter.toLowerCase()) ||
+  loa.to_sector.toLowerCase().includes(filter.toLowerCase()) ||
+  loa.from_fir.toLowerCase().includes(filter.toLowerCase()) ||
+  loa.to_fir.toLowerCase().includes(filter.toLowerCase()) ||
+  loa.special_conditions.toLowerCase().includes(filter.toLowerCase()) ||
   loa.cop.toLowerCase().includes(filter.toLowerCase())
 
 export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
@@ -43,7 +48,7 @@ export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         !ownedSectors.includes(loa.to_sector) &&
         filterFn(filter, loa),
     )
-    ?.sort(sortBy(["from_sector", "to_sector", "to_fir", "cop"]))
+    ?.sort(sortBy(["from_sector", "cop", "to_sector", "to_fir"]))
   const nLoas = relevantLoas.data
     ?.filter(
       (loa) =>
@@ -51,7 +56,7 @@ export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         !ownedSectors.includes(loa.from_sector) &&
         filterFn(filter, loa),
     )
-    ?.sort(sortBy(["to_sector", "from_sector", "from_fir", "cop"]))
+    ?.sort(sortBy(["to_sector", "cop", "from_sector", "from_fir"]))
 
   return (
     <Grid
