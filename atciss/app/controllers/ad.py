@@ -13,7 +13,6 @@ router = APIRouter()
 
 @router.get(
     "/aerodrome/",
-    tags=["wx"],
 )
 async def ad_get(
     icao: Annotated[List[str], Query(...)],

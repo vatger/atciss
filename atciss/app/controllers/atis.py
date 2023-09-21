@@ -17,7 +17,6 @@ router = APIRouter()
 
 @router.get(
     "/atis/",
-    tags=["wx"],
 )
 async def atis_get(
     icao: Annotated[List[str], Query(...)],

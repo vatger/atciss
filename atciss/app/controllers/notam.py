@@ -17,7 +17,6 @@ log = logging.getLogger(__name__)
 
 @router.get(
     "/notam/",
-    tags=["notam"],
 )
 async def notam_get(
     icao: Annotated[List[str], Query(...)],

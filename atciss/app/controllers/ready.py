@@ -15,7 +15,6 @@ log = logging.getLogger(__name__)
 
 @router.get(
     "/ready",
-    tags=["ready"],
     response_model=ReadyResponse,
     summary="Simple health check.",
     status_code=200,

@@ -143,7 +143,6 @@ async def get_user(token: Annotated[str, Depends(oauth2_scheme)]) -> User:
 
 @router.get(
     "/auth",
-    tags=["user"],
 )
 async def auth_config() -> AuthInfoModel:
     return AuthInfoModel(
@@ -154,7 +153,6 @@ async def auth_config() -> AuthInfoModel:
 
 @router.post(
     "/auth",
-    tags=["user"],
 )
 async def auth(req: AuthRequest) -> AuthModel:
     """Authenticate with VATSIM."""
