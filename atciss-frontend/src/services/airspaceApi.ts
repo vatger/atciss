@@ -40,9 +40,9 @@ export const sectorApi = createApi({
   reducerPath: "sector",
   baseQuery: fetchWithAuth,
   endpoints: (builder) => ({
-    getByRegion: builder.query<SectorData, string>({
-      query: (region) => ({
-        url: `airspace/${region}`,
+    getByRegion: builder.query<SectorData, void>({
+      query: () => ({
+        url: `airspace/`,
       }),
     }),
   }),

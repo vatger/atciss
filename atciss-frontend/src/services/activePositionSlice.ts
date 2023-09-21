@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit"
 import { RootState } from "../app/store"
 import { Position, SectorData, sectorApi } from "./airspaceApi"
 import { Controller, controllerApi } from "./controllerApi"
@@ -169,15 +169,14 @@ export const selectSyncedToOnline = (state: RootState) =>
   state.activePositions.syncedToOnline
 export const selectSelectedPosition = (state: RootState) =>
   state.activePositions.selectedPosition
-export const selectSectorToOwner = (state: RootState) => {
-  // FIXME hardcoded germany
-  const sectors =
-    sectorApi.endpoints.getByRegion.select("germany")(state).data?.airspace ??
-    []
-  const positions = state.activePositions.positions
-  const online = state.activePositions.syncedToOnline
-  return (
-    sectors?.reduce(
+export const selectSectorToOwner = createSelector(
+  [
+    selectActivePositions,
+    selectSyncedToOnline,
+    sectorApi.endpoints.getByRegion.select(),
+  ],
+  (positions, online, sectorData) =>
+    (sectorData.data?.airspace ?? []).reduce(
       (acc, s) => ({
         ...acc,
         [s.remark ?? s.id]:
@@ -186,21 +185,22 @@ export const selectSectorToOwner = (state: RootState) => {
           ) ?? null,
       }),
       {} as { [id: string]: string | null },
-    ) ?? {}
-  )
-}
-export const selectOwnerToSector = (state: RootState) => {
-  const sectorToOwner = selectSectorToOwner(state)
-  return Object.entries(sectorToOwner)
-    .filter(([_, owner]) => owner !== null)
-    .reduce((acc, [sector, ownerIsFiltered]) => {
-      const owner = ownerIsFiltered as string
-      return {
-        ...acc,
-        [owner]: [...(acc[owner] ?? []), sector],
-      }
-    }, {} as { [id: string]: string[] })
-}
+    ),
+)
+
+export const selectOwnerToSector = createSelector(
+  [selectSectorToOwner],
+  (sectorToOwner) =>
+    Object.entries(sectorToOwner)
+      .filter(([_, owner]) => owner !== null)
+      .reduce((acc, [sector, ownerIsFiltered]) => {
+        const owner = ownerIsFiltered as string
+        return {
+          ...acc,
+          [owner]: [...(acc[owner] ?? []), sector],
+        }
+      }, {} as { [id: string]: string[] }),
+)
 
 export const {
   setPosition,

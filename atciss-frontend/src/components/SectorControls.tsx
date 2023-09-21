@@ -17,7 +17,7 @@ import { selectSectors } from "../services/mapSlice"
 export const SectorControls = () => {
   const dispatch = useAppDispatch()
 
-  const { data } = sectorApi.useGetByRegionQuery("germany")
+  const { data } = sectorApi.useGetByRegionQuery()
   usePollControllers()
 
   const sectors = useAppSelector(selectSectors)

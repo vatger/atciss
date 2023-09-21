@@ -11,7 +11,7 @@ export const SectorStatus = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const activeEbg = useAppSelector(selectActiveEbg)
   const ebgSectors: string[] = EBG_SETTINGS[activeEbg].sectors
   const activePositions = useAppSelector(selectActivePositions)
-  const { data: sectors } = sectorApi.useGetByRegionQuery("germany")
+  const { data: sectors } = sectorApi.useGetByRegionQuery()
 
   return (
     <Flex

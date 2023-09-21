@@ -10,7 +10,7 @@ import { CircleMarker } from "react-leaflet"
 import { Text } from "theme-ui"
 
 export const AerodromeLayer = () => {
-  const { data } = sectorApi.useGetByRegionQuery("germany")
+  const { data } = sectorApi.useGetByRegionQuery()
   usePollControllers()
 
   const activeEbg = useAppSelector(selectActiveEbg)

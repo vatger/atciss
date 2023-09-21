@@ -10,7 +10,7 @@ import { usePollControllers } from "../../services/controllerApi"
 import { SectorPolygon } from "./SectorPolygon"
 
 export const SectorLayer = () => {
-  const { data } = sectorApi.useGetByRegionQuery("germany")
+  const { data } = sectorApi.useGetByRegionQuery()
   usePollControllers()
 
   const activePositions = useAppSelector(selectActivePositions)

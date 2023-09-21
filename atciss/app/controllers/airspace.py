@@ -18,7 +18,8 @@ logger = logging.getLogger(__name__)
 
 
 @router.get(
-    "/airspace/{region}",
+    "/airspace/",
+    tags=["airspace"],
 )
 async def airspace_get(
     user: Annotated[User, Depends(get_user)],

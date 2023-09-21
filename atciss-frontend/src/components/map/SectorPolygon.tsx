@@ -16,7 +16,7 @@ export const SectorPolygon = ({
   name,
   controllingSector,
 }: SectorPolygonProps) => {
-  const { data } = sectorApi.useGetByRegionQuery("germany")
+  const { data } = sectorApi.useGetByRegionQuery()
   const selectedPosition = useAppSelector(selectSelectedPosition)
 
   return (

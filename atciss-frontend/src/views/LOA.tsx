@@ -93,9 +93,9 @@ export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
             </tr>
           </thead>
           <tbody>
-            {nLoas?.map((loa) => (
+            {nLoas?.map((loa, idx) => (
               <LoaRow
-                key={`${loa.cop}-${loa.aerodrome}-${loa.adep_ades}-${loa.from_sector}-${loa.to_sector}`}
+                key={`${loa.cop}-${loa.aerodrome}-${loa.adep_ades}-${loa.from_sector}-${loa.to_sector}-${idx}`}
                 loa={loa}
               />
             ))}
