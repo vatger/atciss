@@ -9,12 +9,11 @@ import { LoaItem, loaApi } from "../services/loaApi"
 import { LoaRow } from "../components/LoaRow"
 import { useState } from "react"
 
-const filterFn = (filter: string, loa: LoaItem) =>
+const filterFn = (filter: string, loa: LoaItem, to_from: "to" | "from") =>
   loa.aerodrome.toLowerCase().includes(filter.toLowerCase()) ||
   loa.from_sector.toLowerCase().includes(filter.toLowerCase()) ||
   loa.to_sector.toLowerCase().includes(filter.toLowerCase()) ||
-  loa.from_fir.toLowerCase().includes(filter.toLowerCase()) ||
-  loa.to_fir.toLowerCase().includes(filter.toLowerCase()) ||
+  loa[`${to_from}_fir`].toLowerCase().includes(filter.toLowerCase()) ||
   loa.special_conditions.toLowerCase().includes(filter.toLowerCase()) ||
   loa.cop.toLowerCase().includes(filter.toLowerCase())
 
@@ -46,7 +45,7 @@ export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       (loa) =>
         ownedSectors.includes(loa.from_sector) &&
         !ownedSectors.includes(loa.to_sector) &&
-        filterFn(filter, loa),
+        filterFn(filter, loa, "to"),
     )
     ?.sort(sortBy(["from_sector", "cop", "to_sector", "to_fir"]))
   const nLoas = relevantLoas.data
@@ -54,7 +53,7 @@ export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       (loa) =>
         ownedSectors.includes(loa.to_sector) &&
         !ownedSectors.includes(loa.from_sector) &&
-        filterFn(filter, loa),
+        filterFn(filter, loa, "from"),
     )
     ?.sort(sortBy(["to_sector", "cop", "from_sector", "from_fir"]))
 
