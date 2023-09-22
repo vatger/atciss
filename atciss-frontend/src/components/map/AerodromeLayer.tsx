@@ -1,6 +1,9 @@
 import { LayerGroup, Tooltip } from "react-leaflet"
 import { useAppSelector } from "../../app/hooks"
-import { selectActivePositions } from "../../services/activePositionSlice"
+import {
+  selectActivePositions,
+  selectSyncedToOnline,
+} from "../../services/activePositionSlice"
 import { sectorApi } from "../../services/airspaceApi"
 import { usePollControllers } from "../../services/controllerApi"
 import { selectActiveEbg } from "../../services/configSlice"
@@ -14,6 +17,7 @@ export const AerodromeLayer = () => {
   usePollControllers()
 
   const activeEbg = useAppSelector(selectActiveEbg)
+  const syncedToOnline = useAppSelector(selectSyncedToOnline)
 
   const { data: aerodromes } = adApi.useGetByIcaoCodesQuery([
     ...new Set(
@@ -32,12 +36,15 @@ export const AerodromeLayer = () => {
       {Object.values(aerodromes ?? {}).map((ad) => {
         const station = data?.airports?.[
           ad.locationIndicatorICAO
-        ]?.topdown?.find((pos) => activePositions[pos])
+        ]?.topdown?.find(
+          (pos) => activePositions[pos]?.[syncedToOnline ? "online" : "manual"],
+        )
         return (
           <CircleMarker
             center={[ad.latitude, ad.longitude]}
             radius={3}
             key={ad.locationIndicatorICAO}
+            pane="markerPane"
           >
             <Tooltip>
               <Text variant="label">{ad.locationIndicatorICAO}</Text>
