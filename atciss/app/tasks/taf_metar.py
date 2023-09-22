@@ -23,7 +23,7 @@ async def fetch_taf_metar() -> None:
 
             csv_data = csv.reader((await res.text()).split("\n"), delimiter=",")
 
-            log.info("METARs received")
+            log.info(f"{taf_metar.upper()}s received")
 
             async with redis_client.pipeline() as pipe:
                 for c in csv_data:
