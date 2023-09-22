@@ -1,7 +1,7 @@
 """Application controllers - metar."""
-import logging
 from typing import Annotated, Dict, List, cast
 
+from loguru import logger
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from ..controllers.auth import get_user
@@ -12,7 +12,6 @@ from ..views.notam import NotamModel
 from ..utils.redis import RedisClient
 
 router = APIRouter()
-log = logging.getLogger(__name__)
 
 
 @router.get(

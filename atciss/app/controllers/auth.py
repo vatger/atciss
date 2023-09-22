@@ -1,8 +1,9 @@
 """Application controllers - metar."""
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-import logging
 from typing import Annotated, Dict, List, Optional
+
+from loguru import logger
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2AuthorizationCodeBearer
 from jose import JWTError, jwt
@@ -13,8 +14,6 @@ from fastapi_async_sqlalchemy import db
 from ..utils.aiohttp_client import AiohttpClient
 from ...config import settings
 from ..models import User
-
-logger = logging.getLogger(__name__)
 
 router = APIRouter()
 

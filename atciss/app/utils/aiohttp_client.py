@@ -1,6 +1,6 @@
-import logging
 from typing import Optional
 from socket import AF_INET
+from loguru import logger
 
 import aiohttp
 from aiohttp.client_exceptions import ClientConnectorError
@@ -14,7 +14,6 @@ class AiohttpClient:
     """Aiohttp session client utility."""
 
     aiohttp_client: Optional[aiohttp.ClientSession] = None
-    log: logging.Logger = logging.getLogger(__name__)
 
     @classmethod
     def get(cls) -> aiohttp.ClientSession:
@@ -23,7 +22,7 @@ class AiohttpClient:
         Returns:
             aiohttp.ClientSession: ClientSession object instance.
         """
-        cls.log.debug("Initialize AiohttpClient session.")
+        logger.debug("Initialize AiohttpClient session.")
         timeout = aiohttp.ClientTimeout(total=15)
         connector = aiohttp.TCPConnector(
             family=AF_INET,

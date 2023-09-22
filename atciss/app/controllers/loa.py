@@ -1,5 +1,4 @@
 """Application controllers - metar."""
-import logging
 from typing import Annotated, List, Optional, cast
 from fastapi import APIRouter, Depends, Query
 from pydantic import TypeAdapter
@@ -10,8 +9,6 @@ from ..views.loa import LoaItem
 from ..utils.redis import RedisClient
 
 router = APIRouter()
-
-logger = logging.getLogger(__name__)
 
 
 @router.get(

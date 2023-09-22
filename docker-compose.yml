@@ -8,7 +8,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      ATCISS_BIND: "[::]:8000"
+      ATCISS_POSTGRES_HOST: db
       ATCISS_REDIS_HOST: redis
     volumes:
       - ./atciss:/code/atciss

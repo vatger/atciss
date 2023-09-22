@@ -1,6 +1,6 @@
 """Application controllers - taf."""
-import logging
 from typing import Annotated, Dict, Sequence, Optional
+from loguru import logger
 from fastapi import APIRouter, Query, Depends, HTTPException
 
 from atciss.app.views.metar import AirportIcao
@@ -11,8 +11,6 @@ from ..models import User
 from ..utils.redis import RedisClient
 
 router = APIRouter()
-
-logger = logging.getLogger(__name__)
 
 
 async def fetch_taf(icao: AirportIcao) -> Optional[str]:

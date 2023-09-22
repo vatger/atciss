@@ -1,9 +1,7 @@
 import csv
-import logging
+from loguru import logger
 
 from ..utils import RedisClient, ClientConnectorError, AiohttpClient
-
-log = logging.getLogger(__name__)
 
 
 async def fetch_taf_metar() -> None:
@@ -18,12 +16,12 @@ async def fetch_taf_metar() -> None:
                     + f"{taf_metar}s.cache.csv"
                 )
             except ClientConnectorError as e:
-                log.error(f"Could not connect {str(e)}")
+                logger.error(f"Could not connect {str(e)}")
                 return
 
             csv_data = csv.reader((await res.text()).split("\n"), delimiter=",")
 
-            log.info(f"{taf_metar.upper()}s received")
+            logger.info(f"{taf_metar.upper()}s received")
 
             async with redis_client.pipeline() as pipe:
                 for c in csv_data:

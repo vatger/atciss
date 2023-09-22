@@ -1,32 +1,37 @@
 """Command-line interface - serve command."""
-from typing import Dict, Any
+import os.path
 from multiprocessing import cpu_count
 
+import uvicorn
 import click
 
-from .. import ApplicationLoader
+import atciss
 from ..app import get_application
+from ..config import settings
+from ..log import setup_logging
 
 
-CMD_SHORT_HELP = "Run production server."
 CMD_HELP = """\
-Run production gunicorn (WSGI) server with uvicorn (ASGI) workers.
+Run production uvicorn server. 
 """
 
 
 @click.command(
     help=CMD_HELP,
-    short_help=CMD_SHORT_HELP,
 )
 @click.option(
-    "--bind",
-    help="""\
-    The socket to bind.
-    A string of the form: 'HOST', 'HOST:PORT', 'unix:PATH'.
-    An IP is a valid HOST.
-    """,
+    "--host",
+    help="The host to bind",
     type=click.STRING,
     required=False,
+    default="::",
+)
+@click.option(
+    "--port",
+    help="The port to bind",
+    type=click.INT,
+    required=False,
+    default=8000,
 )
 @click.option(
     "-w",
@@ -34,40 +39,20 @@ Run production gunicorn (WSGI) server with uvicorn (ASGI) workers.
     help="The number of worker processes for handling requests.",
     type=click.IntRange(min=1, max=cpu_count()),
     required=False,
+    default=cpu_count() if settings.DEBUG else 1,
 )
-@click.option(
-    "-D",
-    "--daemon",
-    help="Daemonize the Gunicorn process.",
-    is_flag=True,
-    required=False,
-)
-@click.option(
-    "-e",
-    "--env",
-    "raw_env",
-    help="Set environment variables in the execution environment.",
-    type=click.STRING,
-    multiple=True,
-    required=False,
-)
-@click.pass_context
-def serve(ctx: click.Context, **options: Dict[str, Any]) -> None:
-    """Define command-line interface serve command.
-
-    Args:
-        ctx (click.Context): Click Context class object instance.
-        options (typing.Dict[str, typing.Any]): Map of command option names to
-            their parsed values.
-    """
-    overrides = {}
-
-    for key, value in options.items():
-        source = ctx.get_parameter_source(key)
-        if source and source.name == "COMMANDLINE":
-            overrides[key] = value
-
-    ApplicationLoader(
-        application=get_application(),
-        overrides=overrides,
-    ).run()
+def serve(host: str, port: int, workers: int) -> None:
+    """Define command-line interface serve command."""
+    config = uvicorn.Config(
+        get_application(),
+        host=host,
+        port=port,
+        # workers=workers,
+        reload=settings.DEBUG,
+        log_level="debug" if settings.DEBUG else "info",
+        proxy_headers=True,
+        forwarded_allow_ips=["*"],
+    )
+    setup_logging(level="DEBUG" if settings.DEBUG else "INFO")
+    server = uvicorn.Server(config)
+    server.run()

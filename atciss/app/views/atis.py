@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-import logging
 import re
 from typing import Any, List, Optional
 
+from loguru import logger
 from pydantic import AwareDatetime, BaseModel, field_validator, model_validator
-
-logger = logging.getLogger(__name__)
 
 
 class Atis(BaseModel):

@@ -1,13 +1,11 @@
-import logging
 from collections import defaultdict
 from typing import List
 
+from loguru import logger
 from pydantic import TypeAdapter
 
 from ..views.loa import LoaItem
 from ..utils import AiohttpClient, ClientConnectorError, RedisClient
-
-log = logging.getLogger(__name__)
 
 
 async def fetch_loas() -> None:
@@ -20,7 +18,7 @@ async def fetch_loas() -> None:
                 "https://loa.vatsim-germany.org/api/v1/conditions",
             )
         except ClientConnectorError as e:
-            log.exception(f"Could not connect {e!s}")
+            logger.exception(f"Could not connect {e!s}")
             return
 
         loas = TypeAdapter(List[LoaItem]).validate_python(await res.json())
@@ -34,7 +32,7 @@ async def fetch_loas() -> None:
             loas_per_fir_or_sector[loa.to_sector].append(loa)
         loas_per_fir_or_sector[loa.to_fir].append(loa)
 
-    log.info(f"LoAs: {len(loas)} received")
+    logger.info(f"LoAs: {len(loas)} received")
 
     async with redis_client.pipeline() as pipe:
         for fir, loas in loas_per_fir_or_sector.items():

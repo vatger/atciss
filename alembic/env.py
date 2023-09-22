@@ -12,24 +12,22 @@ from sqlmodel import SQLModel
 import atciss.app.models  # noqa: F401
 
 
+from atciss.log import setup_logging
+
+setup_logging()
+
+from atciss.config import settings
+
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-
-# Interpret the config file for Python logging.
-# This line sets up loggers basically.
-if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
 
 target_metadata = SQLModel.metadata
 
 
 def get_url() -> str:
-    user = os.getenv("ATCISS_POSTGRES_USER", "postgres")
-    password = os.getenv("ATCISS_POSTGRES_PASSWORD", "fnord")
-    server = os.getenv("ATCISS_POSTGRES_HOST", "db")
-    db = os.getenv("ATCISS_POSTGRES_DB", "atciss")
-    return f"postgresql+asyncpg://{user}:{password}@{server}/{db}"
+    return f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}/{settings.POSTGRES_DB}"
 
 
 def run_migrations_offline() -> None:

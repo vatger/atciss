@@ -1,5 +1,4 @@
 """Application controllers - metar."""
-import logging
 from typing import Annotated, Dict, Sequence, Optional, cast
 from fastapi import APIRouter, Query, Depends, HTTPException
 from fastapi.responses import PlainTextResponse
@@ -13,19 +12,17 @@ from ..utils.redis import RedisClient
 
 router = APIRouter()
 
-logger = logging.getLogger(__name__)
-
 
 async def fetch_metar(icao: AirportIcao) -> Optional[MetarModel]:
-    redis_client = RedisClient.open()
-    try:
-        metar = cast(Optional[str], await redis_client.get(f"metar:{icao}"))
-        if metar is None:
-            return None
-        return MetarModel.from_str(metar)
-    except ParserError as e:
-        logger.warning(e)
-    return None
+    async with RedisClient.open() as redis_client:
+        try:
+            metar = cast(Optional[str], await redis_client.get(f"metar:{icao}"))
+            if metar is None:
+                return None
+            return MetarModel.from_str(metar)
+        except ParserError as e:
+            logger.warning(e)
+        return None
 
 
 @router.get(

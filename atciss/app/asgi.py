@@ -1,6 +1,6 @@
 """Application implementation - ASGI."""
-import logging
 
+from loguru import logger
 from fastapi import FastAPI
 from fastapi_async_sqlalchemy import SQLAlchemyMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator as PrometheusInstrumentator
@@ -8,20 +8,20 @@ from prometheus_fastapi_instrumentator import Instrumentator as PrometheusInstru
 from ..config import settings
 from .router import root_api_router
 from .utils import RedisClient
-
-
-log = logging.getLogger(__name__)
+from ..log import setup_logging
 
 
 async def on_shutdown() -> None:
     """Shutdown event handler."""
-    log.debug("Execute FastAPI shutdown event handler")
+    logger.debug("Execute FastAPI shutdown event handler")
     await RedisClient.close()
 
 
 def get_application() -> FastAPI:
     """Initialize FastAPI application."""
-    log.debug("Initialize FastAPI application node.")
+    setup_logging(level="DEBUG" if settings.DEBUG else "INFO")
+    logger.debug("Initialize FastAPI application node.")
+
     app = FastAPI(
         title=settings.PROJECT_NAME,
         debug=settings.DEBUG,
@@ -43,7 +43,7 @@ def get_application() -> FastAPI:
         },
     )
 
-    log.debug("Add application routes.")
+    logger.debug("Add application routes.")
     app.include_router(root_api_router)
 
     return app

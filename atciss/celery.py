@@ -1,10 +1,20 @@
+from typing import Any
+
 from celery import Celery
 from celery.schedules import crontab
+import celery.signals
 from asgiref.sync import async_to_sync
 
 from .config import redis
+from .log import setup_logging
 
 app = Celery(__name__)
+
+
+@celery.signals.setup_logging.connect
+def setup_logging_hook(**_: dict[Any, Any]) -> None:
+    setup_logging()
+
 
 app.conf.broker_url = f"redis://{redis.REDIS_HOST}:{redis.REDIS_PORT}"
 app.conf.result_backend = f"redis://{redis.REDIS_HOST}:{redis.REDIS_PORT}"

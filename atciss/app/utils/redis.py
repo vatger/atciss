@@ -1,5 +1,4 @@
-import logging
-
+from loguru import logger
 from redis import asyncio as aioredis
 
 from ...config import redis as redis_conf
@@ -9,11 +8,10 @@ class RedisClient:
     """Handling redis database connection."""
 
     redis_client: aioredis.Redis | None = None
-    log: logging.Logger = logging.getLogger(__name__)
 
     @classmethod
     def get(cls) -> aioredis.Redis:
-        cls.log.debug("Open Redis client")
+        logger.debug("Open Redis client")
         redis_init_kwargs = {
             "encoding": "utf-8",
             "port": redis_conf.REDIS_PORT,
@@ -49,5 +47,5 @@ class RedisClient:
     async def close(cls) -> None:
         """Close redis client."""
         if cls.redis_client:
-            cls.log.debug("Close Redis client")
+            logger.debug("Close Redis client")
             await cls.redis_client.close()

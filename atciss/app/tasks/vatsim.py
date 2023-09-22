@@ -1,13 +1,10 @@
-import logging
+from loguru import logger
 from aiohttp import ClientConnectorError
-
 from pydantic import TypeAdapter
 
 from ..utils import AiohttpClient, RedisClient
 from ..views.atis import Atis
 from ..views.vatsim import Controller, VatsimData
-
-log = logging.getLogger(__name__)
 
 
 async def fetch_vatsim_data() -> None:
@@ -20,14 +17,14 @@ async def fetch_vatsim_data() -> None:
                 "https://data.vatsim.net/v3/vatsim-data.json"
             )
         except ClientConnectorError as e:
-            log.error(f"Could not connect {str(e)}")
+            logger.error(f"Could not connect {str(e)}")
             return
 
         data = TypeAdapter(VatsimData).validate_python(await res.json())
 
     controllers = [c for c in data.controllers if c.facility > 0]
 
-    log.info(
+    logger.info(
         f"Vatsim data received: {len(controllers)} controllers, {len(data.atis)} ATIS"
     )
 

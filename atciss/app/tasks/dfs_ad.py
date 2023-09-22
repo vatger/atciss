@@ -1,9 +1,9 @@
 import io
-import logging
 import re
 from typing import Optional, cast
 from urllib.parse import urljoin
 
+from loguru import logger
 import pyaixm
 from astral import Observer
 from astral.sun import sunrise, sunset
@@ -11,8 +11,6 @@ from bs4 import BeautifulSoup, Tag
 from pydantic import AwareDatetime, BaseModel, computed_field, field_validator
 
 from ..utils import AiohttpClient, ClientConnectorError, RedisClient
-
-log = logging.getLogger(__name__)
 
 
 class Aerodrome(BaseModel):
@@ -64,13 +62,13 @@ async def fetch_dfs_ad_data() -> None:
         keys = await redis_client.keys("dfs:ad:*")
 
         if len(keys):
-            log.info("DFS data already found, not fetching")
+            logger.info("DFS data already found, not fetching")
             return
 
         aixm_url = await get_dfs_aixm_url("AirportHeliport")
 
         if aixm_url is None:
-            log.error("Could not find AirportHeliport URL")
+            logger.error("Could not find AirportHeliport URL")
             return
 
         async with AiohttpClient.get() as aiohttp_client:
@@ -79,7 +77,7 @@ async def fetch_dfs_ad_data() -> None:
         ad_data = pyaixm.parse(byts, resolve_xlinks=False)
 
     except ClientConnectorError as e:
-        log.error(f"Could not connect: {str(e)}")
+        logger.error(f"Could not connect: {str(e)}")
         return
 
     arps = {
