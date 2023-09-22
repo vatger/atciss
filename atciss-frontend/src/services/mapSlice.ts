@@ -5,6 +5,7 @@ type MapState = {
   level: number
   ofm: boolean
   dfs: boolean
+  dwd: boolean
   sectors: boolean
 }
 
@@ -14,6 +15,7 @@ const mapSlice = createSlice({
     level: 200,
     ofm: true,
     dfs: false,
+    dwd: false,
     sectors: true,
   } as MapState,
   reducers: {
@@ -28,6 +30,9 @@ const mapSlice = createSlice({
       state.dfs = active
       state.ofm = state.ofm && !active
     },
+    setDWD(state, { payload: active }: PayloadAction<boolean>) {
+      state.dwd = active
+    },
     setSectors(state, { payload: active }: PayloadAction<boolean>) {
       state.sectors = active
     },
@@ -37,8 +42,9 @@ const mapSlice = createSlice({
 export const selectLevel = (store: RootState) => store.map.level
 export const selectOpenFlightmaps = (store: RootState) => store.map.ofm
 export const selectDFS = (store: RootState) => store.map.dfs
+export const selectDWD = (store: RootState) => store.map.dwd
 export const selectSectors = (store: RootState) => store.map.sectors
 
-export const { setLevel, setOpenFlightmaps, setDFS, setSectors } =
+export const { setLevel, setOpenFlightmaps, setDFS, setDWD, setSectors } =
   mapSlice.actions
 export const { reducer: mapReducer } = mapSlice

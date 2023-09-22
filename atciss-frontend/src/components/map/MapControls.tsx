@@ -3,9 +3,11 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { usePollControllers } from "../../services/controllerApi"
 import {
   selectDFS,
+  selectDWD,
   selectOpenFlightmaps,
   selectSectors,
   setDFS,
+  setDWD,
   setOpenFlightmaps,
   setSectors,
 } from "../../services/mapSlice"
@@ -19,6 +21,7 @@ export const MapControls = () => {
 
   const ofm = useAppSelector(selectOpenFlightmaps)
   const dfs = useAppSelector(selectDFS)
+  const dwd = useAppSelector(selectDWD)
   const sectors = useAppSelector(selectSectors)
 
   return (
@@ -41,6 +44,16 @@ export const MapControls = () => {
             onChange={(e) => dispatch(setDFS(e.target.checked))}
           />
           DFS ICAO map
+        </Text>
+      </Box>
+      <Box>
+        <Text as="label" variant="label">
+          <input
+            type="checkbox"
+            checked={dwd}
+            onChange={(e) => dispatch(setDWD(e.target.checked))}
+          />
+          DWD Wx Radar
         </Text>
       </Box>
       <Box>
