@@ -3,32 +3,30 @@ import logging
 
 from ..utils import RedisClient, ClientConnectorError, AiohttpClient
 
-# from atciss.celery import app as celery_app
-
 log = logging.getLogger(__name__)
 
 
-# @celery_app.task(name="update_metar")
-async def fetch_metar() -> None:
-    """Periodically fetch METARs."""
+async def fetch_taf_metar() -> None:
+    """Periodically fetch TAFs and METARs."""
     redis_client = await RedisClient.get()
 
     async with AiohttpClient.get() as aiohttp_client:
-        try:
-            res = await aiohttp_client.get(
-                "https://www.aviationweather.gov/adds/dataserver_current/current/"
-                + "metars.cache.csv"
-            )
-        except ClientConnectorError as e:
-            log.error(f"Could not connect {str(e)}")
-            return
+        for taf_metar in ["taf", "metar"]:
+            try:
+                res = await aiohttp_client.get(
+                    "https://www.aviationweather.gov/adds/dataserver_current/current/"
+                    + f"{taf_metar}s.cache.csv"
+                )
+            except ClientConnectorError as e:
+                log.error(f"Could not connect {str(e)}")
+                return
 
-        metars_csv = csv.reader((await res.text()).split("\n"), delimiter=",")
+            csv_data = csv.reader((await res.text()).split("\n"), delimiter=",")
 
-    log.info("METARs received")
+            log.info(f"{taf_metar.upper()}s received")
 
-    async with redis_client.pipeline() as pipe:
-        for m in metars_csv:
-            if len(m) >= 2:
-                pipe.set(f"metar:{m[1]}", m[0])
-        await pipe.execute()
+            async with redis_client.pipeline() as pipe:
+                for c in csv_data:
+                    if len(c) >= 2:
+                        pipe.set(f"{taf_metar}:{c[1]}", c[0])
+                await pipe.execute()
