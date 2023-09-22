@@ -11,6 +11,7 @@ import { configReducer } from "../services/configSlice"
 import { controllerApi } from "../services/controllerApi"
 import { mapReducer } from "../services/mapSlice"
 import { loaApi } from "../services/loaApi"
+import { tafApi } from "../services/tafApi"
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
     [sectorApi.reducerPath]: sectorApi.reducer,
     [controllerApi.reducerPath]: controllerApi.reducer,
     [loaApi.reducerPath]: loaApi.reducer,
+    [tafApi.reducerPath]: tafApi.reducer,
     auth: authReducer,
     activePositions: activePositionReducer,
     config: configReducer,
@@ -34,6 +36,7 @@ export const store = configureStore({
       .concat(notamApi.middleware)
       .concat(sectorApi.middleware)
       .concat(loaApi.middleware)
+      .concat(tafApi.middleware)
       .concat(controllerApi.middleware),
 })
 

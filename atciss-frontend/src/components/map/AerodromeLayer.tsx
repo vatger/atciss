@@ -12,6 +12,7 @@ import { EBG_SETTINGS } from "../../app/config"
 import { CircleMarker } from "react-leaflet"
 import { Box, Text } from "theme-ui"
 import { usePollMetarByIcaoCodes, xmc } from "../../services/metarApi"
+import { usePollTafByIcaoCodes } from "../../services/tafApi"
 
 export const AerodromeLayer = () => {
   const { data } = sectorApi.useGetByRegionQuery()
@@ -35,6 +36,7 @@ export const AerodromeLayer = () => {
     ebgADs.filter((ad) => ad.startsWith("ED") && !vatglassesADs.includes(ad)),
   )
   const { data: metars } = usePollMetarByIcaoCodes(allADs)
+  const { data: tafs } = usePollTafByIcaoCodes(allADs)
   const activePositions = useAppSelector(selectActivePositions)
 
   const getCoord = (ad: string) =>
@@ -74,6 +76,7 @@ export const AerodromeLayer = () => {
                   {station ? ` by ${station}` : ""}
                 </Box>
                 <Box>{metar?.raw}</Box>
+                <Box>{tafs?.[ad]}</Box>
               </Tooltip>
             </CircleMarker>
           )

@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 async def fetch_metar(icao: AirportIcao) -> Optional[MetarModel]:
     redis_client = RedisClient.open()
     try:
-        metar = cast(Optional[AirportIcao], await redis_client.get(f"metar:{icao}"))
+        metar = cast(Optional[str], await redis_client.get(f"metar:{icao}"))
         if metar is None:
             return None
         return MetarModel.from_str(metar)
@@ -36,13 +36,7 @@ async def metars_get(
     user: Annotated[User, Depends(get_user)],
 ) -> Dict[AirportIcao, Optional[MetarModel]]:
     """Get METAR for multiple airports."""
-    metars = {}
-
-    for apt in airports:
-        metar = await fetch_metar(apt)
-        metars[apt] = metar
-
-    return metars
+    return {apt: await fetch_metar(apt) for apt in airports}
 
 
 @router.get(
