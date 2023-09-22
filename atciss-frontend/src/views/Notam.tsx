@@ -129,7 +129,9 @@ const Notam = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                           <Text variant="label">Source</Text> {n.source}
                         </Box>
                       </Flex>
-                      <pre>{n.body}</pre>
+                      <Box sx={{ my: 1 }}>
+                        <pre>{n.body}</pre>
+                      </Box>
                     </Box>
                   )
                 })}
