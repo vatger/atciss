@@ -10,7 +10,7 @@ import { selectActiveEbg } from "../../services/configSlice"
 import { adApi } from "../../services/adApi"
 import { EBG_SETTINGS } from "../../app/config"
 import { CircleMarker } from "react-leaflet"
-import { Box, Text } from "theme-ui"
+import { Box, Flex, Text } from "theme-ui"
 import { usePollMetarByIcaoCodes, xmc } from "../../services/metarApi"
 import { usePollTafByIcaoCodes } from "../../services/tafApi"
 
@@ -52,6 +52,9 @@ export const AerodromeLayer = () => {
           (pos) => activePositions[pos]?.[syncedToOnline ? "online" : "manual"],
         )
         const metar = metars?.[ad]
+        const taf = tafs?.[ad]
+          ?.replace(/.*?[A-Z]{4}\s/, "")
+          .replaceAll(/\s(BECMG|PROB\d{2}\sTEMPO|TEMPO|FM\d{6})/g, "\n  $1")
         const xmcState = metar ? xmc(metar) : null
         const coord = getCoord(ad)
         return (
@@ -71,12 +74,41 @@ export const AerodromeLayer = () => {
               }}
             >
               <Tooltip>
-                <Box>
-                  <Text variant="label">{ad}</Text>
-                  {station ? ` by ${station}` : ""}
-                </Box>
-                <Box>{metar?.raw}</Box>
-                <Box>{tafs?.[ad]}</Box>
+                <Flex
+                  sx={{
+                    justifyContent: "space-between",
+                    alignItems: "baseline",
+                    gap: "2",
+                  }}
+                >
+                  <Box>
+                    <Text variant="mapAd">{ad} </Text>
+                    {station ? (
+                      <>
+                        by <Text variant="label">{station}</Text>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </Box>
+                  {data?.airports?.[ad]?.callsign && (
+                    <Text variant="label">
+                      {data?.airports?.[ad]?.callsign}
+                    </Text>
+                  )}
+                </Flex>
+                {metar?.raw && (
+                  <Box sx={{ mt: 1 }}>
+                    <Text variant="label">METAR</Text>
+                    <pre>{metar?.raw?.replace(/.*?[A-Z]{4}\s/, "")}</pre>
+                  </Box>
+                )}
+                {taf && (
+                  <Box sx={{ mt: 1 }}>
+                    <Text variant="label">TAF</Text>
+                    <pre>{taf}</pre>
+                  </Box>
+                )}
               </Tooltip>
             </CircleMarker>
           )

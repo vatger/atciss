@@ -25,6 +25,11 @@ export const theme: Theme = {
     primary: {
       color: "primary",
     },
+    mapAd: {
+      color: "primary",
+      fontSize: "3",
+      fontWeight: "bold",
+    },
   },
   space: ["0px", "4px", "8px", "16px", "32px", "48px", "64px"],
 }
