@@ -1,5 +1,6 @@
 """Application controllers - metar."""
 from typing import Annotated, Dict, Sequence, Optional, cast
+from loguru import logger
 from fastapi import APIRouter, Query, Depends, HTTPException
 from fastapi.responses import PlainTextResponse
 from metar.Metar import ParserError
@@ -45,6 +46,8 @@ async def metar_raw_get(
     icao: Annotated[AirportIcao, Query(alias="id")],
 ) -> str:
     """Get METAR for a single airport. Compatible to metar.vatsim.net."""
+    logger.debug("FOO")
+
     metar = await fetch_metar(icao)
     if metar is None:
         raise HTTPException(status_code=404)

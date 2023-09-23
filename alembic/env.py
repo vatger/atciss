@@ -1,6 +1,4 @@
 import asyncio
-import os
-from logging.config import fileConfig
 
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
@@ -11,12 +9,10 @@ from alembic import context
 from sqlmodel import SQLModel
 import atciss.app.models  # noqa: F401
 
-
+from atciss.config import settings
 from atciss.log import setup_logging
 
-setup_logging()
-
-from atciss.config import settings
+setup_logging(settings.LOG_LEVEL)
 
 
 # this is the Alembic Config object, which provides
@@ -24,10 +20,6 @@ from atciss.config import settings
 config = context.config
 
 target_metadata = SQLModel.metadata
-
-
-def get_url() -> str:
-    return f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}/{settings.POSTGRES_DB}"
 
 
 def run_migrations_offline() -> None:
@@ -43,7 +35,7 @@ def run_migrations_offline() -> None:
 
     """
     context.configure(
-        url=get_url(),
+        url=settings.DATABASE_DSN,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -67,7 +59,7 @@ async def run_async_migrations() -> None:
     """
 
     configuration = config.get_section(config.config_ini_section)
-    configuration["sqlalchemy.url"] = get_url()
+    configuration["sqlalchemy.url"]: str = str(settings.DATABASE_DSN)
     connectable = async_engine_from_config(
         configuration,
         prefix="sqlalchemy.",

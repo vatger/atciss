@@ -4,17 +4,15 @@ services:
     build:
       context: .
       target: dev
-    command: ["serve"]
+    command: ["serve", "--host=0.0.0.0"]
     ports:
       - "8000:8000"
     environment:
-      ATCISS_POSTGRES_HOST: db
+      ATCISS_DATABASE_DSN: "postgresql+asyncpg://postgres:fnord@db/atciss"
       ATCISS_REDIS_HOST: redis
+      ATCISS_LOG_LEVEL: INFO
     volumes:
-      - ./atciss:/code/atciss
-    depends_on:
-      - db
-      - redis
+      - .:/code
 
   worker:
     image: atciss-backend

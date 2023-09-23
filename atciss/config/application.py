@@ -1,32 +1,17 @@
 """Application configuration - FastAPI."""
-from pydantic_settings import BaseSettings
+from pydantic import PostgresDsn
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from ..version import __version__
 
 
 class Application(BaseSettings):
-    """Define application configuration model.
+    """Define application configuration model."""
 
-    Constructor will attempt to determine the values of any fields not passed
-    as keyword arguments by reading from the environment. Default values will
-    still be used if the matching environment variable is not set.
-
-    Environment variables:
-        * ATCISS_DEBUG
-        * ATCISS_PROJECT_NAME
-        * ATCISS_VERSION
-        * ATCISS_DOCS_URL
-        * ATCISS_USE_REDIS
-
-    Attributes:
-        DEBUG (bool): FastAPI logging level. You should disable this for
-            production.
-        PROJECT_NAME (str): FastAPI project name.
-        VERSION (str): Application version.
-        DOCS_URL (str): Path where swagger ui will be served at.
-    """
+    model_config = SettingsConfigDict(env_prefix="ATCISS_", case_sensitive=False)
 
     DEBUG: bool = True
+    LOG_LEVEL: str = "INFO"
     PROJECT_NAME: str = "atciss"
     VERSION: str = __version__
     DOCS_URL: str = "/"
@@ -37,10 +22,7 @@ class Application(BaseSettings):
     VATSIM_CLIENT_SECRET: str = "UR3n0xnjzP4KAbB3enMDCGVD4qbyLvIoSAQtzVm2"
     VATSIM_REDIRECT_URL: str = "http://localhost:5173/auth/callback"
 
-    POSTGRES_HOST: str = "localhost"
-    POSTGRES_USER: str = "postgres"
-    POSTGRES_PASSWORD: str = "fnord"
-    POSTGRES_DB: str = "atciss"
+    DATABASE_DSN: PostgresDsn = "postgresql+asyncpg://atciss:fnord@localhost/atciss"
 
     # check https://github.com/lennycolton/vatglasses-data/tree/main/data
     # TODO add italy, poland and switzerland when available
@@ -53,21 +35,6 @@ class Application(BaseSettings):
         "france",
         "nl",
     ]
-
-    class Config:
-        """Config sub-class needed to customize BaseSettings settings.
-
-        Attributes:
-            case_sensitive (bool): When case_sensitive is True, the environment
-                variable names must match field names (optionally with a prefix)
-            env_prefix (str): The prefix for environment variable.
-
-        Resources:
-            https://pydantic-docs.helpmanual.io/usage/settings/
-        """
-
-        case_sensitive = True
-        env_prefix = "ATCISS_"
 
 
 settings = Application()

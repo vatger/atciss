@@ -19,7 +19,7 @@ async def on_shutdown() -> None:
 
 def get_application() -> FastAPI:
     """Initialize FastAPI application."""
-    setup_logging(level="DEBUG" if settings.DEBUG else "INFO")
+    setup_logging(level=settings.LOG_LEVEL)
     logger.debug("Initialize FastAPI application node.")
 
     app = FastAPI(
@@ -34,7 +34,7 @@ def get_application() -> FastAPI:
 
     app.add_middleware(
         SQLAlchemyMiddleware,
-        db_url=f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}/{settings.POSTGRES_DB}",
+        db_url=str(settings.DATABASE_DSN),
         engine_args={  # engine arguments example
             "echo": True,
             "pool_pre_ping": True,

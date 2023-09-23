@@ -12,8 +12,8 @@ app = Celery(__name__)
 
 
 @celery.signals.setup_logging.connect
-def setup_logging_hook(**_: dict[Any, Any]) -> None:
-    setup_logging()
+def setup_logging_hook(loglevel: str, **_: dict[Any, Any]) -> None:
+    setup_logging(level=loglevel)
 
 
 app.conf.broker_url = f"redis://{redis.REDIS_HOST}:{redis.REDIS_PORT}"

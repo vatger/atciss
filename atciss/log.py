@@ -7,6 +7,8 @@ import loguru
 from loguru import logger
 import asgiref
 
+from .config import settings
+
 
 class InterceptHandler(logging.Handler):
     loglevel_mapping = {
@@ -37,10 +39,12 @@ class InterceptHandler(logging.Handler):
         )
 
 
-def setup_logging(level="DEBUG") -> None:
+def setup_logging(level: str) -> None:
+    settings.LOG_LEVEL = level
+
     logger.remove()
     _ = logger.add(
-        sys.stderr,
+        sys.stdout,
         enqueue=True,
         level=level,
         format=(
