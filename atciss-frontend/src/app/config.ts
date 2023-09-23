@@ -6,6 +6,7 @@ type EBG = {
   minorAerodromes: string[]
   aerodromes: string[]
   relevantAerodromes: string[]
+  wxPrefixes: string[]
 }
 export const EBG_SETTINGS: { [name: string]: EBG } = {
   EDMM_W: {
@@ -29,6 +30,7 @@ export const EBG_SETTINGS: { [name: string]: EBG } = {
     aerodromes: ["EDJA", "EDMA", "EDMO", "ETSI", "ETSL", "ETSN"],
     minorAerodromes: ["EDME", "EDMS", "EDMX", "EDPR", "ETHL"],
     relevantAerodromes: ["EDDS", "EDDF"],
+    wxPrefixes: ["ED", "ET", "LK", "LO", "LS"],
   },
   EDMM_E: {
     fir: "EDMM",
@@ -38,5 +40,6 @@ export const EBG_SETTINGS: { [name: string]: EBG } = {
     aerodromes: ["EDDC", "EDDE", "EDQM"],
     minorAerodromes: ["EDAB", "EDQD", "EDQC", "EDQA", "ETEB", "ETIC"],
     relevantAerodromes: [],
+    wxPrefixes: ["ED", "ET", "EP", "LK"],
   },
 }

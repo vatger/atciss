@@ -53,8 +53,6 @@ export const AerodromeLayer = () => {
         )
         const metar = metars?.[ad]
         const taf = tafs?.[ad]
-          ?.replace(/.*?[A-Z]{4}\s/, "")
-          .replaceAll(/\s(BECMG|PROB\d{2}\sTEMPO|TEMPO|FM\d{6})/g, "\n  $1")
         const xmcState = metar ? xmc(metar) : null
         const coord = getCoord(ad)
         return (

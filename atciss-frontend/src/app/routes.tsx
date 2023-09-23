@@ -15,6 +15,7 @@ import {
 import { LOA } from "../views/LOA"
 import { AipIfr } from "../views/AipIfr"
 import { AipVfr } from "../views/AipVfr"
+import { Windy } from "../views/Windy"
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "wx",
         element: <Wx />,
+      },
+      {
+        path: "windy",
+        element: <Windy />,
       },
       {
         path: "notam",

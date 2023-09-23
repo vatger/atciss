@@ -49,14 +49,6 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         </NavButton>
         <NavButton
           onClick={() => {
-            navigate("/loa")
-          }}
-        >
-          LOA
-        </NavButton>
-        <NavButton
-          sx={{ gridRow: "2/3" }}
-          onClick={() => {
             navigate("/wx")
           }}
         >
@@ -64,10 +56,25 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         </NavButton>
         <NavButton
           onClick={() => {
+            navigate("/loa")
+          }}
+        >
+          LOA
+        </NavButton>
+        <NavButton
+          onClick={() => {
             navigate("/notam")
           }}
         >
           NOTAM
+        </NavButton>
+        <NavButton
+          sx={{ gridRow: "2/3" }}
+          onClick={() => {
+            navigate("/windy")
+          }}
+        >
+          Windy
         </NavButton>
         <NavButton
           sx={{ gridRow: "2/3" }}
