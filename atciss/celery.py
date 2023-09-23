@@ -5,15 +5,22 @@ from celery.schedules import crontab
 import celery.signals
 from asgiref.sync import async_to_sync
 
-from .config import redis
+from .config import settings, redis
 from .log import setup_logging
 
 app = Celery(__name__)
 
 
-@celery.signals.setup_logging.connect
+@celery.signals.after_setup_logger.connect
 def setup_logging_hook(loglevel: str, **_: dict[Any, Any]) -> None:
-    setup_logging(level=loglevel)
+    settings.LOG_LEVEL = loglevel
+    setup_logging()
+
+
+@celery.signals.after_setup_task_logger.connect
+def setup_task_logging_hook(loglevel: str, **_: dict[Any, Any]) -> None:
+    settings.LOG_LEVEL = loglevel
+    setup_logging()
 
 
 app.conf.broker_url = f"redis://{redis.REDIS_HOST}:{redis.REDIS_PORT}"

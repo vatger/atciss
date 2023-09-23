@@ -221,6 +221,13 @@
             echo "[nix][lint] Run atciss black checks."
             black --check atciss
           '';
+          backend-dev = {
+            type = "app";
+            program = toString (pkgs.writeScript "backend-dev" ''
+              export PATH="${pkgs.lib.makeBinPath [pkgs.atciss-dev]}"
+              uvicorn --factory atciss.app.asgi:get_application --reload
+            '');
+          };
         };
 
         formatter = pkgs.alejandra;

@@ -19,7 +19,7 @@ async def on_shutdown() -> None:
 
 def get_application() -> FastAPI:
     """Initialize FastAPI application."""
-    setup_logging(level=settings.LOG_LEVEL)
+    setup_logging()
     logger.debug("Initialize FastAPI application node.")
 
     app = FastAPI(

@@ -19,7 +19,9 @@ async def fetch_taf_metar() -> None:
                 logger.error(f"Could not connect {str(e)}")
                 return
 
-            csv_data = csv.reader((await res.text()).split("\n"), delimiter=",")
+            csv_data = csv.reader(
+                (await res.text(encoding="latin1")).split("\n"), delimiter=","
+            )
 
             logger.info(f"{taf_metar.upper()}s received")
 

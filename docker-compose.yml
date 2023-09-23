@@ -4,15 +4,20 @@ services:
     build:
       context: .
       target: dev
-    command: ["serve", "--host=0.0.0.0"]
+    entrypoint:
+      - "uvicorn"
+      - "atciss.app.asgi:get_application"
+      - "--factory"
+      - "--reload"
+      - "--reload-dir=/code/atciss"
+      - "--log-level=info"
     ports:
       - "8000:8000"
     environment:
       ATCISS_DATABASE_DSN: "postgresql+asyncpg://postgres:fnord@db/atciss"
       ATCISS_REDIS_HOST: redis
-      ATCISS_LOG_LEVEL: INFO
     volumes:
-      - .:/code
+      - ./atciss:/code/atciss
 
   worker:
     image: atciss-backend

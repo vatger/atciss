@@ -12,7 +12,7 @@ import atciss.app.models  # noqa: F401
 from atciss.config import settings
 from atciss.log import setup_logging
 
-setup_logging(settings.LOG_LEVEL)
+setup_logging()
 
 
 # this is the Alembic Config object, which provides

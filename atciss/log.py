@@ -39,14 +39,12 @@ class InterceptHandler(logging.Handler):
         )
 
 
-def setup_logging(level: str) -> None:
-    settings.LOG_LEVEL = level
-
+def setup_logging() -> None:
     logger.remove()
     _ = logger.add(
         sys.stdout,
         enqueue=True,
-        level=level,
+        level=settings.LOG_LEVEL,
         format=(
             "<green>{elapsed}</green> | "
             "<level>{level: <8}</level> | "
