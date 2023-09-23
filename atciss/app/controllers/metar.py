@@ -1,5 +1,6 @@
 """Application controllers - metar."""
 from typing import Annotated, Dict, Sequence, Optional, cast
+from loguru import logger
 from fastapi import APIRouter, Query, Depends, HTTPException
 from fastapi.responses import PlainTextResponse
 from metar.Metar import ParserError
