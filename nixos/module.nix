@@ -46,12 +46,6 @@ in {
     services.postgresql = {
       enable = true;
       ensureDatabases = ["atciss"];
-      enableTCPIP = true;
-      authentication = pkgs.lib.mkOverride 10 ''
-        local all      all     trust
-        host  all      all     127.0.0.1/32   trust
-        host  all      all     ::1/128        trust
-      '';
       ensureUsers = [
         {
           name = "atciss";
@@ -67,13 +61,14 @@ in {
 
       environment = {
         ATCISS_BASE_URL = "https://${cfg.host}";
-        ATCISS_POSTGRES_HOST = "localhost";
+        ATCISS_DATABASE_DSN = "postgresql+asyncpg://localhost/atciss?host=/run/postgresql";
       };
 
       serviceConfig = {
         ExecStartPre = "${pkgs.atciss}/bin/alembic upgrade head";
         ExecStart = "${pkgs.atciss}/bin/atciss serve";
         DynamicUser = true;
+        User = "atciss";
         Restart = "always";
         RestartSec = "1s";
         EnvironmentFile = cfg.environmentFile;
