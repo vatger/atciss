@@ -53,7 +53,7 @@ export const MapControls = () => {
             checked={dwd}
             onChange={(e) => dispatch(setDWD(e.target.checked))}
           />
-          DWD Wx Radar
+          DWD Niederschlagsradar
         </Text>
       </Box>
       <Box>

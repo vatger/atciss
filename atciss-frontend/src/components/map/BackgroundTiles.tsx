@@ -40,11 +40,11 @@ export const BackgroundTiles = () => {
           attribution="Deutscher Wetterdienst (DWD)"
           url="https://maps.dwd.de/geoserver/wms"
           params={{
-            layers: "dwd:RX-Produkt",
+            layers: "dwd:Niederschlagsradar",
             transparent: true,
             format: "image/png",
           }}
-          opacity={0.5}
+          opacity={1}
           pane="shadowPane"
         />
       )}
