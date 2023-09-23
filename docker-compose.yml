@@ -8,6 +8,7 @@ services:
       - "uvicorn"
       - "atciss.app.asgi:get_application"
       - "--factory"
+      - "--host=0.0.0.0"
       - "--reload"
       - "--reload-dir=/code/atciss"
       - "--log-level=info"
@@ -42,11 +43,13 @@ services:
     build:
       context: .
       target: dev
+    user: "1000:1000"
     entrypoint:
       - "celery"
       - "-A"
       - "atciss"
       - "beat"
+      - "--schedule=/tmp/celerybeat-schedule"
       - "--loglevel=info"
     environment:
       ATCISS_REDIS_HOST: redis
