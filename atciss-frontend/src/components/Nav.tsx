@@ -77,6 +77,22 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         >
           A/C-Type
         </NavButton>
+        <NavButton
+          sx={{ gridRow: "2/3" }}
+          onClick={() => {
+            navigate("/aip-ifr")
+          }}
+        >
+          AIP IFR
+        </NavButton>
+        <NavButton
+          sx={{ gridRow: "2/3" }}
+          onClick={() => {
+            navigate("/aip-vfr")
+          }}
+        >
+          AIP VFR
+        </NavButton>
       </Grid>
       <select
         value={activeEbg}

@@ -13,6 +13,8 @@ import {
   authLoader,
 } from "./auth"
 import { LOA } from "../views/LOA"
+import { AipIfr } from "../views/AipIfr"
+import { AipVfr } from "../views/AipVfr"
 
 const router = createBrowserRouter([
   {
@@ -42,6 +44,14 @@ const router = createBrowserRouter([
       {
         path: "loa",
         element: <LOA />,
+      },
+      {
+        path: "aip-ifr",
+        element: <AipIfr />,
+      },
+      {
+        path: "aip-vfr",
+        element: <AipVfr />,
       },
     ],
   },
