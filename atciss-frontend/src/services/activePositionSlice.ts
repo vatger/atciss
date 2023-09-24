@@ -2,6 +2,7 @@ import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit"
 import { RootState } from "../app/store"
 import { Position, SectorData, sectorApi } from "./airspaceApi"
 import { Controller, controllerApi } from "./controllerApi"
+import { localStorageOrDefault, setLocalStorage } from "../app/utils"
 
 type PositionStatus = {
   position: Position
@@ -20,19 +21,28 @@ const findSelectedPosition = (
   positions: Positions,
   syncedToOnline: boolean,
 ): string | null =>
-  previousSelected &&
-  positions[previousSelected][syncedToOnline ? "online" : "manual"]
-    ? previousSelected
-    : Object.entries(positions).find(
-        ([_, p]) => p[syncedToOnline ? "online" : "manual"],
-      )?.[0] ?? null
+  setLocalStorage(
+    "activePositions.selectedPosition",
+    previousSelected &&
+      positions[previousSelected][syncedToOnline ? "online" : "manual"]
+      ? previousSelected
+      : Object.entries(positions).find(
+          ([_, p]) => p[syncedToOnline ? "online" : "manual"],
+        )?.[0] ?? null,
+  )
 
 const activePositionSlice = createSlice({
   name: "activePositions",
   initialState: {
     positions: {},
-    selectedPosition: null,
-    syncedToOnline: true,
+    selectedPosition: localStorageOrDefault(
+      "activePositions.selectedPosition",
+      null,
+    ),
+    syncedToOnline: localStorageOrDefault(
+      "activePositions.syncedToOnline",
+      true,
+    ),
   } as ActivePositionState,
   reducers: {
     setPosition(
@@ -49,7 +59,10 @@ const activePositionSlice = createSlice({
       )
     },
     setSyncedToOnline(state, { payload: synced }: PayloadAction<boolean>) {
-      state.syncedToOnline = synced
+      state.syncedToOnline = setLocalStorage(
+        "activePositions.syncedToOnline",
+        synced,
+      )
       state.selectedPosition = findSelectedPosition(
         state.selectedPosition,
         state.positions,
@@ -57,7 +70,10 @@ const activePositionSlice = createSlice({
       )
     },
     setSelectedPosition(state, { payload: pos }: PayloadAction<string>) {
-      state.selectedPosition = pos
+      state.selectedPosition = setLocalStorage(
+        "activePositions.selectedPosition",
+        pos,
+      )
     },
     enableAllPositions(state) {
       const positions = Object.keys(state.positions).reduce(

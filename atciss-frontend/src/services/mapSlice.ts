@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { RootState } from "../app/store"
+import { localStorageOrDefault, setLocalStorage } from "../app/utils"
 
 type MapState = {
   level: number
@@ -12,29 +13,29 @@ type MapState = {
 const mapSlice = createSlice({
   name: "map",
   initialState: {
-    level: 200,
-    ofm: true,
-    dfs: false,
-    dwd: false,
-    sectors: true,
+    level: localStorageOrDefault("map.level", 200),
+    ofm: localStorageOrDefault("map.ofm", true),
+    dfs: localStorageOrDefault("map.dfs", false),
+    dwd: localStorageOrDefault("map.dwd", false),
+    sectors: localStorageOrDefault("map.sectors", true),
   } as MapState,
   reducers: {
     setLevel(state, { payload: level }: PayloadAction<number>) {
-      state.level = level
+      state.level = setLocalStorage("map.level", level)
     },
     setOpenFlightmaps(state, { payload: active }: PayloadAction<boolean>) {
-      state.ofm = active
-      state.dfs = state.dfs && !active
+      state.ofm = setLocalStorage("map.ofm", active)
+      state.dfs = setLocalStorage("map.dfs", state.dfs && !active)
     },
     setDFS(state, { payload: active }: PayloadAction<boolean>) {
-      state.dfs = active
-      state.ofm = state.ofm && !active
+      state.dfs = setLocalStorage("map.dfs", active)
+      state.ofm = setLocalStorage("map.ofm", state.ofm && !active)
     },
     setDWD(state, { payload: active }: PayloadAction<boolean>) {
-      state.dwd = active
+      state.dwd = setLocalStorage("map.dwd", active)
     },
     setSectors(state, { payload: active }: PayloadAction<boolean>) {
-      state.sectors = active
+      state.sectors = setLocalStorage("map.sectors", active)
     },
   },
 })
