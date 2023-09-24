@@ -1,7 +1,19 @@
 """Application configuration - root APIRouter."""
 from fastapi import APIRouter
 
-from .controllers import ready, metar, notam, atis, ad, auth, airspace, vatsim, loa, taf
+from .controllers import (
+    ready,
+    metar,
+    notam,
+    atis,
+    ad,
+    auth,
+    airspace,
+    vatsim,
+    loa,
+    taf,
+    ecfmp,
+)
 
 
 root_api_router = APIRouter(prefix="/api")
@@ -16,3 +28,4 @@ root_api_router.include_router(ad.router, tags=["aerodrome"])
 root_api_router.include_router(auth.router, tags=["user"])
 root_api_router.include_router(airspace.router, tags=["airspace"])
 root_api_router.include_router(loa.router, tags=["airspace"])
+root_api_router.include_router(ecfmp.router, tags=["airspace"])

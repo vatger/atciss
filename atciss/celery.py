@@ -33,6 +33,7 @@ app.conf.beat_schedule = {
     "update_sectors": {"task": "update_sectors", "schedule": crontab(minute="*/60")},
     "update_vatsim": {"task": "update_vatsim", "schedule": crontab(minute="*")},
     "update_taf_metar": {"task": "update_taf_metar", "schedule": crontab(minute="*")},
+    "update_ecfmp": {"task": "update_ecfmp", "schedule": crontab(minute="*")},
     "update_dfs_ad_data": {
         "task": "update_dfs_ad_data",
         "schedule": crontab(day_of_week="1"),
@@ -80,3 +81,10 @@ def update_dfs_ad_data():
     from atciss.app.tasks.dfs_ad import fetch_dfs_ad_data
 
     async_to_sync(fetch_dfs_ad_data)()
+
+
+@app.task(name="update_ecfmp")
+def update_ecfmp():
+    from atciss.app.tasks.ecfmp import fetch_ecfmp
+
+    async_to_sync(fetch_ecfmp)()
