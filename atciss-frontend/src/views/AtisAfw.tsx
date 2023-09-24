@@ -1,7 +1,8 @@
-import { Box, Grid, ThemeUIStyleObject } from "theme-ui"
+import { Box, Flex, Grid, ThemeUIStyleObject } from "theme-ui"
 import { Atis } from "../components/Atis"
 import { ADinfo } from "../components/ADInfo"
 import { SectorStatus } from "../components/SectorStatus"
+import { ECFMP } from "../components/ECFMP"
 
 const AtisAfw = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   return (
@@ -12,7 +13,9 @@ const AtisAfw = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       }}
     >
       <Atis sx={{ gridColumnEnd: "span 2" }} />
-      <Box>notes</Box>
+      <Flex sx={{ flexDirection: "column", overflow: "auto" }}>
+        <ECFMP />
+      </Flex>
       <Box>areas</Box>
       <SectorStatus />
       <ADinfo />

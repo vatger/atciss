@@ -33,6 +33,7 @@ export const ADinfo = ({ sx }: { sx?: ThemeUIStyleObject }) => {
               borderWidth: 1,
               borderColor: "primary",
               borderStyle: "solid",
+              gap: 0,
             }}
           >
             <Box>
