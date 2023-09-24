@@ -49,7 +49,10 @@ export const AerodromeLayer = () => {
     <LayerGroup>
       {allADs.map((ad) => {
         const station = data?.airports?.[ad]?.topdown?.find(
-          (pos) => activePositions[pos]?.[syncedToOnline ? "online" : "manual"],
+          (pos) =>
+            // TODO don't ignore rwy-dependent topdown
+            typeof pos === "string" &&
+            activePositions[pos]?.[syncedToOnline ? "online" : "manual"],
         )
         const metar = metars?.[ad]
         const taf = tafs?.[ad]
@@ -81,7 +84,7 @@ export const AerodromeLayer = () => {
                 >
                   <Box>
                     <Text variant="mapAd">{ad} </Text>
-                    {station ? (
+                    {typeof station === "string" ? (
                       <>
                         by <Text variant="label">{station}</Text>
                       </>

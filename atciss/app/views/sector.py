@@ -22,10 +22,17 @@ def convert_point(point: Tuple[str, str] | Coordinate) -> Coordinate:
     return cast(Coordinate, [convert_coordinate(cast(str, coord)) for coord in point])
 
 
+@dataclass
+class Runway:
+    icao: str
+    runway: str
+
+
 class Sector(BaseModel):
     points: list[Coordinate]
     min: Optional[int] = None
     max: Optional[int] = None
+    runways: list[Runway] = field(default_factory=list)
 
     @field_validator("points", mode="before")
     @classmethod
@@ -64,13 +71,7 @@ class Position:
 
 
 @dataclass
-class Runway:
-    icao: str
-    runway: str
-
-
-@dataclass
-class RwyDependantTopDown:
+class RwyDependentTopDown:
     runway: Runway
     topdown: list[str]
 
@@ -79,7 +80,8 @@ class RwyDependantTopDown:
 class Airport:
     callsign: str
     coord: Coordinate
-    topdown: list[str | RwyDependantTopDown] = field(default_factory=list)
+    runways: list[str] = field(default_factory=list)
+    topdown: list[str | RwyDependentTopDown] = field(default_factory=list)
 
 
 @dataclass
