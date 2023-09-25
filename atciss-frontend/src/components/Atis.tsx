@@ -30,21 +30,11 @@ const AtisRow = ({
 const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const activeEbg = useAppSelector(selectActiveEbg)
   const aerodromes = EBG_SETTINGS[activeEbg].majorAerodromes
-  const {
-    data: metars,
-    isLoading: metarIsLoading,
-    error: metarError,
-  } = usePollMetarByIcaoCodes(aerodromes)
-  const {
-    data: atis,
-    isLoading: atisIsLoading,
-    error: atisError,
-  } = usePollAtisByIcaoCodes(aerodromes)
-  const {
-    data: ads,
-    isLoading: adIsLoading,
-    error: adError,
-  } = usePollAdByIcaoCodes(aerodromes)
+  const { data: metars, isLoading: metarIsLoading } =
+    usePollMetarByIcaoCodes(aerodromes)
+  const { data: atis, isLoading: atisIsLoading } =
+    usePollAtisByIcaoCodes(aerodromes)
+  const { data: ads, isLoading: adIsLoading } = usePollAdByIcaoCodes(aerodromes)
 
   if (!metarIsLoading && metars && !atisIsLoading && !adIsLoading && ads) {
     return (
@@ -196,10 +186,6 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
     )
   } else {
     return "Unknown Error"
-      //metarError?.data?.detail
-      //? metarError.data.detail
-      //: metarIsLoading
-      //? "Loading..."
   }
 }
 
