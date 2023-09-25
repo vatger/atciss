@@ -43,7 +43,7 @@ types-python-jose = "^3.3.4.8"
 sqlalchemy-stubs = "^0.4"
 mypy = "^1.5.1"
 pyright = "1.1.326"
-ruff = "^0.0.290"
+ruff = "^0.0.291"
 celery-types = "^0.20.0"
 flower = "^2.0.1"
 
