@@ -6,6 +6,7 @@ import { usePollMetarByIcaoCodes, xmc } from "../services/metarApi"
 import { usePollTafByIcaoCodes } from "../services/tafApi"
 import { sectorApi } from "../services/airspaceApi"
 import { Box, Button, Flex, Grid, Text } from "theme-ui"
+import { usePollAtisByIcaoCodes } from "../services/atisApi"
 
 const Wx = () => {
   const activeEbg = useAppSelector(selectActiveEbg)
@@ -33,48 +34,66 @@ const Wx = () => {
   const aerodromes = [...ebgADs, ...vatglassesADs]
   const { data: metars } = usePollMetarByIcaoCodes(aerodromes)
   const { data: tafs } = usePollTafByIcaoCodes(aerodromes)
+  const { data: atiss } = usePollAtisByIcaoCodes(aerodromes)
   const metar = metars?.[selectedAD]
   const taf = tafs?.[selectedAD]
+  const atis = atiss?.[selectedAD]
   const xmcState = metar ? xmc(metar) : null
 
   return (
-    <Flex sx={{ flexDirection: "column", width: "100%" }}>
-      <Flex
-        sx={{
-          alignItems: "baseline",
-          gap: "4",
-        }}
-      >
-        <Box>
-          <Text variant="mapAd">{selectedAD}</Text>
-        </Box>
-        <Box>
-          {data?.airports?.[selectedAD]?.callsign && (
-            <Text variant="label">
-              {data?.airports?.[selectedAD]?.callsign}
-            </Text>
-          )}
-        </Box>
-        <Box>
-          <Text variant="label">{xmcState}</Text>
-        </Box>
+    <Flex
+      sx={{
+        flexDirection: "column",
+        justifyContent: "space-between",
+        width: "100%",
+      }}
+    >
+      <Flex sx={{ flexDirection: "column" }}>
+        <Flex
+          sx={{
+            alignItems: "baseline",
+            gap: "4",
+          }}
+        >
+          <Box>
+            <Text variant="mapAd">{selectedAD}</Text>
+          </Box>
+          <Box>
+            {data?.airports?.[selectedAD]?.callsign && (
+              <Text variant="label">
+                {data?.airports?.[selectedAD]?.callsign}
+              </Text>
+            )}
+          </Box>
+          <Box>
+            <Text variant="label">{xmcState}</Text>
+          </Box>
+        </Flex>
+        {atis && (
+          <Box sx={{ mt: 3 }}>
+            <Text variant="label">ATIS</Text>
+            <Box sx={{ p: 2, mt: 2, borderStyle: "inset" }}>
+              <pre>{atis?.text_atis}</pre>
+            </Box>
+          </Box>
+        )}
+        {metar?.raw && (
+          <Box sx={{ mt: 3 }}>
+            <Text variant="label">METAR</Text>
+            <Box sx={{ p: 2, mt: 2, borderStyle: "inset" }}>
+              <pre>{metar?.raw?.replace(/.*?[A-Z]{4}\s/, "")}</pre>
+            </Box>
+          </Box>
+        )}
+        {taf && (
+          <Box sx={{ mt: 3 }}>
+            <Text variant="label">TAF</Text>
+            <Box sx={{ p: 2, mt: 2, borderStyle: "inset" }}>
+              <pre>{taf}</pre>
+            </Box>
+          </Box>
+        )}
       </Flex>
-      {metar?.raw && (
-        <Box sx={{ mt: 3 }}>
-          <Text variant="label">METAR</Text>
-          <Box sx={{ p: 2, mt: 2, borderStyle: "inset" }}>
-            <pre>{metar?.raw?.replace(/.*?[A-Z]{4}\s/, "")}</pre>
-          </Box>
-        </Box>
-      )}
-      {taf && (
-        <Box sx={{ mt: 3 }}>
-          <Text variant="label">TAF</Text>
-          <Box sx={{ p: 2, mt: 2, borderStyle: "inset" }}>
-            <pre>{taf}</pre>
-          </Box>
-        </Box>
-      )}
       <Grid
         sx={{
           gridTemplateColumns: "repeat(auto-fill, minmax(5em, 1fr))",
