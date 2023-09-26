@@ -13,6 +13,7 @@ from .controllers import (
     loa,
     taf,
     ecfmp,
+    areas,
 )
 
 
@@ -29,3 +30,4 @@ root_api_router.include_router(auth.router, tags=["user"])
 root_api_router.include_router(airspace.router, tags=["airspace"])
 root_api_router.include_router(loa.router, tags=["airspace"])
 root_api_router.include_router(ecfmp.router, tags=["airspace"])
+root_api_router.include_router(areas.router, tags=["airspace"])
