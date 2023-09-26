@@ -209,6 +209,7 @@
               export PATH="${pkgs.lib.makeBinPath (
                 [pkgs.atciss-dev] ++ packages
               )}"
+              ${script}
             '');
           };
         in {
@@ -247,6 +248,7 @@
               eslint.enable = true;
               # pylint.enable = true;
               # pyright.enable = true;
+              ruff.enable = true;
             };
           };
         };

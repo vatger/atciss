@@ -1,7 +1,6 @@
 """Application controllers - metar."""
 from typing import Annotated, Dict, List, cast
 
-from loguru import logger
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from ..controllers.auth import get_user

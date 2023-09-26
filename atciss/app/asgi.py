@@ -1,6 +1,5 @@
 """Application implementation - ASGI."""
 
-from typing import Optional
 from dataclasses import dataclass
 from uuid import uuid4
 

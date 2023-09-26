@@ -1,6 +1,5 @@
 """Application controllers - taf."""
 from typing import Annotated, Dict, Sequence, Optional
-from loguru import logger
 from fastapi import APIRouter, Query, Depends, HTTPException
 
 from atciss.app.views.metar import AirportIcao

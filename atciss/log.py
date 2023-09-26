@@ -27,9 +27,9 @@ class InterceptHandler(logging.Handler):
             level = self.loglevel_mapping[record.levelno * 10]
 
         frame, depth = logging.currentframe().f_back, 2
-        while frame is not None and (
-            frame.f_code.co_filename == logging.__file__
-            or frame.f_code.co_filename == asgiref.__file__
+        while frame is not None and frame.f_code.co_filename in (
+            logging.__file__,
+            asgiref.__file__,
         ):
             frame = frame.f_back
             depth += 1
@@ -39,7 +39,7 @@ class InterceptHandler(logging.Handler):
         )
 
 
-def formatter(record) -> str:
+def formatter(record: loguru.Record) -> str:
     corid = record["extra"]["id"] if "id" in record["extra"] else None
     corid_part = f"<i><blue>{corid}</blue></i> | " if corid is not None else ""
     exc_part = "{exception}\n" if record["exception"] is not None else ""
@@ -69,7 +69,7 @@ def setup_logging() -> None:
         logging.INFO if settings.DEBUG else logging.WARN
     )
 
-    for name in logging.root.manager.loggerDict.keys():
+    for name in logging.root.manager.loggerDict.keys():  # pylint: disable=no-member
         _logger = logging.getLogger(name)
         _logger.handlers = [InterceptHandler()]
         _logger.propagate = False

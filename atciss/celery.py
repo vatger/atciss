@@ -8,6 +8,16 @@ from asgiref.sync import async_to_sync
 from .config import settings, redis
 from .log import setup_logging
 
+from .app.tasks.notam import fetch_notam
+from .app.tasks.loa import fetch_loas
+from .app.tasks.sectors import fetch_sector_data
+from .app.tasks.vatsim import fetch_vatsim_data
+from .app.tasks.taf_metar import fetch_taf_metar
+from .app.tasks.dfs_ad import fetch_dfs_ad_data
+from .app.tasks.ecfmp import fetch_ecfmp
+from .app.tasks.areas import fetch_areas
+
+
 app = Celery(__name__)
 
 
@@ -43,56 +53,40 @@ app.conf.beat_schedule = {
 
 
 @app.task(name="update_notam")
-def update_notam():
-    from atciss.app.tasks.notam import fetch_notam
-
+def update_notam() -> None:
     async_to_sync(fetch_notam)()
 
 
 @app.task(name="update_loa")
-def update_loa():
-    from atciss.app.tasks.loa import fetch_loas
-
+def update_loa() -> None:
     async_to_sync(fetch_loas)()
 
 
 @app.task(name="update_sectors")
-def update_sectors():
-    from atciss.app.tasks.sectors import fetch_sector_data
-
+def update_sectors() -> None:
     async_to_sync(fetch_sector_data)()
 
 
 @app.task(name="update_vatsim")
-def update_vatsim():
-    from atciss.app.tasks.vatsim import fetch_vatsim_data
-
+def update_vatsim() -> None:
     async_to_sync(fetch_vatsim_data)()
 
 
 @app.task(name="update_taf_metar")
-def update_taf_metar():
-    from atciss.app.tasks.taf_metar import fetch_taf_metar
-
+def update_taf_metar() -> None:
     async_to_sync(fetch_taf_metar)()
 
 
 @app.task(name="update_dfs_ad_data")
-def update_dfs_ad_data():
-    from atciss.app.tasks.dfs_ad import fetch_dfs_ad_data
-
+def update_dfs_ad_data() -> None:
     async_to_sync(fetch_dfs_ad_data)()
 
 
 @app.task(name="update_ecfmp")
-def update_ecfmp():
-    from atciss.app.tasks.ecfmp import fetch_ecfmp
-
+def update_ecfmp() -> None:
     async_to_sync(fetch_ecfmp)()
 
 
 @app.task(name="update_areas")
-def update_areas():
-    from atciss.app.tasks.areas import fetch_areas
-
+def update_areas() -> None:
     async_to_sync(fetch_areas)()
