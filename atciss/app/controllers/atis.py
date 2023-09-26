@@ -1,6 +1,6 @@
 """Application controllers - metar."""
 
-from typing import Annotated, Dict, List, Optional, cast
+from typing import Annotated, Dict, Sequence, Optional, cast
 from fastapi import APIRouter, Depends, Query
 
 from pydantic import TypeAdapter
@@ -10,6 +10,7 @@ from ..models import User
 
 from ..utils.redis import RedisClient
 from ..views.atis import Atis
+from ..views.metar import AirportIcao
 
 
 router = APIRouter()
@@ -19,18 +20,18 @@ router = APIRouter()
     "/atis/",
 )
 async def atis_get(
-    icao: Annotated[List[str], Query(...)],
+    airports: Annotated[Sequence[AirportIcao], Query(alias="icao")],
     user: Annotated[User, Depends(get_user)],
 ) -> Dict[str, Atis]:
     """Get Atis for airport."""
     redis_client = RedisClient.open()
 
     atis = {}
-    for i in icao:
-        i = i.upper()
-        atis_json = cast(Optional[str], await redis_client.get(f"vatsim:atis:{i}"))
+    for icao in airports:
+        icao = icao.upper()
+        atis_json = cast(Optional[str], await redis_client.get(f"vatsim:atis:{icao}"))
         if atis_json is None:
             continue
-        atis[i] = TypeAdapter(Atis).validate_json(atis_json)
+        atis[icao] = TypeAdapter(Atis).validate_json(atis_json)
 
     return atis
