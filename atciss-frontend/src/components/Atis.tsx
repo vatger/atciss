@@ -93,13 +93,13 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                     <Text variant="label">SR:</Text>{" "}
                     {DateTime.fromISO(ads[aerodrome].sunrise)
                       .toUTC()
-                      .toFormat("HHMM")}
+                      .toFormat("HHmm")}
                   </Text>
                   <Text>
                     <Text variant="label">SS:</Text>{" "}
                     {DateTime.fromISO(ads[aerodrome].sunset)
                       .toUTC()
-                      .toFormat("HHMM")}
+                      .toFormat("HHmm")}
                   </Text>
                 </AtisRow>
                 <AtisRow>
