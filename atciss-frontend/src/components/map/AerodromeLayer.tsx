@@ -13,6 +13,7 @@ import { CircleMarker } from "react-leaflet"
 import { Box, Flex, Text } from "theme-ui"
 import { usePollMetarByIcaoCodes, xmc } from "../../services/metarApi"
 import { usePollTafByIcaoCodes } from "../../services/tafApi"
+import { usePollAtisByIcaoCodes } from "../../services/atisApi"
 
 export const AerodromeLayer = () => {
   const { data } = sectorApi.useGetByRegionQuery()
@@ -37,6 +38,7 @@ export const AerodromeLayer = () => {
   )
   const { data: metars } = usePollMetarByIcaoCodes(allADs)
   const { data: tafs } = usePollTafByIcaoCodes(allADs)
+  const { data: atiss } = usePollAtisByIcaoCodes(allADs)
   const activePositions = useAppSelector(selectActivePositions)
 
   const getCoord = (ad: string) =>
@@ -56,6 +58,7 @@ export const AerodromeLayer = () => {
         )
         const metar = metars?.[ad]
         const taf = tafs?.[ad]
+        const atis = atiss?.[ad]
         const xmcState = metar ? xmc(metar) : null
         const coord = getCoord(ad)
         return (
@@ -108,6 +111,12 @@ export const AerodromeLayer = () => {
                   <Box sx={{ mt: 1 }}>
                     <Text variant="label">TAF</Text>
                     <pre>{taf}</pre>
+                  </Box>
+                )}
+                {atis?.text_atis && (
+                  <Box sx={{ mt: 1 }}>
+                    <Text variant="label">ATIS</Text>
+                    <pre>{atis?.text_atis}</pre>
                   </Box>
                 )}
               </Tooltip>
