@@ -1,5 +1,4 @@
 """Application controllers - metar."""
-import re
 from typing import Annotated, Dict, Sequence, Optional, cast
 from loguru import logger
 from fastapi import APIRouter, Query, Depends, HTTPException
@@ -15,21 +14,13 @@ from ..utils.redis import RedisClient
 router = APIRouter()
 
 
-def fixed_raw_metar(metar: str):
-    # Sometimes visibilities only have 3 digits
-    metar = re.sub(r" (\d{3}) ", r" 0\1 ", metar)
-    # Color codes currently not supported
-    metar = re.sub(r" ([A-Z/]{3})$", r" ", metar)
-    return metar
-
-
 async def fetch_metar(icao: AirportIcao) -> Optional[MetarModel]:
     async with RedisClient.open() as redis_client:
         try:
             metar = cast(Optional[str], await redis_client.get(f"metar:{icao}"))
             if metar is None:
                 return None
-            parsed = MetarModel.from_str(fixed_raw_metar(metar))
+            parsed = MetarModel.from_str(metar)
             parsed.raw = metar
             return parsed
         except ParserError as e:
