@@ -128,7 +128,11 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                   <Text
                     sx={{ flexGrow: 1, borderStyle: "inset", display: "block" }}
                   >
-                    {atis?.[aerodrome]?.text_atis ?? "Offline"}
+                    {atis?.[aerodrome]?.text_atis?.match(
+                      /(EXPECT.*)\sRUNWAYS? IN USE/s,
+                    )?.[1] ??
+                      atis?.[aerodrome]?.text_atis ??
+                      "Offline"}
                   </Text>
                 </Flex>
                 <AtisRow>
