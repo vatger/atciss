@@ -1372,13 +1372,17 @@ description = "Metar - a package to parse METAR-coded weather reports"
 category = "main"
 optional = false
 python-versions = "*"
-files = [
-    {file = "metar-1.11.0-py3-none-any.whl", hash = "sha256:feafbd79667aba547f2c36986c3fffa6a14fd2a20b2e57c59a213eaa9015085a"},
-    {file = "metar-1.11.0.tar.gz", hash = "sha256:0e40e86eb03fdfafef71b14d74349e88e208bd4dc15e8734b3afcf129125378b"},
-]
+files = []
+develop = false
 
 [package.extras]
 test = ["pytest"]
+
+[package.source]
+type = "git"
+url = "https://github.com/globin/python-metar"
+reference = "35efaa6f76d00bd53b9e29bb0f87fbc3c80d8af2"
+resolved_reference = "35efaa6f76d00bd53b9e29bb0f87fbc3c80d8af2"
 
 [[package]]
 name = "multidict"
@@ -2887,4 +2891,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "a925b92f90c695fdc937f273ffd356b41ea03ff62993918b4594b637f37fd0b8"
+content-hash = "1f4040eebc5c4b5db87d5f6f2edeb8a4bfe75fad4bbeed63db5d43e3441d4ae2"

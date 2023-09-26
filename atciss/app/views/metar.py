@@ -16,10 +16,10 @@ AirportIcao = Annotated[
 
 @dataclass
 class RvrModel:
-    # TODO upstream does not parse trend
     runway: str
     low: float
     high: Optional[float]
+    trend: Optional[str]
 
     @classmethod
     def from_tuple(
@@ -27,11 +27,12 @@ class RvrModel:
         # FIXME should be: Tuple[str, distance, Optional[distance], str]
         parsed: List[Any],
     ) -> RvrModel:
-        runway, low, high, _ = parsed
+        runway, low, high, _, trend = parsed
         return cls(
             runway=runway,
             low=low.value("M"),
             high=high.value("M") if high is not None else None,
+            trend=trend,
         )
 
 
