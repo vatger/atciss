@@ -143,6 +143,14 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                   </Text>
                   <Text>/ {z4(metar.vis)}</Text>
                 </AtisRow>
+                {!!metar.rvr.length && (
+                  <AtisRow>
+                    <Text variant="label">RVR:</Text>{" "}
+                    {metar.rvr
+                      .map((rvr) => `R${rvr.runway}/${rvr.low}${rvr.trend}`)
+                      .join(" ")}
+                  </AtisRow>
+                )}
                 <AtisRow>
                   <Text variant="label">Weather:</Text>{" "}
                   {metar.weather.join(" ")}

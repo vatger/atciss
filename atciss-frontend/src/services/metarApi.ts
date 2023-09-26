@@ -7,7 +7,12 @@ export interface Clouds {
   type: string | null
 }
 
-export interface Rvr {}
+export interface Rvr {
+  runway: string
+  low: number
+  high: number | null
+  trend: string | null
+}
 
 export interface Metar {
   raw: string
