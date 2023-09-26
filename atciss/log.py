@@ -39,18 +39,27 @@ class InterceptHandler(logging.Handler):
         )
 
 
+def formatter(record) -> str:
+    corid = record["extra"]["id"] if "id" in record["extra"] else None
+    corid_part = f"<i><blue>{corid}</blue></i> | " if corid is not None else ""
+    exc_part = "{exception}\n" if record["exception"] is not None else ""
+    return (
+        "<green>{elapsed}</green> | "
+        "<level>{level: <8}</level> | "
+        "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> | "
+        f"{corid_part}"
+        "<level>{message}</level>\n"
+        f"{exc_part}"
+    )
+
+
 def setup_logging() -> None:
     logger.remove()
     _ = logger.add(
         sys.stdout,
         enqueue=True,
         level=settings.LOG_LEVEL,
-        format=(
-            "<green>{elapsed}</green> | "
-            "<level>{level: <8}</level> | "
-            "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> | "
-            "<level>{message}</level>"
-        ),
+        format=formatter,
     )
 
     logging.basicConfig(handlers=[InterceptHandler()], level=0)

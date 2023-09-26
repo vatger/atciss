@@ -90,6 +90,9 @@
             celery = pyprev.celery.overridePythonAttrs (old: {
               meta = old.meta // {priority = -1;};
             });
+            asgi-correlation-id = pyprev.asgi-correlation-id.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry];
+            });
 
             # use ruff from nixpkgs below in devShell
             ruff = null;

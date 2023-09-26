@@ -194,6 +194,24 @@ test = ["anyio[trio]", "coverage[toml] (>=4.5)", "hypothesis (>=4.0)", "mock (>=
 trio = ["trio (<0.22)"]
 
 [[package]]
+name = "asgi-correlation-id"
+version = "4.2.0"
+description = "Middleware correlating project logs to individual requests"
+category = "main"
+optional = false
+python-versions = ">=3.7,<4.0"
+files = [
+    {file = "asgi_correlation_id-4.2.0-py3-none-any.whl", hash = "sha256:bd3321a4022f38179db775d27c40cb45130ac9429d569cd59b5474cb2f65fb1b"},
+    {file = "asgi_correlation_id-4.2.0.tar.gz", hash = "sha256:9d7dcfc2ed016f6e594fffd553788ac70129db7f92bb4dc268ab0b1a3284de5a"},
+]
+
+[package.dependencies]
+starlette = ">=0.18"
+
+[package.extras]
+celery = ["celery"]
+
+[[package]]
 name = "asgiref"
 version = "3.7.2"
 description = "ASGI specs, helper code, and adapters"
@@ -2869,4 +2887,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "81c337390223579333e2cd0f6c2cf1f88bc027c1f39be013ef05144932798dec"
+content-hash = "a925b92f90c695fdc937f273ffd356b41ea03ff62993918b4594b637f37fd0b8"

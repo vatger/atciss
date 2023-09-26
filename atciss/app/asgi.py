@@ -1,14 +1,37 @@
 """Application implementation - ASGI."""
 
+from typing import Optional
+from dataclasses import dataclass
+from uuid import uuid4
+
 from loguru import logger
+from asgiref.typing import (
+    ASGI3Application,
+    ASGIReceiveCallable,
+    ASGISendCallable,
+    Scope,
+)
 from fastapi import FastAPI
 from fastapi_async_sqlalchemy import SQLAlchemyMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator as PrometheusInstrumentator
+from asgi_correlation_id import CorrelationIdMiddleware, correlation_id
+from asgi_correlation_id.middleware import is_valid_uuid4
 
 from ..config import settings
 from .router import root_api_router
 from .utils import RedisClient
 from ..log import setup_logging
+
+
+@dataclass
+class CorrelationIdLogMiddleware:
+    app: ASGI3Application
+
+    async def __call__(
+        self, scope: Scope, receive: ASGIReceiveCallable, send: ASGISendCallable
+    ) -> None:
+        with logger.contextualize(id=correlation_id.get()):
+            return await self.app(scope, receive, send)
 
 
 async def on_shutdown() -> None:
@@ -30,8 +53,6 @@ def get_application() -> FastAPI:
         on_shutdown=[on_shutdown],
     )
 
-    app.add_middleware(CorrelationIdMiddleware)
-
     _ = PrometheusInstrumentator().instrument(app).expose(app, tags=["monitoring"])
 
     app.add_middleware(
@@ -42,6 +63,15 @@ def get_application() -> FastAPI:
             "pool_size": 5,
             "max_overflow": 10,
         },
+    )
+
+    app.add_middleware(CorrelationIdLogMiddleware)
+    app.add_middleware(
+        CorrelationIdMiddleware,
+        generator=(lambda: uuid4().hex)
+        if not settings.DEBUG
+        else (lambda: uuid4().hex[:8]),
+        validator=is_valid_uuid4 if not settings.DEBUG else None,
     )
 
     logger.debug("Add application routes.")
