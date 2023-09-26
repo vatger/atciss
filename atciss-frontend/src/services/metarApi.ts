@@ -47,9 +47,13 @@ export const ceiling: (metar: Metar) => number | null = (metar) =>
     }
   }, null)
 
-export const xmc: (metar: Metar) => "VMC" | "IMC" = (metar) => {
+export const xmc: (metar: Metar) => "VMC" | "IMC" | "LVP" = (metar) => {
   const c = ceiling(metar)
-  return (c && c < 1500) || metar.vis < 5000 ? "IMC" : "VMC"
+  return (c && c < 200) || metar.rvr.some((rvr) => rvr.low < 600)
+    ? "LVP"
+    : (c && c < 1500) || metar.vis < 5000
+    ? "IMC"
+    : "VMC"
 }
 
 export const tl: (metar: Metar) => number = (metar) => {

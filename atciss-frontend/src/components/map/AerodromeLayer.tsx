@@ -69,12 +69,16 @@ export const AerodromeLayer = () => {
               key={ad}
               pane="markerPane"
               pathOptions={{
+                fillOpacity: 0.6,
+                weight: 1,
                 color:
-                  xmcState == "VMC"
+                  xmcState == "LVP"
+                    ? "hotpink"
+                    : xmcState == "VMC"
                     ? "green"
                     : xmcState == "IMC"
-                    ? "red"
-                    : "blue",
+                    ? "darkred"
+                    : "darkblue",
               }}
             >
               <Tooltip>
