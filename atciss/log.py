@@ -54,6 +54,12 @@ def setup_logging() -> None:
     )
 
     logging.basicConfig(handlers=[InterceptHandler()], level=0)
+
+    # sqlalchemy prints queries on info level when we have DEBUG enabled
+    logging.getLogger("sqlalchemy.engine").setLevel(
+        logging.INFO if settings.DEBUG else logging.WARN
+    )
+
     for name in logging.root.manager.loggerDict.keys():
         _logger = logging.getLogger(name)
         _logger.handlers = [InterceptHandler()]

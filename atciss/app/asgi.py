@@ -30,13 +30,14 @@ def get_application() -> FastAPI:
         on_shutdown=[on_shutdown],
     )
 
+    app.add_middleware(CorrelationIdMiddleware)
+
     _ = PrometheusInstrumentator().instrument(app).expose(app, tags=["monitoring"])
 
     app.add_middleware(
         SQLAlchemyMiddleware,
         db_url=str(settings.DATABASE_DSN),
         engine_args={  # engine arguments example
-            "echo": True,
             "pool_pre_ping": True,
             "pool_size": 5,
             "max_overflow": 10,
