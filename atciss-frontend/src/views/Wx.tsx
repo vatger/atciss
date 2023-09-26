@@ -84,7 +84,9 @@ const Wx = () => {
         {aerodromes
           .filter((ad) => metars?.[ad] || tafs?.[ad])
           .map((ad) => (
-            <Button onClick={() => setSelectedAD(ad)}>{ad}</Button>
+            <Button key={ad} onClick={() => setSelectedAD(ad)}>
+              {ad}
+            </Button>
           ))}
       </Grid>
     </Flex>
