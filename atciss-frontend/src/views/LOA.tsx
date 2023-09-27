@@ -1,3 +1,5 @@
+/** @jsxImportSource theme-ui */
+
 import { Box, Flex, Grid, Input, ThemeUIStyleObject } from "theme-ui"
 import { SectorControls } from "../components/SectorControls"
 import { useAppSelector } from "../app/hooks"
@@ -47,7 +49,7 @@ export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         !ownedSectors.includes(loa.to_sector) &&
         filterFn(filter, loa, "to"),
     )
-    ?.sort(sortBy(["from_sector", "cop", "to_sector", "to_fir"]))
+    ?.sort(sortBy(["from_sector", "cop", "to_sector", "to_fir", "adep_ades"]))
   const nLoas = relevantLoas.data
     ?.filter(
       (loa) =>
@@ -67,7 +69,7 @@ export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       }}
     >
       <Box>
-        <table style={{ width: "100%" }}>
+        <table sx={{ width: "100%" }}>
           <thead>
             <tr>
               <th>COPX</th>

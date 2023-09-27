@@ -1,3 +1,5 @@
+/** @jsxImportSource theme-ui */
+
 import { Flex, Grid, ThemeUIStyleObject } from "theme-ui"
 import { MapContainer } from "react-leaflet"
 import { LatLngTuple } from "leaflet"
@@ -23,7 +25,7 @@ const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         center={position}
         zoom={7}
         scrollWheelZoom={true}
-        style={{ height: "100%" }}
+        sx={{ height: "100%" }}
       >
         <BackgroundTiles />
         <SectorLayer />

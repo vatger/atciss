@@ -1,6 +1,8 @@
+/** @jsxImportSource theme-ui */
+
 export const Alias = () => (
   <iframe
-    style={{ flex: "auto " }}
+    sx={{ flex: "auto" }}
     src="https://raw.githubusercontent.com/VATGER-Nav/aliases/main/alias.txt"
   ></iframe>
 )

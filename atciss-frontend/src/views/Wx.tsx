@@ -48,7 +48,7 @@ const Wx = () => {
         width: "100%",
       }}
     >
-      <Flex sx={{ flexDirection: "column" }}>
+      <Flex sx={{ flexDirection: "column", fontSize: 2 }}>
         <Flex
           sx={{
             alignItems: "baseline",

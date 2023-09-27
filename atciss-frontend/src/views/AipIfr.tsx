@@ -1,6 +1,8 @@
+/** @jsxImportSource theme-ui */
+
 const AipIfr = () => (
   <iframe
-    style={{ flex: "auto" }}
+    sx={{ flex: "auto" }}
     src="https://aip.dfs.de/BasicIFR/pages/C00001.html"
   ></iframe>
 )

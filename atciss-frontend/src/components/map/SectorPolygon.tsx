@@ -32,11 +32,11 @@ export const SectorPolygon = ({
       positions={points}
     >
       <Tooltip>
-        <Box>
+        <Box sx={{ fontSize: "1" }}>
           <Text variant="label">{name}</Text>
           {remark && ` (${remark})`} by {controllingSector}
         </Box>
-        <Box>
+        <Box sx={{ fontSize: "1" }}>
           FL{z3(min ?? 0)}-FL{z3(max ?? 660)}
         </Box>
       </Tooltip>

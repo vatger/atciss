@@ -1,6 +1,8 @@
+/** @jsxImportSource theme-ui */
+
 const AipVfr = () => (
   <iframe
-    style={{ flex: "auto" }}
+    sx={{ flex: "auto" }}
     src="https://aip.dfs.de/BasicVFR/pages/C00001.html"
   ></iframe>
 )

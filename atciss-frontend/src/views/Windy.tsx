@@ -1,6 +1,8 @@
+/** @jsxImportSource theme-ui */
+
 const Windy = () => (
   <iframe
-    style={{ flex: "auto" }}
+    sx={{ flex: "auto" }}
     src="https://embed.windy.com/?700h,49.667,11.236,7"
   ></iframe>
 )

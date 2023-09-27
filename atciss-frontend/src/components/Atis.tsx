@@ -5,7 +5,6 @@ import {
   usePollMetarByIcaoCodes,
   xmc,
 } from "../services/metarApi"
-import { ReactNode } from "react"
 import { usePollAtisByIcaoCodes } from "../services/atisApi"
 import { usePollAdByIcaoCodes } from "../services/adApi"
 import { DateTime } from "luxon"
@@ -13,18 +12,7 @@ import { z2, z3, z4 } from "../app/utils"
 import { useAppSelector } from "../app/hooks"
 import { selectActiveEbg } from "../services/configSlice"
 import { EBG_SETTINGS } from "../app/config"
-
-const AtisRow = ({
-  children,
-  sx,
-}: {
-  children: ReactNode
-  sx?: ThemeUIStyleObject
-}) => (
-  <Flex sx={{ justifyContent: "space-between", alignItems: "baseline", ...sx }}>
-    {children}
-  </Flex>
-)
+import { AtisRow } from "./atis/AtisRow"
 
 const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const activeEbg = useAppSelector(selectActiveEbg)

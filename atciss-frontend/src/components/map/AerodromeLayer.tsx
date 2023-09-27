@@ -87,6 +87,7 @@ export const AerodromeLayer = () => {
                     justifyContent: "space-between",
                     alignItems: "baseline",
                     gap: "2",
+                    fontSize: "2",
                   }}
                 >
                   <Box>
@@ -106,19 +107,19 @@ export const AerodromeLayer = () => {
                   )}
                 </Flex>
                 {metar?.raw && (
-                  <Box sx={{ mt: 1 }}>
+                  <Box sx={{ fontSize: "1", mt: 1 }}>
                     <Text variant="label">METAR</Text>
                     <pre>{metar?.raw?.replace(/.*?[A-Z]{4}\s/, "")}</pre>
                   </Box>
                 )}
                 {taf && (
-                  <Box sx={{ mt: 1 }}>
+                  <Box sx={{ fontSize: "1", mt: 1 }}>
                     <Text variant="label">TAF</Text>
                     <pre>{taf}</pre>
                   </Box>
                 )}
                 {atis?.text_atis && (
-                  <Box sx={{ mt: 1 }}>
+                  <Box sx={{ fontSize: "1", mt: 1 }}>
                     <Text variant="label">ATIS</Text>
                     <pre>{atis?.text_atis}</pre>
                   </Box>

@@ -1,3 +1,5 @@
+/** @jsxImportSource theme-ui */
+
 import { Box, Text } from "theme-ui"
 import { EBG_SETTINGS } from "../app/config"
 import { useAppSelector } from "../app/hooks"
@@ -31,7 +33,7 @@ export const ECFMP = () => {
             )}`}
             )
           </Box>
-          <pre style={{ whiteSpace: "pre-wrap" }}>{fm.reason}</pre>
+          <pre sx={{ whiteSpace: "pre-wrap" }}>{fm.reason}</pre>
           <Box>
             <Text variant="label">
               {fm.measure.type.replace("_", " ").toUpperCase()}
