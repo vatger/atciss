@@ -13,6 +13,7 @@ import { mapReducer } from "../services/mapSlice"
 import { loaApi } from "../services/loaApi"
 import { tafApi } from "../services/tafApi"
 import { ecfmpApi } from "../services/ecfmpApi"
+import { eventApi } from "../services/eventApi"
 
 export const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ export const store = configureStore({
     [loaApi.reducerPath]: loaApi.reducer,
     [tafApi.reducerPath]: tafApi.reducer,
     [ecfmpApi.reducerPath]: ecfmpApi.reducer,
+    [eventApi.reducerPath]: eventApi.reducer,
     auth: authReducer,
     activePositions: activePositionReducer,
     config: configReducer,
@@ -40,7 +42,8 @@ export const store = configureStore({
       .concat(loaApi.middleware)
       .concat(tafApi.middleware)
       .concat(controllerApi.middleware)
-      .concat(ecfmpApi.middleware),
+      .concat(ecfmpApi.middleware)
+      .concat(eventApi.middleware),
 })
 
 setupListeners(store.dispatch)
