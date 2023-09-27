@@ -8,6 +8,7 @@ import {
 import { useAppDispatch, useAppSelector } from "./hooks"
 import { LOCAL_STORAGE_JWT_KEY, login, logout, selectUser } from "./auth/slice"
 import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query"
+import { Button, Flex } from "theme-ui"
 
 export const RequireAuth = ({ children }: { children?: JSX.Element }) => {
   const user = useAppSelector(selectUser)
@@ -23,27 +24,31 @@ export const RequireAuth = ({ children }: { children?: JSX.Element }) => {
   return children || <></>
 }
 
-export const authLoader = async () => {
-  const response = await fetch(`/api/auth`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-  const text = await response.text()
-  const data = text.length ? JSON.parse(text) : null
+export const Auth = () => {
+  const redirect = async () => {
+    const response = await fetch(`/api/auth`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    const text = await response.text()
+    const data = text.length ? JSON.parse(text) : null
 
-  if (data !== null) {
-    window.location.replace(
-      `${data.auth_url}/oauth/authorize?client_id=${data.client_id}&redirect_uri=${window.location.protocol}//${window.location.host}%2Fauth%2Fcallback&response_type=code&scope=full_name+email+vatsim_details+country`,
-    )
+    if (data !== null) {
+      window.location.replace(
+        `${data.auth_url}/oauth/authorize?client_id=${data.client_id}&redirect_uri=${window.location.protocol}//${window.location.host}%2Fauth%2Fcallback&response_type=code&scope=full_name+email+vatsim_details+country`,
+      )
+    }
   }
 
-  return null
-}
-
-export const Auth = () => {
-  return <>Redirecting</>
+  return (
+    <Flex
+      sx={{ justifyContent: "center", alignItems: "center", height: "100vh" }}
+    >
+      <Button onClick={redirect}>Log in with VATSIM Connect</Button>
+    </Flex>
+  )
 }
 
 export const fetchWithAuth = fetchBaseQuery({

@@ -10,7 +10,6 @@ import {
   Logout,
   RequireAuth,
   authCallbackLoader,
-  authLoader,
 } from "./auth"
 import { LOA } from "../views/LOA"
 import { AipIfr } from "../views/AipIfr"
@@ -63,7 +62,6 @@ const router = createBrowserRouter([
   {
     path: "/auth",
     element: <Auth />,
-    loader: authLoader,
   },
   {
     path: "/auth/callback",
