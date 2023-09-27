@@ -65,8 +65,11 @@ async def atis_generate(
             airports = airports | TypeAdapter(Dict[str, Airport]).validate_json(
                 airports_json
             )
-    airport_name = (
-        airports[airport].callsign.upper() if airport in airports else airport
+    airport_name = "".join(
+        map(
+            lambda c: {"Ä": "AE", "Ü": "UE", "Ö": "OE", "ß": "ss"}.get(c, c),
+            airports[airport].callsign.upper() if airport in airports else airport,
+        )
     )
 
     arrivalRunways = [rwy.upper() for rwy in arrivalRunwayStr.split(",")]
