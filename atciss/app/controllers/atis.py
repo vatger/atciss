@@ -120,7 +120,7 @@ async def atis_generate(
         if metar.wind_speed is None or metar.wind_speed == 0
         else concatSep(
             [
-                f"{int(metar.wind_dir)} DEGREES"
+                f"{int(metar.wind_dir):03} DEGREES"
                 if metar.wind_dir is not None
                 else "VARIABLE",
                 f"{int(metar.wind_speed)} KNOT"
