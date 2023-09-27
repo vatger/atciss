@@ -6,7 +6,7 @@ from typing import Annotated, Any, List, Optional, Sequence, Tuple, cast
 from pydantic import AwareDatetime, BaseModel, StringConstraints, field_validator
 
 from metar.Datatypes import distance
-from metar.Metar import Metar
+from metar.Metar import Metar, CLOUD_TYPE
 
 
 AirportIcao = Annotated[
@@ -41,16 +41,19 @@ class CloudModel:
     cover: str
     height: Optional[float]
     type: Optional[str]
+    type_text: Optional[str]
 
     @classmethod
     def from_tuple(
-        cls, parsed: Tuple[str, Optional[distance], Optional[str]]
+        cls,
+        parsed: Tuple[str, Optional[distance], Optional[str]],
     ) -> CloudModel:
         cover, height, typ = parsed
         return cls(
             cover=cover,
             height=height.value("FT") if height is not None else None,
             type=typ,
+            type_text=CLOUD_TYPE.get(typ, None),
         )
 
 
@@ -60,6 +63,7 @@ class MetarModel(BaseModel):
     raw: str
     station_id: Optional[str]
     time: AwareDatetime
+    automatic: bool
     wind_dir: Optional[float]
     wind_speed: Optional[float]
     wind_gust: Optional[float]
@@ -74,9 +78,12 @@ class MetarModel(BaseModel):
     qnh: Optional[float]
     rvr: Sequence[RvrModel]
     weather: List[str]
+    weather_text: str
     recent_weather: List[str]
+    recent_weather_text: str
     clouds: Sequence[CloudModel]
     trend: str
+    tl: Optional[int]
 
     @field_validator("weather", "recent_weather", mode="before")
     @classmethod
@@ -91,6 +98,7 @@ class MetarModel(BaseModel):
                 "station_id": parsed.station_id,
                 "raw": raw_metar,
                 "time": cast(datetime, parsed.time).replace(tzinfo=timezone.utc),
+                "automatic": parsed.mod == "AUTO",
                 "wind_dir": parsed.wind_dir.value()
                 if parsed.wind_dir is not None
                 else None,
@@ -114,9 +122,20 @@ class MetarModel(BaseModel):
                 "qnh": parsed.press.value("HPA") if parsed.press is not None else None,
                 "rvr": [RvrModel.from_tuple(rvr) for rvr in parsed.runway],
                 "weather": parsed.weather,
+                "weather_text": parsed.present_weather(),
                 "recent_weather": parsed.recent,
+                "recent_weather_text": parsed.recent_weather(),
                 "clouds": [CloudModel.from_tuple(clouds) for clouds in parsed.sky],
                 "trend": parsed.trend(),
+                "tl": None
+                if parsed.press is None
+                else 80
+                if (parsed.press.value("HPA") < 978)
+                else 70
+                if (parsed.press.value("HPA") < 1014)
+                else 60
+                if (parsed.press.value("HPA") < 1051)
+                else 50,
             }
         )
 

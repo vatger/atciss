@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithAuth } from "../app/auth"
 
 export interface Clouds {
-  cover: "FEW" | "SCT" | "BKN" | "OVC"
+  cover: "FEW" | "SCT" | "BKN" | "OVC" | "NSC"
   height: number | null
   type: string | null
 }
@@ -18,6 +18,7 @@ export interface Metar {
   raw: string
   station_id: string
   time: string
+  automatic: boolean
   wind_dir: number | null
   wind_speed: number
   wind_gust: number | null
@@ -32,6 +33,7 @@ export interface Metar {
   recent_weather: string[]
   clouds: Clouds[]
   trend: string
+  tl: number | null
 }
 
 export const ceiling: (metar: Metar) => number | null = (metar) =>
@@ -54,18 +56,6 @@ export const xmc: (metar: Metar) => "VMC" | "IMC" | "LVP" = (metar) => {
     : (c && c < 1500) || metar.vis < 5000
     ? "IMC"
     : "VMC"
-}
-
-export const tl: (metar: Metar) => number = (metar) => {
-  if (metar.qnh < 978) {
-    return 80
-  } else if (metar.qnh < 1014) {
-    return 70
-  } else if (metar.qnh < 1051) {
-    return 60
-  } else {
-    return 50
-  }
 }
 
 export const hpaToInhg: (qnh: number) => number = (qnh) =>

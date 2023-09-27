@@ -2,7 +2,6 @@ import { Text, Flex, ThemeUIStyleObject, Box } from "theme-ui"
 import {
   Clouds,
   hpaToInhg,
-  tl,
   usePollMetarByIcaoCodes,
   xmc,
 } from "../services/metarApi"
@@ -111,7 +110,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                   </Box>
                   <Box>
                     <Text variant="label">TL: </Text>
-                    <Text variant="atisL">{tl(metar)}</Text>
+                    <Text variant="atisL">{metar.tl}</Text>
                   </Box>
                   <Box>
                     <Text variant="label">WX-Type: </Text>

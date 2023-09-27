@@ -34,7 +34,7 @@ async def airspace_get(
         positions_json = await redis_client.get(f"sector:positions:{region}")
         airspaces_json = await redis_client.get(f"sector:airspaces:{region}")
         if airports_json is None or positions_json is None or airspaces_json is None:
-            logger.warn(f"No data for {region}")
+            logger.warning(f"No data for {region}")
             raise HTTPException(status_code=404)
 
         airports = airports | TypeAdapter(Dict[str, Airport]).validate_json(
