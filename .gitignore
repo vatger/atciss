@@ -35,3 +35,4 @@ dist-ssr
 *.sw?
 
 celerybeat-schedule
+celerybeat-schedule.*
