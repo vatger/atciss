@@ -1,4 +1,5 @@
 """Command-line interface - root."""
+import sys
 from typing import Dict, Any
 
 import click
@@ -15,3 +16,6 @@ def cli(**_: Dict[str, Any]) -> None:
 
 
 cli.add_command(serve)
+
+if __name__ == "__main__":
+    cli(sys.argv[1:])
