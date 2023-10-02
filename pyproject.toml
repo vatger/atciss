@@ -25,8 +25,8 @@ astral = "^3.2"
 python-jose = "^3.3.0"
 watchfiles = "~0.19.0"
 alembic = "^1.12.0"
-# fork until sqlalchemy2 support is merged
-sqlmodel = {git = "https://github.com/mbsantiago/sqlmodel.git", rev = "main"}
+# fork until sqlalchemy2 support is merged, dependencies loosened upon https://github.com/AntonDeMeester/sqlmodel
+sqlmodel = {git = "https://github.com/kleschenko/sqlmodel.git", rev = "8f70f81b92122809ff39f785f2a25a9a4777b747"}
 asyncpg = "^0.28.0"
 python-dateutil = "^2.8.2"
 fastapi-async-sqlalchemy = "^0.6.0"
@@ -36,13 +36,13 @@ asgiref = "^3.7.2"
 loguru = "^0.7.2"
 asgi-correlation-id = "^4.2.0"
 greenlet = "^2.0.2"
+sqlalchemy = { version = "^2.0.21", extras = [ "asyncio" ] }
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.9"
 pylint = "^2.17"
 types-beautifulsoup4 = "^4.12.0.5"
 types-python-jose = "^3.3.4.8"
-sqlalchemy-stubs = "^0.4"
 mypy = "^1.5.1"
 pyright = "1.1.329"
 ruff = "^0.0.291"

@@ -16,7 +16,7 @@ from .app.tasks.taf_metar import fetch_taf_metar
 from .app.tasks.dfs_ad import fetch_dfs_ad_data
 from .app.tasks.ecfmp import fetch_ecfmp
 from .app.tasks.areas import fetch_areas
-
+from .app.tasks.booking import fetch_booking
 
 app = Celery(__name__)
 
@@ -45,6 +45,7 @@ app.conf.beat_schedule = {
     "update_taf_metar": {"task": "update_taf_metar", "schedule": crontab(minute="*")},
     "update_ecfmp": {"task": "update_ecfmp", "schedule": crontab(minute="*")},
     "update_areas": {"task": "update_areas", "schedule": crontab(minute="*/10")},
+    "update_booking": {"task": "update_booking", "schedule": crontab(minute="*/10")},
     "update_dfs_ad_data": {
         "task": "update_dfs_ad_data",
         "schedule": crontab(day_of_week="1"),
@@ -90,3 +91,8 @@ def update_ecfmp() -> None:
 @app.task(name="update_areas")
 def update_areas() -> None:
     async_to_sync(fetch_areas)()
+
+
+@app.task(name="update_booking")
+def update_booking() -> None:
+    async_to_sync(fetch_booking)()
