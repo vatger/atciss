@@ -5,6 +5,7 @@
   ...
 }: let
   cfg = config.services.atciss;
+  ATCISS_DEBUG = toString cfg.debug;
 in {
   options = {
     services.atciss = {
@@ -18,6 +19,9 @@ in {
       };
       environmentFile = lib.mkOption {
         type = lib.types.path;
+      };
+      debug = lib.mkOption {
+        type = lib.types.bool;
       };
     };
   };
@@ -60,6 +64,7 @@ in {
       wantedBy = ["multi-user.target"];
 
       environment = {
+        inherit ATCISS_DEBUG;
         ATCISS_BASE_URL = "https://${cfg.host}";
         ATCISS_DATABASE_DSN = "postgresql+asyncpg://localhost/atciss?host=/run/postgresql";
       };
@@ -80,6 +85,8 @@ in {
       wantedBy = ["multi-user.target"];
 
       environment = {
+        inherit ATCISS_DEBUG;
+        ACTISS_DEBUG = cfg.debug;
         ATCISS_DATABASE_DSN = "postgresql+asyncpg://localhost/atciss?host=/run/postgresql";
       };
 
