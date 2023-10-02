@@ -86,6 +86,7 @@ in {
       serviceConfig = {
         ExecStart = "${pkgs.atciss}/bin/celery -A atciss worker --loglevel=INFO";
         DynamicUser = true;
+        User = "atciss";
         Restart = "always";
         RestartSec = "1s";
         StateDirectory = "atciss-worker";
