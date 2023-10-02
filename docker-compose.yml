@@ -32,6 +32,7 @@ services:
       - "worker"
       - "--loglevel=info"
     environment:
+      ATCISS_DATABASE_DSN: "postgresql+asyncpg://postgres:fnord@db/atciss"
       ATCISS_REDIS_HOST: redis
     volumes:
       - ./atciss:/code/atciss

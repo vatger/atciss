@@ -79,6 +79,10 @@ in {
     systemd.services.atciss-worker = {
       wantedBy = ["multi-user.target"];
 
+      environment = {
+        ATCISS_DATABASE_DSN = "postgresql+asyncpg://localhost/atciss?host=/run/postgresql";
+      };
+
       serviceConfig = {
         ExecStart = "${pkgs.atciss}/bin/celery -A atciss worker --loglevel=INFO";
         DynamicUser = true;
