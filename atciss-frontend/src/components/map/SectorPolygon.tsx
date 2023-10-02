@@ -24,7 +24,7 @@ export const SectorPolygon = ({
   return (
     <Polygon
       pathOptions={{
-        color: data?.positions[controllingSector].colours[0].hex,
+        color: data?.positions[controllingSector]?.colours[0]?.hex,
         weight: controllingSector === selectedPosition ? 5 : 1,
         opacity: 0.5,
         fillOpacity: controllingSector === selectedPosition ? 0.5 : 0.3,

@@ -79,7 +79,7 @@ class RwyDependentTopDown:
 @dataclass
 class Airport:
     callsign: str
-    coord: Coordinate
+    coord: Coordinate | None = None
     runways: list[str] = field(default_factory=list)
     topdown: list[str | RwyDependentTopDown] = field(default_factory=list)
 
