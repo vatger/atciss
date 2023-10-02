@@ -42,7 +42,7 @@ class Atis(BaseModel):
                 logger.error(f"{e}, {data}")
 
             matches = re.search(
-                r"RUNWAYS? IN USE ([0-9]{2}[A-Z]?)(?: AND ([0-9]{2}[A-Z]?))?",
+                r"RUNWAYS?\sIN\sUSE\s([0-9]{2}[A-Z]?)(?:\sAND\s([0-9]{2}[A-Z]?))?",
                 data["text_atis"],
             )
             data["runways_in_use"] = (
