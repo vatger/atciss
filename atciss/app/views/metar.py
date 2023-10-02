@@ -69,7 +69,7 @@ class MetarModel(BaseModel):
     wind_gust: Optional[float]
     wind_dir_from: Optional[float]
     wind_dir_to: Optional[float]
-    vis: Optional[float]
+    vis: list[float]
     # vis_dir
     # TODO max_vis?
     # max_vis_dir
@@ -114,7 +114,11 @@ class MetarModel(BaseModel):
                 "wind_dir_to": parsed.wind_dir_to.value()
                 if parsed.wind_dir_to is not None
                 else None,
-                "vis": min(parsed.vis.value("M"), 9999)
+                "vis": [
+                    min(vis.value("M"), 9999)
+                    for vis in (parsed.vis, parsed.max_vis)
+                    if vis is not None
+                ]
                 if parsed.vis is not None
                 else None,
                 "temp": parsed.temp.value("C") if parsed.temp is not None else None,

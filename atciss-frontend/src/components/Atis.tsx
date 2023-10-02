@@ -128,7 +128,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                     {z2(metar.wind_speed)}
                     {wind_gust}KT {wind_from_to}
                   </Text>
-                  <Text>/ {z4(metar.vis)}</Text>
+                  <Text>/ {metar.vis.map((v) => z4(v)).join(" ")}</Text>
                 </AtisRow>
                 {!!metar.rvr.length && (
                   <AtisRow>
