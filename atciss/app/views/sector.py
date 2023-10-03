@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from math import copysign
 from typing import Optional, Tuple, cast
 
 from pydantic import BaseModel, field_validator
@@ -8,11 +9,11 @@ Coordinate = Tuple[float, float]
 
 
 def convert_coordinate(input: str) -> float:
-    sec = int(input[-2:], 10)
-    min = int(input[-4:-2], 10)
-    deg = int(input[:-4], 10)
+    sec = float(input[-2:])
+    min = float(input[-4:-2])
+    deg = float(input[:-4])
 
-    return deg + min / 60 + sec / 3600
+    return deg + copysign(min, deg) / 60 + copysign(sec, deg) / 3600
 
 
 def convert_point(point: Tuple[str, str] | Coordinate) -> Coordinate:
