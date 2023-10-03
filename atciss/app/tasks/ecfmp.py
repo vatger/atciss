@@ -10,7 +10,7 @@ from ..utils import AiohttpClient, ClientConnectorError
 
 
 async def fetch_ecfmp() -> None:
-    """Periodically fetch loa data."""
+    """Periodically fetch ECFMP flow measures."""
     redis_client = await RedisClient.get()
 
     async with AiohttpClient.get() as aiohttp_client:
