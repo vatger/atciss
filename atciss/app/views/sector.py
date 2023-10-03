@@ -1,26 +1,18 @@
 from dataclasses import dataclass, field
-from math import copysign
 from typing import Optional, Tuple, cast
 
 from pydantic import BaseModel, field_validator
 
-
-Coordinate = Tuple[float, float]
-
-
-def convert_coordinate(input: str) -> float:
-    sec = float(input[-2:])
-    min = float(input[-4:-2])
-    deg = float(input[:-4])
-
-    return deg + copysign(min, deg) / 60 + copysign(sec, deg) / 3600
+from ..utils.geo import Coordinate, convert_degsecmin_coordinate
 
 
 def convert_point(point: Tuple[str, str] | Coordinate) -> Coordinate:
     if isinstance(point[0], float):
         return cast(Coordinate, point)
 
-    return cast(Coordinate, [convert_coordinate(cast(str, coord)) for coord in point])
+    return cast(
+        Coordinate, [convert_degsecmin_coordinate(cast(str, coord)) for coord in point]
+    )
 
 
 @dataclass

@@ -8,6 +8,7 @@ type MapState = {
   dfs: boolean
   dwd: boolean
   sectors: boolean
+  areas: boolean
 }
 
 const mapSlice = createSlice({
@@ -18,6 +19,7 @@ const mapSlice = createSlice({
     dfs: localStorageOrDefault("map.dfs", false),
     dwd: localStorageOrDefault("map.dwd", false),
     sectors: localStorageOrDefault("map.sectors", true),
+    areas: localStorageOrDefault("map.areas", true),
   } as MapState,
   reducers: {
     setLevel(state, { payload: level }: PayloadAction<number>) {
@@ -37,6 +39,9 @@ const mapSlice = createSlice({
     setSectors(state, { payload: active }: PayloadAction<boolean>) {
       state.sectors = setLocalStorage("map.sectors", active)
     },
+    setAreas(state, { payload: active }: PayloadAction<boolean>) {
+      state.sectors = setLocalStorage("map.areas", active)
+    },
   },
 })
 
@@ -45,7 +50,14 @@ export const selectOpenFlightmaps = (store: RootState) => store.map.ofm
 export const selectDFS = (store: RootState) => store.map.dfs
 export const selectDWD = (store: RootState) => store.map.dwd
 export const selectSectors = (store: RootState) => store.map.sectors
+export const selectAreas = (store: RootState) => store.map.areas
 
-export const { setLevel, setOpenFlightmaps, setDFS, setDWD, setSectors } =
-  mapSlice.actions
+export const {
+  setLevel,
+  setOpenFlightmaps,
+  setDFS,
+  setDWD,
+  setSectors,
+  setAreas,
+} = mapSlice.actions
 export const { reducer: mapReducer } = mapSlice

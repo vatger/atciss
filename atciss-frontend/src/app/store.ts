@@ -14,6 +14,7 @@ import { loaApi } from "../services/loaApi"
 import { tafApi } from "../services/tafApi"
 import { ecfmpApi } from "../services/ecfmpApi"
 import { eventApi } from "../services/eventApi"
+import { areaApi } from "../services/areaApi"
 
 export const store = configureStore({
   reducer: {
@@ -27,6 +28,7 @@ export const store = configureStore({
     [tafApi.reducerPath]: tafApi.reducer,
     [ecfmpApi.reducerPath]: ecfmpApi.reducer,
     [eventApi.reducerPath]: eventApi.reducer,
+    [areaApi.reducerPath]: areaApi.reducer,
     auth: authReducer,
     activePositions: activePositionReducer,
     config: configReducer,
@@ -43,6 +45,7 @@ export const store = configureStore({
       .concat(tafApi.middleware)
       .concat(controllerApi.middleware)
       .concat(ecfmpApi.middleware)
+      .concat(areaApi.middleware)
       .concat(eventApi.middleware),
 })
 

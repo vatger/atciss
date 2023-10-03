@@ -2,10 +2,12 @@ import { Box, Text } from "theme-ui"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { usePollControllers } from "../../services/controllerApi"
 import {
+  selectAreas,
   selectDFS,
   selectDWD,
   selectOpenFlightmaps,
   selectSectors,
+  setAreas,
   setDFS,
   setDWD,
   setOpenFlightmaps,
@@ -23,6 +25,7 @@ export const MapControls = () => {
   const dfs = useAppSelector(selectDFS)
   const dwd = useAppSelector(selectDWD)
   const sectors = useAppSelector(selectSectors)
+  const areas = useAppSelector(selectAreas)
 
   return (
     <>
@@ -54,6 +57,16 @@ export const MapControls = () => {
             onChange={(e) => dispatch(setDWD(e.target.checked))}
           />
           DWD Niederschlagsradar
+        </Text>
+      </Box>
+      <Box>
+        <Text as="label" variant="label">
+          <input
+            type="checkbox"
+            checked={areas}
+            onChange={(e) => dispatch(setAreas(e.target.checked))}
+          />
+          Areas
         </Text>
       </Box>
       <Box>
