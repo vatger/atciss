@@ -129,8 +129,8 @@ async def atis_generate(
                 if metar.wind_gust is not None
                 else None,
                 (
-                    f"VARIABLE BETWEEN {int(metar.wind_dir_from)} "
-                    + f"AND {int(metar.wind_dir_to)} DEGREES"
+                    f"VARIABLE BETWEEN {int(metar.wind_dir_from):03} "
+                    + f"AND {int(metar.wind_dir_to):03} DEGREES"
                 )
                 if metar.wind_dir_from is not None and metar.wind_dir_to is not None
                 else None,
