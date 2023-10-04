@@ -5,7 +5,10 @@
   ...
 }: let
   cfg = config.services.atciss;
-  ATCISS_DEBUG = toString cfg.debug;
+  ATCISS_DEBUG =
+    if cfg.debug
+    then "1"
+    else "0";
 in {
   options = {
     services.atciss = {
@@ -22,6 +25,7 @@ in {
       };
       debug = lib.mkOption {
         type = lib.types.bool;
+        default = true;
       };
     };
   };
