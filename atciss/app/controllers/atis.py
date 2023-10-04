@@ -141,9 +141,9 @@ async def atis_generate(
     visibility = (
         "UNAVAILABLE"
         if metar.vis is None or len(metar.vis) == 0
-        else f"{int((metar.vis+1)/1000)} KILOMETERS"
-        if metar.vis[-1] >= 5000
-        # TODO: visibility range
+        # TODO: support visibility range
+        else f"{int((metar.vis[0]+1)/1000)} KILOMETERS"
+        if metar.vis[0] >= 5000
         else f"{int(metar.vis[0])} METERS"
     )
 
