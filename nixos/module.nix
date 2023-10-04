@@ -54,6 +54,7 @@ in {
     services.postgresql = {
       enable = true;
       ensureDatabases = ["atciss"];
+      extraPlugins = with config.services.postgresql.package.pkgs; [postgis];
       ensureUsers = [
         {
           name = "atciss";
