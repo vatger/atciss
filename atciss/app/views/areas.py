@@ -52,7 +52,7 @@ class AreaBooking(BaseModel):
         if isinstance(input, int):
             return input
 
-        if input == "GND":
+        if input in ("GND", "MSL"):
             return 0
 
         return int(input[1:], 10)
