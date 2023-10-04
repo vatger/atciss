@@ -90,7 +90,6 @@ in {
 
       environment = {
         inherit ATCISS_DEBUG;
-        ACTISS_DEBUG = cfg.debug;
         ATCISS_DATABASE_DSN = "postgresql+asyncpg://localhost/atciss?host=/run/postgresql";
       };
 
