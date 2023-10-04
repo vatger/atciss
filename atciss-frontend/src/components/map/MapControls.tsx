@@ -79,12 +79,8 @@ export const MapControls = () => {
           Sectors
         </Text>
       </Box>
-      {sectors && (
-        <>
-          <LevelChoice />
-          <SectorControls />
-        </>
-      )}
+      {(areas || sectors) && <LevelChoice />}
+      {sectors && <SectorControls />}
     </>
   )
 }

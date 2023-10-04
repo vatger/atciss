@@ -40,7 +40,7 @@ const mapSlice = createSlice({
       state.sectors = setLocalStorage("map.sectors", active)
     },
     setAreas(state, { payload: active }: PayloadAction<boolean>) {
-      state.sectors = setLocalStorage("map.areas", active)
+      state.areas = setLocalStorage("map.areas", active)
     },
   },
 })
