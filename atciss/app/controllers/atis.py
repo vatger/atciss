@@ -52,6 +52,7 @@ async def atis_generate(
     atisCode: Annotated[str, Query(alias="info")],
     airport: Annotated[str, Query(alias="airport")],
     approachType: Annotated[str, Query(alias="apptype")] = "ILS",
+    lvp: Annotated[bool, Query(alias="lvp")] = False,
     departureFrequency: Annotated[Optional[str], Query(alias="depfreq")] = None,
 ) -> str:
     airports: Dict[str, Airport] = {}
@@ -83,15 +84,28 @@ async def atis_generate(
             "EXPECT VECTORS FOR",
             ("INDEPENDENT PARALLEL" if len(arrivalRunways) >= 2 else None),
             f"{approachType} APPROACH",
-            " AND ".join(sorted(arrivalRunways)),
         ]
     )
-    allActiveRunways = sorted(set(departureRunways + arrivalRunways))
+    allActiveRunways = set(departureRunways + arrivalRunways)
+    singleUseOfRunwayOps = not (
+        set(departureRunways) == allActiveRunways
+        and set(arrivalRunways) == allActiveRunways
+    )
     runwaysInUse = concatSep(
         [
             f"RUNWAY{'S' if len(allActiveRunways) > 1 else ''} IN USE",
-            " AND ".join(allActiveRunways),
+            " AND ".join(sorted(allActiveRunways)),
         ]
+        + (
+            [
+                f"MAIN LANDING RUNWAY{'S' if len(arrivalRunways) > 1 else ''}",
+                " AND ".join(arrivalRunways),
+                f"DEPARTURE RUNWAY{'S' if len(departureRunways) > 1 else ''}",
+                " AND ".join(departureRunways),
+            ]
+            if singleUseOfRunwayOps
+            else []
+        )
     )
 
     metar = await fetch_metar(airport)
@@ -109,6 +123,12 @@ async def atis_generate(
     depfreq_block = (
         "ATTENTION! DEPARTURE FREQUENCY FOR ALL AIRCRAFT IS " + departureFrequency
         if departureFrequency is not None
+        else None
+    )
+
+    lowvis = (
+        "LOW VISIBILITY PROCEDURES IN OPERATION CATEGORY 2 AND 3 AVAILABLE"
+        if lvp
         else None
     )
 
@@ -138,13 +158,22 @@ async def atis_generate(
         )
     )
 
+    def formatvis(range: float):
+        return (
+            f"{int((range+1)/1000)} KILOMETERS"
+            if range >= 5000
+            else f"{int(range)} METERS"
+        )
+
     visibility = (
         "UNAVAILABLE"
         if metar.vis is None or len(metar.vis) == 0
-        # TODO: support visibility range
-        else f"{int((metar.vis[0]+1)/1000)} KILOMETERS"
-        if metar.vis[0] >= 5000
-        else f"{int(metar.vis[0])} METERS"
+        else concatSep(
+            [
+                formatvis(metar.vis[0]),
+                f"MINIMUM {formatvis(metar.vis[1])}" if len(metar.vis) > 1 else None,
+            ]
+        )
     )
 
     trends = {
@@ -155,7 +184,7 @@ async def atis_generate(
     }
     rvr = (
         (
-            "RUNWAY VISUAL RANGE "
+            "RVR "
             + " ".join(
                 concatSep(
                     [f"RUNWAY {r.runway} {int(r.low)} METERS", trends.get(r.trend)]
@@ -185,17 +214,21 @@ async def atis_generate(
         if len(metar.clouds) == 1 and metar.clouds[0].cover == "NSC"
         else "CLOUDS "
         + (
-            " ".join(
-                concatSep(
-                    [
-                        coverToStr(cloudlayer.cover),
-                        cloudlayer.type_text,
-                        f"{int(cloudlayer.height)} FEET"
-                        if cloudlayer.height is not None
-                        else None,
-                    ]
-                )
-                for cloudlayer in metar.clouds
+            concatSep(
+                [
+                    concatSep(
+                        [
+                            coverToStr(cloudlayer.cover),
+                            cloudlayer.type_text.upper()
+                            if cloudlayer.type_text is not None
+                            else None,
+                            f"{int(cloudlayer.height)} FEET"
+                            if cloudlayer.height is not None
+                            else None,
+                        ]
+                    )
+                    for cloudlayer in metar.clouds
+                ]
             )
         )
     )
@@ -207,18 +240,18 @@ async def atis_generate(
             + f"MET REPORT TIME {metar.time.strftime('%H%M')}",
             expectApproach,
             runwaysInUse,
-            f"TRANSITION LEVEL {metar.tl}",
             depfreq_block,
+            lowvis,
+            f"TRANSITION LEVEL {metar.tl}",
             f"WIND {wind}",
             f"VISIBILITY {visibility}",
             rvr,
-            weather if weather != "" else None,
+            f"PRESENT WEATHER {weather}" if weather != "" else None,
             clouds,
             f"TEMPERATURE {avail(metar.temp)} DEW POINT {avail(metar.dewpt)}",
-            "QNH " + avail(metar.qnh, "{} HECTOPASCAL"),
+            "QNH " + avail(metar.qnh, "{} HPA"),
             metar.recent_weather_text if metar.recent_weather_text else None,
-            # TODO
-            # metar.trend if metar.trend else None,
+            metar.trend if metar.trend else None,
             f"INFORMATION {atisCode} OUT\n",
         ],
         " .. ",
