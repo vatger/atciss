@@ -167,7 +167,7 @@ async def atis_generate(
 
     visibility = (
         "UNAVAILABLE"
-        if metar.vis is None or len(metar.vis) == 0
+        if len(metar.vis) == 0
         else concatSep(
             [
                 formatvis(metar.vis[0]),

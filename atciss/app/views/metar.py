@@ -3,7 +3,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Annotated, Any, List, Optional, Sequence, Tuple, cast
-from pydantic import AwareDatetime, BaseModel, StringConstraints, field_validator
+from pydantic import (
+    AwareDatetime,
+    BaseModel,
+    StringConstraints,
+    computed_field,
+    field_validator,
+)
 
 from metar.Datatypes import distance
 from metar.Metar import Metar, CLOUD_TYPE
@@ -83,12 +89,23 @@ class MetarModel(BaseModel):
     recent_weather_text: str
     clouds: Sequence[CloudModel]
     trend: str
-    tl: Optional[int]
 
     @field_validator("weather", "recent_weather", mode="before")
     @classmethod
     def weather_validator(cls, v: List[List[Optional[str]]]) -> List[str]:
         return ["".join([ws for ws in w if ws is not None]) for w in v]
+
+    @computed_field
+    def tl(self) -> Optional[int]:
+        if self.qnh is None:
+            return None
+        if self.qnh < 978:
+            return 80
+        if self.qnh < 1014:
+            return 70
+        if self.qnh < 1051:
+            return 60
+        return 50
 
     @classmethod
     def from_str(cls, raw_metar: str) -> MetarModel:
@@ -131,15 +148,6 @@ class MetarModel(BaseModel):
                 "recent_weather_text": parsed.recent_weather(),
                 "clouds": [CloudModel.from_tuple(clouds) for clouds in parsed.sky],
                 "trend": parsed.trend(),
-                "tl": None
-                if parsed.press is None
-                else 80
-                if (parsed.press.value("HPA") < 978)
-                else 70
-                if (parsed.press.value("HPA") < 1014)
-                else 60
-                if (parsed.press.value("HPA") < 1051)
-                else 50,
             }
         )
 

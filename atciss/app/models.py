@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel, Field
 
-from .views.booking import Booking  # noqa: F401
+from .views.booking import Booking  # noqa: F401 pylint: disable=unused-import
 
 
 class UserBase(SQLModel):
