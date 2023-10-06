@@ -41,7 +41,7 @@ geoalchemy2 = "^0.14.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.9"
-pylint = "^2.17"
+pylint = "^3.0"
 types-beautifulsoup4 = "^4.12.0.5"
 types-python-jose = "^3.3.4.8"
 mypy = "^1.5.1"
