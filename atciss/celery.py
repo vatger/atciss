@@ -18,6 +18,7 @@ from .app.tasks.aerodrome_dfs import fetch_dfs_ad_data as fetch_dfs_ad_data_psql
 from .app.tasks.ecfmp import fetch_ecfmp
 from .app.tasks.areas import fetch_areas
 from .app.tasks.booking import fetch_booking
+from .app.tasks.aliases import fetch_aliases
 
 app = Celery(__name__)
 
@@ -47,6 +48,7 @@ app.conf.beat_schedule = {
     "update_ecfmp": {"task": "update_ecfmp", "schedule": crontab(minute="*")},
     "update_areas": {"task": "update_areas", "schedule": crontab(minute="*/10")},
     "update_booking": {"task": "update_booking", "schedule": crontab(minute="*/10")},
+    "update_aliases": {"task": "update_aliases", "schedule": crontab(minute="*/60")},
     "update_dfs_ad_data": {
         "task": "update_dfs_ad_data",
         "schedule": crontab(day_of_week="1"),
@@ -102,3 +104,8 @@ def update_areas() -> None:
 @app.task(name="update_booking")
 def update_booking() -> None:
     async_to_sync(fetch_booking)()
+
+
+@app.task(name="update_aliases")
+def update_aliases() -> None:
+    async_to_sync(fetch_aliases)()

@@ -15,6 +15,7 @@ import { LOA } from "../views/LOA"
 import { AipIfr } from "../views/AipIfr"
 import { AipVfr } from "../views/AipVfr"
 import { Windy } from "../views/Windy"
+import { Alias, aliasLoader } from "../views/Alias"
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,11 @@ const router = createBrowserRouter([
       {
         path: "map",
         element: <Map />,
+      },
+      {
+        path: "alias",
+        element: <Alias />,
+        loader: aliasLoader,
       },
       {
         path: "wx",

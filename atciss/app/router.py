@@ -3,17 +3,18 @@ from fastapi import APIRouter
 
 from .controllers import (
     ready,
+    ad,
+    airspace,
+    aliases,
+    areas,
+    atis,
+    auth,
+    ecfmp,
+    loa,
     metar,
     notam,
-    atis,
-    ad,
-    auth,
-    airspace,
-    vatsim,
-    loa,
     taf,
-    ecfmp,
-    areas,
+    vatsim,
 )
 
 
@@ -31,3 +32,4 @@ root_api_router.include_router(airspace.router, tags=["airspace"])
 root_api_router.include_router(loa.router, tags=["airspace"])
 root_api_router.include_router(ecfmp.router, tags=["airspace"])
 root_api_router.include_router(areas.router, tags=["airspace"])
+root_api_router.include_router(aliases.router, tags=["airspace"])

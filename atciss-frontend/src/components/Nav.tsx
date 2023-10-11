@@ -71,6 +71,14 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         <NavButton
           sx={{ gridRow: "2/3" }}
           onClick={() => {
+            navigate("/alias")
+          }}
+        >
+          Alias
+        </NavButton>
+        <NavButton
+          sx={{ gridRow: "2/3" }}
+          onClick={() => {
             navigate("/windy")
           }}
         >
