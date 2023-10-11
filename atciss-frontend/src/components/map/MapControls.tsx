@@ -6,11 +6,13 @@ import {
   selectDFS,
   selectDWD,
   selectOpenFlightmaps,
+  selectSatellite,
   selectSectors,
   setAreas,
   setDFS,
   setDWD,
   setOpenFlightmaps,
+  setSatellite,
   setSectors,
 } from "../../services/mapSlice"
 import { SectorControls } from "../SectorControls"
@@ -24,6 +26,7 @@ export const MapControls = () => {
   const ofm = useAppSelector(selectOpenFlightmaps)
   const dfs = useAppSelector(selectDFS)
   const dwd = useAppSelector(selectDWD)
+  const satellite = useAppSelector(selectSatellite)
   const sectors = useAppSelector(selectSectors)
   const areas = useAppSelector(selectAreas)
 
@@ -47,6 +50,16 @@ export const MapControls = () => {
             onChange={(e) => dispatch(setDFS(e.target.checked))}
           />
           DFS ICAO map
+        </Text>
+      </Box>
+      <Box>
+        <Text as="label" variant="label">
+          <input
+            type="checkbox"
+            checked={satellite}
+            onChange={(e) => dispatch(setSatellite(e.target.checked))}
+          />
+          Satellite
         </Text>
       </Box>
       <Box>

@@ -7,6 +7,7 @@ type MapState = {
   ofm: boolean
   dfs: boolean
   dwd: boolean
+  satellite: boolean
   sectors: boolean
   areas: boolean
 }
@@ -18,6 +19,7 @@ const mapSlice = createSlice({
     ofm: localStorageOrDefault("map.ofm", true),
     dfs: localStorageOrDefault("map.dfs", false),
     dwd: localStorageOrDefault("map.dwd", false),
+    satellite: localStorageOrDefault("map.satellite", false),
     sectors: localStorageOrDefault("map.sectors", true),
     areas: localStorageOrDefault("map.areas", true),
   } as MapState,
@@ -36,6 +38,9 @@ const mapSlice = createSlice({
     setDWD(state, { payload: active }: PayloadAction<boolean>) {
       state.dwd = setLocalStorage("map.dwd", active)
     },
+    setSatellite(state, { payload: active }: PayloadAction<boolean>) {
+      state.satellite = setLocalStorage("map.satellite", active)
+    },
     setSectors(state, { payload: active }: PayloadAction<boolean>) {
       state.sectors = setLocalStorage("map.sectors", active)
     },
@@ -49,6 +54,7 @@ export const selectLevel = (store: RootState) => store.map.level
 export const selectOpenFlightmaps = (store: RootState) => store.map.ofm
 export const selectDFS = (store: RootState) => store.map.dfs
 export const selectDWD = (store: RootState) => store.map.dwd
+export const selectSatellite = (store: RootState) => store.map.satellite
 export const selectSectors = (store: RootState) => store.map.sectors
 export const selectAreas = (store: RootState) => store.map.areas
 
@@ -57,6 +63,7 @@ export const {
   setOpenFlightmaps,
   setDFS,
   setDWD,
+  setSatellite,
   setSectors,
   setAreas,
 } = mapSlice.actions

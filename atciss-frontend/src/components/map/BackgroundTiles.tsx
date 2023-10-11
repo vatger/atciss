@@ -4,12 +4,14 @@ import {
   selectDFS,
   selectDWD,
   selectOpenFlightmaps,
+  selectSatellite,
 } from "../../services/mapSlice"
 
 export const BackgroundTiles = () => {
   const ofm = useAppSelector(selectOpenFlightmaps)
   const dfs = useAppSelector(selectDFS)
   const dwd = useAppSelector(selectDWD)
+  const satellite = useAppSelector(selectSatellite)
 
   return (
     <>
@@ -17,6 +19,12 @@ export const BackgroundTiles = () => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
         url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png"
       />
+      {satellite && (
+        <TileLayer
+          attribution="Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community"
+          url="https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+        />
+      )}
       {ofm && (
         <>
           <TileLayer
