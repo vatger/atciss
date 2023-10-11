@@ -1,40 +1,40 @@
+import { FIR_TO_VATGLASSES } from "../app/config"
 import { useAppSelector } from "../app/hooks"
 import {
-  Positions,
-  selectActivePositions,
-  selectSectorToOwner,
+  selectOwner,
   selectSelectedPosition,
 } from "../services/activePositionSlice"
 import { LoaItem } from "../services/loaApi"
 
-const positionInformation = (
-  sectorToOwner: ReturnType<typeof selectSectorToOwner>,
-  selectedPosition: string | null,
-  positions: Positions,
-  loa: LoaItem,
-  from_to: "from" | "to",
-): string => {
+const PositionInformation = ({
+  loa,
+  from_to,
+}: {
+  loa: LoaItem
+  from_to: "from" | "to"
+}) => {
+  const selectedPosition = useAppSelector(selectSelectedPosition)
+
   if (!loa[`${from_to}_sector`]) {
     return loa[`${from_to}_fir`]
   }
+  const fir = loa[`${from_to}_fir`]
   const sector = loa[`${from_to}_sector`]
-  const controllingPosition = sectorToOwner[sector]
+  const position = useAppSelector((state) =>
+    selectOwner(state, `${FIR_TO_VATGLASSES[fir]}/${sector}`),
+  )
   const frequency =
-    controllingPosition && controllingPosition !== selectedPosition
-      ? ` (${positions[controllingPosition].position.frequency})`
+    position && position.id !== selectedPosition
+      ? ` (${position?.frequency})`
       : ""
-  return controllingPosition &&
-    controllingPosition !== selectedPosition &&
-    controllingPosition !== sector
-    ? `${sector} by ${controllingPosition}${frequency}`
+  return position &&
+    position.id !== selectedPosition &&
+    position.id !== `${FIR_TO_VATGLASSES[fir]}/${sector}`
+    ? `${sector} by ${position?.name}${frequency}`
     : `${sector}${frequency}`
 }
 
 export const LoaRow = ({ loa }: { loa: LoaItem }) => {
-  const sectorToOwner = useAppSelector(selectSectorToOwner)
-  const selectedPosition = useAppSelector(selectSelectedPosition)
-  const positions = useAppSelector(selectActivePositions)
-
   return (
     <tr>
       <td>{loa.cop}</td>
@@ -49,22 +49,10 @@ export const LoaRow = ({ loa }: { loa: LoaItem }) => {
       </td>
       <td>{loa.special_conditions}</td>
       <td>
-        {positionInformation(
-          sectorToOwner,
-          selectedPosition,
-          positions,
-          loa,
-          "from",
-        )}
+        <PositionInformation loa={loa} from_to="from" />
       </td>
       <td>
-        {positionInformation(
-          sectorToOwner,
-          selectedPosition,
-          positions,
-          loa,
-          "to",
-        )}
+        <PositionInformation loa={loa} from_to="to" />
       </td>
     </tr>
   )

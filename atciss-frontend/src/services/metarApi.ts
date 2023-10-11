@@ -1,5 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithAuth } from "../app/auth"
+import createCachedSelector from "re-reselect"
+import { RootState } from "../app/store"
+import { selectAirportICAOs } from "./sectorApi"
+import { createSelector } from "@reduxjs/toolkit"
 
 export interface Clouds {
   cover: "FEW" | "SCT" | "BKN" | "OVC" | "NSC"
@@ -79,3 +83,15 @@ export const usePollMetarByIcaoCodes: typeof metarApi.useGetByIcaoCodesQuery = (
   options,
 ) =>
   metarApi.useGetByIcaoCodesQuery(icao, { pollingInterval: 60000, ...options })
+
+const selectAllMetars = createSelector(
+  (state: RootState) => state,
+  selectAirportICAOs,
+  (state, ads) =>
+    metarApi.endpoints.getByIcaoCodes.select(ads)(state)?.data ?? {},
+)
+
+export const selectMetar = createCachedSelector(
+  [selectAllMetars, (_state: RootState, icao: string) => icao],
+  (metars, icao) => metars[icao ?? ""],
+)((_state, icao) => icao)

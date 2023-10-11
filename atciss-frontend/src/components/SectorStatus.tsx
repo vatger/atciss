@@ -2,16 +2,28 @@ import { Box, Flex, Text, ThemeUIStyleObject } from "theme-ui"
 import { useAppSelector } from "../app/hooks"
 import { selectActiveEbg } from "../services/configSlice"
 import { EBG_SETTINGS } from "../app/config"
-import { selectActivePositions } from "../services/activePositionSlice"
-import { sectorApi } from "../services/airspaceApi"
+import { sectorApi, selectSector } from "../services/sectorApi"
 import { usePollControllers } from "../services/controllerApi"
+import { selectOnlineOwner } from "../services/activePositionSlice"
+
+const Sector = ({ id }: { id: string }) => {
+  const sector = useAppSelector((store) => selectSector(store, id))
+  const owner = useAppSelector((store) => selectOnlineOwner(store, id))
+
+  return (
+    <Box key={id}>
+      <Text variant="label">{sector?.remark ?? sector?.id}</Text>
+      {owner ? ` by ${owner.name} (${owner.frequency})` : " closed"}
+    </Box>
+  )
+}
 
 export const SectorStatus = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   usePollControllers()
   const activeEbg = useAppSelector(selectActiveEbg)
-  const ebgSectors: string[] = EBG_SETTINGS[activeEbg].sectors
-  const activePositions = useAppSelector(selectActivePositions)
-  const { data: sectors } = sectorApi.useGetByRegionQuery()
+  const ebgSectors = EBG_SETTINGS[activeEbg].sectors
+
+  sectorApi.useGetQuery()
 
   return (
     <Flex
@@ -22,21 +34,9 @@ export const SectorStatus = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         fontFamily: "monospace",
       }}
     >
-      {ebgSectors.map((sectorName) => {
-        const controllingSector = sectors?.airspace
-          .find(
-            (sector) => sector.id == sectorName || sector.remark == sectorName,
-          )
-          ?.owner.find((owner) => activePositions[owner]?.online)
-        return (
-          <Box key={sectorName}>
-            <Text variant="label">{sectorName}</Text>
-            {controllingSector
-              ? ` by ${controllingSector} (${sectors?.positions[controllingSector].frequency})`
-              : " closed"}
-          </Box>
-        )
-      })}
+      {ebgSectors.map((id) => (
+        <Sector id={id} key={id} />
+      ))}
     </Flex>
   )
 }

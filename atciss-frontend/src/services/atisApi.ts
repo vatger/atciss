@@ -1,5 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithAuth } from "../app/auth"
+import { createSelector } from "@reduxjs/toolkit"
+import { selectAirportICAOs } from "./sectorApi"
+import { RootState } from "../app/store"
+import createCachedSelector from "re-reselect"
 
 export interface Atis {
   cid: number
@@ -17,7 +21,7 @@ export const atisApi = createApi({
   endpoints: (builder) => ({
     getByIcaoCodes: builder.query<{ [id: string]: Atis }, string[]>({
       query: (icaoList) => ({
-        url: `atis/`,
+        url: `atis`,
         params: icaoList.map((icao) => ["icao", icao]),
       }),
     }),
@@ -29,3 +33,15 @@ export const usePollAtisByIcaoCodes: typeof atisApi.useGetByIcaoCodesQuery = (
   options,
 ) =>
   atisApi.useGetByIcaoCodesQuery(icao, { pollingInterval: 60000, ...options })
+
+export const selectAllAtis = createSelector(
+  (state: RootState) => state,
+  selectAirportICAOs,
+  (state, ads) =>
+    atisApi.endpoints.getByIcaoCodes.select(ads)(state)?.data ?? {},
+)
+
+export const selectAtis = createCachedSelector(
+  [selectAllAtis, (_state: RootState, icao: string) => icao],
+  (atis, icao) => atis[icao ?? ""],
+)((_state, icao) => icao)

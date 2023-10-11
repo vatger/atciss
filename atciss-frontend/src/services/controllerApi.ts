@@ -1,5 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithAuth } from "../app/auth"
+import { createSelector } from "@reduxjs/toolkit"
 
 export interface Controller {
   cid: number
@@ -32,3 +33,8 @@ export const usePollControllers: typeof controllerApi.useGetQuery = (
   _,
   options,
 ) => controllerApi.useGetQuery(_, { pollingInterval: 60000, ...options })
+
+export const selectControllers = createSelector(
+  controllerApi.endpoints.get.select(),
+  (response) => response.data ?? [],
+)

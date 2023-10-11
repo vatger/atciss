@@ -22,10 +22,12 @@ router = APIRouter()
 
 
 @router.get(
-    "/atis/",
+    "/atis",
 )
 async def atis_get(
-    airports: Annotated[Sequence[AirportIcao], Query(alias="icao")],
+    airports: Annotated[
+        Sequence[AirportIcao], Query(alias="icao", default_factory=list)
+    ],
     user: Annotated[User, Depends(get_user)],
 ) -> Dict[str, Atis]:
     """Get Atis for airport."""

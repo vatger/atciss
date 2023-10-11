@@ -25,16 +25,18 @@ class Application(BaseSettings):
     DATABASE_DSN: PostgresDsn = "postgresql+asyncpg://atciss:fnord@localhost/atciss"
 
     # check https://github.com/lennycolton/vatglasses-data/tree/main/data
-    # TODO add italy, poland, sweden and switzerland when available
+    # TODO add poland and switzerland when available
     SECTOR_REGIONS: list[str] = [
-        "germany",
-        "austria",
-        "czechia",
-        "belux",
-        "denmark",
-        "france",
-        "nl",
-        "uk",
+        "ed",
+        "lo",
+        "li",
+        "lk",
+        "lf",
+        "eb-el",
+        "eh",
+        "ek",
+        "eg",
+        "es",
     ]
 
 

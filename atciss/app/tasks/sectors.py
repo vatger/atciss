@@ -18,7 +18,7 @@ async def fetch_sector_data() -> None:
         for region in settings.SECTOR_REGIONS:
             try:
                 res = await aiohttp_client.get(
-                    "https://raw.githubusercontent.com/globin/vatglasses-data/germany-sector-abbrv/data"
+                    "https://raw.githubusercontent.com/globin/vatglasses-data/germany-sector-abbrv-renamed/data"
                     + f"/{region}.json"
                 )
             except ClientConnectorError as e:
@@ -26,7 +26,7 @@ async def fetch_sector_data() -> None:
                 return
 
             data[region] = TypeAdapter(SectorData).validate_python(
-                await res.json(content_type="text/plain")
+                {"region": region} | await res.json(content_type="text/plain")
             )
 
     logger.info("Sector data received")
@@ -43,6 +43,6 @@ async def fetch_sector_data() -> None:
             )
             pipe.set(
                 f"sector:airspaces:{region}",
-                TypeAdapter(list[Airspace]).dump_json(region_data.airspace),
+                TypeAdapter(dict[str, Airspace]).dump_json(region_data.airspace),
             )
         await pipe.execute()

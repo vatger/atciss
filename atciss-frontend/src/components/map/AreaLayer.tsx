@@ -40,6 +40,7 @@ export const AreaLayer = () => {
                   fillOpacity: 0.5,
                 }}
                 positions={area.polygon}
+                key={`${area.name}-${area.lower_limit}-${area.upper_limit}`}
               >
                 <Tooltip>
                   <Box sx={{ fontSize: "1" }}>

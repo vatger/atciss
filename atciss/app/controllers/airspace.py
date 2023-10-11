@@ -1,8 +1,8 @@
 """Application controllers - metar."""
-from typing import Annotated, Dict, List
+from typing import Annotated
 
 from loguru import logger
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from pydantic import TypeAdapter
 
 from atciss.app.tasks.sectors import Airport, Airspace, Position, SectorData
@@ -26,7 +26,7 @@ async def airspace_get(
     """Get METAR for airport."""
     redis_client = RedisClient.open()
 
-    airspaces = []
+    airspaces = {}
     airports = {}
     positions = {}
     for region in settings.SECTOR_REGIONS:
@@ -35,15 +35,17 @@ async def airspace_get(
         airspaces_json = await redis_client.get(f"sector:airspaces:{region}")
         if airports_json is None or positions_json is None or airspaces_json is None:
             logger.warning(f"No data for {region}")
-            raise HTTPException(status_code=404)
+            continue
 
-        airports = airports | TypeAdapter(Dict[str, Airport]).validate_json(
+        airports = airports | TypeAdapter(dict[str, Airport]).validate_json(
             airports_json
         )
-        positions = positions | TypeAdapter(Dict[str, Position]).validate_json(
+        positions = positions | TypeAdapter(dict[str, Position]).validate_json(
             positions_json
         )
-        airspaces.extend(TypeAdapter(List[Airspace]).validate_json(airspaces_json))
+        airspaces = airspaces | (
+            TypeAdapter(dict[str, Airspace]).validate_json(airspaces_json)
+        )
 
     return SectorData(
         airspace=airspaces,

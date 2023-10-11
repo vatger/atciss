@@ -12,7 +12,7 @@ router = APIRouter()
 
 
 @router.get(
-    "/aerodrome/",
+    "/aerodrome",
 )
 async def ad_get(
     icao: Annotated[List[str], Query(...)],
@@ -24,7 +24,8 @@ async def ad_get(
     ads = {}
     for i in icao:
         i = i.upper()
-        ad_json = cast(str, await redis_client.get(f"dfs:ad:{i}"))
-        ads[i] = Aerodrome.model_validate_json(ad_json)
+        ad_json = cast(str | None, await redis_client.get(f"dfs:ad:{i}"))
+        if ad_json is not None:
+            ads[i] = Aerodrome.model_validate_json(ad_json)
 
     return ads

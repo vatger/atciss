@@ -4,9 +4,9 @@ import { selectActiveEbg } from "../services/configSlice"
 import { EBG_SETTINGS } from "../app/config"
 import { usePollMetarByIcaoCodes, xmc } from "../services/metarApi"
 import { usePollTafByIcaoCodes } from "../services/tafApi"
-import { sectorApi } from "../services/airspaceApi"
 import { Box, Button, Flex, Grid, Text } from "theme-ui"
 import { usePollAtisByIcaoCodes } from "../services/atisApi"
+import { sectorApi, selectAirports } from "../services/sectorApi"
 
 const Wx = () => {
   const activeEbg = useAppSelector(selectActiveEbg)
@@ -19,8 +19,9 @@ const Wx = () => {
 
   const [selectedAD, setSelectedAD] = useState(ebgADs[0])
 
-  const { data } = sectorApi.useGetByRegionQuery()
-  const vatglassesADs = Object.entries(data?.airports ?? {})
+  sectorApi.useGetQuery()
+  const airports = useAppSelector(selectAirports)
+  const vatglassesADs = Object.entries(airports)
     .filter(
       ([icaoCode, ad]) =>
         ad.topdown.length > 0 &&
@@ -59,10 +60,8 @@ const Wx = () => {
             <Text variant="mapAd">{selectedAD}</Text>
           </Box>
           <Box>
-            {data?.airports?.[selectedAD]?.callsign && (
-              <Text variant="label">
-                {data?.airports?.[selectedAD]?.callsign}
-              </Text>
+            {airports?.[selectedAD]?.callsign && (
+              <Text variant="label">{airports?.[selectedAD]?.callsign}</Text>
             )}
           </Box>
           <Box>

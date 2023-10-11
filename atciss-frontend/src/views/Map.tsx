@@ -12,32 +12,30 @@ import { AreaLayer } from "../components/map/AreaLayer"
 
 const position = [49.2646, 11.4134] as LatLngTuple
 
-const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
-  return (
-    <Grid
-      sx={{
-        ...sx,
-        gap: "1rem",
-        gridTemplateColumns: "4fr 1fr",
-        width: "100%",
-      }}
+const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => (
+  <Grid
+    sx={{
+      ...sx,
+      gap: "1rem",
+      gridTemplateColumns: "4fr 1fr",
+      width: "100%",
+    }}
+  >
+    <MapContainer
+      center={position}
+      zoom={7}
+      scrollWheelZoom={true}
+      sx={{ height: "100%" }}
     >
-      <MapContainer
-        center={position}
-        zoom={7}
-        scrollWheelZoom={true}
-        sx={{ height: "100%" }}
-      >
-        <BackgroundTiles />
-        <SectorLayer />
-        <AreaLayer />
-        <AerodromeLayer />
-      </MapContainer>
-      <Flex sx={{ flexDirection: "column", gap: 3, overflow: "hidden" }}>
-        <MapControls />
-      </Flex>
-    </Grid>
-  )
-}
+      <BackgroundTiles />
+      <SectorLayer />
+      <AreaLayer />
+      <AerodromeLayer />
+    </MapContainer>
+    <Flex sx={{ flexDirection: "column", gap: 3, overflow: "hidden" }}>
+      <MapControls />
+    </Flex>
+  </Grid>
+)
 
 export { Map }
