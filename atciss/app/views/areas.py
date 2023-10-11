@@ -1,12 +1,14 @@
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import cast
+import json
+from typing import Any, cast
 from pydantic import (
     AwareDatetime,
     NaiveDatetime,
     BaseModel,
     TypeAdapter,
     field_validator,
+    model_validator,
 )
 import re
 
@@ -66,3 +68,16 @@ class AreaBooking(BaseModel):
 class EAUPAreas(BaseModel):
     header: EAUPHeader
     areas: list[AreaBooking]
+
+    @model_validator(mode="before")
+    @classmethod
+    def prune_duplicates(cls, data: Any) -> Any:
+        if isinstance(data["header"], EAUPHeader):
+            return data
+
+        return data | {
+            "areas": [
+                json.loads(a)
+                for a in set(json.dumps(area, sort_keys=True) for area in data["areas"])
+            ]
+        }
