@@ -30,16 +30,26 @@ const mapSlice = createSlice({
     setOpenFlightmaps(state, { payload: active }: PayloadAction<boolean>) {
       state.ofm = setLocalStorage("map.ofm", active)
       state.dfs = setLocalStorage("map.dfs", state.dfs && !active)
+      state.satellite = setLocalStorage(
+        "map.satellite",
+        state.satellite && !active,
+      )
     },
     setDFS(state, { payload: active }: PayloadAction<boolean>) {
       state.dfs = setLocalStorage("map.dfs", active)
       state.ofm = setLocalStorage("map.ofm", state.ofm && !active)
+      state.satellite = setLocalStorage(
+        "map.satellite",
+        state.satellite && !active,
+      )
     },
     setDWD(state, { payload: active }: PayloadAction<boolean>) {
       state.dwd = setLocalStorage("map.dwd", active)
     },
     setSatellite(state, { payload: active }: PayloadAction<boolean>) {
       state.satellite = setLocalStorage("map.satellite", active)
+      state.ofm = setLocalStorage("map.ofm", state.ofm && !active)
+      state.dfs = setLocalStorage("map.dfs", state.dfs && !active)
     },
     setSectors(state, { payload: active }: PayloadAction<boolean>) {
       state.sectors = setLocalStorage("map.sectors", active)
