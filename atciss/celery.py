@@ -13,7 +13,8 @@ from .app.tasks.loa import fetch_loas
 from .app.tasks.sectors import fetch_sector_data
 from .app.tasks.vatsim import fetch_vatsim_data
 from .app.tasks.taf_metar import fetch_taf_metar
-from .app.tasks.dfs_ad import fetch_dfs_ad_data
+from .app.tasks.dfs_ad import fetch_dfs_ad_data as fetch_dfs_ad_data_redis
+from .app.tasks.aerodrome_dfs import fetch_dfs_ad_data as fetch_dfs_ad_data_psql
 from .app.tasks.ecfmp import fetch_ecfmp
 from .app.tasks.areas import fetch_areas
 from .app.tasks.booking import fetch_booking
@@ -78,9 +79,14 @@ def update_taf_metar() -> None:
     async_to_sync(fetch_taf_metar)()
 
 
+@app.task(name="update_ad_data_dfs")
+def update_ad_data_dfs() -> None:
+    async_to_sync(fetch_dfs_ad_data_psql)()
+
+
 @app.task(name="update_dfs_ad_data")
 def update_dfs_ad_data() -> None:
-    async_to_sync(fetch_dfs_ad_data)()
+    async_to_sync(fetch_dfs_ad_data_redis)()
 
 
 @app.task(name="update_ecfmp")
