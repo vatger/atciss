@@ -36,7 +36,7 @@ asgiref = "^3.7.2"
 loguru = "^0.7.2"
 asgi-correlation-id = "^4.2.0"
 greenlet = "^3.0.0"
-sqlalchemy = { version = "^2.0.21", extras = [ "asyncio" ] }
+sqlalchemy = { version = "^2.0.22", extras = [ "asyncio" ] }
 geoalchemy2 = "^0.14.1"
 
 [tool.poetry.group.dev.dependencies]
