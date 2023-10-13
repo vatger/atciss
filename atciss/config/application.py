@@ -33,9 +33,10 @@ class Application(BaseSettings):
         "lk",
         "lf",
         "eb-el",
+        "eg",
         "eh",
         "ek",
-        "eg",
+        "ep",
         "es",
     ]
 

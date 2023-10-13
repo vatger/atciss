@@ -62,6 +62,9 @@
             pydantic-settings = pyprev.pydantic-settings.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.hatchling];
             });
+            pydantic-xml = pyprev.pydantic-xml.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry];
+            });
             pyaixm = pyprev.pyaixm.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
               propagatedBuildInputs = (old.propagatedBuildInputs or []) ++ [pyfinal.pyyaml pyfinal.lxml];

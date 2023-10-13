@@ -18,8 +18,8 @@ async def fetch_sector_data() -> None:
         for region in settings.SECTOR_REGIONS:
             try:
                 res = await aiohttp_client.get(
-                    "https://raw.githubusercontent.com/globin/vatglasses-data/germany-sector-abbrv-renamed/data"
-                    + f"/{region}.json"
+                    "https://raw.githubusercontent.com/globin/vatglasses-data/"
+                    + f"germany-sector-abbrv/data/{region}.json"
                 )
             except ClientConnectorError as e:
                 logger.error(f"Could not connect {str(e)}")

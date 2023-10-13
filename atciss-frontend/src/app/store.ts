@@ -15,11 +15,13 @@ import { tafApi } from "../services/tafApi"
 import { ecfmpApi } from "../services/ecfmpApi"
 import { eventApi } from "../services/eventApi"
 import { areaApi } from "../services/areaApi"
+import { bookingApi } from "../services/bookingApi"
 
 export const store = configureStore({
   reducer: {
     [metarApi.reducerPath]: metarApi.reducer,
     [atisApi.reducerPath]: atisApi.reducer,
+    [bookingApi.reducerPath]: bookingApi.reducer,
     [notamApi.reducerPath]: notamApi.reducer,
     [adApi.reducerPath]: adApi.reducer,
     [sectorApi.reducerPath]: sectorApi.reducer,
@@ -38,6 +40,7 @@ export const store = configureStore({
     getDefaultMiddleware()
       .concat(metarApi.middleware)
       .concat(atisApi.middleware)
+      .concat(bookingApi.middleware)
       .concat(adApi.middleware)
       .concat(notamApi.middleware)
       .concat(sectorApi.middleware)

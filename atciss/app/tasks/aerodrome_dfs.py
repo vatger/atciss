@@ -13,7 +13,7 @@ from ..utils.dfs import get_dfs_aixm_url
 from ...config import settings
 
 
-async def fetch_dfs_ad_data():
+async def fetch_dfs_ad_data() -> None:
     url = await get_dfs_aixm_url(0, "ED AirportHeliport")
 
     if url is None:

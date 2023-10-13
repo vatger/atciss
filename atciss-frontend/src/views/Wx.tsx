@@ -26,7 +26,7 @@ const Wx = () => {
       ([icaoCode, ad]) =>
         ad.topdown.length > 0 &&
         !ebgADs.includes(icaoCode) &&
-        EBG_SETTINGS[activeEbg].wxPrefixes.some((prefix) =>
+        EBG_SETTINGS[activeEbg].neighbourPrefixes.some((prefix) =>
           icaoCode.startsWith(prefix),
         ),
     )
