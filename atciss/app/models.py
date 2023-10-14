@@ -1,7 +1,8 @@
 from typing import Any, Optional
+import typing
 import uuid
 from geoalchemy2 import Geometry
-from sqlmodel import Column, SQLModel, Field
+from sqlmodel import Column, Relationship, SQLModel, Field
 
 from .views.booking import Booking  # noqa: F401 pylint: disable=unused-import
 
@@ -16,7 +17,7 @@ class User(UserBase, table=True):
     pass
 
 
-class AerodromeBase(SQLModel):
+class Aerodrome(SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, nullable=False)
     name: str = Field(nullable=False)
     type: str = Field(nullable=False)
@@ -29,9 +30,53 @@ class AerodromeBase(SQLModel):
     arp_elevation: Optional[float]
     ifr: Optional[bool]
 
+    runways: list["Runway"] = Relationship(back_populates="aerodrome")
+
     class Config:
         arbitrary_types_allowed = True
 
 
-class Aerodrome(AerodromeBase, table=True):
-    pass
+class Runway(SQLModel, table=True):
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, nullable=False)
+    aerodrome_id: uuid.UUID = Field(nullable=False, foreign_key="aerodrome.id")
+    designator: str = Field(nullable=False)
+    length: Optional[float]
+    width: Optional[float]
+    surface: Optional[str]
+
+    aerodrome: Aerodrome = Relationship(back_populates="runways")
+
+    class Config:
+        arbitrary_types_allowed = True
+
+
+class RunwayDirection(SQLModel, table=True):
+    __tablename__ = "runway_direction"  # type: ignore
+
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, nullable=False)
+    runway_id: uuid.UUID = Field(nullable=False, foreign_key="runway.id")
+    designator: str = Field(nullable=False)
+    true_bearing: Optional[float]
+    magnetic_bearing: Optional[float]
+    guidance: Optional[str]
+
+    runway: Runway = Relationship()
+
+
+class Navaid(SQLModel, table=True):
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, nullable=False)
+    designator: str = Field(nullable=False)
+    name: str = Field(nullable=False)
+    type: str = Field(nullable=False)
+    location: Any = Field(sa_column=Column(Geometry("Point")))
+    channel: Optional[str]
+    frequency: Optional[float]
+    aerodrome_id: Optional[uuid.UUID] = Field(nullable=True, foreign_key="aerodrome.id")
+    runway_direction_id: Optional[uuid.UUID] = Field(
+        nullable=True, foreign_key="runway_direction.id"
+    )
+    remark: Optional[str]
+    operation_remark: Optional[str]
+
+    aerodrome: Optional[Aerodrome] = Relationship()
+    runway_direction: Optional[RunwayDirection] = Relationship()
