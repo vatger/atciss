@@ -72,8 +72,8 @@ export const selectRelevantEntryLoas = createSelector(
     relevantLoas
       .filter(
         (loa) =>
-          ownedSectors.includes(loa.from_sector) &&
-          !ownedSectors.includes(loa.to_sector),
+          ownedSectors.includes(loa.to_sector) &&
+          !ownedSectors.includes(loa.from_sector),
       )
       .sort(
         sortBy(["to_sector", "cop", "from_sector", "from_fir", "adep_ades"]),
