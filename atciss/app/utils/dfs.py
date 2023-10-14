@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Any, List, Optional
 
 from loguru import logger
 
@@ -6,7 +6,8 @@ from atciss.app.utils.aiohttp_client import AiohttpClient
 from atciss.app.views.dfs import DFSDataset, Item
 
 
-async def get_dfs_aixm_url(amdt_id: int, dataset_name: str) -> Optional[str]:
+async def get_dfs_aixm_datasets(amdt_id: int) -> dict[str, Any]:
+    """Retrieves the available DFS AIXM datasets"""
     async with AiohttpClient.get() as aiohttp_client:
         res = await aiohttp_client.get("https://aip.dfs.de/datasets/rest/")
         available_datasets = {}
@@ -29,14 +30,20 @@ async def get_dfs_aixm_url(amdt_id: int, dataset_name: str) -> Optional[str]:
         except ValueError as err:
             logger.error(err)
 
-        if not available_datasets[dataset_name]:
-            return None
+        return available_datasets
 
-        for release in available_datasets[dataset_name].releases:
-            if release.type.startswith("AIXM"):
-                return f"https://aip.dfs.de/datasets/rest/{amdt_id}/{release.filename}"
 
-    # Nothing found, return None
+def get_dfs_aixm_url(
+    datasets: dict[str, Any], amdt_id: int, dataset_name: str
+) -> Optional[str]:
+    """Returns the proper AIXM URL for the given datsets, amendment and dataset name"""
+    if not datasets[dataset_name]:
+        return None
+
+    for release in datasets[dataset_name].releases:
+        if release.type.startswith("AIXM"):
+            return f"https://aip.dfs.de/datasets/rest/{amdt_id}/{release.filename}"
+
     return None
 
 
