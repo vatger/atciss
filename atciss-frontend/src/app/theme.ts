@@ -1,4 +1,17 @@
+import { useTheme } from "@emotion/react"
 import type { Theme } from "theme-ui"
+
+export type AtcissTheme = Theme & {
+  colors: {
+    text: string
+    background: string
+    primary: string
+    darkshadow: string
+    brightshadow: string
+  }
+}
+
+export const useAppTheme = useTheme as () => AtcissTheme
 
 export const theme: Theme = {
   colors: {

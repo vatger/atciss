@@ -9,8 +9,18 @@ import { useAppSelector } from "../app/hooks"
 import { selectActiveEbg } from "../services/configSlice"
 import { EBG_SETTINGS } from "../app/config"
 import { DateTime, Duration } from "luxon"
-import { NowMarker, Timeline } from "@florianbepunkt/timeline"
-import { MarkersProvider, MarkersRenderer } from "@florianbepunkt/timeline/dist/markers"
+import {
+  ItemRendererProps,
+  NowMarker,
+  Timeline,
+  TimelineGroupBase,
+  TimelineItemBase,
+} from "@florianbepunkt/timeline"
+import {
+  MarkersProvider,
+  MarkersRenderer,
+} from "@florianbepunkt/timeline/dist/markers"
+import { useAppTheme } from "../app/theme"
 
 const minTime = DateTime.now()
   .startOf("week")
@@ -18,7 +28,7 @@ const minTime = DateTime.now()
   .toMillis()
 const maxTime = DateTime.now()
   .startOf("week")
-  .plus(Duration.fromObject({ weeks: 4 }))
+  .plus(Duration.fromObject({ weeks: 12 }))
   .toMillis()
 
 const onTimeChange = (
@@ -37,14 +47,52 @@ const onTimeChange = (
   }
 }
 
+export const Item = (
+  props: ItemRendererProps<TimelineItemBase, TimelineGroupBase>,
+) => {
+  const { item, itemContext, getItemProps, getResizeProps } = props
+  const { left: leftResizeProps, right: rightResizeProps } = getResizeProps()
+  const itemProps = getItemProps(item.itemProps)
+  const theme = useAppTheme()
+
+  return (
+    <Box
+      {...itemProps}
+      style={{ ...itemProps.style, background: theme.colors.primary }}
+    >
+      {itemContext.useResizeHandle ? <div {...leftResizeProps} /> : ""}
+      <div
+        className="rct-item-content"
+        style={{ maxHeight: `${itemContext.dimensions.height}` }}
+      >
+        {itemContext.title}
+      </div>
+      {itemContext.useResizeHandle ? <div {...rightResizeProps} /> : ""}
+    </Box>
+  )
+}
+
 export const Bookings = () => {
   const ebg = useAppSelector(selectActiveEbg)
   usePollBookingsByRegions(EBG_SETTINGS[ebg].neighbourPrefixes)
   const bookings = useAppSelector(selectAllBookings)
   const bookedStations = useAppSelector(selectBookedStations)
+  const theme = useAppTheme()
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box
+      sx={{
+        width: "100%",
+        "--mui-palette-primary-main": theme.colors.primary,
+        "--mui-palette-primary-900": theme.colors.darkshadow,
+        "--mui-palette-primary-200": theme.colors.brightshadow,
+        "--mui-palette-common-white": theme.colors.background,
+        "--mui-palette-primary-50": theme.colors.brightshadow,
+        "--mui-palette-divider": theme.colors.darkshadow,
+        "--mui-palette-text-primary": theme.colors.text,
+        "--mui-palette-TableCell-border": theme.colors.darkshadow,
+      }}
+    >
       <Timeline
         groups={bookedStations}
         items={bookings}
@@ -52,15 +100,17 @@ export const Bookings = () => {
         defaultTimeEnd={DateTime.now()
           .plus(Duration.fromObject({ days: 7 }))
           .toMillis()}
-        minZoom={24 * 60 * 60 * 1000}
-        maxZoom={28 * 24 * 60 * 60 * 1000}
+        minZoom={24 * 60 * 60 * 1000} // 1d
+        maxZoom={28 * 24 * 60 * 60 * 1000} // 4w
         canMove={false}
         canChangeGroup={false}
+         // @ts-ignore
         canResize={false}
         canSelect={false}
         onTimeChange={onTimeChange}
         stickyOffset={80}
         stickyHeader={true}
+        itemRenderer={Item}
       >
         <MarkersProvider>
           <NowMarker id="today" />

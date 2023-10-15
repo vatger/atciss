@@ -49,8 +49,8 @@ export const selectAllBookings = createSelector(
         group: b.callsign,
         startTime: DateTime.fromISO(b.start, { zone: "UTC" })
           .toLocal()
-          .toJSDate(),
-        endTime: DateTime.fromISO(b.end, { zone: "UTC" }).toLocal().toJSDate(),
+          .toMillis(),
+        endTime: DateTime.fromISO(b.end, { zone: "UTC" }).toLocal().toMillis(),
       })) ?? [],
 )
 
@@ -92,7 +92,7 @@ export const selectBookedStations = createSelector(
           return aData.type === "CTR" ? -1 : 1
         }
         if (aData.prefix != bData.prefix) {
-          return aData.prefix.localeCompare(bData.prefix)
+          return aData.prefix!.localeCompare(bData.prefix!)
         }
         if (aData.type !== bData.type) {
           return (
