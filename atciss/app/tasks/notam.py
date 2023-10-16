@@ -8,8 +8,11 @@ from parsimonious import ParseError
 from ..utils import AiohttpClient, ClientConnectorError, RedisClient
 
 NOTAM_ICAO = [
+    "EDGG",
     "EDMM",
+    "EDWW",
     "EDUU",
+    "EDYY",
     "EDDC",
     "EDDE",
     "EDDM",
@@ -35,6 +38,13 @@ NOTAM_ICAO = [
     "ETSI",
     "ETSL",
     "ETSN",
+    "EDDF",
+    "EDDK",
+    "EDDL",
+    "EDDS",
+    "EDLN",
+    "ETNN",
+    "ETNG",
 ]
 
 

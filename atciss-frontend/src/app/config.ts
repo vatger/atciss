@@ -55,6 +55,18 @@ export const EBG_SETTINGS: { [name: string]: EBG } = {
     neighbourPrefixes: ["ED", "ET", "EP", "LK"],
     neighbourFirs: ["EDGG", "EDWW", "EPWW", "LKAA"],
   },
+  // TODO: IRL different layout
+  EDGG07: {
+    fir: "EDGG",
+    uir: "EDYY",
+    sectors: ["ed/NOR", "ed/TAU", "ed/PADH", "ed/HMM", "ed/BOT", "ed/DUS"],
+    majorAerodromes: ["EDDK", "EDDL"],
+    aerodromes: ["EDLN", "ETNN", "ETNG"],
+    minorAerodromes: [],
+    relevantAerodromes: [],
+    neighbourPrefixes: ["ED", "ET", "EB", "EH", "EL", "LF"],
+    neighbourFirs: ["EHAA", "EBBU", "EDWW", "LFEE"],
+  },
 }
 export const FIR_TO_VATGLASSES: { [fir: string]: string } = {
   EDMM: "ed",
