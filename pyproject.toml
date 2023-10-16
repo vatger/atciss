@@ -23,7 +23,7 @@ pydantic-settings = "^2.0.2"
 lxml = "^4.9.3"
 astral = "^3.2"
 python-jose = "^3.3.0"
-watchfiles = "~0.21.0"
+watchfiles = "~0.19.0"
 alembic = "^1.12.0"
 # fork until sqlalchemy2 support is merged, dependencies loosened upon https://github.com/AntonDeMeester/sqlmodel
 sqlmodel = {git = "https://github.com/kleschenko/sqlmodel.git", rev = "8f70f81b92122809ff39f785f2a25a9a4777b747"}
