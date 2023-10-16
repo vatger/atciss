@@ -16,7 +16,7 @@ import { AipIfr } from "../views/AipIfr"
 import { AipVfr } from "../views/AipVfr"
 import { Windy } from "../views/Windy"
 import { Alias, aliasLoader } from "../views/Alias"
-import { Bookings } from "../views/Bookings"
+// import { Bookings } from "../views/Bookings"
 
 const router = createBrowserRouter([
   {
@@ -44,10 +44,10 @@ const router = createBrowserRouter([
         path: "wx",
         element: <Wx />,
       },
-      {
-        path: "bookings",
-        element: <Bookings />,
-      },
+      // {
+      //   path: "bookings",
+      //   element: <Bookings />,
+      // },
       {
         path: "windy",
         element: <Windy />,

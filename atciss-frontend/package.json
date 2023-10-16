@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
-    "@florianbepunkt/timeline": "florianbepunkt/timeline#v1.1.0",
     "@reduxjs/toolkit": "^1.9.5",
     "luxon": "^3.4.0",
     "re-reselect": "^4.0.1",

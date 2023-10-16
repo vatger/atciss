@@ -1,3 +1,5 @@
+ // @ts-nocheck
+
 import "@florianbepunkt/timeline/src/timeline.scss"
 import { Box } from "theme-ui"
 import {
