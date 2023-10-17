@@ -109,7 +109,7 @@ async def process_runways(aixm: AIXMData, engine: Any):
 
         rwy_map[rwy].append(feature)
 
-    for rwy_id, dirs in rwy_map.items():
+    for rwy_id, _ in rwy_map.items():
         rwy = aixm.id(rwy_id)
 
         ad = UUID(rwy["aixm:associatedAirportHeliport", "@xlink:href"].get()[9:])

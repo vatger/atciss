@@ -1,5 +1,4 @@
 from typing import Any, Optional
-import typing
 import uuid
 from geoalchemy2 import Geometry
 from sqlmodel import Column, Relationship, SQLModel, Field
