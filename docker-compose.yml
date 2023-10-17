@@ -60,7 +60,7 @@ services:
       - redis
 
   db:
-    image: postgres:15
+    image: postgis/postgis:15-3.4-alpine
     ports:
       - "5432:5432"
     volumes:
