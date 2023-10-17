@@ -25,8 +25,8 @@ astral = "^3.2"
 python-jose = "^3.3.0"
 watchfiles = "~0.19.0"
 alembic = "^1.12.0"
-# fork until sqlalchemy2 support is merged, dependencies loosened upon https://github.com/AntonDeMeester/sqlmodel
-sqlmodel = {git = "https://github.com/kleschenko/sqlmodel.git", rev = "8f70f81b92122809ff39f785f2a25a9a4777b747"}
+# fork until sqlalchemy2 support is merged https://github.com/AntonDeMeester/sqlmodel
+sqlmodel = {git = "https://github.com/AntonDeMeester/sqlmodel.git", rev = "f926d9d01915581562d48ce1cea608163418afa4"}
 asyncpg = "^0.28.0"
 python-dateutil = "^2.8.2"
 fastapi-async-sqlalchemy = "^0.6.0"
