@@ -24,7 +24,7 @@
     };
 
     poetry2nix = {
-      url = "github:nix-community/poetry2nix/pull/1290/head";
+      url = "github:nix-community/poetry2nix/pull/1329/head";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
