@@ -1,7 +1,7 @@
 """booking_optionals
 
 Revision ID: 0ea63c1cfdd9
-Revises: 93e1cd8acb53
+Revises: 76d9273936a9
 Create Date: 2023-10-13 21:56:12.294724+00:00
 
 """
@@ -13,7 +13,7 @@ from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision: str = "0ea63c1cfdd9"
-down_revision: Union[str, None] = "93e1cd8acb53"
+down_revision: Union[str, None] = "76d9273936a9"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
