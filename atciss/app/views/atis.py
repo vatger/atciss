@@ -25,6 +25,8 @@ class Atis(BaseModel):
     @field_validator("callsign", mode="before")
     @classmethod
     def callsign_validator(cls, v: str) -> str:
+        if v.endswith("_A_ATIS"):
+            return v.removesuffix("_A_ATIS")
         return v.removesuffix("_ATIS")
 
     @model_validator(mode="before")
