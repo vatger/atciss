@@ -8,7 +8,7 @@ import { selectEbgAllAerodromes } from "./configSlice"
 
 export type Runway = {
   icao: string
-  runway: string
+  runway: string | string[]
 }
 
 export type Sector = {

@@ -19,7 +19,7 @@ def convert_point(point: Tuple[str, str] | Coordinate) -> Coordinate:
 @dataclass
 class Runway:
     icao: str
-    runway: str
+    runway: str | list[str]
 
 
 class Sector(BaseModel):
@@ -96,7 +96,7 @@ def reformat_airspace(
         if key not in result:
             result[key] = airspace
         else:
-            for i in range(2, 10):
+            for i in range(2, 20):
                 if f"{key}{i}" not in result:
                     result[f"{key}{i}"] = airspace
                     break

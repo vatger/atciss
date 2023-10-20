@@ -35,7 +35,11 @@ const selectSectorBounds = createCachedSelector(
             const rwysInUse = atis?.[rwy.icao]?.runways_in_use ?? []
             const rwyPriority = airports?.[rwy.icao]?.runways ?? []
             return rwysInUse.length > 0
-              ? rwysInUse.some((activeRwy) => activeRwy.startsWith(rwy.runway))
+              ? rwysInUse.some((activeRwy) =>
+                  typeof rwy.runway === "string"
+                    ? activeRwy.startsWith(rwy.runway)
+                    : rwy.runway.every((rwy) => rwysInUse.includes(rwy)),
+                )
               : rwyPriority[0] === rwy.runway
           }),
       ),
