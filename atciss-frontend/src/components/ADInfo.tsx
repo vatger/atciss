@@ -63,7 +63,7 @@ export const ADinfo = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         flexDirection: "column",
         fontSize: 3,
         fontFamily: "monospace",
-        gap: "1px",
+        gap: "2px",
         backgroundColor: "primary",
       }}
     >

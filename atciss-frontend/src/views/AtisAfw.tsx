@@ -23,8 +23,9 @@ const AtisAfw = ({ sx }: { sx?: ThemeUIStyleObject }) => {
     >
       <Atis
         sx={{
-          gridColumnEnd: "span 2",
           ...gridItemSx,
+          gridColumnEnd: "span 2",
+          padding: 0,
         }}
       />
       <Flex

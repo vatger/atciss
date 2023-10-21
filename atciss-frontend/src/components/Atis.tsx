@@ -25,7 +25,14 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
 
   if (!metarIsLoading && metars && !atisIsLoading && !adIsLoading && ads) {
     return (
-      <Flex sx={{ ...sx, flexDirection: "column" }}>
+      <Flex
+        sx={{
+          ...sx,
+          flexDirection: "column",
+          gap: "2px",
+          backgroundColor: "primary",
+        }}
+      >
         {aerodromes
           .filter((ad) => metars[ad] && ads[ad])
           .map((aerodrome) => {
@@ -56,9 +63,12 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
             return (
               <Flex
                 sx={{
+                  padding: 1,
                   flexDirection: "column",
+                  flex: 1,
                   fontSize: 3,
                   fontFamily: "monospace",
+                  backgroundColor: "white",
                 }}
                 key={aerodrome}
               >
