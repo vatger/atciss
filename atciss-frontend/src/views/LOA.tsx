@@ -73,7 +73,9 @@ export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           </tbody>
         </table>
       </Box>
-      <Flex sx={{ flexDirection: "column", gap: 3, overflow: "hidden" }}>
+      <Flex
+        sx={{ flexDirection: "column", gap: 2, overflow: "hidden", padding: 2 }}
+      >
         <Input
           placeholder="Filter"
           value={filter}

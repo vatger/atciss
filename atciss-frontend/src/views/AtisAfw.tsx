@@ -1,9 +1,15 @@
-import { Box, Flex, Grid, ThemeUIStyleObject } from "theme-ui"
+import { Flex, Grid, ThemeUIStyleObject } from "theme-ui"
 import { Atis } from "../components/Atis"
 import { ADinfo } from "../components/ADInfo"
 import { SectorStatus } from "../components/SectorStatus"
 import { ECFMP } from "../components/ECFMP"
 import { Events } from "../components/Events"
+import { Areas } from "../components/Areas"
+
+const gridItemSx: ThemeUIStyleObject = {
+  padding: "1",
+  backgroundColor: "white",
+}
 
 const AtisAfw = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   return (
@@ -11,16 +17,29 @@ const AtisAfw = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       sx={{
         ...sx,
         gridTemplate: "3fr 2fr / 2fr 1fr 2fr",
+        gap: "2px",
+        backgroundColor: "red",
       }}
     >
-      <Atis sx={{ gridColumnEnd: "span 2" }} />
-      <Flex sx={{ flexDirection: "column", overflow: "auto" }}>
+      <Atis
+        sx={{
+          gridColumnEnd: "span 2",
+          ...gridItemSx,
+        }}
+      />
+      <Flex
+        sx={{
+          flexDirection: "column",
+          overflow: "auto",
+          ...gridItemSx,
+        }}
+      >
         <ECFMP />
         <Events />
       </Flex>
-      <Areas />
-      <SectorStatus />
-      <ADinfo />
+      <Areas sx={gridItemSx} />
+      <SectorStatus sx={gridItemSx} />
+      <ADinfo sx={{ ...gridItemSx, padding: 0 }} />
     </Grid>
   )
 }

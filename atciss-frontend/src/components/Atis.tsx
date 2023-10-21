@@ -184,7 +184,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       </Flex>
     )
   } else {
-    return "Unknown Error"
+    return <Box sx={sx} />
   }
 }
 

@@ -47,6 +47,7 @@ const Wx = () => {
         flexDirection: "column",
         justifyContent: "space-between",
         width: "100%",
+        padding: 2,
       }}
     >
       <Flex sx={{ flexDirection: "column", fontSize: 2 }}>

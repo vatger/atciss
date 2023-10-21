@@ -22,10 +22,9 @@ const Aerodrome = ({ icao }: { icao: string }) => {
     <Grid
       sx={{
         gridTemplateColumns: "1fr 1fr 1fr",
-        borderWidth: 1,
-        borderColor: "primary",
-        borderStyle: "solid",
+        backgroundColor: "white",
         gap: 0,
+        padding: 1,
       }}
     >
       <Box>
@@ -34,7 +33,7 @@ const Aerodrome = ({ icao }: { icao: string }) => {
       <Box>
         <Text variant="label">QNH:</Text> {qnh}
       </Box>
-      <Box>
+      <Box sx={{ gridRow: "span 2" }}>
         <Text variant="label">Wind:</Text> {wind}
         {z2(metar?.wind_speed ?? 0)}
         {wind_gust}KT {wind_from_to}
@@ -64,11 +63,14 @@ export const ADinfo = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         flexDirection: "column",
         fontSize: 3,
         fontFamily: "monospace",
+        gap: "1px",
+        backgroundColor: "primary",
       }}
     >
       {aerodromes.map((ad) => (
         <Aerodrome key={ad} icao={ad} />
       ))}
+      <Box sx={{ height: "100%", backgroundColor: "white" }}></Box>
     </Flex>
   )
 }

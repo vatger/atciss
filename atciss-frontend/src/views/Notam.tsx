@@ -22,7 +22,7 @@ const Notam = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   // est end time, not passed from API
 
   return (
-    <Flex sx={{ ...sx, flexDirection: "column" }}>
+    <Flex sx={{ ...sx, flexDirection: "column", padding: 2, gap: 2 }}>
       {notams &&
         Object.entries(notams).map(([icao, notams]) => {
           return (

@@ -32,7 +32,9 @@ const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => (
       <AreaLayer />
       <AerodromeLayer />
     </MapContainer>
-    <Flex sx={{ flexDirection: "column", gap: 3, overflow: "hidden" }}>
+    <Flex
+      sx={{ flexDirection: "column", gap: 2, overflow: "hidden", padding: 2 }}
+    >
       <MapControls />
     </Flex>
   </Grid>
