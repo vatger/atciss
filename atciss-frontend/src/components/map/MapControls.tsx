@@ -2,12 +2,12 @@ import { Box, Text } from "theme-ui"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { usePollControllers } from "../../services/controllerApi"
 import {
-  selectAreas,
-  selectDFS,
-  selectDWD,
-  selectOpenFlightmaps,
-  selectSatellite,
-  selectSectors,
+  selectAreasOnMap,
+  selectDFSOnMap,
+  selectDWDOnMap,
+  selectOpenFlightmapsOnMap,
+  selectSatelliteOnMap,
+  selectSectorsOnMap,
   setAreas,
   setDFS,
   setDWD,
@@ -23,12 +23,12 @@ export const MapControls = () => {
 
   usePollControllers()
 
-  const ofm = useAppSelector(selectOpenFlightmaps)
-  const dfs = useAppSelector(selectDFS)
-  const dwd = useAppSelector(selectDWD)
-  const satellite = useAppSelector(selectSatellite)
-  const sectors = useAppSelector(selectSectors)
-  const areas = useAppSelector(selectAreas)
+  const ofm = useAppSelector(selectOpenFlightmapsOnMap)
+  const dfs = useAppSelector(selectDFSOnMap)
+  const dwd = useAppSelector(selectDWDOnMap)
+  const satellite = useAppSelector(selectSatelliteOnMap)
+  const sectors = useAppSelector(selectSectorsOnMap)
+  const areas = useAppSelector(selectAreasOnMap)
 
   return (
     <>

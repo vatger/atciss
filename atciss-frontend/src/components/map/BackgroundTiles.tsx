@@ -1,17 +1,17 @@
 import { TileLayer, WMSTileLayer } from "react-leaflet"
 import { useAppSelector } from "../../app/hooks"
 import {
-  selectDFS,
-  selectDWD,
-  selectOpenFlightmaps,
-  selectSatellite,
+  selectDFSOnMap,
+  selectDWDOnMap,
+  selectOpenFlightmapsOnMap,
+  selectSatelliteOnMap,
 } from "../../services/mapSlice"
 
 export const BackgroundTiles = () => {
-  const ofm = useAppSelector(selectOpenFlightmaps)
-  const dfs = useAppSelector(selectDFS)
-  const dwd = useAppSelector(selectDWD)
-  const satellite = useAppSelector(selectSatellite)
+  const ofm = useAppSelector(selectOpenFlightmapsOnMap)
+  const dfs = useAppSelector(selectDFSOnMap)
+  const dwd = useAppSelector(selectDWDOnMap)
+  const satellite = useAppSelector(selectSatelliteOnMap)
 
   return (
     <>

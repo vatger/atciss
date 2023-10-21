@@ -1,6 +1,6 @@
 import { LayerGroup } from "react-leaflet"
 import { useAppSelector } from "../../app/hooks"
-import { selectSectors } from "../../services/mapSlice"
+import { selectSectorsOnMap } from "../../services/mapSlice"
 import {
   sectorApi,
   selectAirportICAOs,
@@ -16,7 +16,7 @@ export const SectorLayer = () => {
   sectorApi.useGetQuery()
   const sectors = useAppSelector(selectSectorIDs)
 
-  const displaySectors = useAppSelector(selectSectors)
+  const displaySectors = useAppSelector(selectSectorsOnMap)
 
   const airports = useAppSelector(selectAirportICAOs)
   usePollAtisByIcaoCodes(airports)
