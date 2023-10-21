@@ -11,7 +11,7 @@ const PositionOption = ({ id }: { id: string }) => {
   const position = useAppSelector((store) => selectPosition(store, id))
   return (
     <option value={id}>
-      {position?.name} ({position?.frequency})
+      {position?.pre?.[0]} {position?.name} ({position?.frequency})
     </option>
   )
 }
