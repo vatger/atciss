@@ -12,7 +12,11 @@ export const ECFMP = () => {
   const { data: flowMeasures } = usePollEcfmpByFir(EBG_SETTINGS[activeEbg].fir)
 
   return flowMeasures
-    ?.filter((fm) => DateTime.fromISO(fm.endtime).toUTC() >= DateTime.utc())
+    ?.filter(
+      (fm) =>
+        DateTime.fromISO(fm.endtime).toUTC() >= DateTime.utc() &&
+        !fm.withdrawn_at,
+    )
     .map((fm) => {
       const start = DateTime.fromISO(fm.starttime).toUTC()
       const end = DateTime.fromISO(fm.endtime).toUTC()
