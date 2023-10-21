@@ -85,7 +85,7 @@ def reformat_airspace(
 ) -> dict[str, Any]:
     result = {}
     for airspace in airspaces:
-        key = f"{region}/{airspace.get('remark', airspace['id'])}"
+        key = f"{region}/{airspace.get('remark', airspace['id']).upper()}"
         owners = []
         for owner in airspace["owner"]:
             if "/" in owner or region is None:
