@@ -126,7 +126,7 @@ export const EBG_SETTINGS: { [name: string]: EBG } = {
   EDGG07: {
     fir: "EDGG",
     uir: "EDYY",
-    sectors: ["ed/NOR", "ed/TAU", "ed/PADH", "ed/HMM", "ed/BOT", "ed/DUS"],
+    sectors: ["ed/DKA", "ed/NOR", "ed/PADL", "ed/PADH", "ed/BOT", "ed/DUS"],
     majorAerodromes: ["EDDK", "EDDL"],
     aerodromes: ["EDLN", "ETNN", "ETNG"],
     minorAerodromes: [],
