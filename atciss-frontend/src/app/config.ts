@@ -8,6 +8,7 @@ type EBG = {
   relevantAerodromes: string[]
   neighbourPrefixes: string[]
   neighbourFirs: string[]
+  areas: string[]
 }
 export const EBG_SETTINGS: { [name: string]: EBG } = {
   EDMM_W: {
@@ -33,6 +34,16 @@ export const EBG_SETTINGS: { [name: string]: EBG } = {
     relevantAerodromes: ["EDDS", "EDDF"],
     neighbourPrefixes: ["ED", "ET", "LK", "LO", "LS"],
     neighbourFirs: ["EDGG", "LKAA", "LOVV", "LSAS"],
+    areas: [
+      "ED-R107C",
+      "ED-R107W",
+      "ED-R207C",
+      "ED-R207S",
+      "ED-R207W",
+      "ED-R170A",
+      "ED-R170B",
+      "ED-R171",
+    ],
   },
   EDMM_E: {
     fir: "EDMM",
@@ -54,6 +65,19 @@ export const EBG_SETTINGS: { [name: string]: EBG } = {
     relevantAerodromes: [],
     neighbourPrefixes: ["ED", "ET", "EP", "LK"],
     neighbourFirs: ["EDGG", "EDWW", "EPWW", "LKAA"],
+    areas: [
+      "ED-R136A",
+      "ED-R136B",
+      "ED-R136C",
+      "ED-R137A",
+      "ED-R137B",
+      "ED-R170A",
+      "ED-R170B",
+      "ED-R171",
+      "ED-R208A",
+      "ED-R208B",
+      "ED-R308",
+    ],
   },
   // TODO: IRL different layout
   EDGG02: {
@@ -66,6 +90,17 @@ export const EBG_SETTINGS: { [name: string]: EBG } = {
     relevantAerodromes: [],
     neighbourPrefixes: ["ED", "ET", "LF", "LS"],
     neighbourFirs: ["EDMM", "LFEE", "LSAS"],
+    areas: [
+      "ED-R132A",
+      "ED-R132B",
+      "ED-R205A",
+      "ED-R205B",
+      "ED-R205C",
+      "ED-R205D",
+      "ED-R207C",
+      "ED-R207S",
+      "ED-R207W",
+    ],
   },
   // TODO: IRL different layout
   EDGG03: {
@@ -78,6 +113,14 @@ export const EBG_SETTINGS: { [name: string]: EBG } = {
     relevantAerodromes: [],
     neighbourPrefixes: ["ED", "ET", "LF"],
     neighbourFirs: ["EDMM", "LFEE", "LSAS"],
+    areas: [
+      "ED-R134",
+      "ED-R135A",
+      "ED-R135B",
+      "ED-R135C",
+      "ED-R97A",
+      "ED-R97B",
+    ],
   },
   // TODO: IRL different layout
   EDGG07: {
@@ -90,6 +133,7 @@ export const EBG_SETTINGS: { [name: string]: EBG } = {
     relevantAerodromes: [],
     neighbourPrefixes: ["ED", "ET", "EB", "EH", "EL", "LF"],
     neighbourFirs: ["EHAA", "EBBU", "EDWW", "LFEE"],
+    areas: ["ED-R117"],
   },
 }
 export const FIR_TO_VATGLASSES: { [fir: string]: string } = {

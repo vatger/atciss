@@ -18,7 +18,7 @@ const AtisAfw = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         <ECFMP />
         <Events />
       </Flex>
-      <Box>areas</Box>
+      <Areas />
       <SectorStatus />
       <ADinfo />
     </Grid>
