@@ -105,6 +105,6 @@ export const FIR_TO_VATGLASSES: { [fir: string]: string } = {
   LIPP: "li",
   LKAA: "lk",
   LOVV: "lo",
-  // EPWW: "ep",
-  // LSAS: "ls",
+  EPWW: "ep",
+  LSAS: "ls",
 }
