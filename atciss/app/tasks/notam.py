@@ -42,7 +42,9 @@ NOTAM_ICAO = [
     "EDDK",
     "EDDL",
     "EDDS",
+    "EDFM",
     "EDLN",
+    "ETAR",
     "ETNN",
     "ETNG",
 ]
