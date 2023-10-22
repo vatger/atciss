@@ -42,7 +42,7 @@ pydantic-xml = {extras = ["lxml"], version = "^2.2.4"}
 xmltodict = "^0.13.0"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.9"
+black = "^23.10"
 pylint = "^3.0"
 types-beautifulsoup4 = "^4.12.0.5"
 types-python-jose = "^3.3.4.8"
