@@ -9,7 +9,7 @@ repository = "https://github.com/a3li/atciss"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-fastapi = "^0.103"
+fastapi = "^0.104"
 uvicorn = {extras = ["standard"], version = "^0.23"}
 click = "^8.1"
 aiohttp = "^3.8.6"
