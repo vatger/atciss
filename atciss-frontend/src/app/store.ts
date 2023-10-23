@@ -16,6 +16,7 @@ import { ecfmpApi } from "../services/ecfmpApi"
 import { eventApi } from "../services/eventApi"
 import { areaApi } from "../services/areaApi"
 import { bookingApi } from "../services/bookingApi"
+import { navaidApi } from "../services/navaidApi"
 
 export const store = configureStore({
   reducer: {
@@ -31,6 +32,7 @@ export const store = configureStore({
     [ecfmpApi.reducerPath]: ecfmpApi.reducer,
     [eventApi.reducerPath]: eventApi.reducer,
     [areaApi.reducerPath]: areaApi.reducer,
+    [navaidApi.reducerPath]: navaidApi.reducer,
     auth: authReducer,
     activePositions: activePositionReducer,
     config: configReducer,
@@ -49,7 +51,8 @@ export const store = configureStore({
       .concat(controllerApi.middleware)
       .concat(ecfmpApi.middleware)
       .concat(areaApi.middleware)
-      .concat(eventApi.middleware),
+      .concat(eventApi.middleware)
+      .concat(navaidApi.middleware),
 })
 
 setupListeners(store.dispatch)
