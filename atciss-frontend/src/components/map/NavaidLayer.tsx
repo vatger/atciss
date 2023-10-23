@@ -1,5 +1,4 @@
-import L from "leaflet"
-import { LayerGroup, Marker } from "react-leaflet"
+import { LayerGroup } from "react-leaflet"
 import { NavaidMarker } from "./NavaidMarker"
 import { navaidApi } from "../../services/navaidApi"
 import { loaApi, selectLoaCops } from "../../services/loaApi"
