@@ -176,6 +176,10 @@ async def process_navaids(aixm: AIXMData, engine: Any):
 
     for aid in aixm.type("Navaid"):
         aid_type = aid["aixm:type"].get()
+
+        if aid_type is None:
+            continue
+
         if aid_type == "DME":
             await process_navaid(aixm, aid, engine)
         elif aid_type.startswith("ILS"):
@@ -202,11 +206,11 @@ async def process_navaid(aixm: AIXMData, feature: AIXMFeature, engine: Any):
         ]
         eq = aixm.id(eq_id)
 
-        if eq["aixm:frequency", "#text"].get() is not None:
-            data["frequency"] = eq["aixm:frequency", "#text"].float()
+        if eq["aixm:frequency", "#text"].float() is not None:
+            data["frequency"] = eq["aixm:frequency", "#text"].float()  # type: ignore
 
-        if eq["aixm:ghostFrequency", "#text"].get() is not None:
-            data["frequency"] = eq["aixm:ghostFrequency", "#text"].float()
+        if eq["aixm:ghostFrequency", "#text"].float() is not None:
+            data["frequency"] = eq["aixm:ghostFrequency", "#text"].float()  # type: ignore
 
         if eq["aixm:channel", "#text"].get() is not None:
             data["channel"] = eq["aixm:channel", "#text"].get()
