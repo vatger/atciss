@@ -49,35 +49,29 @@ const selectRelevantLoas = createSelector(
   (state: RootState) => state,
   selectOwnedSectors,
   (state, ownedSectors) =>
-    loaApi.endpoints.getBySectors.select(ownedSectors)(state)?.data ?? [],
+    (
+      loaApi.endpoints.getBySectors.select(ownedSectors)(state)?.data ?? []
+    ).filter(
+      (loa) =>
+        ownedSectors.includes(loa.from_sector) &&
+        !ownedSectors.includes(loa.to_sector),
+    ),
 )
 
 export const selectRelevantExitLoas = createSelector(
   selectRelevantLoas,
-  selectOwnedSectors,
-  (relevantLoas, ownedSectors) =>
-    relevantLoas
-      .filter(
-        (loa) =>
-          ownedSectors.includes(loa.from_sector) &&
-          !ownedSectors.includes(loa.to_sector),
-      )
-      .sort(sortBy(["from_sector", "cop", "to_sector", "to_fir", "adep_ades"])),
+  (relevantLoas) =>
+    relevantLoas.sort(
+      sortBy(["from_sector", "cop", "to_sector", "to_fir", "adep_ades"]),
+    ),
 )
 
 export const selectRelevantEntryLoas = createSelector(
   selectRelevantLoas,
-  selectOwnedSectors,
-  (relevantLoas, ownedSectors) =>
-    relevantLoas
-      .filter(
-        (loa) =>
-          ownedSectors.includes(loa.to_sector) &&
-          !ownedSectors.includes(loa.from_sector),
-      )
-      .sort(
-        sortBy(["to_sector", "cop", "from_sector", "from_fir", "adep_ades"]),
-      ),
+  (relevantLoas) =>
+    relevantLoas.sort(
+      sortBy(["to_sector", "cop", "from_sector", "from_fir", "adep_ades"]),
+    ),
 )
 
 const filterFn = (filter: string, to_from: "to" | "from") => (loa: LoaItem) =>
