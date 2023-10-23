@@ -38,7 +38,7 @@ asgi-correlation-id = "^4.2.0"
 greenlet = "^3.0.0"
 sqlalchemy = { version = "^2.0.21", extras = [ "asyncio" ] }
 geoalchemy2 = "^0.14.1"
-pydantic-xml = {extras = ["lxml"], version = "^2.2.4"}
+pydantic-xml = {extras = ["lxml"], version = "^2.3.0"}
 xmltodict = "^0.13.0"
 shapely = "^2.0.2"
 
