@@ -40,6 +40,7 @@ sqlalchemy = { version = "^2.0.21", extras = [ "asyncio" ] }
 geoalchemy2 = "^0.14.1"
 pydantic-xml = {extras = ["lxml"], version = "^2.2.4"}
 xmltodict = "^0.13.0"
+shapely = "^2.0.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.10"
