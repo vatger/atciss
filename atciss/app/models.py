@@ -1,6 +1,9 @@
 from typing import Any, Optional
 import uuid
-from geoalchemy2 import Geometry
+from geoalchemy2 import Geometry, WKBElement
+from geoalchemy2.shape import to_shape
+from pydantic import SerializationInfo, field_serializer
+from shapely import Point
 from sqlmodel import Column, Relationship, SQLModel, Field
 
 from .views.booking import Booking  # noqa: F401 pylint: disable=unused-import
@@ -79,3 +82,11 @@ class Navaid(SQLModel, table=True):
 
     aerodrome: Optional[Aerodrome] = Relationship()
     runway_direction: Optional[RunwayDirection] = Relationship()
+
+    @field_serializer("location")
+    def serialize_location(
+        self, loc: WKBElement, _info: SerializationInfo
+    ) -> tuple[float, float]:
+        point: Point = to_shape(loc)
+
+        return (point.y, point.x)

@@ -13,7 +13,7 @@ export interface Navaid {
   location: number[]
   channel?: string
   frequency?: number
-  aerodrome?: string
+  aerodrome_id?: string
   remark?: string
   operation_remark?: string
 }

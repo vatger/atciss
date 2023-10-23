@@ -4,9 +4,6 @@ from sqlmodel import select
 from fastapi_async_sqlalchemy import db
 
 from atciss.app.controllers.auth import get_user
-from atciss.app.views.navaid import NavaidModel
-
-from ..views.booking import Booking
 
 from ..models import Navaid, User
 
@@ -15,16 +12,11 @@ router = APIRouter()
 
 @router.get("/navaid")
 async def get_naviads(
-    navaids: Annotated[Sequence[str], Query(alias="id")],
+    navaids: Annotated[Sequence[str], Query(alias="id", default_factory=list)],
     _: Annotated[User, Depends(get_user)],
-) -> Sequence[NavaidModel]:
-    aids = []
+) -> Sequence[Navaid]:
+    async with db():
+        stmt = select(Navaid).where(Navaid.designator.in_(navaids))
+        results = await db.session.execute(stmt)
 
-    for aid in navaids:
-        async with db():
-            stmt = select(Navaid).where(Navaid.designator == aid)
-            results = await db.session.execute(stmt)
-            mapped_results = [NavaidModel.from_db(a) for a in results.scalars().all()]
-            aids.extend(mapped_results)
-
-    return aids
+    return results.scalars().all()
