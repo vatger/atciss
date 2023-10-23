@@ -91,3 +91,8 @@ export const selectFilteredEntryLoas = createCachedSelector(
   [selectRelevantEntryLoas, (_state: RootState, filter: string) => filter],
   (loas, filter) => loas.filter(filterFn(filter, "from")),
 )((_state, icao) => icao)
+
+export const selectLoaCops = createSelector(
+  selectRelevantLoas,
+  (relevantLoas) => [...new Set(relevantLoas.map((loa) => loa.cop))],
+)
