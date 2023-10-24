@@ -24,6 +24,8 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const { data: ads, isLoading: adIsLoading } = usePollAdByIcaoCodes(aerodromes)
 
   if (!metarIsLoading && metars && !atisIsLoading && !adIsLoading && ads) {
+    const filteredAerodromes = aerodromes.filter((ad) => metars[ad] && ads[ad])
+
     return (
       <Flex
         sx={{
@@ -33,9 +35,8 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           backgroundColor: "primary",
         }}
       >
-        {aerodromes
-          .filter((ad) => metars[ad] && ads[ad])
-          .map((aerodrome) => {
+        {filteredAerodromes.length ? (
+          filteredAerodromes.map((aerodrome) => {
             const metar = metars[aerodrome]
             const obs = new Date(`${metar.time}`)
             const wind = metar.wind_dir !== null ? z3(metar.wind_dir) : "VRB"
@@ -115,7 +116,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                     <Text sx={{ fontSize: 5 }}>METAR</Text>
                   </Box>
                 </AtisRow>
-                <Flex sx={{ flexGrow: 1, gap: 1 }}>
+                <Flex sx={{ gap: 1 }}>
                   <Text
                     variant="label"
                     sx={{ display: "block", flexShrink: 0 }}
@@ -190,11 +191,14 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                 </AtisRow>
               </Flex>
             )
-          })}
+          })
+        ) : (
+          <Box sx={{ backgroundColor: "white", flex: 1 }} />
+        )}
       </Flex>
     )
   } else {
-    return <Box sx={sx} />
+    return <Box sx={{ ...sx, backgroundColor: "white", flex: 1 }} />
   }
 }
 
