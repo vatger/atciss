@@ -40,7 +40,8 @@ export const theme: Theme = {
     },
     label: {
       fontWeight: "bold",
-      fontFamily: "sans-serif",
+      fontFamily:
+        "'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
     },
     primary: {
       color: "primary",
