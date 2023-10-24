@@ -176,7 +176,7 @@ export const NavaidMarker = ({ designator }: { designator: string }) => {
       >
         {icons[navaid.type.toLowerCase()] ?? icons["rnav"]}
       </svg>
-      {navaid.designator}
+      <div className="navaid-label">{navaid.designator}</div>
     </>
   )
 
@@ -184,7 +184,7 @@ export const NavaidMarker = ({ designator }: { designator: string }) => {
 
   const divIcon = L.divIcon({
     html: element,
-    className: "navaid-label",
+    className: `navaid navaid-${navaid.type.toLowerCase()}`,
     iconSize: [14, 14],
     iconAnchor: [7, 7],
   })
