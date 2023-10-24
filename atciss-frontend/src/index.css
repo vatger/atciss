@@ -73,6 +73,10 @@ body {
   font-feature-settings: 'zero' 1;
 }
 
+iframe {
+  border: none;
+}
+
 code {
   font-family: "Source Sans Pro", source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
