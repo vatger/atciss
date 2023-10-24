@@ -24,7 +24,7 @@
   font-family: "Source Code Pro";
   font-style: normal;
   font-weight: 400;
-  src: local("Source Code Pro"), url("/IBM-Plex-Mono/fonts/complete/woff2/IBMPlexMono-Regular.woff2") format("woff2");
+  src: local("Source Code Pro"), url("/fonts/SourceCodePro-Regular.otf.woff2") format("woff2");
 }
 
 @font-face {
@@ -74,7 +74,6 @@ body {
 }
 
 iframe {
-  border: none;
 }
 
 code {
