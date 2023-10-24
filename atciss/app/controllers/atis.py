@@ -25,9 +25,7 @@ router = APIRouter()
     "/atis",
 )
 async def atis_get(
-    airports: Annotated[
-        Sequence[AirportIcao], Query(alias="icao", default_factory=list)
-    ],
+    airports: Annotated[Sequence[AirportIcao], Query(alias="icao", default_factory=list)],
     user: Annotated[User, Depends(get_user)],
 ) -> Dict[str, Atis]:
     """Get Atis for airport."""
@@ -65,9 +63,7 @@ async def atis_generate(
                 logger.warning(f"No data for {region}")
                 continue
 
-            airports = airports | TypeAdapter(Dict[str, Airport]).validate_json(
-                airports_json
-            )
+            airports = airports | TypeAdapter(Dict[str, Airport]).validate_json(airports_json)
     airport_name = "".join(
         map(
             lambda c: {"Ä": "AE", "Ü": "UE", "Ö": "OE", "ß": "ss"}.get(c, c),
@@ -90,8 +86,7 @@ async def atis_generate(
     )
     allActiveRunways = set(departureRunways + arrivalRunways)
     singleUseOfRunwayOps = not (
-        set(departureRunways) == allActiveRunways
-        and set(arrivalRunways) == allActiveRunways
+        set(departureRunways) == allActiveRunways and set(arrivalRunways) == allActiveRunways
     )
     runwaysInUse = concatSep(
         [
@@ -128,11 +123,7 @@ async def atis_generate(
         else None
     )
 
-    lowvis = (
-        "LOW VISIBILITY PROCEDURES IN OPERATION CATEGORY 2 AND 3 AVAILABLE"
-        if lvp
-        else None
-    )
+    lowvis = "LOW VISIBILITY PROCEDURES IN OPERATION CATEGORY 2 AND 3 AVAILABLE" if lvp else None
 
     def avail(o: None | float, f: str = "{}") -> str:
         return f.format(int(o)) if o is not None else "UNAVAILABLE"
@@ -142,11 +133,8 @@ async def atis_generate(
         if metar.wind_speed is None or metar.wind_speed == 0
         else concatSep(
             [
-                f"{int(metar.wind_dir):03} DEGREES"
-                if metar.wind_dir is not None
-                else "VARIABLE",
-                f"{int(metar.wind_speed)} KNOT"
-                + ("S" if int(metar.wind_speed) > 1 else ""),
+                f"{int(metar.wind_dir):03} DEGREES" if metar.wind_dir is not None else "VARIABLE",
+                f"{int(metar.wind_speed)} KNOT" + ("S" if int(metar.wind_speed) > 1 else ""),
                 f"GUSTING MAX {int(metar.wind_gust)} KNOTS"
                 if metar.wind_gust is not None
                 else None,
@@ -161,11 +149,7 @@ async def atis_generate(
     )
 
     def formatvis(range: float):
-        return (
-            f"{int((range+1)/1000)} KILOMETERS"
-            if range >= 5000
-            else f"{int(range)} METERS"
-        )
+        return f"{int((range+1)/1000)} KILOMETERS" if range >= 5000 else f"{int(range)} METERS"
 
     visibility = (
         "UNAVAILABLE"
@@ -188,9 +172,7 @@ async def atis_generate(
         (
             "RVR "
             + " ".join(
-                concatSep(
-                    [f"RUNWAY {r.runway} {int(r.low)} METERS", trends.get(r.trend)]
-                )
+                concatSep([f"RUNWAY {r.runway} {int(r.low)} METERS", trends.get(r.trend)])
                 for r in metar.rvr
             )
         )

@@ -52,11 +52,7 @@ class AIXMFeature:
                     return AIXMFeature.Value(None)
 
                 bit = bit[item]
-                if (
-                    isinstance(bit, dict)
-                    and "@xsi:nil" in bit
-                    and bit["@xsi:nil"] == "true"
-                ):
+                if isinstance(bit, dict) and "@xsi:nil" in bit and bit["@xsi:nil"] == "true":
                     return AIXMFeature.Value(None)
 
         return AIXMFeature.Value(bit)
@@ -66,11 +62,7 @@ class AIXMFeature:
         if value is None:
             return None
 
-        if (
-            isinstance(value, dict)
-            and "@xsi:nil" in value
-            and value["@xsi:nil"] == "true"
-        ):
+        if isinstance(value, dict) and "@xsi:nil" in value and value["@xsi:nil"] == "true":
             return None
 
         return value
@@ -97,9 +89,7 @@ class AIXMData:
 
             member_id = member_data["gml:identifier"]["#text"]
 
-            feature = AIXMFeature(
-                member_type, member_id, self.__get_current_timeslice(member_data)
-            )
+            feature = AIXMFeature(member_type, member_id, self.__get_current_timeslice(member_data))
 
             if member_type not in self.members:
                 self.members[member_type] = []

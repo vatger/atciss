@@ -37,15 +37,9 @@ async def airspace_get(
             logger.warning(f"No data for {region}")
             continue
 
-        airports = airports | TypeAdapter(dict[str, Airport]).validate_json(
-            airports_json
-        )
-        positions = positions | TypeAdapter(dict[str, Position]).validate_json(
-            positions_json
-        )
-        airspaces = airspaces | (
-            TypeAdapter(dict[str, Airspace]).validate_json(airspaces_json)
-        )
+        airports = airports | TypeAdapter(dict[str, Airport]).validate_json(airports_json)
+        positions = positions | TypeAdapter(dict[str, Position]).validate_json(positions_json)
+        airspaces = airspaces | (TypeAdapter(dict[str, Airspace]).validate_json(airspaces_json))
 
     return SectorData(
         airspace=airspaces,

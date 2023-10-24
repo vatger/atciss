@@ -67,9 +67,7 @@ def get_application() -> FastAPI:
     app.add_middleware(CorrelationIdLogMiddleware)
     app.add_middleware(
         CorrelationIdMiddleware,
-        generator=(lambda: uuid4().hex)
-        if not settings.DEBUG
-        else (lambda: uuid4().hex[:8]),
+        generator=(lambda: uuid4().hex) if not settings.DEBUG else (lambda: uuid4().hex[:8]),
         validator=is_valid_uuid4 if not settings.DEBUG else None,
     )
 

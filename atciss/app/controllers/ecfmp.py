@@ -24,9 +24,7 @@ async def get_flow_measures(
 ) -> list[FlowMeasure]:
     """Get ECFMP flow measures for a FIR."""
     async with RedisClient.open() as redis_client:
-        flow_measures = cast(
-            Optional[str], await redis_client.get(f"ecfmp:flow_measures:{fir}")
-        )
+        flow_measures = cast(Optional[str], await redis_client.get(f"ecfmp:flow_measures:{fir}"))
         if flow_measures is None:
             raise HTTPException(status_code=404)
 
@@ -45,9 +43,7 @@ async def get_events(
     events = []
     async with RedisClient.open() as redis_client:
         for f in fir:
-            fir_events = cast(
-                Optional[str], await redis_client.get(f"ecfmp:events:{f}")
-            )
+            fir_events = cast(Optional[str], await redis_client.get(f"ecfmp:events:{f}"))
             if fir_events is None:
                 logger.warning(f"No event for {f}")
                 continue

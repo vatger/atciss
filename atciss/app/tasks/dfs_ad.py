@@ -39,9 +39,7 @@ class Aerodrome(BaseModel):
 
 async def get_dfs_aixm_url(dataset: str) -> Optional[str]:
     async with AiohttpClient.get() as aiohttp_client:
-        res = await aiohttp_client.get(
-            "https://aip.dfs.de/datasets/scripts/getAmdtData.php?amdt=0"
-        )
+        res = await aiohttp_client.get("https://aip.dfs.de/datasets/scripts/getAmdtData.php?amdt=0")
         html = BeautifulSoup(await res.text(), "html.parser")
     sibling_section = html.find("span", string=re.compile(f".*{dataset}.*"))
 

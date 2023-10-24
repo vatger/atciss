@@ -91,6 +91,10 @@ module = [
 ]
 ignore_missing_imports = true
 
+[tool.black]
+line-length = 100
+target-version = ['py311']
+
 [tool.pylint.format]
 jobs = 0
 disable = [
@@ -104,7 +108,7 @@ disable = [
   "C0103", # invalid-name
 ]
 output-format = "colorized"
-max-line-length = "88"
+max-line-length = "100"
 max-locals = 20
 
 [tool.pyright]
@@ -131,3 +135,7 @@ reportShadowedImports = "error"
 reportUninitializedInstanceVariable = "error"
 # reportUnnecessaryTypeIgnoreComment = "error"
 reportUnusedCallResult = "error"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

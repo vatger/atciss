@@ -84,9 +84,7 @@ class Navaid(SQLModel, table=True):
     runway_direction: Optional[RunwayDirection] = Relationship()
 
     @field_serializer("location")
-    def serialize_location(
-        self, loc: WKBElement, _info: SerializationInfo
-    ) -> tuple[float, float]:
+    def serialize_location(self, loc: WKBElement, _info: SerializationInfo) -> tuple[float, float]:
         point: Point = to_shape(loc)
 
         return (point.y, point.x)

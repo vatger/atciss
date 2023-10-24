@@ -11,9 +11,7 @@ def convert_point(point: Tuple[str, str] | Coordinate) -> Coordinate:
     if isinstance(point[0], float):
         return cast(Coordinate, point)
 
-    return cast(
-        Coordinate, [convert_degsecmin_coordinate(cast(str, coord)) for coord in point]
-    )
+    return cast(Coordinate, [convert_degsecmin_coordinate(cast(str, coord)) for coord in point])
 
 
 @dataclass
@@ -30,9 +28,7 @@ class Sector(BaseModel):
 
     @field_validator("points", mode="before")
     @classmethod
-    def point_validator(
-        cls, input: list[Tuple[str, str] | Coordinate]
-    ) -> list[Coordinate]:
+    def point_validator(cls, input: list[Tuple[str, str] | Coordinate]) -> list[Coordinate]:
         return [convert_point(point) for point in input]
 
 
@@ -80,9 +76,7 @@ class Airport:
     topdown: list[str | RwyDependentTopDown] = field(default_factory=list)
 
 
-def reformat_airspace(
-    airspaces: list[dict[str, Any]], region: str | None
-) -> dict[str, Any]:
+def reformat_airspace(airspaces: list[dict[str, Any]], region: str | None) -> dict[str, Any]:
     result = {}
     for airspace in airspaces:
         key = f"{region}/{airspace.get('remark', airspace['id']).upper()}"
@@ -106,9 +100,7 @@ def reformat_airspace(
     return result
 
 
-def reformat_position(
-    positions: dict[str, dict[str, Any]], region: str | None
-) -> dict[str, Any]:
+def reformat_position(positions: dict[str, dict[str, Any]], region: str | None) -> dict[str, Any]:
     return {
         f"{region}/{id}": pos | {"name": id, "id": f"{region}/{id}"}
         for id, pos in positions.items()
@@ -116,9 +108,7 @@ def reformat_position(
     }
 
 
-def reformat_filter_airports(
-    airports: dict[str, Any], region: str | None
-) -> dict[str, Any]:
+def reformat_filter_airports(airports: dict[str, Any], region: str | None) -> dict[str, Any]:
     result = {}
     for icao, airport in airports.items():
         if isinstance(airport, Airport):
@@ -161,17 +151,13 @@ class SectorData(BaseModel):
     @classmethod
     def add_region_and_unique_airspace_identifier(cls, data: Any) -> Any:
         if isinstance(data, dict) and isinstance(data["airspace"], list):
-            data["airspace"] = reformat_airspace(
-                data.get("airspace", []), data["region"]
-            )
+            data["airspace"] = reformat_airspace(data.get("airspace", []), data["region"])
         if (
             isinstance(data, dict)
             and isinstance(data["positions"], dict)
             and "/" not in next(iter(data["positions"]))
         ):
-            data["positions"] = reformat_position(
-                data.get("positions", {}), data["region"]
-            )
+            data["positions"] = reformat_position(data.get("positions", {}), data["region"])
         if isinstance(data, dict) and isinstance(data["airports"], dict):
             data["airports"] = reformat_filter_airports(
                 data.get("airports", {}), data.get("region")

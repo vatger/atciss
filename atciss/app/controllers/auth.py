@@ -203,6 +203,4 @@ async def auth(req: AuthRequest) -> AuthModel:
 
         await db.session.commit()
 
-    return AuthModel(
-        jwt=create_jwt(user_response.data.cid, auth_response.refresh_token)
-    )
+    return AuthModel(jwt=create_jwt(user_response.data.cid, auth_response.refresh_token))

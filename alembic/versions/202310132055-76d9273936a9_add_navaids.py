@@ -35,9 +35,7 @@ def upgrade() -> None:
         sa.Column("runway_direction_id", UUID(as_uuid=True), nullable=True),
         sa.Column("remark", sqlmodel.AutoString(), nullable=True),
         sa.Column("operation_remark", sqlmodel.AutoString(), nullable=True),
-        sa.ForeignKeyConstraint(
-            ["aerodrome_id"], ["aerodrome.id"], name="navaid_aerodrome_id"
-        ),
+        sa.ForeignKeyConstraint(["aerodrome_id"], ["aerodrome.id"], name="navaid_aerodrome_id"),
         sa.ForeignKeyConstraint(
             ["runway_direction_id"],
             ["runway_direction.id"],

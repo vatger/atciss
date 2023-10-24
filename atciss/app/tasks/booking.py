@@ -15,9 +15,7 @@ async def fetch_booking() -> None:
     """Periodically fetch sector data."""
     async with AiohttpClient.get() as aiohttp_client:
         try:
-            res = await aiohttp_client.get(
-                "https://atc-bookings.vatsim.net/api/booking"
-            )
+            res = await aiohttp_client.get("https://atc-bookings.vatsim.net/api/booking")
         except ClientConnectorError as e:
             logger.error(f"Could not connect {str(e)}")
             return
@@ -37,9 +35,7 @@ async def fetch_booking() -> None:
             raise e
 
     logger.info(f"Vatsim bookings received: {len(data)} bookings")
-    logger.info(
-        f"Vatbook bookings received: {len(vatbook_data.atcs.bookings)} bookings"
-    )
+    logger.info(f"Vatbook bookings received: {len(vatbook_data.atcs.bookings)} bookings")
 
     engine = create_async_engine(
         url=str(settings.DATABASE_DSN),

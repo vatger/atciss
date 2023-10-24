@@ -11,12 +11,8 @@ class Booking(SQLModel, table=True):
     id: int = Field(int, primary_key=True)
     cid: int
     callsign: str
-    start: AwareDatetime = Field(
-        sa_column=Column(DateTime(timezone=True), nullable=False)
-    )
-    end: AwareDatetime = Field(
-        sa_column=Column(DateTime(timezone=True), nullable=False)
-    )
+    start: AwareDatetime = Field(sa_column=Column(DateTime(timezone=True), nullable=False))
+    end: AwareDatetime = Field(sa_column=Column(DateTime(timezone=True), nullable=False))
     type: str = "event"
     division: str | None = None
     subdivision: str | None = None

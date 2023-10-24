@@ -193,17 +193,13 @@ async def process_navaid(aixm: AIXMData, feature: AIXMFeature, engine: Any):
         "designator": feature["aixm:designator"].get(),
         "name": feature["aixm:name"].get() or feature["aixm:designator"].get(),
         "type": feature["aixm:type"].get(),
-        "location": feature[
-            "aixm:location", "aixm:ElevatedPoint", "gml:pos"
-        ].wkt_point(),
+        "location": feature["aixm:location", "aixm:ElevatedPoint", "gml:pos"].wkt_point(),
     }
 
     equipments = ensure_list(feature["aixm:navaidEquipment"].get())
 
     for equipment in equipments:
-        eq_id = equipment["aixm:NavaidComponent"]["aixm:theNavaidEquipment"][
-            "@xlink:href"
-        ]
+        eq_id = equipment["aixm:NavaidComponent"]["aixm:theNavaidEquipment"]["@xlink:href"]
         eq = aixm.id(eq_id)
 
         if eq["aixm:frequency", "#text"].float() is not None:
@@ -218,9 +214,7 @@ async def process_navaid(aixm: AIXMData, feature: AIXMFeature, engine: Any):
     await create_or_update(engine, Navaid, UUID(feature.id), data)
 
 
-async def create_or_update(
-    engine: Any, klass: type[SQLModel], pk: Any, data: dict[str, Any]
-):
+async def create_or_update(engine: Any, klass: type[SQLModel], pk: Any, data: dict[str, Any]):
     async with AsyncSession(engine) as session:
         model = await session.get(klass, pk)
 

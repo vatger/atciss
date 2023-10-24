@@ -32,9 +32,7 @@ class RedisClient:
                 sentinel_kwargs=redis_init_kwargs,
             )
             return sentinel.master_for("mymaster")
-        return aioredis.from_url(
-            f"redis://{redis_conf.REDIS_HOST}", **redis_init_kwargs
-        )
+        return aioredis.from_url(f"redis://{redis_conf.REDIS_HOST}", **redis_init_kwargs)
 
     @classmethod
     def open(cls) -> aioredis.Redis:

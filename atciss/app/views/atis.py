@@ -36,9 +36,7 @@ class Atis(BaseModel):
             text_atis = data.get("text_atis", [])
             try:
                 data["text_atis"] = (
-                    text_atis
-                    if isinstance(text_atis, str)
-                    else "\n".join(text_atis or "")
+                    text_atis if isinstance(text_atis, str) else "\n".join(text_atis or "")
                 )
             except Exception as e:
                 logger.error(f"{e}, {data}")
@@ -48,9 +46,7 @@ class Atis(BaseModel):
                 data["text_atis"],
             )
             data["runways_in_use"] = (
-                []
-                if matches is None
-                else [r for r in matches.groups() if r is not None]
+                [] if matches is None else [r for r in matches.groups() if r is not None]
             )
 
         return data

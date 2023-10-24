@@ -29,9 +29,7 @@ def upgrade() -> None:
         sa.Column("length", sa.Float(), nullable=True),
         sa.Column("width", sa.Float(), nullable=True),
         sa.Column("surface", sqlmodel.AutoString(), nullable=True),
-        sa.ForeignKeyConstraint(
-            ["aerodrome_id"], ["aerodrome.id"], name="runway_aerodrome_id"
-        ),
+        sa.ForeignKeyConstraint(["aerodrome_id"], ["aerodrome.id"], name="runway_aerodrome_id"),
     )
 
     _ = op.create_table(
@@ -42,9 +40,7 @@ def upgrade() -> None:
         sa.Column("true_bearing", sa.Float(), nullable=True),
         sa.Column("magnetic_bearing", sa.Float(), nullable=True),
         sa.Column("guidance", sqlmodel.AutoString(), nullable=True),
-        sa.ForeignKeyConstraint(
-            ["runway_id"], ["runway.id"], name="runway_direction_runway_id"
-        ),
+        sa.ForeignKeyConstraint(["runway_id"], ["runway.id"], name="runway_direction_runway_id"),
     )
 
 

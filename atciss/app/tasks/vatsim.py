@@ -13,9 +13,7 @@ async def fetch_vatsim_data() -> None:
 
     async with AiohttpClient.get() as aiohttp_client:
         try:
-            res = await aiohttp_client.get(
-                "https://data.vatsim.net/v3/vatsim-data.json"
-            )
+            res = await aiohttp_client.get("https://data.vatsim.net/v3/vatsim-data.json")
         except ClientConnectorError as e:
             logger.error(f"Could not connect {str(e)}")
             return
@@ -24,9 +22,7 @@ async def fetch_vatsim_data() -> None:
 
     controllers = [c for c in data.controllers if c.facility > 0]
 
-    logger.info(
-        f"Vatsim data received: {len(controllers)} controllers, {len(data.atis)} ATIS"
-    )
+    logger.info(f"Vatsim data received: {len(controllers)} controllers, {len(data.atis)} ATIS")
 
     async with redis_client.pipeline() as pipe:
         keys = await redis_client.keys("vatsim:atis:*")

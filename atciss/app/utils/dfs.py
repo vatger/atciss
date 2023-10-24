@@ -13,9 +13,7 @@ async def get_dfs_aixm_datasets(amdt_id: int) -> dict[str, Any]:
         available_datasets = {}
 
         try:
-            dataset = DFSDataset.model_validate(
-                await res.json(content_type="text/html")
-            )
+            dataset = DFSDataset.model_validate(await res.json(content_type="text/html"))
             for amdt in dataset.amdts:
                 if not amdt.amdt == amdt_id:
                     continue
@@ -33,9 +31,7 @@ async def get_dfs_aixm_datasets(amdt_id: int) -> dict[str, Any]:
         return available_datasets
 
 
-def get_dfs_aixm_url(
-    datasets: dict[str, Any], amdt_id: int, dataset_name: str
-) -> Optional[str]:
+def get_dfs_aixm_url(datasets: dict[str, Any], amdt_id: int, dataset_name: str) -> Optional[str]:
     """Returns the proper AIXM URL for the given datsets, amendment and dataset name"""
     if not datasets[dataset_name]:
         return None
