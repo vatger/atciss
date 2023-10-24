@@ -31,14 +31,14 @@ export const navaidApi = createApi({
   }),
 })
 
-const selectLOANavaids = createSelector(
+const selectLoaNavaids = createSelector(
   (state: RootState) => state,
   selectLoaCops,
   (state, navaids) =>
     navaidApi.endpoints.getByDesignators.select(navaids)(state)?.data ?? [],
 )
 
-export const selectLOANavaid = createCachedSelector(
-  [selectLOANavaids, (_state: RootState, designator: string) => designator],
+export const selectLoaNavaid = createCachedSelector(
+  [selectLoaNavaids, (_state: RootState, designator: string) => designator],
   (navaids, designator) => navaids.find((n) => n.designator == designator),
 )((_state, designator) => designator)

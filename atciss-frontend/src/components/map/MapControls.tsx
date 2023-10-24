@@ -5,12 +5,14 @@ import {
   selectAreasOnMap,
   selectDFSOnMap,
   selectDWDOnMap,
+  selectLoaOnMap,
   selectOpenFlightmapsOnMap,
   selectSatelliteOnMap,
   selectSectorsOnMap,
   setAreas,
   setDFS,
   setDWD,
+  setLoa,
   setOpenFlightmaps,
   setSatellite,
   setSectors,
@@ -29,6 +31,7 @@ export const MapControls = () => {
   const satellite = useAppSelector(selectSatelliteOnMap)
   const sectors = useAppSelector(selectSectorsOnMap)
   const areas = useAppSelector(selectAreasOnMap)
+  const loa = useAppSelector(selectLoaOnMap)
 
   return (
     <>
@@ -92,7 +95,17 @@ export const MapControls = () => {
           Sectors
         </Text>
       </Box>
-      {(areas || sectors) && <LevelChoice />}
+      <Box>
+        <Text as="label" variant="label">
+          <input
+            type="checkbox"
+            checked={loa}
+            onChange={(e) => dispatch(setLoa(e.target.checked))}
+          />
+          LOA
+        </Text>
+      </Box>
+      {(areas || sectors || loa) && <LevelChoice />}
       {sectors && <SectorControls />}
     </>
   )

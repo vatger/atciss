@@ -10,6 +10,7 @@ type MapState = {
   satellite: boolean
   sectors: boolean
   areas: boolean
+  loa: boolean
 }
 
 const mapSlice = createSlice({
@@ -22,6 +23,7 @@ const mapSlice = createSlice({
     satellite: localStorageOrDefault("map.satellite", false),
     sectors: localStorageOrDefault("map.sectors", true),
     areas: localStorageOrDefault("map.areas", true),
+    loa: localStorageOrDefault("map.loa", false),
   } as MapState,
   reducers: {
     setLevel(state, { payload: level }: PayloadAction<number>) {
@@ -57,6 +59,9 @@ const mapSlice = createSlice({
     setAreas(state, { payload: active }: PayloadAction<boolean>) {
       state.areas = setLocalStorage("map.areas", active)
     },
+    setLoa(state, { payload: active }: PayloadAction<boolean>) {
+      state.loa = setLocalStorage("map.loa", active)
+    },
   },
 })
 
@@ -67,6 +72,7 @@ export const selectDWDOnMap = (store: RootState) => store.map.dwd
 export const selectSatelliteOnMap = (store: RootState) => store.map.satellite
 export const selectSectorsOnMap = (store: RootState) => store.map.sectors
 export const selectAreasOnMap = (store: RootState) => store.map.areas
+export const selectLoaOnMap = (store: RootState) => store.map.loa
 
 export const {
   setLevel,
@@ -76,5 +82,6 @@ export const {
   setSatellite,
   setSectors,
   setAreas,
+  setLoa,
 } = mapSlice.actions
 export const { reducer: mapReducer } = mapSlice

@@ -1,9 +1,17 @@
+/** @jsxImportSource theme-ui */
+
 import L, { LatLngExpression } from "leaflet"
-import { Marker } from "react-leaflet"
-import { selectLOANavaid } from "../../services/navaidApi"
+import { Marker, Tooltip } from "react-leaflet"
+import { selectLoaNavaid } from "../../services/navaidApi"
 import { useAppSelector } from "../../app/hooks"
 import { ReactElement } from "react"
 import { createPortal } from "react-dom"
+import { Box, Flex, Text } from "theme-ui"
+import { LoaRow } from "../LoaRow"
+import {
+  selectEntryLoasByNavaid,
+  selectExitLoasByNavaid,
+} from "../../services/loaApi"
 
 const icons: { [key: string]: ReactElement } = {
   rnav: (
@@ -145,7 +153,13 @@ const icons: { [key: string]: ReactElement } = {
 }
 
 export const NavaidMarker = ({ designator }: { designator: string }) => {
-  const navaid = useAppSelector((store) => selectLOANavaid(store, designator))
+  const navaid = useAppSelector((store) => selectLoaNavaid(store, designator))
+  const xloasByNavaid = useAppSelector((store) =>
+    selectExitLoasByNavaid(store, designator),
+  )
+  const nloasByNavaid = useAppSelector((store) =>
+    selectEntryLoasByNavaid(store, designator),
+  )
 
   if (!navaid) return <></>
 
@@ -162,7 +176,7 @@ export const NavaidMarker = ({ designator }: { designator: string }) => {
       >
         {icons[navaid.type.toLowerCase()] ?? icons["rnav"]}
       </svg>
-      <div>{navaid.designator}</div>
+      {navaid.designator}
     </>
   )
 
@@ -178,7 +192,70 @@ export const NavaidMarker = ({ designator }: { designator: string }) => {
   return (
     <>
       {createPortal(icon, element)}
-      <Marker position={navaid.location as LatLngExpression} icon={divIcon} />
+      <Marker position={navaid.location as LatLngExpression} icon={divIcon}>
+        <Tooltip>
+          <Flex
+            sx={{ justifyContent: "space-between", alignItems: "baseline" }}
+          >
+            <Box>
+              <Text variant="mapAd">{navaid.designator}</Text>{" "}
+              {navaid.designator !== navaid.name && `(${navaid.name})`}
+            </Box>
+            {(navaid.frequency || navaid.channel) && (
+              <Box>
+                {navaid.frequency} {navaid.channel}
+              </Box>
+            )}
+          </Flex>
+          <table sx={{ width: "100%", fontSize: 2 }}>
+            <thead>
+              <tr>
+                <th>ADEP/ADES</th>
+                <th>FL</th>
+                <th>REMARK</th>
+                <th>FROM</th>
+                <th>TO</th>
+              </tr>
+            </thead>
+            {!!xloasByNavaid.length && (
+              <>
+                <thead>
+                  <tr>
+                    <th>Exit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {xloasByNavaid.map((loa, idx) => (
+                    <LoaRow
+                      key={`${loa.cop}-${loa.aerodrome}-${loa.adep_ades}-${loa.from_sector}-${loa.to_sector}-${idx}`}
+                      loa={loa}
+                      showCop={false}
+                    />
+                  ))}
+                </tbody>
+              </>
+            )}
+            {!!nloasByNavaid.length && (
+              <>
+                <thead>
+                  <tr>
+                    <th>Entry</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {nloasByNavaid?.map((loa, idx) => (
+                    <LoaRow
+                      key={`${loa.cop}-${loa.aerodrome}-${loa.adep_ades}-${loa.from_sector}-${loa.to_sector}-${idx}`}
+                      loa={loa}
+                      showCop={false}
+                    />
+                  ))}
+                </tbody>
+              </>
+            )}
+          </table>
+        </Tooltip>
+      </Marker>
     </>
   )
 }

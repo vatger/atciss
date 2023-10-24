@@ -34,10 +34,16 @@ const PositionInformation = ({
     : `${sector}${frequency}`
 }
 
-export const LoaRow = ({ loa }: { loa: LoaItem }) => {
+export const LoaRow = ({
+  loa,
+  showCop = true,
+}: {
+  loa: LoaItem
+  showCop?: boolean
+}) => {
   return (
     <tr>
-      <td>{loa.cop}</td>
+      {showCop && <td>{loa.cop}</td>}
       <td>
         {loa.adep_ades === "ADEP" && <>&#x02197;</>}
         {loa.adep_ades === "ADES" && <>&#x02198;</>} {loa.aerodrome}

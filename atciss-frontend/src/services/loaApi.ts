@@ -102,3 +102,21 @@ export const selectLoaCops = createSelector(
   selectRelevantLoas,
   (relevantLoas) => [...new Set(relevantLoas.map((loa) => loa.cop))],
 )
+
+export const selectExitLoasByNavaid = createCachedSelector(
+  [
+    selectRelevantExitLoas,
+    (_state: RootState, designator: string) => designator,
+  ],
+  (relevantLoas, designator) =>
+    relevantLoas.filter((loa) => loa.cop == designator),
+)((_state, designator) => designator)
+
+export const selectEntryLoasByNavaid = createCachedSelector(
+  [
+    selectRelevantEntryLoas,
+    (_state: RootState, designator: string) => designator,
+  ],
+  (relevantLoas, designator) =>
+    relevantLoas.filter((loa) => loa.cop == designator),
+)((_state, designator) => designator)

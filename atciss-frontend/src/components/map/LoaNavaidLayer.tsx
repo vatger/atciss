@@ -5,7 +5,7 @@ import { loaApi, selectLoaCops } from "../../services/loaApi"
 import { useAppSelector } from "../../app/hooks"
 import { selectOwnedSectors } from "../../services/activePositionSlice"
 
-export const NavaidLayer = () => {
+export const LoaNavaidLayer = () => {
   const ownedSectors = useAppSelector(selectOwnedSectors)
   loaApi.useGetBySectorsQuery(ownedSectors, {
     skip: ownedSectors.length == 0,
