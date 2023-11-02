@@ -1,5 +1,6 @@
 from typing import Any, Dict, Optional, Sequence
 from uuid import UUID
+import os.path
 
 from loguru import logger
 from pydantic import TypeAdapter
@@ -199,20 +200,24 @@ def get_recat(
     return "A"
 
 
+def contrib_ac_path(*pa: Sequence[str]) -> str:
+    return os.path.join(settings.CONTRIB_PATH, "ac-data", *pa)
+
+
 def read_manufacturers() -> Sequence[AcdbManufacturer]:
-    with open("contrib/ac-data/aircraft-db/manufacturers.json", "rb") as mf:
+    with open(contrib_ac_path("aircraft-db", "manufacturers.json"), "rb") as mf:
         return TypeAdapter(Sequence[AcdbManufacturer]).validate_json(mf.read())
 
 
 def read_ac_types() -> Sequence[AcdbAcType]:
-    with open("contrib/ac-data/aircraft-db/aircraft-types.json", "rb") as tf:
+    with open(contrib_ac_path("aircraft-db", "aircraft-types.json"), "rb") as tf:
         return TypeAdapter(Sequence[AcdbAcType]).validate_json(tf.read())
 
 
 def read_wtc_overrides() -> dict[str, Sequence[str]]:
     data = {}
 
-    with open("contrib/ac-data/wtc-overrides.txt", "r", encoding="utf-8") as of:
+    with open(contrib_ac_path("wtc-overrides.txt"), "r", encoding="utf-8") as of:
         for line in of.readlines():
             [icao, wtc, recat] = line.split(",")
             data[icao] = [wtc.strip(), recat.strip()]
@@ -221,7 +226,7 @@ def read_wtc_overrides() -> dict[str, Sequence[str]]:
 
 
 def read_own_types() -> Sequence[AircraftPerformanceData]:
-    with open("contrib/ac-data/ac-data.json", "rb") as df:
+    with open(contrib_ac_path("ac-data.json"), "rb") as df:
         return TypeAdapter(Sequence[AircraftPerformanceData]).validate_json(df.read())
 
 

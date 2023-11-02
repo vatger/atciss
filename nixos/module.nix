@@ -72,6 +72,7 @@ in {
         inherit ATCISS_DEBUG;
         ATCISS_BASE_URL = "https://${cfg.host}";
         ATCISS_DATABASE_DSN = "postgresql+asyncpg://localhost/atciss?host=/run/postgresql";
+        ATCISS_CONTRIB_PATH = pkgs.atciss-contrib;
       };
 
       serviceConfig = {
@@ -92,6 +93,7 @@ in {
       environment = {
         inherit ATCISS_DEBUG;
         ATCISS_DATABASE_DSN = "postgresql+asyncpg://localhost/atciss?host=/run/postgresql";
+        ATCISS_CONTRIB_PATH = pkgs.atciss-contrib;
       };
 
       serviceConfig = {

@@ -14,6 +14,7 @@ class Application(BaseSettings):
     LOG_LEVEL: str = "INFO"
     PROJECT_NAME: str = "atciss"
     VERSION: str = __version__
+    CONTRIB_PATH: str = "./contrib"
     DOCS_URL: str = "/"
     BASE_URL: str = "http://localhost:8000"
     SECRET_KEY: str = "dc3101ed2074e87e3bf2b158fd0934cc538a5d667a96e0d400d8b4f6f572c33d"

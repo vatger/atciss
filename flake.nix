@@ -133,6 +133,10 @@
             '';
           };
 
+          atciss-contrib = final.runCommand "atciss-contrib" {} ''
+            cp -r ${self}/contrib $out
+          '';
+
           poetry = prev.poetry.override (_: {
             inherit python;
           });
@@ -153,6 +157,7 @@
         packages = {
           default = pkgs.atciss;
           backend = pkgs.atciss;
+          contrib = pkgs.atciss-contrib;
           frontend = pkgs.atciss-frontend;
 
           image = pkgs.dockerTools.buildImage {
