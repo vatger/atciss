@@ -27,10 +27,10 @@ async def fetch_ac_data():
 
 
 async def process(
-        engine: Any,
-        mfs: dict[str, AcdbManufacturer],
-        acts: Sequence[AcdbAcType],
-        wtc_data: Dict[str, Sequence[str]],
+    engine: Any,
+    mfs: dict[str, AcdbManufacturer],
+    acts: Sequence[AcdbAcType],
+    wtc_data: Dict[str, Sequence[str]],
 ):
     for ac in acts:
         props = {pr.property: pr.value for pr in ac.propertyValues}
@@ -109,7 +109,7 @@ async def process_own_data(engine: Any, data: Sequence[AircraftPerformanceData])
 
 
 def get_wtc(
-        wtc_data: Dict[str, Sequence[str]], icao: Optional[str], mtow: Optional[float]
+    wtc_data: Dict[str, Sequence[str]], icao: Optional[str], mtow: Optional[float]
 ) -> Optional[str]:
     if icao in wtc_data:
         return wtc_data[icao][0]
@@ -127,7 +127,7 @@ def get_wtc(
 
 
 def get_arc(
-        span: Optional[float],
+    span: Optional[float],
 ) -> Optional[str]:
     # pylint: disable=too-many-return-statements
     if span is None:
@@ -166,10 +166,10 @@ def get_app_code(vat: Optional[float]) -> Optional[str]:
 
 
 def get_recat(
-        wtc_data: Dict[str, Sequence[str]],
-        icao: Optional[str],
-        span: Optional[float],
-        mtow: Optional[float],
+    wtc_data: Dict[str, Sequence[str]],
+    icao: Optional[str],
+    span: Optional[float],
+    mtow: Optional[float],
 ) -> Optional[str]:
     # pylint: disable=too-many-return-statements
     if icao in wtc_data:

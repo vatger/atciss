@@ -14,8 +14,8 @@ router = APIRouter()
     "/aircraft/search",
 )
 async def ad_get(
-        query: str,
-        _: Annotated[User, Depends(get_user)],
+    query: str,
+    _: Annotated[User, Depends(get_user)],
 ) -> Sequence[AircraftPerformanceData]:
     if len(query) < 2:
         return []
