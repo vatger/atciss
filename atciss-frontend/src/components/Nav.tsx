@@ -108,6 +108,14 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         >
           AIP VFR
         </NavButton>
+        <NavButton
+          sx={{ gridRow: "2/3" }}
+          onClick={() => {
+            navigate("/bookings")
+          }}
+        >
+          Bookings
+        </NavButton>
       </Grid>
       <select
         value={activeEbg}
