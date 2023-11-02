@@ -12,20 +12,18 @@ from ...config import settings
 
 
 async def fetch_ac_data():
-    try:
-        wtc_overrides = read_wtc_overrides()
-        mf_data = {mf.id: mf for mf in read_manufacturers()}
-        ac_types = read_ac_types()
-        own_ac_types = read_own_types()
+    logger.info("Processing AC data...")
+    wtc_overrides = read_wtc_overrides()
+    mf_data = {mf.id: mf for mf in read_manufacturers()}
+    ac_types = read_ac_types()
+    own_ac_types = read_own_types()
 
-        engine = create_async_engine(
-            url=str(settings.DATABASE_DSN),
-        )
+    engine = create_async_engine(
+        url=str(settings.DATABASE_DSN),
+    )
 
-        await process(engine, mf_data, ac_types, wtc_overrides)
-        await process_own_data(engine, own_ac_types)
-    except Exception as ex:
-        logger.error(ex)
+    await process(engine, mf_data, ac_types, wtc_overrides)
+    await process_own_data(engine, own_ac_types)
 
 
 async def process(
@@ -131,6 +129,7 @@ def get_wtc(
 def get_arc(
         span: Optional[float],
 ) -> Optional[str]:
+    # pylint: disable=too-many-return-statements
     if span is None:
         return None
 
@@ -172,6 +171,7 @@ def get_recat(
         span: Optional[float],
         mtow: Optional[float],
 ) -> Optional[str]:
+    # pylint: disable=too-many-return-statements
     if icao in wtc_data:
         return wtc_data[icao][1]
 
@@ -184,8 +184,8 @@ def get_recat(
     if mtow < 100_000:
         if span < 32:
             return "E"
-        else:
-            return "D"
+
+        return "D"
 
     if span < 52:
         return "C"
