@@ -3,12 +3,12 @@ from typing import Any
 from uuid import UUID
 
 from loguru import logger
+from sqlalchemy.ext.asyncio import create_async_engine
 
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlmodel import SQLModel
 from atciss.app.models import Aerodrome, Navaid, Runway
 from atciss.app.utils.aiohttp_client import AiohttpClient
 from atciss.app.utils.aixm_parser import AIXMData, AIXMFeature
+from .utils import create_or_update
 from ..utils.dfs import get_dfs_aixm_datasets, get_dfs_aixm_url
 from ...config import settings
 
@@ -212,20 +212,6 @@ async def process_navaid(aixm: AIXMData, feature: AIXMFeature, engine: Any):
             data["channel"] = eq["aixm:channel", "#text"].get()
 
     await create_or_update(engine, Navaid, UUID(feature.id), data)
-
-
-async def create_or_update(engine: Any, klass: type[SQLModel], pk: Any, data: dict[str, Any]):
-    async with AsyncSession(engine) as session:
-        model = await session.get(klass, pk)
-
-        if model is None:
-            model = klass(id=pk, **data)  # type: ignore
-        else:
-            for k, v in data.items():
-                setattr(model, k, v)
-
-        session.add(model)
-        await session.commit()
 
 
 def ensure_list(thing: Any | list[Any]) -> list[Any]:

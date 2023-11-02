@@ -3,11 +3,11 @@ from uuid import UUID
 
 from loguru import logger
 from pydantic import TypeAdapter
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlmodel import SQLModel
+from sqlalchemy.ext.asyncio import create_async_engine
 
 from atciss.app.models import AircraftPerformanceData
 from atciss.app.views.ac_data import AcdbAcType, AcdbManufacturer
+from .utils import create_or_update
 from ...config import settings
 
 
@@ -230,17 +230,3 @@ def get_float(in_val: Any) -> Optional[float]:
         return None
 
     return float(in_val)
-
-
-async def create_or_update(engine: Any, klass: type[SQLModel], pk: Any, data: dict[str, Any]):
-    async with AsyncSession(engine) as session:
-        model = await session.get(klass, pk)
-
-        if model is None:
-            model = klass(id=pk, **data)  # type: ignore
-        else:
-            for k, v in data.items():
-                setattr(model, k, v)
-
-        session.add(model)
-        await session.commit()
