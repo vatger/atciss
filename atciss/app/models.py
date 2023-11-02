@@ -88,3 +88,34 @@ class Navaid(SQLModel, table=True):
         point: Point = to_shape(loc)
 
         return (point.y, point.x)
+
+
+class AircraftPerformanceData(SQLModel, table=True):
+    __tablename__ = "ac_data"  # type: ignore
+
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, nullable=False)
+    manufacturer: str
+    model: str
+    icao_designator: Optional[str]
+    iata_designator: Optional[str]
+    type: Optional[str]
+    engine_type: Optional[str]
+    engine_count: int
+    fuel_capacity: Optional[float]
+    service_ceiling: Optional[float]
+    wingspan: Optional[float]
+    length: Optional[float]
+    height: Optional[float]
+    max_speed_indicated: Optional[float]
+    max_speed_mach: Optional[float]
+    max_weight_taxi: Optional[float]
+    max_weight_takeoff: Optional[float]
+    max_weight_landing: Optional[float]
+    max_weight_zerofuel: Optional[float]
+    v_at: Optional[float]
+    cruise_tas: Optional[float]
+    cat_wtc: Optional[str]
+    cat_recat: Optional[str]
+    cat_app: Optional[str]
+    cat_arc: Optional[str]
+    remarks: Optional[str]

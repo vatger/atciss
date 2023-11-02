@@ -17,6 +17,7 @@ from .controllers import (
     taf,
     vatsim,
     navaid,
+    ac_data,
 )
 
 
@@ -29,6 +30,7 @@ root_api_router.include_router(airspace.router, tags=["airspace"])
 root_api_router.include_router(aliases.router, tags=["info"])
 root_api_router.include_router(areas.router, tags=["airspace"])
 root_api_router.include_router(atis.router, tags=["aerodrome"])
+root_api_router.include_router(ac_data.router, tags=["aircraft"])
 root_api_router.include_router(booking.router, tags=["vatsim"])
 root_api_router.include_router(navaid.router, tags=["navaid"])
 root_api_router.include_router(ecfmp.router, tags=["airspace"])

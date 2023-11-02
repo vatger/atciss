@@ -19,6 +19,7 @@ from .app.tasks.ecfmp import fetch_ecfmp
 from .app.tasks.areas import fetch_areas
 from .app.tasks.booking import fetch_booking
 from .app.tasks.aliases import fetch_aliases
+from .app.tasks.ac_data import fetch_ac_data
 
 app = Celery(__name__)
 
@@ -109,3 +110,8 @@ def update_booking() -> None:
 @app.task(name="update_aliases")
 def update_aliases() -> None:
     async_to_sync(fetch_aliases)()
+
+
+@app.task(name="update_ac_data")
+def update_ac_data() -> None:
+    async_to_sync(fetch_ac_data)()

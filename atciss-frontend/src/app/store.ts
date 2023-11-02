@@ -10,6 +10,7 @@ import { activePositionReducer } from "../services/activePositionSlice"
 import { configReducer } from "../services/configSlice"
 import { controllerApi } from "../services/controllerApi"
 import { mapReducer } from "../services/mapSlice"
+import { aircraftReducer } from "../services/aircraftSlice"
 import { loaApi } from "../services/loaApi"
 import { tafApi } from "../services/tafApi"
 import { ecfmpApi } from "../services/ecfmpApi"
@@ -17,6 +18,7 @@ import { eventApi } from "../services/eventApi"
 import { areaApi } from "../services/areaApi"
 import { bookingApi } from "../services/bookingApi"
 import { navaidApi } from "../services/navaidApi"
+import { aircraftApi } from "../services/aircraftApi"
 
 export const store = configureStore({
   reducer: {
@@ -33,10 +35,12 @@ export const store = configureStore({
     [eventApi.reducerPath]: eventApi.reducer,
     [areaApi.reducerPath]: areaApi.reducer,
     [navaidApi.reducerPath]: navaidApi.reducer,
+    [aircraftApi.reducerPath]: aircraftApi.reducer,
     auth: authReducer,
     activePositions: activePositionReducer,
     config: configReducer,
     map: mapReducer,
+    aircraft: aircraftReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -52,7 +56,8 @@ export const store = configureStore({
       .concat(ecfmpApi.middleware)
       .concat(areaApi.middleware)
       .concat(eventApi.middleware)
-      .concat(navaidApi.middleware),
+      .concat(navaidApi.middleware)
+      .concat(aircraftApi.middleware),
 })
 
 setupListeners(store.dispatch)

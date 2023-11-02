@@ -4,7 +4,7 @@ from pydantic import TypeAdapter
 
 from ..utils import AiohttpClient, RedisClient
 from ..views.atis import Atis
-from ..views.vatsim import Controller, VatsimData
+from ..views.vatsim import Controller, Pilot, VatsimData
 
 
 async def fetch_vatsim_data() -> None:
@@ -22,11 +22,15 @@ async def fetch_vatsim_data() -> None:
 
     controllers = [c for c in data.controllers if c.facility > 0]
 
-    logger.info(f"Vatsim data received: {len(controllers)} controllers, {len(data.atis)} ATIS")
+    logger.info(
+        f"Vatsim data received: {len(controllers)} controllers, "
+        + f"{len(data.atis)} ATIS, {len(data.pilots)} pilots"
+    )
 
     async with redis_client.pipeline() as pipe:
         keys = await redis_client.keys("vatsim:atis:*")
         keys.extend(await redis_client.keys("vatsim:controller:*"))
+        keys.extend(await redis_client.keys("vatsim:pilot:*"))
 
         if len(keys):
             _ = await redis_client.delete(*keys)
@@ -39,5 +43,8 @@ async def fetch_vatsim_data() -> None:
                 f"vatsim:controller:{controller.callsign}",
                 TypeAdapter(Controller).dump_json(controller),
             )
+
+        for pilot in data.pilots:
+            pipe.set(f"vatsim:pilot:{pilot.callsign}", TypeAdapter(Pilot).dump_json(pilot))
 
         await pipe.execute()

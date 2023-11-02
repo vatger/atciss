@@ -16,6 +16,7 @@ import { AipIfr } from "../views/AipIfr"
 import { AipVfr } from "../views/AipVfr"
 import { Windy } from "../views/Windy"
 import { Alias, aliasLoader } from "../views/Alias"
+import { AircraftData } from "../views/AircraftData"
 // import { Bookings } from "../views/Bookings"
 
 const router = createBrowserRouter([
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: "wx",
         element: <Wx />,
+      },
+      {
+        path: "ac",
+        element: <AircraftData />,
       },
       // {
       //   path: "bookings",
