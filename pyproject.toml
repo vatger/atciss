@@ -35,7 +35,7 @@ celery = {version = "^5.3.4", extras = ["redis,gevent"]}
 asgiref = "^3.7.2"
 loguru = "^0.7.2"
 asgi-correlation-id = "^4.2.0"
-greenlet = "^3.0.0"
+greenlet = "^3.0.1"
 sqlalchemy = { version = "^2.0.21", extras = [ "asyncio" ] }
 geoalchemy2 = "^0.14.1"
 pydantic-xml = {extras = ["lxml"], version = "^2.2.4"}
