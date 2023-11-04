@@ -11,8 +11,6 @@ NOTAM_ICAO = [
     "EDGG",
     "EDMM",
     "EDWW",
-    "EDUU",
-    "EDYY",
     "EDDC",
     "EDDE",
     "EDDM",
