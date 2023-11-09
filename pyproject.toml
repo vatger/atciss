@@ -49,7 +49,7 @@ types-beautifulsoup4 = "^4.12.0.5"
 types-python-jose = "^3.3.4.8"
 mypy = "^1.6.0"
 pyright = "1.1.334"
-ruff = "^0.1.0"
+ruff = "^0.1.5"
 celery-types = "^0.20.0"
 flower = "^2.0.1"
 
