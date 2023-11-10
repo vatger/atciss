@@ -5,6 +5,7 @@ from celery.schedules import crontab
 import celery.signals
 from asgiref.sync import async_to_sync
 
+from .app.tasks.basic_ad import fetch_basic_ads
 from .config import settings, redis
 from .log import setup_logging
 
@@ -70,6 +71,11 @@ def update_loa() -> None:
 @app.task(name="update_sectors")
 def update_sectors() -> None:
     async_to_sync(fetch_sector_data)()
+
+
+@app.task(name="update_basic_ads")
+def update_basic_ads() -> None:
+    async_to_sync(fetch_basic_ads)()
 
 
 @app.task(name="update_vatsim")
