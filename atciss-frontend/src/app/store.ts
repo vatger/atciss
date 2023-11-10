@@ -19,6 +19,7 @@ import { areaApi } from "../services/areaApi"
 import { bookingApi } from "../services/bookingApi"
 import { navaidApi } from "../services/navaidApi"
 import { aircraftApi } from "../services/aircraftApi"
+import { trafficApi } from "../services/trafficApi"
 
 export const store = configureStore({
   reducer: {
@@ -36,6 +37,7 @@ export const store = configureStore({
     [areaApi.reducerPath]: areaApi.reducer,
     [navaidApi.reducerPath]: navaidApi.reducer,
     [aircraftApi.reducerPath]: aircraftApi.reducer,
+    [trafficApi.reducerPath]: trafficApi.reducer,
     auth: authReducer,
     activePositions: activePositionReducer,
     config: configReducer,
@@ -57,7 +59,8 @@ export const store = configureStore({
       .concat(areaApi.middleware)
       .concat(eventApi.middleware)
       .concat(navaidApi.middleware)
-      .concat(aircraftApi.middleware),
+      .concat(aircraftApi.middleware)
+      .concat(trafficApi.middleware),
 })
 
 setupListeners(store.dispatch)

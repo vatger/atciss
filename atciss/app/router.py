@@ -18,6 +18,7 @@ from .controllers import (
     vatsim,
     navaid,
     ac_data,
+    traffic,
 )
 
 
@@ -39,3 +40,4 @@ root_api_router.include_router(metar.router, tags=["wx"])
 root_api_router.include_router(notam.router, tags=["notam"])
 root_api_router.include_router(taf.router, tags=["wx"])
 root_api_router.include_router(vatsim.router, tags=["vatsim"])
+root_api_router.include_router(traffic.router, tags=["vatsim"])

@@ -56,7 +56,13 @@
   src: local("Source Sans Pro"), url("/fonts/SourceSans3-Regular.otf.woff2") format("woff2");
 }
 
-
+@font-face {
+  font-display: swap;
+  font-family: "Aeroport";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/Aeroport.woff2") format("woff2");
+}
 
 html, body {
   overflow: hidden

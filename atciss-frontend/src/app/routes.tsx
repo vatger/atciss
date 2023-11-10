@@ -17,6 +17,7 @@ import { AipVfr } from "../views/AipVfr"
 import { Windy } from "../views/Windy"
 import { Alias, aliasLoader } from "../views/Alias"
 import { AircraftData } from "../views/AircraftData"
+import { TrafficBoard } from "../views/TrafficBoard"
 // import { Bookings } from "../views/Bookings"
 
 const router = createBrowserRouter([
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
   {
     path: "/auth",
     element: <Auth />,
+  },
+  {
+    path: "/traffic/:icao/:type",
+    element: <TrafficBoard />,
   },
   {
     path: "/auth/callback",

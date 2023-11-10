@@ -1,10 +1,30 @@
+import re
+from datetime import datetime, timedelta
+from heapq import heappush, heappop
+from typing import Sequence, cast, Optional
+
+from haversine import haversine, Unit
 from loguru import logger
 from aiohttp import ClientConnectorError
 from pydantic import TypeAdapter
 
 from ..utils import AiohttpClient, RedisClient
+from ..views.basic_ad import BasicAD
 from ..views.atis import Atis
-from ..views.vatsim import Controller, Pilot, VatsimData
+from ..views.vatsim import Controller, Pilot, VatsimData, AerodromeTraffic, Traffic
+
+
+async def get_ad_name(icao: str) -> Optional[str]:
+    redis_client = RedisClient.get()
+
+    ad_json = cast(str | None, await redis_client.get(f"basic:ad:{icao}"))
+    if ad_json is None:
+        return None
+
+    ad = BasicAD.model_validate_json(ad_json)
+
+    name = re.sub(r"\b(Airfield|Heliport|Airport|International)\b", "", ad.name)
+    return re.sub(r"\s+", " ", name).strip()
 
 
 async def fetch_vatsim_data() -> None:
@@ -27,10 +47,13 @@ async def fetch_vatsim_data() -> None:
         + f"{len(data.atis)} ATIS, {len(data.pilots)} pilots"
     )
 
+    traffic = await calc_trafficboard_data(data.pilots)
+
     async with redis_client.pipeline() as pipe:
         keys = await redis_client.keys("vatsim:atis:*")
         keys.extend(await redis_client.keys("vatsim:controller:*"))
         keys.extend(await redis_client.keys("vatsim:pilot:*"))
+        keys.extend(await redis_client.keys("vatsim:traffic:*"))
 
         if len(keys):
             _ = await redis_client.delete(*keys)
@@ -47,4 +70,65 @@ async def fetch_vatsim_data() -> None:
         for pilot in data.pilots:
             pipe.set(f"vatsim:pilot:{pilot.callsign}", TypeAdapter(Pilot).dump_json(pilot))
 
+        pipe.set("vatsim:traffic:EDDM", TypeAdapter(AerodromeTraffic).dump_json(traffic))
+
         await pipe.execute()
+
+
+async def calc_trafficboard_data(pilots: Sequence[Pilot]) -> AerodromeTraffic:
+    arrs = []
+    deps = []
+
+    arp = (48.353783944, 11.786084889)
+
+    for pilot in pilots:
+        if not pilot.flight_plan:
+            continue
+
+        dist = haversine(arp, (pilot.latitude, pilot.longitude), Unit.NAUTICAL_MILES)
+
+        if pilot.flight_plan.departure == "EDDM" and pilot.groundspeed < 50 and dist < 10:
+            deps.append(
+                Traffic.from_pilot(
+                    pilot,
+                    eta=None,
+                    dep=await get_ad_name(pilot.flight_plan.departure),
+                    arr=await get_ad_name(pilot.flight_plan.arrival),
+                )
+            )
+
+        if pilot.flight_plan.arrival == "EDDM" and pilot.groundspeed > 50:
+            minutes_to_touch = time_estimate(dist, pilot.groundspeed)
+            heappush(
+                arrs,
+                Traffic.from_pilot(
+                    pilot,
+                    eta=datetime.utcnow() + timedelta(minutes=minutes_to_touch),
+                    dep=await get_ad_name(pilot.flight_plan.departure),
+                    arr=await get_ad_name(pilot.flight_plan.arrival),
+                ),
+            )
+
+    return AerodromeTraffic(
+        aerodrome="EDDM", arrivals=[heappop(arrs) for _ in range(len(arrs))], departures=deps
+    )
+
+
+def time_estimate(distance, gs) -> float:
+    time = 0
+
+    # 15 miles final-ish
+    time += min(15, max(0, distance - 15)) * 60 / min(140, gs)
+    distance -= 15
+
+    if distance < 0:
+        return time
+
+    # 20 miles approach
+    time += min(20, max(0, distance - 20)) * 60 / min(200, gs * 0.9)
+    distance -= 20
+
+    if distance < 0:
+        return time
+
+    return time + distance * 60 / gs
