@@ -76,9 +76,15 @@ export const SectorPolygon = ({
   const [center, setCenter] = useState<LatLng | null>(null)
 
   useEffect(() => {
-    if (polygon.current) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore (fixes "layer not on map", no public API)
+    if (polygon.current && polygon.current._map) {
       setCenter(polygon.current.getCenter())
     }
+
+    polygon.current?.on("add", () => {
+      polygon.current && setCenter(polygon.current.getCenter())
+    })
   }, [polygon.current])
 
   return (
