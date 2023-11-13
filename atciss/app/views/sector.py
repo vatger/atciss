@@ -31,6 +31,14 @@ class Sector(BaseModel):
     def point_validator(cls, input: list[Tuple[str, str] | Coordinate]) -> list[Coordinate]:
         return [convert_point(point) for point in input]
 
+    @field_validator("min", "max", mode="before")
+    @classmethod
+    def round_bounds_validator(cls, input: Optional[int]) -> Optional[int]:
+        if input is not None:
+            return 5 * round(input / 5)
+
+        return input
+
 
 @dataclass
 class Airspace:
