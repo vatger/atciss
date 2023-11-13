@@ -25,7 +25,7 @@ export const LevelChoice = () => {
         id={levelSliderId}
         sx={{ display: "block" }}
         min="0"
-        max="660"
+        max="430"
         step="10"
         value={level}
         onChange={(e) => dispatch(setLevel(parseInt(e.target.value)))}
@@ -33,7 +33,7 @@ export const LevelChoice = () => {
       <Input
         type="number"
         min="0"
-        max="660"
+        max="430"
         step="10"
         value={level}
         onChange={(e) => dispatch(setLevel(parseInt(e.target.value)))}
