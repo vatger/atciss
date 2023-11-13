@@ -19,6 +19,7 @@ export const LOCAL_STORAGE_JWT_KEY = "atciss_jwt"
 
 interface User {
   cid: string
+  admin: boolean
   exp: number
 }
 
@@ -31,7 +32,7 @@ const getUserWithExpiryCheck = (jwt: string | null): User | null => {
 
   const claims = parseJwt(jwt)
   if (claims.exp * 1000 > Date.now()) {
-    return { exp: claims.exp, cid: claims.sub }
+    return { exp: claims.exp, cid: claims.sub, admin: claims.admin }
   } else {
     localStorage.removeItem(LOCAL_STORAGE_JWT_KEY)
     return null

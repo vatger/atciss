@@ -95,9 +95,10 @@ class AuthRequest:
 
 
 def create_jwt(cid: str, refresh_token: Optional[str]) -> str:
-    to_encode: Dict[str, str | Optional[str] | datetime] = {
+    to_encode: Dict[str, str | Optional[str] | datetime | bool] = {
         "sub": cid,
         "refresh_token": refresh_token,
+        "admin": cid in settings.ADMINS,
     }
     expire = datetime.utcnow() + timedelta(hours=24)
     to_encode.update({"exp": expire})

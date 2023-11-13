@@ -8,6 +8,7 @@ import {
   Auth,
   AuthCallback,
   Logout,
+  RequireAdmin,
   RequireAuth,
   authCallbackLoader,
 } from "./auth"
@@ -73,6 +74,14 @@ const router = createBrowserRouter([
       {
         path: "aip-vfr",
         element: <AipVfr />,
+      },
+      {
+        path: "admin",
+        element: (
+          <RequireAdmin>
+            <>ADMIN</>
+          </RequireAdmin>
+        ),
       },
     ],
   },

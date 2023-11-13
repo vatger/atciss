@@ -24,6 +24,19 @@ export const RequireAuth = ({ children }: { children?: JSX.Element }) => {
   return children || <></>
 }
 
+export const RequireAdmin = ({ children }: { children?: JSX.Element }) => {
+  const user = useAppSelector(selectUser)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!user?.admin) {
+      navigate("/")
+    }
+  }, [user, navigate])
+
+  return children || <></>
+}
+
 export const Auth = () => {
   const redirect = async () => {
     const response = await fetch(`/api/auth`, {
