@@ -34,6 +34,7 @@ const selectAllAreas = createSelector(
   (state) => areaApi.endpoints.get.select()(state)?.data ?? [],
 )
 
+// FIXME currently or next active
 export const selectArea = createCachedSelector(
   [selectAllAreas, (_state: RootState, name: string) => name],
   (areas, name) => areas.find((area) => area.name == name),
