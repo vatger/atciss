@@ -16,6 +16,9 @@ import createCachedSelector from "re-reselect"
 import { selectLevel } from "../../services/mapSlice"
 import { selectAllAtis } from "../../services/atisApi"
 import { RootState } from "../../app/store"
+import { useEffect, useRef, useState } from "react"
+import { VerticalBoundary } from "./VerticalBoundary"
+import { LatLng } from "leaflet"
 
 const selectSectorBounds = createCachedSelector(
   [
@@ -69,6 +72,14 @@ export const SectorPolygon = ({
   const owner = useAppSelector((store) => selectOwner(store, id))
   const sector = useAppSelector((store) => selectSector(store, id))
   const selectedPosition = useAppSelector(selectSelectedPosition)
+  const polygon = useRef<L.Polygon>(null)
+  const [center, setCenter] = useState<LatLng | null>(null)
+
+  useEffect(() => {
+    if (polygon.current) {
+      setCenter(polygon.current.getCenter())
+    }
+  }, [polygon.current])
 
   return (
     owner && (
@@ -80,7 +91,14 @@ export const SectorPolygon = ({
           fillOpacity: owner?.id === selectedPosition ? 0.5 : 0.3,
         }}
         positions={points}
+        ref={polygon}
       >
+        <VerticalBoundary
+          color={owner?.colours[0]?.hex}
+          center={center}
+          min={min}
+          max={max}
+        />
         <Tooltip>
           <Box sx={{ fontSize: "1" }}>
             <Text variant="label">{sector.id}</Text>

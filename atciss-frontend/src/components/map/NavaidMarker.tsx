@@ -176,7 +176,7 @@ export const NavaidMarker = ({ designator }: { designator: string }) => {
       >
         {icons[navaid.type.toLowerCase()] ?? icons["rnav"]}
       </svg>
-      <div className="navaid-label">{navaid.designator}</div>
+      <div className="marker-label navaid-label">{navaid.designator}</div>
     </>
   )
 

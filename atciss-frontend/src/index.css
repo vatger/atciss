@@ -120,9 +120,12 @@ pre {
   margin: 0;
 }
 
-.navaid-label {
+.marker-label {
   font-family: "Source Code Pro", source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
   font-weight: bold;
+}
+
+.navaid-label {
   margin-left: 0.7rem;
   margin-top: -0.3rem;
   text-shadow:
