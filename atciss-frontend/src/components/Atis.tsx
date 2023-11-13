@@ -69,7 +69,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                   flex: 1,
                   fontSize: 3,
                   fontFamily: "monospace",
-                  backgroundColor: "white",
+                  backgroundColor: "background",
                 }}
                 key={aerodrome}
               >
@@ -193,12 +193,12 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
             )
           })
         ) : (
-          <Box sx={{ backgroundColor: "white", flex: 1 }} />
+          <Box sx={{ backgroundColor: "background", flex: 1 }} />
         )}
       </Flex>
     )
   } else {
-    return <Box sx={{ ...sx, backgroundColor: "white", flex: 1 }} />
+    return <Box sx={{ ...sx, backgroundColor: "background", flex: 1 }} />
   }
 }
 

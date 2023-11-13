@@ -26,7 +26,7 @@ export const ECFMP = () => {
         <Box mb={3} key={fm.ident}>
           <Box>
             <Text variant="label">{fm.ident}</Text>:{" "}
-            <Text variant="label" sx={{ color: active ? "green" : "blue" }}>
+            <Text variant="label" sx={{ color: active ? "green" : "primary" }}>
               {active
                 ? `Active, expires ${end.toRelative()}`
                 : `Will be active ${start.toRelative()}`}

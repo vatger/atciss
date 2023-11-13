@@ -94,7 +94,7 @@ button, label {
   font: inherit;
 }
 
-summary {
+a, summary {
   outline: none;
   cursor: pointer;
 }
@@ -104,7 +104,7 @@ summary {
 }
 
 tr:nth-child(even) {
-  background-color: #eee;
+  backdrop-filter: contrast(0.80);
 }
 
 td, th {
@@ -126,9 +126,9 @@ pre {
   margin-left: 0.7rem;
   margin-top: -0.3rem;
   text-shadow:
-    1px 1px 0 #FFF,
-    -1px -1px 0 #FFF,
-    1px -1px 0 #FFF,
-    -1px 1px 0 #FFF,
-    1px 1px 0 #FFF;
+    1px 1px 0 var(--theme-ui-colors-background),
+    -1px -1px 0 var(--theme-ui-colors-background),
+    1px -1px 0 var(--theme-ui-colors-background),
+    -1px 1px 0 var(--theme-ui-colors-background),
+    1px 1px 0 var(--theme-ui-colors-background);
 }

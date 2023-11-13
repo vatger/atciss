@@ -8,7 +8,7 @@ import { Areas } from "../components/Areas"
 
 const gridItemSx: ThemeUIStyleObject = {
   padding: "1",
-  backgroundColor: "white",
+  backgroundColor: "background",
 }
 
 const AtisAfw = ({ sx }: { sx?: ThemeUIStyleObject }) => {

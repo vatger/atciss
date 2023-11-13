@@ -17,6 +17,7 @@ const NavButton = (props: PropsWithChildren<NavButtonProps>) => (
       borderBottomColor: "darkshadow",
       borderRightColor: "darkshadow",
       borderStyle: "solid",
+      color: "background",
       px: 2,
       py: 1,
       "&:active": {

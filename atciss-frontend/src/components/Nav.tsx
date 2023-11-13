@@ -1,4 +1,4 @@
-import { Flex, Grid, ThemeUIStyleObject } from "theme-ui"
+import { Flex, Grid, Link, ThemeUIStyleObject, useColorMode } from "theme-ui"
 import { Clock } from "./Clock"
 import { NavButton } from "./NavButton"
 import { useNavigate } from "react-router-dom"
@@ -10,6 +10,7 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const activeEbg = useAppSelector(selectActiveEbg)
+  const [colorMode, setColorMode] = useColorMode()
 
   return (
     <Flex
@@ -125,6 +126,15 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           <option key={ebg}>{ebg}</option>
         ))}
       </select>
+
+      <Link
+        sx={{ color: "background" }}
+        onClick={() =>
+          setColorMode(colorMode === "default" ? "dark" : "default")
+        }
+      >
+        {colorMode === "default" ? <>&#x263E;</> : <>&#x263C;</>}
+      </Link>
     </Flex>
   )
 }

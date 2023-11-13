@@ -9,9 +9,9 @@ const Footer = ({ sx }: { sx?: ThemeUIStyleObject }) => (
       justifyContent: "space-between",
     }}
   >
-    <Text sx={{ color: "white" }}>ATCISS</Text>
+    <Text sx={{ color: "background" }}>ATCISS</Text>
     <Link
-      sx={{ color: "white" }}
+      sx={{ color: "background" }}
       target="_blank"
       href="https://github.com/a3li/atciss"
     >

@@ -22,7 +22,7 @@ const Aerodrome = ({ icao }: { icao: string }) => {
     <Grid
       sx={{
         gridTemplateColumns: "1fr 1fr 1fr",
-        backgroundColor: "white",
+        backgroundColor: "background",
         gap: 0,
         padding: 1,
       }}
@@ -70,7 +70,7 @@ export const ADinfo = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       {aerodromes.map((ad) => (
         <Aerodrome key={ad} icao={ad} />
       ))}
-      <Box sx={{ height: "100%", backgroundColor: "white" }}></Box>
+      <Box sx={{ height: "100%", backgroundColor: "background" }}></Box>
     </Flex>
   )
 }

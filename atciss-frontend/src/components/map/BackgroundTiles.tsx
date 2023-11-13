@@ -6,6 +6,7 @@ import {
   selectOpenFlightmapsOnMap,
   selectSatelliteOnMap,
 } from "../../services/mapSlice"
+import { useColorMode } from "theme-ui"
 
 export const BackgroundTiles = () => {
   const ofm = useAppSelector(selectOpenFlightmapsOnMap)
@@ -13,11 +14,14 @@ export const BackgroundTiles = () => {
   const dwd = useAppSelector(selectDWDOnMap)
   const satellite = useAppSelector(selectSatelliteOnMap)
 
+  const [colorMode] = useColorMode()
   return (
     <>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
-        url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png"
+        url={`https://{s}.basemaps.cartocdn.com/${
+          colorMode === "default" ? "light" : "dark"
+        }_nolabels/{z}/{x}/{y}.png`}
       />
       {satellite && (
         <TileLayer

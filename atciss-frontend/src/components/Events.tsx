@@ -30,7 +30,7 @@ export const Events = () => {
         <Box mb={3} key={e.name}>
           <Box>
             <Text variant="label">{e.fir}</Text>:{" "}
-            <Text variant="label" sx={{ color: active ? "green" : "blue" }}>
+            <Text variant="label" sx={{ color: active ? "green" : "primary" }}>
               {active
                 ? `Active, ends ${end.toRelative()}`
                 : `Will start ${start.toRelative()}`}

@@ -104,12 +104,12 @@ export const AircraftData = () => {
         width: "100%",
       }}
     >
-      <Box sx={{ padding: 2, overflowX: "scroll" }}>{content}</Box>
+      <Box sx={{ padding: 2, overflowX: "auto" }}>{content}</Box>
       <Flex
         sx={{
           flexDirection: "column",
           gap: 2,
-          overflowX: "scroll",
+          overflowX: "auto",
           padding: 2,
         }}
       >
@@ -124,7 +124,8 @@ export const AircraftData = () => {
           <Box key={key} sx={{ marginTop: 3 }}>
             <Box
               sx={{
-                backgroundColor: "#8eb6d8",
+                backgroundColor: "primary",
+                color: "background",
                 padding: 1,
                 textAlign: "center",
                 marginBottom: 2,
@@ -137,7 +138,7 @@ export const AircraftData = () => {
               {Object.entries(value).map(([key, value]) => (
                 <XmButton
                   key={key}
-                  sx={{ backgroundColor: "#001595" }}
+                  sx={{ backgroundColor: "#001595", color: "white" }}
                   onClick={() => dispatch(setQuery(key))}
                 >
                   {value}

@@ -48,7 +48,7 @@ const Notam = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                       >
                         <Text
                           variant="label"
-                          sx={{ color: active ? "green" : "blue" }}
+                          sx={{ color: active ? "green" : "primary" }}
                         >
                           {active
                             ? `Active, ${

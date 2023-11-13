@@ -13,13 +13,24 @@ export type AtcissTheme = Theme & {
 
 export const useAppTheme = useTheme as () => AtcissTheme
 
-export const theme: Theme = {
+export const theme: AtcissTheme = {
   colors: {
     text: "#000",
     background: "#fff",
     primary: "#0082b3",
     darkshadow: "#003e59",
     brightshadow: "#90c6da",
+    green: "#007711",
+    modes: {
+      dark: {
+        text: "#fff",
+        background: "#222",
+        primary: "#90c6da",
+        shadow: "#003e59",
+        brightshadow: "#a0e6fa",
+        green: "#33ff99",
+      },
+    },
   },
   fonts: {
     body: "'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
@@ -50,6 +61,12 @@ export const theme: Theme = {
       color: "primary",
       fontSize: "3",
       fontWeight: "bold",
+    },
+  },
+  buttons: {
+    primary: {
+      color: "background",
+      bg: "primary",
     },
   },
   space: ["0px", "4px", "8px", "16px", "32px", "48px", "64px"],

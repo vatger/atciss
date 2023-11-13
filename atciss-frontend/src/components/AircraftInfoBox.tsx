@@ -1,6 +1,6 @@
-import { Box, Flex, Heading, ThemeUIStyleObject } from "theme-ui";
-import { AircraftInfoBit } from "./AircraftInfoBit";
-import { AircraftPerformanceData } from "../services/aircraftApi";
+import { Box, Flex, Heading } from "theme-ui"
+import { AircraftInfoBit } from "./AircraftInfoBit"
+import { AircraftPerformanceData } from "../services/aircraftApi"
 
 const beautify_recat = (recat: string) =>
   ({
@@ -12,13 +12,7 @@ const beautify_recat = (recat: string) =>
     A: "A|SH",
   }[recat ?? ""] ?? "?")
 
-export const AircraftInfoBox = ({
-  sx,
-  ac,
-}: {
-  sx?: ThemeUIStyleObject
-  ac: AircraftPerformanceData
-}) => {
+export const AircraftInfoBox = ({ ac }: { ac: AircraftPerformanceData }) => {
   const formatter = Intl.NumberFormat(undefined, {
     maximumSignificantDigits: 3,
   })
@@ -31,7 +25,7 @@ export const AircraftInfoBox = ({
       <Flex sx={{ gap: 2 }}>
         {ac.icao_designator && (
           <AircraftInfoBit
-            textColor="white"
+            textColor="background"
             backgroundColor="primary"
             item="ICAO"
             value={ac.icao_designator || "?"}
