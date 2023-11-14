@@ -16,8 +16,9 @@ export const XmInput = (props: PropsWithChildren<InputProps>) => {
         borderTopColor: "darkshadow",
         borderLeftColor: "darkshadow",
         borderBottomColor: "#d6d6d6",
-        borderRightColor: "#d6d6d6"
+        borderRightColor: "#d6d6d6",
       }}
+      type="search"
     >
       {props.children}
     </Input>
