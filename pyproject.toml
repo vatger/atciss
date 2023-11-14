@@ -53,6 +53,7 @@ pyright = "1.1.335"
 ruff = "^0.1.0"
 celery-types = "^0.20.0"
 flower = "^2.0.1"
+types-xmltodict = "^0.13.0.3"
 
 [tool.poetry.scripts]
 atciss = 'atciss.cli:cli'

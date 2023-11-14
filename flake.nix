@@ -81,6 +81,9 @@
             types-python-jose = pyprev.types-python-jose.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
             });
+            types-xmltodict = pyprev.types-python-jose.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
+            });
             sqlalchemy-stubs = pyprev.sqlalchemy-stubs.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
             });
