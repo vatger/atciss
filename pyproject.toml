@@ -27,7 +27,7 @@ watchfiles = "~0.21.0"
 alembic = "^1.12.0"
 # fork until sqlalchemy2 support is merged https://github.com/AntonDeMeester/sqlmodel
 sqlmodel = {git = "https://github.com/AntonDeMeester/sqlmodel.git", rev = "f926d9d01915581562d48ce1cea608163418afa4"}
-asyncpg = "^0.28.0"
+asyncpg = "^0.29.0"
 python-dateutil = "^2.8.2"
 fastapi-async-sqlalchemy = "^0.6.0"
 prometheus-fastapi-instrumentator = "^6.1.0"
