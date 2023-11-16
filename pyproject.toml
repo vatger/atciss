@@ -19,7 +19,7 @@ pyaixm = { git = "https://github.com/volkerp/pyaixm", rev = "00112765b7ca767d45a
 pynotam = { git = "https://github.com/globin/PyNotam", rev = "84b741863d09aaa616e6f378a2e6e5eab8df706f" }
 metar = { git = "https://github.com/globin/python-metar", rev = "35efaa6f76d00bd53b9e29bb0f87fbc3c80d8af2" }
 pydantic = "^2"
-pydantic-settings = "^2.0.2"
+pydantic-settings = "^2.1.0"
 lxml = "^4.9.3"
 astral = "^3.2"
 python-jose = "^3.3.0"
