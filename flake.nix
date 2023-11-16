@@ -24,7 +24,7 @@
     };
 
     poetry2nix = {
-      url = "github:nix-community/poetry2nix/pull/1329/head";
+      url = "github:nix-community/poetry2nix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
@@ -51,10 +51,11 @@
   } @ inputs:
     {
       overlays.default = nixpkgs.lib.composeManyExtensions [
-        poetry2nix.overlay
+        poetry2nix.overlays.default
         napalm.overlays.default
         (final: prev: let
           python = final.python311;
+          python3 = final.python311;
           overrides = final.poetry2nix.overrides.withDefaults (pyfinal: pyprev: {
             pynotam = pyprev.pynotam.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry];
@@ -97,11 +98,12 @@
               meta = old.meta // {priority = -1;};
             });
             asgi-correlation-id = pyprev.asgi-correlation-id.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry];
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
+              postPatch = ''
+                substituteInPlace pyproject.toml \
+                  --replace 'poetry.masonry.api' 'poetry.core.masonry.api'
+              '';
             });
-
-            # use ruff from nixpkgs below in devShell
-            ruff = null;
           });
         in {
           atciss =
@@ -139,10 +141,6 @@
           atciss-contrib = final.runCommand "atciss-contrib" {} ''
             cp -r ${self}/contrib $out
           '';
-
-          poetry = prev.poetry.override (_: {
-            inherit python;
-          });
         })
       ];
 
@@ -196,6 +194,7 @@
           nativeBuildInputs =
             oldAttrs.nativeBuildInputs
             ++ (with pkgs; [
+              nil
               poetry
               ruff
               nodejs_20
