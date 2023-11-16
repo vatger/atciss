@@ -44,7 +44,6 @@ shapely = "^2.0.2"
 haversine = "^2.8.0"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.10"
 pylint = "^3.0"
 types-beautifulsoup4 = "^4.12.0.5"
 types-python-jose = "^3.3.4.8"
@@ -92,10 +91,6 @@ module = [
     "redis.*",
 ]
 ignore_missing_imports = true
-
-[tool.black]
-line-length = 100
-target-version = ['py311']
 
 [tool.pylint.format]
 jobs = 0

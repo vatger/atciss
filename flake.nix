@@ -231,9 +231,9 @@
             echo "[nix][lint] Run atciss ruff checks."
             ruff check atciss
           '';
-          black = mkCIApp "black" [pkgs.black] ''
+          format = mkCIApp "ruff" [pkgs.ruff] ''
             echo "[nix][lint] Run atciss black checks."
-            black --check atciss
+            ruff format --check --diff atciss
           '';
           backend-dev = {
             type = "app";
