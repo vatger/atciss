@@ -22,8 +22,8 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Run pylint
         run: 'nix run .#pylint'
-      - name: Run black
-        run: 'nix run .#black'
+      - name: Format code
+        run: 'nix run .#format'
       - name: Run ruff
         run: 'nix run .#ruff'
   flake-check:
