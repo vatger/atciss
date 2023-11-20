@@ -13,7 +13,7 @@ fastapi = "^0.104"
 uvicorn = {extras = ["standard"], version = "^0.24"}
 click = "^8.1"
 aiohttp = "^3.8.6"
-redis = "^5"
+redis = "^4"
 beautifulsoup4 = "^4.12.2"
 pyaixm = { git = "https://github.com/volkerp/pyaixm", rev = "00112765b7ca767d45af9e743b0264e14ac25d1b" }
 pynotam = { git = "https://github.com/globin/PyNotam", rev = "84b741863d09aaa616e6f378a2e6e5eab8df706f" }
@@ -49,7 +49,7 @@ types-beautifulsoup4 = "^4.12.0.5"
 types-python-jose = "^3.3.4.8"
 mypy = "^1.7.0"
 pyright = "1.1.336"
-ruff = "^0.1.0"
+ruff = "0.1.5"
 celery-types = "^0.20.0"
 flower = "^2.0.1"
 types-xmltodict = "^0.13.0.3"
