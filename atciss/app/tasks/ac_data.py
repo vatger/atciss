@@ -63,7 +63,9 @@ async def process(
         }
 
         ac_data["cat_wtc"] = get_wtc(
-            wtc_data, ac.icaoCode, ac_data["max_weight_takeoff"]  # type: ignore
+            wtc_data,
+            ac.icaoCode,
+            ac_data["max_weight_takeoff"],  # type: ignore
         )
         ac_data["cat_recat"] = get_recat(
             wtc_data,

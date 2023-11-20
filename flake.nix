@@ -254,7 +254,6 @@
               alejandra.enable = true;
               # statix.enable = true;
               nil.enable = true;
-              black.enable = true;
               eslint.enable = true;
               # pylint.enable = true;
               # pyright.enable = true;
