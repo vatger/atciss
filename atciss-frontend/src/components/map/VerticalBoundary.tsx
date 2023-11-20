@@ -5,6 +5,9 @@ import { Marker, useMap, useMapEvent } from "react-leaflet"
 import { z3 } from "../../app/utils"
 import { createPortal } from "react-dom"
 import L, { LatLngExpression } from "leaflet"
+import { useColorMode } from "theme-ui"
+import { selectOpenFlightmapsOnMap } from "../../services/mapSlice"
+import { useAppSelector } from "../../app/hooks"
 
 export const VerticalBoundary = ({
   min,
@@ -17,10 +20,23 @@ export const VerticalBoundary = ({
   center: LatLngExpression | null
   color: string
 }) => {
-  const [zoom, setZoom] = useState(0)
+  const map = useMap()
+  const [zoom, setZoom] = useState(map.getZoom())
+
+  useMapEvent("zoomend", () => setZoom(map.getZoom()))
+
+  const [colorMode] = useColorMode()
+  const ofm = useAppSelector(selectOpenFlightmapsOnMap)
 
   const icon = color && (
-    <div className="marker-label" sx={{ filter: "brightness(.5)", color }}>
+    <div
+      className="marker-label"
+      sx={{
+        filter:
+          colorMode === "default" || ofm ? "brightness(.5)" : "brightness(5)",
+        color,
+      }}
+    >
       <div sx={{ borderBottom: `1px solid ${color}` }}>{!!max && z3(max)}</div>
       <div>{!!min && z3(min)}</div>
     </div>
@@ -33,9 +49,6 @@ export const VerticalBoundary = ({
     className: "",
     iconSize: [22, 14],
   })
-
-  const map = useMap()
-  useMapEvent("zoomend", () => setZoom(map.getZoom()))
 
   return (
     center &&

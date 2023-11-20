@@ -16,7 +16,7 @@ import createCachedSelector from "re-reselect"
 import { selectLevel } from "../../services/mapSlice"
 import { selectAllAtis } from "../../services/atisApi"
 import { RootState } from "../../app/store"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import { VerticalBoundary } from "./VerticalBoundary"
 import { LatLng } from "leaflet"
 
@@ -72,20 +72,7 @@ export const SectorPolygon = ({
   const owner = useAppSelector((store) => selectOwner(store, id))
   const sector = useAppSelector((store) => selectSector(store, id))
   const selectedPosition = useAppSelector(selectSelectedPosition)
-  const polygon = useRef<L.Polygon>(null)
   const [center, setCenter] = useState<LatLng | null>(null)
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore (fixes "layer not on map", no public API)
-    if (polygon.current && polygon.current._map) {
-      setCenter(polygon.current.getCenter())
-    }
-
-    polygon.current?.on("add", () => {
-      polygon.current && setCenter(polygon.current.getCenter())
-    })
-  }, [polygon.current])
 
   return (
     owner && (
@@ -97,7 +84,9 @@ export const SectorPolygon = ({
           fillOpacity: owner?.id === selectedPosition ? 0.5 : 0.3,
         }}
         positions={points}
-        ref={polygon}
+        eventHandlers={{
+          add: (p) => setCenter(p.target.getCenter()),
+        }}
       >
         <VerticalBoundary
           color={owner?.colours[0]?.hex}
