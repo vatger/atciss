@@ -5,7 +5,8 @@ import { EBG_SETTINGS } from "../app/config"
 import { useAppSelector } from "../app/hooks"
 import { selectActiveEbg } from "../services/configSlice"
 import { usePollEcfmpByFir } from "../services/ecfmpApi"
-import { DateTime } from "luxon"
+import { DateTime, Duration } from "luxon"
+import { ReactNode } from "react"
 
 export const ECFMP = () => {
   const activeEbg = useAppSelector(selectActiveEbg)
@@ -40,22 +41,42 @@ export const ECFMP = () => {
           <pre sx={{ whiteSpace: "pre-wrap" }}>{fm.reason}</pre>
           <Box>
             <Text variant="label">
-              {fm.measure.type.replace("_", " ").toUpperCase()}
+              {fm.measure.type.replaceAll("_", " ").toUpperCase()}
             </Text>
-            {fm.measure.value && `: ${fm.measure.value}`}
+            {fm.measure.value &&
+              `: ${
+                [
+                  "minimum_departure_interval",
+                  "average_departure_interval",
+                ].includes(fm.measure.type)
+                  ? Duration.fromObject({
+                      seconds: fm.measure.value as number,
+                    })
+                      .rescale()
+                      .toHuman({
+                        unitDisplay: "short",
+                      })
+                  : fm.measure.value
+              }`}
           </Box>
           <Box>
             {fm.filters
-              .map(
-                (f) =>
-                  `${f.type.replace("_", " ").toUpperCase()}${
-                    f.value &&
-                    `: ${
-                      f.value instanceof Array ? f.value.join(", ") : f.value
-                    }`
-                  }`,
-              )
-              .join("; ")}
+              .map<ReactNode>((f) => (
+                <>
+                  {f.type.replaceAll("_", " ").toUpperCase()}
+                  {f.value && (
+                    <>
+                      :{" "}
+                      <Text variant="label">
+                        {f.value instanceof Array
+                          ? f.value.join(", ")
+                          : f.value}
+                      </Text>
+                    </>
+                  )}
+                </>
+              ))
+              .reduce((prev, curr) => [prev, "; ", curr])}
           </Box>
         </Box>
       )
