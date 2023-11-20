@@ -15,7 +15,9 @@ from metar.Datatypes import distance
 from metar.Metar import Metar, CLOUD_TYPE
 
 
-AirportIcao = Annotated[str, StringConstraints(min_length=4, max_length=4, to_upper=True)]
+AirportIcao = Annotated[
+    str, StringConstraints(min_length=4, max_length=4, to_upper=True)
+]
 
 
 @dataclass
@@ -90,8 +92,13 @@ class MetarModel(BaseModel):
 
     @field_validator("weather", "recent_weather", mode="before")
     @classmethod
-    def weather_validator(cls, v: List[List[Optional[str]]]) -> List[str]:
+    def weather_validator(cls, v: list[list[Optional[str]]]) -> list[str]:
         return ["".join([ws for ws in w if ws is not None]) for w in v]
+
+    @field_validator("vis", mode="before")
+    @classmethod
+    def vis_validator(cls, v: list[str] | None) -> list[str]:
+        return [] if v is None else v
 
     @computed_field
     def tl(self) -> Optional[int]:
@@ -114,11 +121,15 @@ class MetarModel(BaseModel):
                 "raw": raw_metar,
                 "time": cast(datetime, parsed.time).replace(tzinfo=timezone.utc),
                 "automatic": parsed.mod == "AUTO",
-                "wind_dir": parsed.wind_dir.value() if parsed.wind_dir is not None else None,
+                "wind_dir": parsed.wind_dir.value()
+                if parsed.wind_dir is not None
+                else None,
                 "wind_speed": parsed.wind_speed.value("KT")
                 if parsed.wind_speed is not None
                 else None,
-                "wind_gust": parsed.wind_gust.value("KT") if parsed.wind_gust is not None else None,
+                "wind_gust": parsed.wind_gust.value("KT")
+                if parsed.wind_gust is not None
+                else None,
                 "wind_dir_from": parsed.wind_dir_from.value()
                 if parsed.wind_dir_from is not None
                 else None,
