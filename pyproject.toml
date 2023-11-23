@@ -31,7 +31,7 @@ asyncpg = "^0.29.0"
 python-dateutil = "^2.8.2"
 fastapi-async-sqlalchemy = "^0.6.0"
 prometheus-fastapi-instrumentator = "^6.1.0"
-celery = {version = "^5.3.5", extras = ["redis,gevent"]}
+celery = {version = "^5.3.6", extras = ["redis,gevent"]}
 asgiref = "^3.7.2"
 loguru = "^0.7.2"
 asgi-correlation-id = "^4.2.0"
