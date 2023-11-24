@@ -57,6 +57,10 @@
           python = final.python311;
           python3 = final.python311;
           overrides = final.poetry2nix.overrides.withDefaults (pyfinal: pyprev: {
+            yarl = pyprev.yarl.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.cython];
+              propagatedBuildInputs = (old.propagatedBuildInputs or []) ++ [pyfinal.expandvars];
+            });
             pynotam = pyprev.pynotam.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry];
             });
@@ -96,6 +100,9 @@
             });
             celery = pyprev.celery.overridePythonAttrs (old: {
               meta = old.meta // {priority = -1;};
+            });
+            multidict = pyprev.multidict.overridePythonAttrs (old: {
+              pythonCatchConflictsPhase = ":";
             });
             asgi-correlation-id = pyprev.asgi-correlation-id.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
