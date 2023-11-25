@@ -5,9 +5,11 @@ from uuid import UUID
 from loguru import logger
 from sqlalchemy.ext.asyncio import create_async_engine
 
-from atciss.app.models import Aerodrome, Navaid, Runway
 from atciss.app.utils.aiohttp_client import AiohttpClient
 from atciss.app.utils.aixm_parser import AIXMData, AIXMFeature
+from atciss.app.views.aerodrome import Aerodrome
+from atciss.app.views.navaid import Navaid
+from atciss.app.views.runway import Runway
 from .utils import create_or_update
 from ..utils.dfs import get_dfs_aixm_datasets, get_dfs_aixm_url
 from ...config import settings

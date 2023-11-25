@@ -4,8 +4,9 @@ from sqlmodel import select
 from fastapi_async_sqlalchemy import db
 
 from atciss.app.controllers.auth import get_user
+from atciss.app.views.navaid import Navaid
 
-from ..models import Navaid, User
+from ..models import User
 
 router = APIRouter()
 
