@@ -7,11 +7,11 @@ import { selectOwnedSectors } from "../../services/activePositionSlice"
 
 export const LoaNavaidLayer = () => {
   const ownedSectors = useAppSelector(selectOwnedSectors)
-  loaApi.useGetBySectorsQuery(ownedSectors, {
+  const { data: _l } = loaApi.useGetBySectorsQuery(ownedSectors, {
     skip: ownedSectors.length == 0,
   })
   const cops = useAppSelector(selectLoaCops)
-  navaidApi.useGetByDesignatorsQuery(cops)
+  const { data: _n } = navaidApi.useGetByDesignatorsQuery(cops)
 
   return (
     <LayerGroup>

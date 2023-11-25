@@ -68,7 +68,7 @@ export const SectorPolygon = ({
   sectorBounds: { points, min, max },
   id,
 }: SectorPolygonProps) => {
-  sectorApi.useGetQuery()
+  const { data: _s } = sectorApi.useGetQuery()
   const owner = useAppSelector((store) => selectOwner(store, id))
   const sector = useAppSelector((store) => selectSector(store, id))
   const selectedPosition = useAppSelector(selectSelectedPosition)

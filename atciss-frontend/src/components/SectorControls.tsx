@@ -15,8 +15,8 @@ import { SelectedPosition } from "./sectorControls/SelectedPosition"
 export const SectorControls = () => {
   const dispatch = useAppDispatch()
 
-  sectorApi.useGetQuery()
-  usePollControllers()
+  const { data: _s } = sectorApi.useGetQuery()
+  const { data: _c } = usePollControllers()
 
   const syncedToOnline = useAppSelector(selectSyncedToOnline)
   const positionGroups = useAppSelector(selectPositionGroups)

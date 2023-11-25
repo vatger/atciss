@@ -23,7 +23,7 @@ import { LevelChoice } from "./LevelChoice"
 export const MapControls = () => {
   const dispatch = useAppDispatch()
 
-  usePollControllers()
+  const { data: _c } = usePollControllers()
 
   const ofm = useAppSelector(selectOpenFlightmapsOnMap)
   const dfs = useAppSelector(selectDFSOnMap)

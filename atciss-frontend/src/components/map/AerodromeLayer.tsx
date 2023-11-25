@@ -106,15 +106,15 @@ const AerodromeMarker = ({ icao }: { icao: string }) => {
 }
 
 export const AerodromeLayer = () => {
-  usePollControllers()
+  const { data: _c } = usePollControllers()
 
-  sectorApi.useGetQuery()
+  const { data: _s } = sectorApi.useGetQuery()
   const airports = useAppSelector(selectAirportICAOs)
 
-  usePollMetarByIcaoCodes(airports)
-  usePollTafByIcaoCodes(airports)
-  usePollAtisByIcaoCodes(airports)
-  adApi.useGetByIcaoCodesQuery(airports)
+  const { data: _m } = usePollMetarByIcaoCodes(airports)
+  const { data: _t } = usePollTafByIcaoCodes(airports)
+  const { data: _a } = usePollAtisByIcaoCodes(airports)
+  const { data: _ad } = adApi.useGetByIcaoCodesQuery(airports)
 
   return (
     <LayerGroup>

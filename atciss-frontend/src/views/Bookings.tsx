@@ -1,4 +1,4 @@
- // @ts-nocheck
+// @ts-nocheck
 
 import "@florianbepunkt/timeline/src/timeline.scss"
 import { Box } from "theme-ui"
@@ -76,7 +76,9 @@ export const Item = (
 
 export const Bookings = () => {
   const ebg = useAppSelector(selectActiveEbg)
-  usePollBookingsByRegions(EBG_SETTINGS[ebg].neighbourPrefixes)
+  const { data: _b } = usePollBookingsByRegions(
+    EBG_SETTINGS[ebg].neighbourPrefixes,
+  )
   const bookings = useAppSelector(selectAllBookings)
   const bookedStations = useAppSelector(selectBookedStations)
   const theme = useAppTheme()
@@ -106,7 +108,7 @@ export const Bookings = () => {
         maxZoom={28 * 24 * 60 * 60 * 1000} // 4w
         canMove={false}
         canChangeGroup={false}
-         // @ts-ignore
+        // @ts-ignore
         canResize={false}
         canSelect={false}
         onTimeChange={onTimeChange}

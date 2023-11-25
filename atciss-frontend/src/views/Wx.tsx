@@ -19,7 +19,7 @@ const Wx = () => {
 
   const [selectedAD, setSelectedAD] = useState(ebgADs[0])
 
-  sectorApi.useGetQuery()
+  const { data: _s } = sectorApi.useGetQuery()
   const airports = useAppSelector(selectAirports)
   const vatglassesADs = Object.entries(airports)
     .filter(

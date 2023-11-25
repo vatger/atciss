@@ -14,7 +14,7 @@ import { useState } from "react"
 
 export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const ownedSectors = useAppSelector(selectOwnedSectors)
-  loaApi.useGetBySectorsQuery(ownedSectors, {
+  const { data: _l } = loaApi.useGetBySectorsQuery(ownedSectors, {
     skip: ownedSectors.length == 0,
   })
   const [filter, setFilter] = useState("")

@@ -10,13 +10,13 @@ import { Sector } from "./SectorPolygon"
 import { usePollAtisByIcaoCodes } from "../../services/atisApi"
 
 export const SectorLayer = () => {
-  usePollControllers()
+  const { data: _c } = usePollControllers()
 
-  sectorApi.useGetQuery()
+  const { data: _s } = sectorApi.useGetQuery()
   const sectors = useAppSelector(selectSectorIDs)
 
   const airports = useAppSelector(selectAirportICAOs)
-  usePollAtisByIcaoCodes(airports)
+  const { data: _a } = usePollAtisByIcaoCodes(airports)
 
   return (
     <LayerGroup>

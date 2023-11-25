@@ -19,11 +19,11 @@ const Sector = ({ id }: { id: string }) => {
 }
 
 export const SectorStatus = ({ sx }: { sx?: ThemeUIStyleObject }) => {
-  usePollControllers()
+  const { data: _c } = usePollControllers()
   const activeEbg = useAppSelector(selectActiveEbg)
   const ebgSectors = EBG_SETTINGS[activeEbg].sectors
 
-  sectorApi.useGetQuery()
+  const { data: _s } = sectorApi.useGetQuery()
 
   return (
     <Flex

@@ -41,7 +41,7 @@ const Area = ({ name }: { name: string }) => {
 export const Areas = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const activeEbg = useAppSelector(selectActiveEbg)
   const areaNames: string[] = EBG_SETTINGS[activeEbg].areas
-  usePollAreas()
+  const { data: _a } = usePollAreas()
 
   return (
     <Flex
