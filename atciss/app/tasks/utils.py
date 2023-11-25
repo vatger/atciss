@@ -1,4 +1,5 @@
 from typing import Any
+from pydantic import TypeAdapter
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import SQLModel
@@ -6,13 +7,8 @@ from sqlmodel import SQLModel
 
 async def create_or_update(engine: Any, klass: type[SQLModel], pk: Any, data: dict[str, Any]):
     async with AsyncSession(engine) as session:
-        model = await session.get(klass, pk)
+        data = { 'id': pk, **data }
+        model = TypeAdapter(klass).validate_python(data)
 
-        if model is None:
-            model = klass(id=pk, **data)  # type: ignore
-        else:
-            for k, v in data.items():
-                setattr(model, k, v)
-
-        session.add(model)
+        _ = await session.merge(model)
         await session.commit()

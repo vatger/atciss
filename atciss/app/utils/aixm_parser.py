@@ -13,13 +13,6 @@ class AIXMFeature:
         def get(self) -> str | None:
             return self.value
 
-        def wkt_point(self) -> str | None:
-            if self.value is None:
-                return None
-
-            parts = self.value.split(" ")
-            return f"POINT({parts[1]} {parts[0]})"
-
         def float(self) -> float | None:
             if self.value is None:
                 return None

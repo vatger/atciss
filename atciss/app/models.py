@@ -1,10 +1,12 @@
-from typing import Any, Optional
+from typing import Any, Optional, cast
 import uuid
-from geoalchemy2 import Geometry, WKBElement
+from geoalchemy2 import Geometry, WKBElement, WKTElement
 from geoalchemy2.shape import to_shape
-from pydantic import SerializationInfo, field_serializer
+from pydantic import SerializationInfo, field_serializer, field_validator
 from shapely import Point
 from sqlmodel import Column, Relationship, SQLModel, Field
+
+from atciss.app.utils.geo import Coordinate
 
 from .views.booking import Booking  # noqa: F401 pylint: disable=unused-import
 
@@ -68,26 +70,38 @@ class RunwayDirection(SQLModel, table=True):
 class Navaid(SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, nullable=False)
     designator: str = Field(nullable=False)
-    name: str = Field(nullable=False)
     type: str = Field(nullable=False)
     location: Any = Field(sa_column=Column(Geometry("Point")))
-    channel: Optional[str]
-    frequency: Optional[float]
+    channel: Optional[str] = None
+    frequency: Optional[float] = None
     aerodrome_id: Optional[uuid.UUID] = Field(nullable=True, foreign_key="aerodrome.id")
     runway_direction_id: Optional[uuid.UUID] = Field(
         nullable=True, foreign_key="runway_direction.id"
     )
-    remark: Optional[str]
-    operation_remark: Optional[str]
+    remark: Optional[str] = None
+    operation_remark: Optional[str] = None
+    name: Optional[str] = None
 
     aerodrome: Optional[Aerodrome] = Relationship()
     runway_direction: Optional[RunwayDirection] = Relationship()
 
     @field_serializer("location")
-    def serialize_location(self, loc: WKBElement, _info: SerializationInfo) -> tuple[float, float]:
+    def serialize_location(self, loc: WKBElement | WKTElement, _info: SerializationInfo) -> tuple[float, float]:
         point: Point = to_shape(loc)
 
         return (point.y, point.x)
+
+    @field_validator("location", mode="before")
+    @classmethod
+    def location_validator(cls, input: Coordinate | tuple[str, str] | str | WKBElement | WKTElement) -> WKTElement | WKBElement:
+        if isinstance(input, WKTElement) or isinstance(input, WKBElement):
+            return input
+
+        if isinstance(input, str):
+            input = cast(tuple[str, str], input.split(" "))
+
+        return WKTElement(f"POINT({input[1]} {input[0]})")
+
 
 
 class AircraftPerformanceData(SQLModel, table=True):

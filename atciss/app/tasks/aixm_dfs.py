@@ -146,7 +146,7 @@ async def process_waypoints(aixm: AIXMData, engine: Any):
             "designator": wpt["aixm:designator"].get(),
             "name": wpt["aixm:name"].get(),
             "type": navaid_type,
-            "location": wpt["aixm:location", "aixm:Point", "gml:pos"].wkt_point(),
+            "location": wpt["aixm:location", "aixm:Point", "gml:pos"].get(),
         }
 
         if wpt_data["name"] is None:
@@ -193,7 +193,7 @@ async def process_navaid(aixm: AIXMData, feature: AIXMFeature, engine: Any):
         "designator": feature["aixm:designator"].get(),
         "name": feature["aixm:name"].get() or feature["aixm:designator"].get(),
         "type": feature["aixm:type"].get(),
-        "location": feature["aixm:location", "aixm:ElevatedPoint", "gml:pos"].wkt_point(),
+        "location": feature["aixm:location", "aixm:ElevatedPoint", "gml:pos"].get(),
     }
 
     equipments = ensure_list(feature["aixm:navaidEquipment"].get())
