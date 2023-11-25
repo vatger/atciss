@@ -1,0 +1,43 @@
+start: ((_COMMENT _NL) | section)+
+
+section: section_header _NL line+
+
+?line: (_COMMENT | location | runway | airway | fix | broken) _NL
+
+?section_header: "[" HEADER_NAME "]"
+
+fix: FIX_DESIGNATOR _WS coordinate
+location: DESIGNATOR _WS frequency _WS coordinate (_WS "D")?
+runway: RUNWAY_DESIGNATOR _WS RUNWAY_DESIGNATOR _WS degrees _WS degrees _WS coordinate _WS coordinate _WS DESIGNATOR
+airway: DESIGNATOR _WS coordinate _WS coordinate
+// EDGG has invalid WPT with spaces
+broken: /(?!\[).+/
+
+coordinate: coord_part _WS coord_part
+?degrees: INT
+?frequency: DECIMAL
+RUNWAY_DESIGNATOR: DIGIT~2 ["L" | "C" | "R"]
+
+coord_part: hemi DEG "." MIN "." SEC
+
+FIX_DESIGNATOR: (UCASE_LETTER | LCASE_LETTER | "Ä" | "Ö" | "Ü" | DIGIT | "(" | ")" | "/" | "-" | "_" | ".")+
+DESIGNATOR: (UCASE_LETTER | DIGIT)+
+
+HEADER_NAME: (UCASE_LETTER | WS_INLINE)+
+
+DEG: INT
+MIN: INT
+SEC: DECIMAL
+?hemi: "N" | "S" | "W" | "E"
+
+_COMMENT: ";" /.*/
+_WS: WS_INLINE+
+_NL: NEWLINE+
+
+%import common.WS_INLINE
+%import common.NEWLINE
+%import common.DIGIT
+%import common.INT
+%import common.DECIMAL
+%import common.LCASE_LETTER
+%import common.UCASE_LETTER
