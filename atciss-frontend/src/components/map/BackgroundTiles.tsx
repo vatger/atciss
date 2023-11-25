@@ -13,8 +13,8 @@ export const BackgroundTiles = () => {
   const dfs = useAppSelector(selectDFSOnMap)
   const dwd = useAppSelector(selectDWDOnMap)
   const satellite = useAppSelector(selectSatelliteOnMap)
-
   const [colorMode] = useColorMode()
+
   return (
     <>
       <TileLayer

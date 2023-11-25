@@ -197,13 +197,15 @@ const ownerFromSectorsActivePositions = (
 export const selectOwnedSectors = createSelector(
   [selectActivePositions, selectAirspace, selectSelectedPosition],
   (activePositions, sectors, pos) =>
-    Object.entries(sectors).reduce(
-      (acc, [id, s]) =>
-        ownerFromSectorsActivePositions(s, activePositions) === pos
-          ? [...acc, id.replace(/.*\//, "")] // FIXME check
-          : acc,
-      [] as string[],
-    ) ?? [],
+    pos === null
+      ? []
+      : Object.entries(sectors).reduce(
+          (acc, [id, s]) =>
+            ownerFromSectorsActivePositions(s, activePositions) === pos
+              ? [...acc, id.replace(/.*\//, "")] // FIXME check
+              : acc,
+          [] as string[],
+        ) ?? [],
 )
 
 const getOwner = (
