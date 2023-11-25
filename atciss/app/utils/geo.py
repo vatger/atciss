@@ -18,16 +18,21 @@ def convert_degsecmin_coordinate(coordinate: str) -> float:
     return deg + copysign(minutes, deg) / 60 + copysign(sec, deg) / 3600
 
 
-def postgis_coordinate_validate(input: Coordinate | tuple[str, str] | str | WKBElement | WKTElement) -> WKTElement | WKBElement:
-    if isinstance(input, WKTElement) or isinstance(input, WKBElement):
-        return input
+def postgis_coordinate_validate(
+    data: Coordinate | tuple[str, str] | str | WKBElement | WKTElement
+) -> WKTElement | WKBElement:
+    if isinstance(data, (WKTElement, WKBElement)):
+        return data
 
-    if isinstance(input, str):
-        input = cast(tuple[str, str], input.split(" "))
+    if isinstance(data, str):
+        data = cast(tuple[str, str], data.split(" "))
 
-    return WKTElement(f"POINT({input[1]} {input[0]})")
+    return WKTElement(f"POINT({data[1]} {data[0]})")
 
-def postgis_coordinate_serialize(loc: WKBElement | WKTElement, _info: SerializationInfo) -> tuple[float, float]:
+
+def postgis_coordinate_serialize(
+    loc: WKBElement | WKTElement, _info: SerializationInfo
+) -> tuple[float, float]:
     point: Point = to_shape(loc)
 
     return (point.y, point.x)
