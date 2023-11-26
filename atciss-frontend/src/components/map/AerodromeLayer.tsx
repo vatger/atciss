@@ -59,8 +59,7 @@ const AerodromeMarker = ({ icao }: { icao: string }) => {
         key={icao}
         pane="markerPane"
         pathOptions={{
-          fillOpacity:
-            aerodromeControllers.length || topdownController ? 0.9 : 0.2,
+          fillOpacity: aerodromeControllers.length ? 0.9 : 0.2,
           weight: aerodromeControllers.length || topdownController ? 3 : 1,
           color:
             xmcState == "LVP"

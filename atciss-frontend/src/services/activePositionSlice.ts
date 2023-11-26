@@ -254,7 +254,13 @@ export const selectAirportControllers = createCachedSelector(
     (_state: RootState, airportDesignator: string) => airportDesignator,
   ],
   (controllers, airport): Controller[] =>
-    controllers.filter((c) => c.callsign.split("_")[0] === airport),
+    controllers.filter((c) => {
+      const cs_splits = c.callsign.split("_")
+      return (
+        cs_splits[0] === airport &&
+        ["DEL", "GND", "TWR"].includes(cs_splits[cs_splits.length - 1])
+      )
+    }),
 )((_state, airportDesignator) => airportDesignator)
 
 export const selectAirportTopdownController = createCachedSelector(
