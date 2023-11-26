@@ -7,6 +7,7 @@ import {
   sectorApi,
   selectAirport,
   selectAirspace,
+  selectPosition,
   selectPositions,
   selectSector,
 } from "./sectorApi"
@@ -127,6 +128,17 @@ export const selectOnlinePositions = createSelector(
       ]),
     ),
 )
+export const selectControllerFromPosition = createCachedSelector(
+  [selectControllers, selectPosition],
+  (controllers, pos) =>
+    controllers.find((c) =>
+      pos?.pre.some(
+        (prefix) =>
+          `${c.callsign.slice(0, c.callsign.indexOf("_"))}${c.frequency}` ===
+          `${prefix}${pos.frequency}`,
+      ),
+    ),
+)((_state, pos) => pos)
 
 export const selectActivePositions = (state: RootState) =>
   state.activePositions.syncedToOnline

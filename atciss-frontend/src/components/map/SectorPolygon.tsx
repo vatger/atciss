@@ -9,6 +9,7 @@ import {
 } from "../../services/sectorApi"
 import { useAppSelector } from "../../app/hooks"
 import {
+  selectControllerFromPosition,
   selectOwner,
   selectSelectedPosition,
 } from "../../services/activePositionSlice"
@@ -72,6 +73,9 @@ export const SectorPolygon = ({
   const owner = useAppSelector((store) => selectOwner(store, id))
   const sector = useAppSelector((store) => selectSector(store, id))
   const selectedPosition = useAppSelector(selectSelectedPosition)
+  const controller = useAppSelector((store) =>
+    selectControllerFromPosition(store, owner?.id ?? null),
+  )
   const [center, setCenter] = useState<LatLng | null>(null)
 
   return (
@@ -99,6 +103,11 @@ export const SectorPolygon = ({
             <Text variant="label">{sector.id}</Text>
             {sector.remark && ` (${sector.remark})`} by {owner?.name}
           </Box>
+          {controller && (
+            <Box sx={{ fontSize: "1" }}>
+              {controller.name} ({controller.cid})
+            </Box>
+          )}
           <Box sx={{ fontSize: "1" }}>
             FL{z3(min ?? 0)}-FL{z3(max ?? 660)}
           </Box>
