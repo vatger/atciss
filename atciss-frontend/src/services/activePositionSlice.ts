@@ -13,7 +13,7 @@ import {
 } from "./sectorApi"
 import { localStorageOrDefault, setLocalStorage } from "../app/utils"
 import createCachedSelector from "re-reselect"
-import { selectControllers } from "./controllerApi"
+import { Controller, selectControllers } from "./controllerApi"
 
 export type PositionStatus = { [id: string]: boolean }
 type ActivePositionState = {
@@ -248,18 +248,27 @@ export const selectOnlineOwner = createCachedSelector(
   getOwner,
 )((_state, sector) => sector)
 
-export const selectAirportController = createCachedSelector(
+export const selectAirportControllers = createCachedSelector(
+  [
+    selectControllers,
+    (_state: RootState, airportDesignator: string) => airportDesignator,
+  ],
+  (controllers, airport): Controller[] =>
+    controllers.filter((c) => c.callsign.split("_")[0] === airport),
+)((_state, airportDesignator) => airportDesignator)
+
+export const selectAirportTopdownController = createCachedSelector(
   [
     selectAirport,
     selectActivePositions,
-    (_state: RootState, sector: string) => sector,
+    (_state: RootState, airportDesignator: string) => airportDesignator,
   ],
   (airport, positions): string | null =>
     (airport?.topdown.find(
       (pos) => typeof pos === "string" && positions[pos],
     ) as string | undefined) ?? null,
   //  TODO don't ignore rwy-dependent topdown
-)((_state, sector) => sector)
+)((_state, airportDesignator) => airportDesignator)
 
 export const {
   setPosition,

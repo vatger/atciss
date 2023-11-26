@@ -18,7 +18,11 @@ import {
 import { selectTaf, usePollTafByIcaoCodes } from "../../services/tafApi"
 import { selectAtis, usePollAtisByIcaoCodes } from "../../services/atisApi"
 import createCachedSelector from "re-reselect"
-import { selectAirportController } from "../../services/activePositionSlice"
+import {
+  selectAirportControllers,
+  selectAirportTopdownController,
+  selectControllerFromPosition,
+} from "../../services/activePositionSlice"
 
 const selectAirportCoordinates = createCachedSelector(
   [selectAirport, selectDfsAd],
@@ -29,8 +33,18 @@ const selectAirportCoordinates = createCachedSelector(
 
 const AerodromeMarker = ({ icao }: { icao: string }) => {
   const airport = useAppSelector((store) => selectAirport(store, icao))
-  const owner = useAppSelector((store) => selectAirportController(store, icao))
-  const position = useAppSelector((store) => selectPosition(store, owner))
+  const topdownOwner = useAppSelector((store) =>
+    selectAirportTopdownController(store, icao),
+  )
+  const aerodromeControllers = useAppSelector((store) =>
+    selectAirportControllers(store, icao),
+  )
+  const topdownPosition = useAppSelector((store) =>
+    selectPosition(store, topdownOwner),
+  )
+  const topdownController = useAppSelector((store) =>
+    selectControllerFromPosition(store, topdownOwner),
+  )
   const metar = useAppSelector((store) => selectMetar(store, icao))
   const taf = useAppSelector((store) => selectTaf(store, icao))
   const atis = useAppSelector((store) => selectAtis(store, icao))
@@ -45,8 +59,9 @@ const AerodromeMarker = ({ icao }: { icao: string }) => {
         key={icao}
         pane="markerPane"
         pathOptions={{
-          fillOpacity: 0.6,
-          weight: 1,
+          fillOpacity:
+            aerodromeControllers.length || topdownController ? 0.9 : 0.2,
+          weight: aerodromeControllers.length || topdownController ? 3 : 1,
           color:
             xmcState == "LVP"
               ? "hotpink"
@@ -66,21 +81,26 @@ const AerodromeMarker = ({ icao }: { icao: string }) => {
               fontSize: "2",
             }}
           >
-            <Box>
-              <Text variant="mapAd">{icao} </Text>
-              {position && (
-                <>
-                  by{" "}
-                  <Text variant="label">
-                    {position.name} ({position.frequency})
-                  </Text>
-                </>
-              )}
-            </Box>
+            <Text variant="mapAd">{icao}</Text>
             {airport?.callsign && (
               <Text variant="label">{airport?.callsign}</Text>
             )}
           </Flex>
+          {aerodromeControllers.length
+            ? aerodromeControllers.map((c) => (
+                <Box key={c.callsign}>
+                  <Text variant="label">{c.callsign}</Text> {c.name} ({c.cid},{" "}
+                  {c.frequency})
+                </Box>
+              ))
+            : topdownPosition &&
+              topdownController && (
+                <>
+                  <Text variant="label">{topdownPosition.name}</Text>{" "}
+                  {topdownController.name} ({topdownController.cid},{" "}
+                  {topdownPosition.frequency})
+                </>
+              )}
           {metar?.raw && (
             <Box sx={{ fontSize: "1", mt: 1 }}>
               <Text variant="label">METAR</Text>
