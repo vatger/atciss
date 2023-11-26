@@ -10,6 +10,7 @@ from atciss.app.utils.geo import Coordinate
 from atciss.app.views.aerodrome import Aerodrome
 from atciss.app.views.navaid import Navaid
 
+
 @dataclass
 class SctRunway:
     ad_designator: str
@@ -17,14 +18,17 @@ class SctRunway:
     heading: int
     thresholds: tuple[Coordinate, Coordinate]
 
+
 @dataclass
 class SctSection:
     name: str
     data: list[Navaid | Aerodrome | SctRunway]
 
+
 @dataclass
 class SctFile:
     sections: dict[str, list[Navaid | Aerodrome | SctRunway]]
+
 
 class SctTransformer(Transformer):
     INT = int
@@ -43,7 +47,13 @@ class SctTransformer(Transformer):
 
     # TODO regions, airways, sectors, ...
     def start(self, children: list[SctSection]) -> SctFile:
-        return SctFile({ s.name: s.data for s in children if s.name in ["VOR", "NDB", "FIXES", "AIRPORT", "RUNWAY"] })
+        return SctFile(
+            {
+                s.name: s.data
+                for s in children
+                if s.name in ["VOR", "NDB", "FIXES", "AIRPORT", "RUNWAY"]
+            }
+        )
 
     def section(self, children: Sequence[str | Navaid | Aerodrome | list[SctRunway]]) -> SctSection:
         name, *rest = children
@@ -62,16 +72,36 @@ class SctTransformer(Transformer):
     def location(self, children: tuple[str, float, Coordinate]) -> Navaid | Aerodrome:
         designator, frequency, location = children
         if frequency > 0 and frequency < 150:
-            return Navaid(designator=designator, type="VOR", frequency=frequency, location=location, aerodrome_id=None, runway_direction_id=None)
+            return Navaid(
+                designator=designator,
+                type="VOR",
+                frequency=frequency,
+                location=location,
+                aerodrome_id=None,
+                runway_direction_id=None,
+            )
         elif frequency > 150:
-            return Navaid(designator=designator, type="NDB", frequency=frequency, location=location, aerodrome_id=None, runway_direction_id=None)
+            return Navaid(
+                designator=designator,
+                type="NDB",
+                frequency=frequency,
+                location=location,
+                aerodrome_id=None,
+                runway_direction_id=None,
+            )
         else:
             return Aerodrome(icao_designator=designator, type="AD", arp_location=location)
 
     def fix(self, children: tuple[str, Coordinate]) -> Navaid:
         designator, location = children
 
-        return Navaid(designator=designator, type="ICAO", location=location, aerodrome_id=None, runway_direction_id=None)
+        return Navaid(
+            designator=designator,
+            type="ICAO",
+            location=location,
+            aerodrome_id=None,
+            runway_direction_id=None,
+        )
 
     def runway(self, children: tuple[str, str, int, int, Coordinate, Coordinate, str]):
         des1, des2, deg1, deg2, thr1, thr2, icao = children
@@ -92,7 +122,8 @@ def parse(input: str) -> SctFile:
 
     return tf.transform(tree)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     with open(sys.argv[1], encoding="windows-1252") as f:
         sct = parse(f.read())
         print(TypeAdapter(SctFile).dump_json(sct).decode("utf-8"))
