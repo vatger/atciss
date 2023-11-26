@@ -3,7 +3,7 @@ import { AtisAfw } from "../views/AtisAfw"
 import { Map } from "../views/Map"
 import { Wx } from "../views/Wx"
 import { App } from "../App"
-import { Notam } from "../views/Notam"
+import { Notams } from "../views/Notam"
 import {
   Auth,
   AuthCallback,
@@ -61,7 +61,7 @@ const router = createBrowserRouter([
       },
       {
         path: "notam",
-        element: <Notam />,
+        element: <Notams />,
       },
       {
         path: "loa",

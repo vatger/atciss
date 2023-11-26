@@ -35,11 +35,33 @@ export const selectEbgMinorAerodromes = createSelector(
   selectActiveEbg,
   (ebg) => EBG_SETTINGS[ebg].minorAerodromes,
 )
+export const selectEbgRelevantAerodromes = createSelector(
+  selectActiveEbg,
+  (ebg) => EBG_SETTINGS[ebg].relevantAerodromes,
+)
+export const selectEbgFir = createSelector(
+  selectActiveEbg,
+  (ebg) => EBG_SETTINGS[ebg].fir,
+)
 export const selectEbgAllAerodromes = createSelector(
   selectEbgMajorAerodromes,
   selectEbgAerodromes,
   selectEbgMinorAerodromes,
   (major, ads, minor) => [...major, ...ads, ...minor],
+)
+export const selectNotamDesignators = createSelector(
+  selectEbgMajorAerodromes,
+  selectEbgAerodromes,
+  selectEbgMinorAerodromes,
+  selectEbgRelevantAerodromes,
+  selectEbgFir,
+  (major, ads, minor, relevant, fir) => [
+    ...major,
+    fir,
+    ...ads,
+    ...minor,
+    ...relevant,
+  ],
 )
 
 export const { setActiveEbg } = configSlice.actions
