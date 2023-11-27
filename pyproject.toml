@@ -31,7 +31,7 @@ prometheus-fastapi-instrumentator = "^6.1.0"
 pyaixm = { git = "https://github.com/volkerp/pyaixm", rev = "00112765b7ca767d45af9e743b0264e14ac25d1b" }
 pydantic = "^2"
 pydantic-settings = "^2.0.2"
-pydantic-xml = {extras = ["lxml"], version = "^2.2.4"}
+pydantic-xml = {extras = ["lxml"], version = "^2.5.0"}
 pynotam = { git = "https://github.com/globin/PyNotam", rev = "84b741863d09aaa616e6f378a2e6e5eab8df706f" }
 python-dateutil = "^2.8.2"
 python-jose = "^3.3.0"
