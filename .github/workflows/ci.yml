@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v7
+        uses: DeterminateSystems/nix-installer-action@v8
       - uses: cachix/cachix-action@v12
         with:
           name: atciss
@@ -35,7 +35,7 @@ jobs:
       - name: Check Nix flake inputs
         uses: DeterminateSystems/flake-checker-action@v5
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v7
+        uses: DeterminateSystems/nix-installer-action@v8
       - uses: cachix/cachix-action@v12
         with:
           name: atciss
