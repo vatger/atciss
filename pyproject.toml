@@ -9,7 +9,7 @@ repository = "https://github.com/a3li/atciss"
 
 [tool.poetry.dependencies]
 python = "~3.11"
-aiohttp = "^3.8.6"
+aiohttp = "^3.9.1"
 alembic = "^1.12.0"
 asgi-correlation-id = "^4.2.0"
 asgiref = "^3.7.2"
