@@ -1,12 +1,13 @@
 """Application controllers - metar."""
 from typing import Annotated, Dict, List, cast
 from fastapi import APIRouter, Depends, Query
+from fastapi_async_sqlalchemy import db
+from sqlmodel import select
+
+from atciss.app.views.aerodrome import Aerodrome
 
 from ..controllers.auth import get_user
 from ..models import User
-
-from ..tasks.dfs_ad import Aerodrome
-from ..utils.redis import RedisClient
 
 router = APIRouter()
 
@@ -19,13 +20,8 @@ async def ad_get(
     user: Annotated[User, Depends(get_user)],
 ) -> Dict[str, Aerodrome]:
     """Get METAR for airport."""
-    redis_client = RedisClient.open()
+    async with db():
+        stmt = select(Aerodrome).where(Aerodrome.icao_designator.in_(icao))
+        results = await db.session.execute(stmt)
 
-    ads = {}
-    for i in icao:
-        i = i.upper()
-        ad_json = cast(str | None, await redis_client.get(f"dfs:ad:{i}"))
-        if ad_json is not None:
-            ads[i] = Aerodrome.model_validate_json(ad_json)
-
-    return ads
+    return {cast(str, ad.icao_designator): ad for ad in results.scalars().all()}

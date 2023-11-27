@@ -45,8 +45,11 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
               metar?.wind_dir_from && metar.wind_dir_to
                 ? `${z3(metar.wind_dir_from)}V${z3(metar.wind_dir_to)} `
                 : ""
+            const elevation = ads[aerodrome].elevation
             const qfe =
-              metar.qnh - (12.017 * (ads[aerodrome].elevation / 3.28084)) / 100
+              elevation !== null
+                ? metar.qnh - (12.017 * (elevation / 3.28084)) / 100
+                : null
 
             const clouds =
               metar.clouds.length === 0
@@ -181,10 +184,12 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                     </Text>
                     /{hpaToInhg(metar.qnh).toFixed(2)}
                   </Text>
-                  <Text>
-                    <Text variant="label">QFE:</Text> {qfe.toFixed(0)}/
-                    {hpaToInhg(qfe).toFixed(2)}
-                  </Text>
+                  {qfe !== null && (
+                    <Text>
+                      <Text variant="label">QFE:</Text> {qfe.toFixed(0)}/
+                      {hpaToInhg(qfe).toFixed(2)}
+                    </Text>
+                  )}
                 </AtisRow>
                 <AtisRow>
                   <Text variant="label">Trend:</Text> {metar.trend}

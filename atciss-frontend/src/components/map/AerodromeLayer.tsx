@@ -28,7 +28,7 @@ const selectAirportCoordinates = createCachedSelector(
   [selectAirport, selectDfsAd],
   (vatglassesAirport, dfsAd) =>
     vatglassesAirport?.coord ??
-    (dfsAd ? [dfsAd.latitude, dfsAd.longitude] : null),
+    (dfsAd ? [dfsAd.arp_location[0], dfsAd.arp_location[1]] : null),
 )((_state, icao) => icao)
 
 const AerodromeMarker = ({ icao }: { icao: string }) => {

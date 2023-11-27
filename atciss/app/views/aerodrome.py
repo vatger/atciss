@@ -1,8 +1,15 @@
 from typing import TYPE_CHECKING, Any, Optional
 import uuid
+from astral import Observer
+from astral.sun import sunrise, sunset
 from geoalchemy2 import Geometry
+from geoalchemy2.shape import to_shape
+from pydantic import AwareDatetime, computed_field, field_serializer
+from shapely import Point
 
 from sqlmodel import Column, Field, Relationship, SQLModel
+
+from atciss.app.utils.geo import postgis_coordinate_serialize
 
 
 if TYPE_CHECKING:
@@ -23,3 +30,21 @@ class Aerodrome(SQLModel, table=True):
     ifr: Optional[bool] = None
 
     runways: list["Runway"] = Relationship(back_populates="aerodrome")
+
+    location_serializer = field_serializer("arp_location")(postgis_coordinate_serialize)
+
+    @computed_field  # type: ignore[misc]
+    @property
+    def sunrise(self) -> AwareDatetime:
+        point: Point = to_shape(self.arp_location)
+
+        # elevation in Observer is prominece not elevation above MSL
+        return sunrise(Observer(point.y, point.x, 0))
+
+    @computed_field  # type: ignore[misc]
+    @property
+    def sunset(self) -> AwareDatetime:
+        point: Point = to_shape(self.arp_location)
+
+        # elevation in Observer is prominece not elevation above MSL
+        return sunset(Observer(point.y, point.x, 0))

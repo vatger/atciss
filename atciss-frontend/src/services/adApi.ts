@@ -4,12 +4,20 @@ import { createSelector } from "@reduxjs/toolkit"
 import { RootState } from "../app/store"
 import { selectAirportICAOs } from "./sectorApi"
 import createCachedSelector from "re-reselect"
+import { LatLngTuple } from "leaflet"
 
 export interface Aerodrome {
-  locationIndicatorICAO: string
-  latitude: number
-  longitude: number
-  elevation: number
+  id: string
+  name: string | null
+  type: "AD" | "HP"
+  local_designator: string | null
+  iata_designator: string | null
+  icao_designator: string | null
+  arp_location: LatLngTuple
+  elevation: number | null
+  arp_elevation: number | null
+  mag_variation: number | null
+  ifr: boolean | null
   sunrise: string
   sunset: string
 }

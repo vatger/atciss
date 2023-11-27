@@ -138,7 +138,7 @@ export const selectControllerFromPosition = createCachedSelector(
           `${prefix}${pos.frequency}`,
       ),
     ),
-)((_state, pos) => pos)
+)((_state, pos) => pos ?? "invalid")
 
 export const selectActivePositions = (state: RootState) =>
   state.activePositions.syncedToOnline
