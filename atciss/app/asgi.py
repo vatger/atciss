@@ -1,5 +1,7 @@
 """Application implementation - ASGI."""
 
+from contextlib import asynccontextmanager
+
 from dataclasses import dataclass
 from uuid import uuid4
 
@@ -15,6 +17,10 @@ from fastapi_async_sqlalchemy import SQLAlchemyMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator as PrometheusInstrumentator
 from asgi_correlation_id import CorrelationIdMiddleware, correlation_id
 from asgi_correlation_id.middleware import is_valid_uuid4
+
+import alembic.command
+import alembic.config
+from sqlalchemy.ext.asyncio import create_async_engine
 
 from ..config import settings
 from .router import root_api_router
@@ -33,6 +39,27 @@ class CorrelationIdLogMiddleware:
             return await self.app(scope, receive, send)
 
 
+def run_migrations(connection, cfg):
+    cfg.attributes["connection"] = connection
+    alembic.command.upgrade(cfg, "head")
+
+
+async def run_async_migrations():
+    alembic_cfg = alembic.config.Config(settings.ALEMBIC_CFG_PATH)
+    engine = create_async_engine(
+        url=str(settings.DATABASE_DSN),
+    )
+
+    async with engine.begin() as conn:
+        await conn.run_sync(run_migrations, alembic_cfg)
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    await run_async_migrations()
+    yield
+
+
 async def on_shutdown() -> None:
     """Shutdown event handler."""
     logger.debug("Execute FastAPI shutdown event handler")
@@ -49,6 +76,7 @@ def get_application() -> FastAPI:
         debug=settings.DEBUG,
         version=settings.VERSION,
         docs_url=settings.DOCS_URL,
+        lifespan=lifespan,
         on_shutdown=[on_shutdown],
     )
 
