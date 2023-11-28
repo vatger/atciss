@@ -4,12 +4,12 @@ from astral import Observer
 from astral.sun import sunrise, sunset
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import to_shape
-from pydantic import AwareDatetime, computed_field, field_serializer
+from pydantic import AwareDatetime, computed_field, field_serializer, field_validator
 from shapely import Point
 
 from sqlmodel import Column, Field, Relationship, SQLModel
 
-from atciss.app.utils.geo import postgis_coordinate_serialize
+from atciss.app.utils.geo import postgis_coordinate_serialize, postgis_coordinate_validate
 
 
 if TYPE_CHECKING:
@@ -28,9 +28,11 @@ class Aerodrome(SQLModel, table=True):
     arp_location: Any = Field(sa_column=Column(Geometry("Point")))
     arp_elevation: Optional[float] = None
     ifr: Optional[bool] = None
+    source: str
 
     runways: list["Runway"] = Relationship(back_populates="aerodrome")
 
+    location_validator = field_validator("arp_location", mode="before")(postgis_coordinate_validate)
     location_serializer = field_serializer("arp_location")(postgis_coordinate_serialize)
 
     @computed_field  # type: ignore[misc]

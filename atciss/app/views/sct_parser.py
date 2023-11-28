@@ -29,6 +29,14 @@ class SctSection:
 class SctFile:
     sections: dict[str, list[Navaid | Aerodrome | SctRunway]]
 
+    def navaids(self) -> list[Navaid]:
+        return cast(
+            list[Navaid], self.sections["VOR"] + self.sections["NDB"] + self.sections["FIXES"]
+        )
+
+    def aerodromes(self) -> list[Aerodrome]:
+        return cast(list[Aerodrome], self.sections["AIRPORT"])
+
 
 class SctTransformer(Transformer):
     INT = int
@@ -79,6 +87,7 @@ class SctTransformer(Transformer):
                 location=location,
                 aerodrome_id=None,
                 runway_direction_id=None,
+                source="SCT",
             )
         elif frequency > 150:
             return Navaid(
@@ -88,9 +97,12 @@ class SctTransformer(Transformer):
                 location=location,
                 aerodrome_id=None,
                 runway_direction_id=None,
+                source="SCT",
             )
         else:
-            return Aerodrome(icao_designator=designator, type="AD", arp_location=location)
+            return Aerodrome(
+                icao_designator=designator, type="AD", arp_location=location, source="SCT"
+            )
 
     def fix(self, children: tuple[str, Coordinate]) -> Navaid:
         designator, location = children
@@ -101,6 +113,7 @@ class SctTransformer(Transformer):
             location=location,
             aerodrome_id=None,
             runway_direction_id=None,
+            source="SCT",
         )
 
     def runway(self, children: tuple[str, str, int, int, Coordinate, Coordinate, str]):
@@ -113,7 +126,7 @@ class SctTransformer(Transformer):
 
 
 def parse(input: str) -> SctFile:
-    parser = Lark.open("sct.lark")
+    parser = Lark.open("sct.lark", rel_to=__file__)
 
     tree = parser.parse(input)
     # with open("pretty_tree", "w") as pf:

@@ -23,6 +23,7 @@ class Navaid(SQLModel, table=True):
     remark: Optional[str] = None
     operation_remark: Optional[str] = None
     name: Optional[str] = None
+    source: str
 
     aerodrome: Optional[Aerodrome] = Relationship()
     runway_direction: Optional["RunwayDirection"] = Relationship()

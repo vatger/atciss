@@ -5,6 +5,8 @@ from celery.schedules import crontab
 import celery.signals
 from asgiref.sync import async_to_sync
 
+from atciss.app.tasks.sct import import_sct
+
 from .app.tasks.basic_ad import fetch_basic_ads
 from .config import settings, redis
 from .log import setup_logging
@@ -115,3 +117,8 @@ def update_aliases() -> None:
 @app.task(name="update_ac_data")
 def update_ac_data() -> None:
     async_to_sync(fetch_ac_data)()
+
+
+@app.task(name="import_sct_data")
+def import_sct_data() -> None:
+    async_to_sync(import_sct)()

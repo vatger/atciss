@@ -72,12 +72,11 @@ async def process_aerodromes(aixm: AIXMData, engine: Any):
             continue
 
         ifr = False  # TODO
-        raw_pos = ad["aixm:ARP", "aixm:ElevatedPoint", "gml:pos"].get()
+        pos = ad["aixm:ARP", "aixm:ElevatedPoint", "gml:pos"].get()
 
-        if raw_pos is None:
+        if pos is None:
             logger.warning(f"AD {ad.id} is missing an ARP position, skipping.")
             continue
-        pos = raw_pos.split(" ")
 
         ad_data = {
             "name": ad["aixm:name"].get(),
@@ -86,12 +85,13 @@ async def process_aerodromes(aixm: AIXMData, engine: Any):
             "icao_designator": ad["aixm:locationIndicatorICAO"].get(),
             "iata_designator": ad["aixm:designatorIATA"].get(),
             "elevation": ad["aixm:fieldElevation", "#text"].float(),
-            "arp_location": f"POINT({pos[1]} {pos[0]})",
+            "arp_location": pos,
             "arp_elevation": ad[
                 "aixm:ARP", "aixm:ElevatedPoint", "aixm:elevation", "#text"
             ].float(),
             "mag_variation": ad["aixm:magneticVariation"].float(),
             "ifr": ifr,
+            "source": "DFS",
         }
         logger.trace(f"Processing AD: {ad_data}")
 
@@ -149,6 +149,7 @@ async def process_waypoints(aixm: AIXMData, engine: Any):
             "name": wpt["aixm:name"].get(),
             "type": navaid_type,
             "location": wpt["aixm:location", "aixm:Point", "gml:pos"].get(),
+            "source": "DFS",
         }
 
         if wpt_data["name"] is None:
@@ -196,6 +197,7 @@ async def process_navaid(aixm: AIXMData, feature: AIXMFeature, engine: Any):
         "name": feature["aixm:name"].get() or feature["aixm:designator"].get(),
         "type": feature["aixm:type"].get(),
         "location": feature["aixm:location", "aixm:ElevatedPoint", "gml:pos"].get(),
+        "source": "DFS",
     }
 
     equipments = ensure_list(feature["aixm:navaidEquipment"].get())
