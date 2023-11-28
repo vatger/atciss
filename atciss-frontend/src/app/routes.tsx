@@ -19,6 +19,7 @@ import { Windy } from "../views/Windy"
 import { Alias, aliasLoader } from "../views/Alias"
 import { AircraftData } from "../views/AircraftData"
 import { TrafficBoard } from "../views/TrafficBoard"
+import { Admin } from "../views/Admin"
 // import { Bookings } from "../views/Bookings"
 
 const router = createBrowserRouter([
@@ -79,7 +80,7 @@ const router = createBrowserRouter([
         path: "admin",
         element: (
           <RequireAdmin>
-            <>ADMIN</>
+            <Admin />
           </RequireAdmin>
         ),
       },

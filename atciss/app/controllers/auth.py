@@ -129,14 +129,26 @@ async def get_user(token: Annotated[str, Depends(oauth2_scheme)]) -> User:
         user: Optional[User] = None
         async with db():
             stmt = select(User).where(User.cid == int(cid))
-            results = await db.session.execute(stmt)
-            user = results.first()
+            user = await db.session.scalar(stmt)
 
         if user is None:
             raise HTTPException(500, "User not not found in database")
 
     except JWTError as exc:
         raise credentials_exception from exc
+
+    return user
+
+
+async def get_admin(token: Annotated[str, Depends(oauth2_scheme)]) -> User:
+    user = await get_user(token)
+    payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
+
+    if not user or not payload.get('admin'):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Could not validate credentials",
+        )
 
     return user
 
