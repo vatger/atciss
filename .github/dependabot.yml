@@ -18,3 +18,9 @@ updates:
       interval: "daily"
     labels:
       - automated
+  - package-ecosystem: "npm"
+    directory: "/atciss-frontend"
+    schedule:
+      interval: "daily"
+    labels:
+      - automated
