@@ -24,5 +24,6 @@ jobs:
           for target in backend frontend; do
             nix build -L .#$target-image --extra-experimental-features 'nix-command flakes'
             skopeo copy --insecure-policy docker-archive://$(readlink -f ./result) docker://ghcr.io/$CI_PROJECT_PATH/atciss-$target:$GITHUB_SHA
+            skopeo copy --insecure-policy docker-archive://$(readlink -f ./result) docker://ghcr.io/$CI_PROJECT_PATH/atciss-$target:latest
           done
 
