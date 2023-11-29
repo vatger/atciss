@@ -30,5 +30,8 @@ jobs:
             if [ "$GITHUB_REF_NAME" == "main" ]; then
               tag=latest
             fi
-            skopeo copy --insecure-policy docker-archive://$(readlink -f ./result) docker://ghcr.io/$CI_PROJECT_PATH/atciss-$target:$tag
+
+            if [ "$GITHUB_EVENT_NAME" != "pull_request" ]; then
+              skopeo copy --insecure-policy docker-archive://$(readlink -f ./result) docker://ghcr.io/$CI_PROJECT_PATH/atciss-$target:$tag
+            fi
           done
