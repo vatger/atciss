@@ -197,6 +197,9 @@ async def auth(req: AuthRequest) -> AuthModel:
             logger.warning(f"No valid token: {await res.text()}")
             raise HTTPException(401, "No valid token from VATSIM")
 
+    if user_response.data.vatsim.rating.short in ("INAC", "SUS"):
+        raise HTTPException(401, "Account inactive or suspended")
+
     async with db():
         cid = int(user_response.data.cid)
         user = await db.session.get(User, cid)
