@@ -164,7 +164,6 @@
                 pkgs.cacert
                 pkgs.tzdata
                 pkgs.atciss
-                pkgs.atciss-contrib
               ];
               pathsToLink = ["/bin" "/share"];
             };
@@ -177,9 +176,9 @@
                 "SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
                 "PYTHONDONTWRITEBYTECODE=1"
                 "PYTHONUNBUFFERED=1"
+                "ATCISS_CONTRIB_PATH=${pkgs.atciss-contrib}"
               ];
               WorkingDir = "/share/atciss";
-              Entrypoint = ["/bin/atciss"];
             };
           };
 
