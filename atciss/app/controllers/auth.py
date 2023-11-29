@@ -144,7 +144,7 @@ async def get_admin(token: Annotated[str, Depends(oauth2_scheme)]) -> User:
     user = await get_user(token)
     payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
 
-    if not user or not payload.get('admin'):
+    if not user or not payload.get("admin"):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",

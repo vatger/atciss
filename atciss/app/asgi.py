@@ -18,9 +18,10 @@ from prometheus_fastapi_instrumentator import Instrumentator as PrometheusInstru
 from asgi_correlation_id import CorrelationIdMiddleware, correlation_id
 from asgi_correlation_id.middleware import is_valid_uuid4
 
+from sqlalchemy.ext.asyncio import create_async_engine
+
 import alembic.command
 import alembic.config
-from sqlalchemy.ext.asyncio import create_async_engine
 
 from ..config import settings
 from .router import root_api_router

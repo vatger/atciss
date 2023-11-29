@@ -13,6 +13,7 @@ from atciss.app.views.navaid import Navaid
 from ...config import settings
 from ..views import sct_parser
 
+
 async def find_airac_zip_url() -> str:
     async with AiohttpClient.get() as aiohttp_client:
         res = await aiohttp_client.get("http://files.aero-nav.com/EDXX")
@@ -24,22 +25,25 @@ async def find_airac_zip_url() -> str:
                 logger.info(f"AIRAC URL: {url}")
                 return url
 
-    raise Exception("No EDMM AIRAC update found")
+    raise RuntimeError("No EDMM AIRAC update found")
+
 
 async def fetch_airac_zip(url: str) -> ZipFile:
     async with AiohttpClient.get() as aiohttp_client:
-        async with aiohttp_client.get(url, headers={
-            "referer": "https://files.aero-nav.com/EDXX/"
-            }) as res:
+        async with aiohttp_client.get(
+            url, headers={"referer": "https://files.aero-nav.com/EDXX/"}
+        ) as res:
             zipbytes = await res.read()
 
     return ZipFile(BytesIO(zipbytes))
 
-async def extract_sct_file(zip: ZipFile) -> str | None:
-    for path in Path(zip).iterdir():
+
+async def extract_sct_file(zipfile: ZipFile) -> str | None:
+    for path in Path(zipfile).iterdir():
         if path.suffix == ".sct":
             logger.info(f".sct file: {path.name}")
             return path.read_text(encoding="windows-1252")
+
 
 async def import_sct() -> None:
     """Periodically fetch ECFMP flow measures."""
