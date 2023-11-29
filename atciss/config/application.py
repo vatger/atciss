@@ -18,6 +18,7 @@ class Application(BaseSettings):
     ALEMBIC_CFG_PATH: str = "alembic.ini"
     DOCS_URL: str = "/"
     BASE_URL: str = "http://localhost:8000"
+    LOA_URL: str = "https://loa.vatsim-germany.org/api/v1/conditions"
     SECRET_KEY: str = "dc3101ed2074e87e3bf2b158fd0934cc538a5d667a96e0d400d8b4f6f572c33d"
     VATSIM_AUTH_URL: str = "https://auth-dev.vatsim.net"
     VATSIM_CLIENT_ID: str = "592"

@@ -6,6 +6,7 @@ from pydantic import TypeAdapter
 
 from ..views.loa import LoaItem
 from ..utils import AiohttpClient, ClientConnectorError, RedisClient
+from ...config import settings
 
 
 async def fetch_loas() -> None:
@@ -14,9 +15,7 @@ async def fetch_loas() -> None:
 
     async with AiohttpClient.get() as aiohttp_client:
         try:
-            res = await aiohttp_client.get(
-                "https://loa.vatsim-germany.org/api/v1/conditions",
-            )
+            res = await aiohttp_client.get(settings.LOA_URL)
         except ClientConnectorError as e:
             logger.exception(f"Could not connect {e!s}")
             return
