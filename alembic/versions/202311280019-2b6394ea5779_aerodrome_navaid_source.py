@@ -13,21 +13,33 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = '2b6394ea5779'
-down_revision: Union[str, None] = '81848795e2fa'
+revision: str = "2b6394ea5779"
+down_revision: Union[str, None] = "81848795e2fa"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.add_column('aerodrome', sa.Column('source', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
-    op.execute(sa.table('aerodrome', sa.Column('source', sqlmodel.sql.sqltypes.AutoString(), nullable=True)).update().values(source="DFS"))
-    op.alter_column('aerodrome', 'source', nullable=False)
-    op.add_column('navaid', sa.Column('source', sqlmodel.sql.sqltypes.AutoString(), nullable=True))
-    op.execute(sa.table('navaid', sa.Column('source', sqlmodel.sql.sqltypes.AutoString(), nullable=True)).update().values(source="DFS"))
-    op.alter_column('navaid', 'source', nullable=False)
+    op.add_column(
+        "aerodrome", sa.Column("source", sqlmodel.sql.sqltypes.AutoString(), nullable=True)
+    )
+    op.execute(
+        sa.table(
+            "aerodrome", sa.Column("source", sqlmodel.sql.sqltypes.AutoString(), nullable=True)
+        )
+        .update()
+        .values(source="DFS")
+    )
+    op.alter_column("aerodrome", "source", nullable=False)
+    op.add_column("navaid", sa.Column("source", sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+    op.execute(
+        sa.table("navaid", sa.Column("source", sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+        .update()
+        .values(source="DFS")
+    )
+    op.alter_column("navaid", "source", nullable=False)
 
 
 def downgrade() -> None:
-    op.drop_column('aerodrome', 'source')
-    op.drop_column('navaid', 'source')
+    op.drop_column("aerodrome", "source")
+    op.drop_column("navaid", "source")
