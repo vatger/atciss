@@ -12,7 +12,8 @@ jobs:
     permissions: write-all
     steps:
       - uses: actions/checkout@v3
-      - uses: cachix/install-nix-action@v18
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v8
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - name: Log in to the Container registry
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
