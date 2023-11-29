@@ -1,15 +1,6 @@
 {
   description = "VATSIM Germany ATCISS";
 
-  nixConfig = {
-    extra-substituters = [
-      "https://atciss.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "atciss.cachix.org-1:5YxebJMhVUPoSmO/f+KYNp2fDa6f8navGGWzCSKCI0A="
-    ];
-  };
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
