@@ -1,0 +1,26 @@
+name: images
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+env:
+  CI_PROJECT_PATH: ${{ github.repository }}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v18
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          for target in backend frontend; do
+            nix build -L .#images.$target --extra-experimental-features 'nix-command flakes'
+            skopeo copy --insecure-policy docker-archive://$(readlink -f ./result) docker://ghcr.io/$CI_PROJECT_PATH/atciss-$target:$GITHUB_SHA
+          done
+
