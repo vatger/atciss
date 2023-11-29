@@ -1,11 +1,9 @@
 services:
   backend:
-    image: atciss-backend
+    image: ghcr.io/a3li/atciss/atciss-backend
     entrypoint:
-      - "uvicorn"
-      - "atciss.app.asgi:get_application"
-      - "--factory"
-      - "--host=0.0.0.0"
+      - "atciss"
+      - "serve"
     environment:
       ATCISS_REDIS_HOST: redis
     depends_on:
@@ -13,7 +11,7 @@ services:
         condition: service_healthy
 
   worker:
-    image: atciss-backend
+    image: ghcr.io/a3li/atciss/atciss-backend
     entrypoint:
       - "celery"
       - "-A"
@@ -28,15 +26,17 @@ services:
         condition: service_healthy
 
   beat:
-    image: atciss-backend
+    image: ghcr.io/a3li/atciss/atciss-backend
     entrypoint:
       - "celery"
       - "-A"
       - "atciss"
       - "beat"
-      - "--schedule=/tmp/celerybeat-schedule"
+      - "--schedule=/beat/celerybeat-schedule"
     environment:
       ATCISS_REDIS_HOST: redis
+    volumes:
+      - atciss-beat:/beat
     depends_on:
       redis:
         condition: service_healthy
@@ -67,3 +67,4 @@ services:
 volumes:
   atciss-db-data:
   atciss-redis-data:
+  atciss-beat:

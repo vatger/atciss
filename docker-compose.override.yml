@@ -45,7 +45,7 @@ services:
       - "-A"
       - "atciss"
       - "beat"
-      - "--schedule=/beat/celerybeat-schedule"
+      - "--schedule=/tmp/celerybeat-schedule"
       - "--loglevel=info"
     volumes:
       - ./atciss:/code/atciss

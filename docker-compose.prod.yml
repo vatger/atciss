@@ -1,0 +1,25 @@
+services:
+  backend:
+    env_file:
+      - stack.env
+
+  worker:
+    env_file:
+      - stack.env
+
+  beat:
+    env_file:
+      - stack.env
+
+  db:
+    env_file:
+      - stack.env
+
+  redis: {}
+
+  frontend:
+    image: ghcr.io/a3li/atciss/atciss-frontend
+    ports:
+      - "8011:80"
+    depends_on:
+      - backend

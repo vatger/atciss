@@ -20,7 +20,7 @@ Run production uvicorn server.
     help="The host to bind",
     type=click.STRING,
     required=False,
-    default="::",
+    default="0.0.0.0",
 )
 @click.option(
     "--port",
