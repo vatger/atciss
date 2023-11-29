@@ -9,6 +9,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v18
@@ -20,7 +21,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           for target in backend frontend; do
-            nix build -L .#images.$target --extra-experimental-features 'nix-command flakes'
+            nix build -L .#$target-image --extra-experimental-features 'nix-command flakes'
             skopeo copy --insecure-policy docker-archive://$(readlink -f ./result) docker://ghcr.io/$CI_PROJECT_PATH/atciss-$target:$GITHUB_SHA
           done
 

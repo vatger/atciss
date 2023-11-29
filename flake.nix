@@ -163,73 +163,71 @@
           contrib = pkgs.atciss-contrib;
           frontend = pkgs.atciss-frontend;
 
-          images = {
-            backend = pkgs.dockerTools.buildImage {
-              name = "ghcr.io/a3li/atciss/atciss-backend";
-              tag = "latest";
+          backend-image = pkgs.dockerTools.buildImage {
+            name = "ghcr.io/a3li/atciss/atciss-backend";
+            tag = "latest";
 
-              copyToRoot = pkgs.buildEnv {
-                name = "image-root";
-                paths = [
-                  pkgs.cacert
-                  pkgs.tzdata
-                  pkgs.atciss
-                  pkgs.atciss-contrib
-                ];
-                pathsToLink = ["/bin" "/share"];
-              };
-
-              uid = 1000;
-              gid = 1000;
-
-              config = {
-                Env = [
-                  "SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
-                  "PYTHONDONTWRITEBYTECODE=1"
-                  "PYTHONUNBUFFERED=1"
-                ];
-                WorkingDir = "/share/atciss";
-                Entrypoint = ["/bin/atciss"];
-              };
+            copyToRoot = pkgs.buildEnv {
+              name = "image-root";
+              paths = [
+                pkgs.cacert
+                pkgs.tzdata
+                pkgs.atciss
+                pkgs.atciss-contrib
+              ];
+              pathsToLink = ["/bin" "/share"];
             };
 
-            frontend = pkgs.dockerTools.buildLayeredImage {
-              name = "ghcr.io/a3li/atciss/atciss-frontend";
-              tag = "latest";
-              contents = with pkgs; [nginx fakeNss];
-              extraCommands = "mkdir -p var/log/nginx tmp/nginx/client_body";
-              config = {
-                Entrypoint = [
-                  "nginx"
-                  "-c"
-                  (pkgs.writeText "nginx.conf" ''
-                    user nobody nobody;
-                    daemon off;
-                    error_log /dev/stdout info;
-                    pid /dev/null;
-                    events {}
-                    http {
-                      access_log /dev/stdout;
-                      server {
-                        resolver 127.0.0.11;
+            uid = 1000;
+            gid = 1000;
 
-                        listen 80;
-                        root ${pkgs.atciss-frontend}/;
-                        include ${pkgs.mailcap}/etc/nginx/mime.types;
+            config = {
+              Env = [
+                "SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
+                "PYTHONDONTWRITEBYTECODE=1"
+                "PYTHONUNBUFFERED=1"
+              ];
+              WorkingDir = "/share/atciss";
+              Entrypoint = ["/bin/atciss"];
+            };
+          };
 
-                        location / {
-                          try_files $uri /index.html ;
-                        }
+          frontend-image = pkgs.dockerTools.buildLayeredImage {
+            name = "ghcr.io/a3li/atciss/atciss-frontend";
+            tag = "latest";
+            contents = with pkgs; [nginx fakeNss];
+            extraCommands = "mkdir -p var/log/nginx tmp/nginx/client_body";
+            config = {
+              Entrypoint = [
+                "nginx"
+                "-c"
+                (pkgs.writeText "nginx.conf" ''
+                  user nobody nobody;
+                  daemon off;
+                  error_log /dev/stdout info;
+                  pid /dev/null;
+                  events {}
+                  http {
+                    access_log /dev/stdout;
+                    server {
+                      resolver 127.0.0.11;
 
-                        location /api/ {
-                          set $proxy_target "http://backend:8000";
-                          proxy_pass $proxy_target;
-                        }
+                      listen 80;
+                      root ${pkgs.atciss-frontend}/;
+                      include ${pkgs.mailcap}/etc/nginx/mime.types;
+
+                      location / {
+                        try_files $uri /index.html ;
+                      }
+
+                      location /api/ {
+                        set $proxy_target "http://backend:8000";
+                        proxy_pass $proxy_target;
                       }
                     }
-                  '')
-                ];
-              };
+                  }
+                '')
+              ];
             };
           };
         };
