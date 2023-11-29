@@ -1,0 +1,58 @@
+services:
+  backend:
+    build:
+      context: .
+      target: dev
+    entrypoint:
+      - "uvicorn"
+      - "atciss.app.asgi:get_application"
+      - "--factory"
+      - "--host=0.0.0.0"
+      - "--reload"
+      - "--reload-dir=/code/atciss"
+      - "--log-level=info"
+    ports:
+      - "8000:8000"
+    environment:
+      ATCISS_DATABASE_DSN: "postgresql+asyncpg://postgres:fnord@db/atciss"
+    volumes:
+      - ./atciss:/code/atciss
+      - ./alembic:/code/alembic
+      - ./alembic.ini:/code/alembic.ini
+
+  worker:
+    build:
+      context: .
+      target: dev
+    entrypoint:
+      - "celery"
+      - "-A"
+      - "atciss"
+      - "worker"
+      - "--loglevel=info"
+    environment:
+      ATCISS_DATABASE_DSN: "postgresql+asyncpg://postgres:fnord@db/atciss"
+    volumes:
+      - ./atciss:/code/atciss
+      - ./contrib:/code/contrib
+
+  beat:
+    build:
+      context: .
+      target: dev
+    entrypoint:
+      - "celery"
+      - "-A"
+      - "atciss"
+      - "beat"
+      - "--schedule=/beat/celerybeat-schedule"
+      - "--loglevel=info"
+    volumes:
+      - ./atciss:/code/atciss
+
+  db:
+    environment:
+      - POSTGRES_SERVER=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=fnord
+      - POSTGRES_DB=atciss

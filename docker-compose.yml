@@ -1,45 +1,26 @@
 services:
   backend:
     image: atciss-backend
-    build:
-      context: .
-      target: dev
     entrypoint:
       - "uvicorn"
       - "atciss.app.asgi:get_application"
       - "--factory"
       - "--host=0.0.0.0"
-      - "--reload"
-      - "--reload-dir=/code/atciss"
-      - "--log-level=info"
-    ports:
-      - "8000:8000"
     environment:
-      ATCISS_DATABASE_DSN: "postgresql+asyncpg://postgres:fnord@db/atciss"
       ATCISS_REDIS_HOST: redis
-    volumes:
-      - ./atciss:/code/atciss
     depends_on:
       db:
         condition: service_healthy
 
   worker:
     image: atciss-backend
-    build:
-      context: .
-      target: dev
     entrypoint:
       - "celery"
       - "-A"
       - "atciss"
       - "worker"
-      - "--loglevel=info"
     environment:
-      ATCISS_DATABASE_DSN: "postgresql+asyncpg://postgres:fnord@db/atciss"
       ATCISS_REDIS_HOST: redis
-    volumes:
-      - ./atciss:/code/atciss
-      - ./contrib:/code/contrib
     depends_on:
       redis:
         condition: service_healthy
@@ -48,36 +29,23 @@ services:
 
   beat:
     image: atciss-backend
-    build:
-      context: .
-      target: dev
-    user: "1000:1000"
     entrypoint:
       - "celery"
       - "-A"
       - "atciss"
       - "beat"
       - "--schedule=/tmp/celerybeat-schedule"
-      - "--loglevel=info"
     environment:
       ATCISS_REDIS_HOST: redis
-    volumes:
-      - ./atciss:/code/atciss
     depends_on:
       redis:
         condition: service_healthy
 
   db:
     image: postgis/postgis:16-3.4-alpine
-    ports:
-      - "5432:5432"
     volumes:
       - atciss-db-data:/var/lib/postgresql/data/pgdata
     environment:
-      - POSTGRES_SERVER=db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=fnord
-      - POSTGRES_DB=atciss
       - PGDATA=/var/lib/postgresql/data/pgdata
     healthcheck:
       test: [CMD, pg_isready]
