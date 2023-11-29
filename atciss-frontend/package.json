@@ -44,7 +44,7 @@
     "prettier": "^2.7.1",
     "prettier-config-nick": "^1.0.2",
     "sass": "^1.69.3",
-    "typescript": "^5.0.2",
+    "typescript": "^5.3.2",
     "vite": "^4.5.0",
     "vitest": "^0.30.1"
   },
