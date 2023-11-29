@@ -23,7 +23,7 @@ class AiohttpClient:
             aiohttp.ClientSession: ClientSession object instance.
         """
         logger.debug("Initialize AiohttpClient session.")
-        timeout = aiohttp.ClientTimeout(total=15)
+        timeout = aiohttp.ClientTimeout(total=60)
         connector = aiohttp.TCPConnector(
             family=AF_INET,
             limit_per_host=SIZE_POOL_AIOHTTP,
