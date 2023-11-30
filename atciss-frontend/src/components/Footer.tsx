@@ -13,7 +13,7 @@ const Footer = ({ sx }: { sx?: ThemeUIStyleObject }) => (
     <Link
       sx={{ color: "background" }}
       target="_blank"
-      href="https://github.com/a3li/atciss"
+      href="https://github.com/vatger/atciss"
     >
       GitHub
     </Link>

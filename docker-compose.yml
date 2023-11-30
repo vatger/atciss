@@ -1,6 +1,6 @@
 services:
   backend:
-    image: ghcr.io/a3li/atciss/atciss-backend
+    image: ghcr.io/vatger/atciss/atciss-backend
     entrypoint:
       - "atciss"
       - "serve"
@@ -11,7 +11,7 @@ services:
         condition: service_healthy
 
   worker:
-    image: ghcr.io/a3li/atciss/atciss-backend
+    image: ghcr.io/vatger/atciss/atciss-backend
     entrypoint:
       - "celery"
       - "-A"
@@ -26,7 +26,7 @@ services:
         condition: service_healthy
 
   beat:
-    image: ghcr.io/a3li/atciss/atciss-backend
+    image: ghcr.io/vatger/atciss/atciss-backend
     entrypoint:
       - "celery"
       - "-A"

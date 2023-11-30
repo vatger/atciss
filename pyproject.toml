@@ -5,7 +5,7 @@ description = "VATSIM Germany ATCISS"
 authors = ["Franz Pletz <fpletz@fnordicwalking.de>"]
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/a3li/atciss"
+repository = "https://github.com/vatger/atciss"
 
 [tool.poetry.dependencies]
 python = "~3.11"

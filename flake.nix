@@ -155,7 +155,7 @@
           frontend = pkgs.atciss-frontend;
 
           backend-image = pkgs.dockerTools.buildImage {
-            name = "ghcr.io/a3li/atciss/atciss-backend";
+            name = "ghcr.io/vatger/atciss/atciss-backend";
             tag = "latest";
 
             copyToRoot = pkgs.buildEnv {
@@ -183,7 +183,7 @@
           };
 
           frontend-image = pkgs.dockerTools.buildLayeredImage {
-            name = "ghcr.io/a3li/atciss/atciss-frontend";
+            name = "ghcr.io/vatger/atciss/atciss-frontend";
             tag = "latest";
             contents = with pkgs; [nginx fakeNss];
             extraCommands = "mkdir -p var/log/nginx tmp/nginx/client_body";
