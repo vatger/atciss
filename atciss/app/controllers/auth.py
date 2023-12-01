@@ -100,7 +100,7 @@ def create_jwt(cid: str, refresh_token: Optional[str]) -> str:
         "refresh_token": refresh_token,
         "admin": cid in settings.ADMINS,
     }
-    expire = datetime.utcnow() + timedelta(hours=24)
+    expire = datetime.utcnow() + timedelta(days=7.5)
     to_encode.update({"exp": expire})
 
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
