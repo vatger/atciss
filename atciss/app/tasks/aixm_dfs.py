@@ -136,7 +136,7 @@ async def process_runways(aixm: AIXMData, engine: Any):
 
         await create_or_update(engine, Runway, UUID(rwy.id), rwy_data)
         for rwy_direction in rwy_directions:
-            await create_or_update(engine, RunwayDirection, rwy_direction['id'], rwy_direction)
+            await create_or_update(engine, RunwayDirection, rwy_direction["id"], rwy_direction)
 
 
 async def process_waypoints(aixm: AIXMData, engine: Any):
