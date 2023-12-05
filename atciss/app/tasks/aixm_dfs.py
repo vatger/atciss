@@ -1,3 +1,4 @@
+from collections import defaultdict
 import io
 from typing import Any
 from uuid import UUID
@@ -9,7 +10,7 @@ from atciss.app.utils.aiohttp_client import AiohttpClient
 from atciss.app.utils.aixm_parser import AIXMData, AIXMFeature
 from atciss.app.views.aerodrome import Aerodrome
 from atciss.app.views.navaid import Navaid
-from atciss.app.views.runway import Runway
+from atciss.app.views.runway import Runway, RunwayDirection
 from .utils import create_or_update
 from ..utils.dfs import get_dfs_aixm_datasets, get_dfs_aixm_url
 from ...config import settings
@@ -101,17 +102,22 @@ async def process_aerodromes(aixm: AIXMData, engine: Any):
 async def process_runways(aixm: AIXMData, engine: Any):
     logger.info("Processing DFS RWY data")
 
-    rwy_map = {}
+    rwy_map = defaultdict(list)
 
     for feature in aixm.type("RunwayDirection"):
         rwy = feature["aixm:usedRunway", "@xlink:href"].get()
+        rwy_direction = {
+            "id": UUID(feature.id),
+            "runway_id": UUID(rwy[9:]),
+            "designator": feature["aixm:designator"].get(),
+            "true_bearing": feature["aixm:trueBearing"].float(),
+            "magnetic_bearing": feature["aixm:magneticBearing"].float(),
+            "guidance": feature["aixm:precisionApproachGuidance"].get(),
+        }
 
-        if rwy not in rwy_map:
-            rwy_map[rwy] = []
+        rwy_map[rwy].append(rwy_direction)
 
-        rwy_map[rwy].append(feature)
-
-    for rwy_id, _ in rwy_map.items():
+    for rwy_id, rwy_directions in rwy_map.items():
         rwy = aixm.id(rwy_id)
 
         ad = UUID(rwy["aixm:associatedAirportHeliport", "@xlink:href"].get()[9:])
@@ -129,6 +135,8 @@ async def process_runways(aixm: AIXMData, engine: Any):
         }
 
         await create_or_update(engine, Runway, UUID(rwy.id), rwy_data)
+        for rwy_direction in rwy_directions:
+            await create_or_update(engine, RunwayDirection, rwy_direction['id'], rwy_direction)
 
 
 async def process_waypoints(aixm: AIXMData, engine: Any):
