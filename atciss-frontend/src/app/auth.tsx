@@ -7,8 +7,8 @@ import {
 } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "./hooks"
 import { LOCAL_STORAGE_JWT_KEY, login, logout, selectUser } from "./auth/slice"
-import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query"
 import { Button, Flex } from "theme-ui"
+import { fetchBaseQuery } from "@reduxjs/toolkit/query"
 
 export const RequireAuth = ({ children }: { children?: JSX.Element }) => {
   const user = useAppSelector(selectUser)

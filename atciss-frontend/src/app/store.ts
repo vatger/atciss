@@ -1,5 +1,4 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit"
-import { setupListeners } from "@reduxjs/toolkit/dist/query"
 import { metarApi } from "../services/metarApi"
 import { atisApi } from "../services/atisApi"
 import { notamApi } from "../services/notamApi"
@@ -20,6 +19,7 @@ import { bookingApi } from "../services/bookingApi"
 import { navaidApi } from "../services/navaidApi"
 import { aircraftApi } from "../services/aircraftApi"
 import { trafficApi } from "../services/trafficApi"
+import { setupListeners } from "@reduxjs/toolkit/query"
 
 export const store = configureStore({
   reducer: {
