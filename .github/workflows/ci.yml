@@ -74,4 +74,5 @@ jobs:
       - name: Deploy to production
         if: github.ref == 'refs/heads/main'
         run: |
+          git fetch origin
           git push origin HEAD:production
