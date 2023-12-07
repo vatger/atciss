@@ -1,16 +1,14 @@
 """Application controllers - metar."""
 
 from typing import Annotated, Dict, Sequence, Optional, cast
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Query
 from fastapi.responses import PlainTextResponse
 from loguru import logger
 
 from pydantic import TypeAdapter
 
-from ..controllers.auth import get_user
 from ..controllers.metar import fetch_metar
 from ..views.sector import Airport
-from ..models import User
 
 from ...config import settings
 from ..utils.redis import RedisClient
@@ -26,7 +24,6 @@ router = APIRouter()
 )
 async def atis_get(
     airports: Annotated[Sequence[AirportIcao], Query(alias="icao", default_factory=list)],
-    user: Annotated[User, Depends(get_user)],
 ) -> Dict[str, Atis]:
     """Get Atis for airport."""
     redis_client = RedisClient.open()
