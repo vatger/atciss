@@ -3,28 +3,32 @@
   font-family: "Source Code Pro";
   font-style: normal;
   font-weight: 700;
-  src: local("Source Code Pro Bold"), url("/fonts/SourceCodePro-Bold.otf.woff2") format("woff2");
+  src: local("Source Code Pro Bold"),
+    url("/fonts/SourceCodePro-Bold.otf.woff2") format("woff2");
 }
 @font-face {
   font-display: swap;
   font-family: "Source Code Pro";
   font-style: italic;
   font-weight: 700;
-  src: local("Source Code Pro Bold Italic"), url("/fonts/SourceCodePro-BoldIt.otf.woff2") format("woff2");
+  src: local("Source Code Pro Bold Italic"),
+    url("/fonts/SourceCodePro-BoldIt.otf.woff2") format("woff2");
 }
 @font-face {
   font-display: swap;
   font-family: "Source Code Pro";
   font-style: italic;
   font-weight: 400;
-  src: local("Source Code Pro Italic"), url("/fonts/SourceCodePro-It.otf.woff2") format("woff2");
+  src: local("Source Code Pro Italic"),
+    url("/fonts/SourceCodePro-It.otf.woff2") format("woff2");
 }
 @font-face {
   font-display: swap;
   font-family: "Source Code Pro";
   font-style: normal;
   font-weight: 400;
-  src: local("Source Code Pro"), url("/fonts/SourceCodePro-Regular.otf.woff2") format("woff2");
+  src: local("Source Code Pro"),
+    url("/fonts/SourceCodePro-Regular.otf.woff2") format("woff2");
 }
 
 @font-face {
@@ -32,28 +36,32 @@
   font-family: "Source Sans Pro";
   font-style: normal;
   font-weight: 700;
-  src: local("Source Sans Pro Bold"), url("/fonts/SourceSans3-Bold.otf.woff2") format("woff2");
+  src: local("Source Sans Pro Bold"),
+    url("/fonts/SourceSans3-Bold.otf.woff2") format("woff2");
 }
 @font-face {
   font-display: swap;
   font-family: "Source Sans Pro";
   font-style: italic;
   font-weight: 700;
-  src: local("Source Sans Pro Bold Italic"), url("/fonts/SourceSans3-BoldIt.otf.woff2") format("woff2");
+  src: local("Source Sans Pro Bold Italic"),
+    url("/fonts/SourceSans3-BoldIt.otf.woff2") format("woff2");
 }
 @font-face {
   font-display: swap;
   font-family: "Source Sans Pro";
   font-style: italic;
   font-weight: 400;
-  src: local("Source Sans Pro Italic"), url("/fonts/SourceSans3-It.otf.woff2") format("woff2");
+  src: local("Source Sans Pro Italic"),
+    url("/fonts/SourceSans3-It.otf.woff2") format("woff2");
 }
 @font-face {
   font-display: swap;
   font-family: "Source Sans Pro";
   font-style: normal;
   font-weight: 400;
-  src: local("Source Sans Pro"), url("/fonts/SourceSans3-Regular.otf.woff2") format("woff2");
+  src: local("Source Sans Pro"),
+    url("/fonts/SourceSans3-Regular.otf.woff2") format("woff2");
 }
 
 @font-face {
@@ -64,19 +72,20 @@
   src: url("/fonts/Aeroport.woff2") format("woff2");
 }
 
-html, body {
-  overflow: hidden
+html,
+body {
+  overflow: hidden;
 }
 
 body {
   margin: 0;
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-variant-numeric: slashed-zero;
-  font-feature-settings: 'zero' 1;
+  font-feature-settings: "zero" 1;
 }
 
 iframe {
@@ -84,31 +93,35 @@ iframe {
 }
 
 code {
-  font-family: "Source Sans Pro", source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-    font-variant-numeric: slashed-zero;font-variant-numeric: slashed-zero;
+  font-family: "Source Sans Pro", source-code-pro, Menlo, Monaco, Consolas,
+    "Courier New", monospace;
+  font-variant-numeric: slashed-zero;
+  font-variant-numeric: slashed-zero;
 }
 
-button, label {
+button,
+label {
   cursor: pointer;
   font: inherit;
 }
 
-a, summary {
+a,
+summary {
   outline: none;
   cursor: pointer;
 }
 
 *:focus {
- outline: none
+  outline: none;
 }
 
 tr:nth-child(even) {
-  backdrop-filter: contrast(0.80);
+  backdrop-filter: contrast(0.8);
 }
 
-td, th {
-  padding: .2em;
+td,
+th {
+  padding: 0.2em;
 }
 
 th {
@@ -121,15 +134,15 @@ pre {
 }
 
 .marker-label {
-  font-family: "Source Code Pro", source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-family: "Source Code Pro", source-code-pro, Menlo, Monaco, Consolas,
+    "Courier New", monospace;
   font-weight: bold;
 }
 
 .navaid-label {
   margin-left: 0.7rem;
   margin-top: -0.3rem;
-  text-shadow:
-    1px 1px 0 var(--theme-ui-colors-background),
+  text-shadow: 1px 1px 0 var(--theme-ui-colors-background),
     -1px -1px 0 var(--theme-ui-colors-background),
     1px -1px 0 var(--theme-ui-colors-background),
     -1px 1px 0 var(--theme-ui-colors-background),
