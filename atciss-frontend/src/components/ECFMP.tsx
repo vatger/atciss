@@ -2,14 +2,15 @@
 
 import { Box, Text } from "theme-ui"
 import { useAppSelector } from "../app/hooks"
-import { selectActiveFir } from "../services/configSlice"
-import { usePollEcfmpByFir } from "../services/ecfmpApi"
+import { selectEcfmpMeasures, usePollEcfmpByFir } from "../services/ecfmpApi"
 import { DateTime, Duration } from "luxon"
 import { ReactNode } from "react"
+import { selectActiveFir } from "../services/configSlice"
 
 export const ECFMP = () => {
   const activeFir = useAppSelector(selectActiveFir)
-  const { data: flowMeasures } = usePollEcfmpByFir(activeFir)
+  const { data: _f } = usePollEcfmpByFir(activeFir)
+  const flowMeasures = useAppSelector(selectEcfmpMeasures)
 
   return flowMeasures
     ?.filter(

@@ -1,5 +1,8 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithAuth } from "../app/auth"
+import { createSelector } from "@reduxjs/toolkit"
+import { RootState } from "../app/store"
+import { selectActiveFir } from "./configSlice"
 
 export type FilterEvent = {
   event_id: number
@@ -63,3 +66,9 @@ export const usePollEcfmpByFir: typeof ecfmpApi.useGetByFirQuery = (
   fir,
   options,
 ) => ecfmpApi.useGetByFirQuery(fir, { pollingInterval: 60000, ...options })
+
+export const selectEcfmpMeasures = createSelector(
+  (state: RootState) => state,
+  selectActiveFir,
+  (state, fir) => ecfmpApi.endpoints.getByFir.select(fir)(state)?.data ?? [],
+)
