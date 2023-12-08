@@ -16,7 +16,7 @@ export type Filter = {
     | "member_event"
     | "member_non_event"
     | "waypoint"
-  value: (string | number | FilterEvent)[] | number
+  value: (string | number)[] | number | FilterEvent
 }
 
 export type Measure = {

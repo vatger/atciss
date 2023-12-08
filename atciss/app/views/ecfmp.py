@@ -33,10 +33,10 @@ class Filter:
         "level_below",
         "level",
         "member_event",
-        "member_non_event",
+        "member_not_event",
         "waypoint",
     ]
-    value: list[str | int | FilterEvent] | int
+    value: list[str | int] | int | FilterEvent
 
 
 @dataclass

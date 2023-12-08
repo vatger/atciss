@@ -68,9 +68,11 @@ export const ECFMP = () => {
                     <>
                       :{" "}
                       <Text variant="label">
-                        {f.value instanceof Array
+                        {typeof f.value === "number"
+                          ? f.value
+                          : f.value instanceof Array
                           ? f.value.join(", ")
-                          : f.value}
+                          : f.value.event_id}
                       </Text>
                     </>
                   )}

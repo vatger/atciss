@@ -22,7 +22,11 @@ async def fetch_ecfmp() -> None:
             logger.exception(f"Could not connect {e!s}")
             return
 
-        ecfmp = ECFMP.model_validate(await res.json())
+        try:
+            ecfmp = ECFMP.model_validate(await res.json())
+        except ValueError as e:
+            logger.exception(f"Could not parse {e!s}")
+            return
 
     logger.info(f"ECFMP: {len(ecfmp.flow_measures)} flow measures received")
     logger.info(f"ECFMP: {len(ecfmp.events)} events received")
