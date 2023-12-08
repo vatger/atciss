@@ -56,7 +56,7 @@ async def fetch_vatsim_data() -> None:
         keys.extend(await redis_client.keys("vatsim:traffic:*"))
 
         if len(keys):
-            _ = await redis_client.delete(*keys)
+            _ = pipe.delete(*keys)
 
         for atis in data.atis:
             pipe.set(f"vatsim:atis:{atis.callsign}", TypeAdapter(Atis).dump_json(atis))
