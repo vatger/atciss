@@ -4,7 +4,7 @@ import { LatLngExpression } from "leaflet"
 import { createSelector } from "@reduxjs/toolkit"
 import createCachedSelector from "re-reselect"
 import { RootState } from "../app/store"
-import { selectEbgAllAerodromes } from "./configSlice"
+import { selectFirAllAerodromes } from "./configSlice"
 
 export type Runway = {
   icao: string
@@ -110,6 +110,6 @@ export const selectAirport = createCachedSelector(
 
 export const selectAirportICAOs = createSelector(
   selectVatglassesAirportICAOs,
-  selectEbgAllAerodromes,
-  (vatglassesAds, ebgAds) => [...new Set([...vatglassesAds, ...ebgAds])],
+  selectFirAllAerodromes,
+  (vatglassesAds, firAds) => [...new Set([...vatglassesAds, ...firAds])],
 )

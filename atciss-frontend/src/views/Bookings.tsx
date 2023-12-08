@@ -8,8 +8,8 @@ import {
   usePollBookingsByRegions,
 } from "../services/bookingApi"
 import { useAppSelector } from "../app/hooks"
-import { selectActiveEbg } from "../services/configSlice"
-import { EBG_SETTINGS } from "../app/config"
+import { selectActiveFir } from "../services/configSlice"
+import { FIR_SETTINGS } from "../app/config"
 import { DateTime, Duration } from "luxon"
 import {
   ItemRendererProps,
@@ -75,9 +75,9 @@ export const Item = (
 }
 
 export const Bookings = () => {
-  const ebg = useAppSelector(selectActiveEbg)
+  const fir = useAppSelector(selectActiveFir)
   const { data: _b } = usePollBookingsByRegions(
-    EBG_SETTINGS[ebg].neighbourPrefixes,
+    FIR_SETTINGS[fir].neighbourPrefixes,
   )
   const bookings = useAppSelector(selectAllBookings)
   const bookedStations = useAppSelector(selectBookedStations)

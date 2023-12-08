@@ -1,12 +1,13 @@
 import { Box, Flex, Text, ThemeUIStyleObject } from "theme-ui"
-import { EBG_SETTINGS } from "../app/config"
-import { selectActiveEbg } from "../services/configSlice"
 import { useAppSelector } from "../app/hooks"
-import { AreaBooking, selectArea, usePollAreas } from "../services/areaApi"
+import { selectArea, usePollAreas } from "../services/areaApi"
 import { z3 } from "../app/utils"
 import { DateTime, Duration } from "luxon"
+import { selectAtisAreas } from "../services/atisAfwSlice"
 
-const areaString = (area: AreaBooking | undefined) => {
+const Area = ({ name }: { name: string }) => {
+  const area = useAppSelector((store) => selectArea(store, name))
+
   if (area) {
     const start = DateTime.fromISO(area.start_datetime).toUTC()
     const end = DateTime.fromISO(area.end_datetime).toUTC()
@@ -17,44 +18,45 @@ const areaString = (area: AreaBooking | undefined) => {
 
     if (active || soonActive) {
       return (
-        <Text color={active ? "primary" : "red"}>
-          FL{z3(area.lower_limit)}-FL{z3(area.upper_limit)}{" "}
-          {start.toFormat("HHmm")}z-{end.toFormat("HHmm")}z
-        </Text>
+        <Box>
+          <Text variant="label">{name}</Text>:
+          <Text color={active ? "text" : "orange"}>
+            FL{z3(area.lower_limit)}-FL{z3(area.upper_limit)}{" "}
+            {start.toFormat("HHmm")}z-{end.toFormat("HHmm")}z
+          </Text>
+        </Box>
       )
     }
   }
 
-  return "not active"
-}
-
-const Area = ({ name }: { name: string }) => {
-  const area = useAppSelector((store) => selectArea(store, name))
-
-  return (
-    <Box>
-      <Text variant="label">{name}</Text>: {areaString(area)}
-    </Box>
-  )
+  return <></>
 }
 
 export const Areas = ({ sx }: { sx?: ThemeUIStyleObject }) => {
-  const activeEbg = useAppSelector(selectActiveEbg)
-  const areaNames: string[] = EBG_SETTINGS[activeEbg].areas
+  const areaGroups = useAppSelector(selectAtisAreas)
   const { data: _a } = usePollAreas()
 
   return (
     <Flex
       sx={{
         ...sx,
+        padding: 0,
         flexDirection: "column",
-        fontSize: 3,
+        fontSize: 1,
         fontFamily: "monospace",
+        gap: "2px",
+        backgroundColor: "primary",
       }}
     >
-      {areaNames.map((area) => (
-        <Area key={area} name={area} />
+      {Object.entries(areaGroups).map(([group, areas]) => (
+        <Box key={group} sx={{ backgroundColor: "background" }}>
+          <Text variant="primaryLabel">{group}</Text>
+          {areas.map((area) => (
+            <Area key={area} name={area} />
+          ))}
+        </Box>
       ))}
+      <Box sx={{ height: "100%", backgroundColor: "background" }}></Box>
     </Flex>
   )
 }

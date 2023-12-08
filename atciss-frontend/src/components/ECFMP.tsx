@@ -1,16 +1,15 @@
 /** @jsxImportSource theme-ui */
 
 import { Box, Text } from "theme-ui"
-import { EBG_SETTINGS } from "../app/config"
 import { useAppSelector } from "../app/hooks"
-import { selectActiveEbg } from "../services/configSlice"
+import { selectActiveFir } from "../services/configSlice"
 import { usePollEcfmpByFir } from "../services/ecfmpApi"
 import { DateTime, Duration } from "luxon"
 import { ReactNode } from "react"
 
 export const ECFMP = () => {
-  const activeEbg = useAppSelector(selectActiveEbg)
-  const { data: flowMeasures } = usePollEcfmpByFir(EBG_SETTINGS[activeEbg].fir)
+  const activeFir = useAppSelector(selectActiveFir)
+  const { data: flowMeasures } = usePollEcfmpByFir(activeFir)
 
   return flowMeasures
     ?.filter(

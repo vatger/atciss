@@ -10,13 +10,11 @@ import { usePollAdByIcaoCodes } from "../services/adApi"
 import { DateTime } from "luxon"
 import { z2, z3, z4 } from "../app/utils"
 import { useAppSelector } from "../app/hooks"
-import { selectActiveEbg } from "../services/configSlice"
-import { EBG_SETTINGS } from "../app/config"
 import { AtisRow } from "./atis/AtisRow"
+import { selectPageAtisAerodromes } from "../services/atisAfwSlice"
 
 const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
-  const activeEbg = useAppSelector(selectActiveEbg)
-  const aerodromes = EBG_SETTINGS[activeEbg].majorAerodromes
+  const aerodromes = useAppSelector(selectPageAtisAerodromes)
   const { data: metars, isLoading: metarIsLoading } =
     usePollMetarByIcaoCodes(aerodromes)
   const { data: atis, isLoading: atisIsLoading } =
@@ -70,7 +68,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                   padding: 1,
                   flexDirection: "column",
                   flex: 1,
-                  fontSize: 3,
+                  fontSize: 2,
                   fontFamily: "monospace",
                   backgroundColor: "background",
                 }}
@@ -116,7 +114,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                   </Box>
                   <Box>
                     <Text variant="label">WX-Type: </Text>
-                    <Text sx={{ fontSize: 5 }}>METAR</Text>
+                    <Text sx={{ fontSize: 4 }}>METAR</Text>
                   </Box>
                 </AtisRow>
                 <Flex sx={{ gap: 1 }}>

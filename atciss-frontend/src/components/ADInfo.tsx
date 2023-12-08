@@ -1,10 +1,9 @@
 import { Box, Flex, Grid, Text, ThemeUIStyleObject } from "theme-ui"
 import { useAppSelector } from "../app/hooks"
-import { selectActiveEbg } from "../services/configSlice"
-import { EBG_SETTINGS } from "../app/config"
 import { usePollMetarByIcaoCodes } from "../services/metarApi"
 import { usePollAtisByIcaoCodes } from "../services/atisApi"
 import { z2, z3 } from "../app/utils"
+import { selectPageAerodromes } from "../services/atisAfwSlice"
 
 const Aerodrome = ({ icao }: { icao: string }) => {
   const { data: metarData } = usePollMetarByIcaoCodes([icao])
@@ -28,15 +27,7 @@ const Aerodrome = ({ icao }: { icao: string }) => {
       }}
     >
       <Box>
-        <Text variant="primary">{icao}</Text>
-      </Box>
-      <Box>
-        <Text variant="label">QNH:</Text> {qnh}
-      </Box>
-      <Box sx={{ gridRow: "span 2" }}>
-        <Text variant="label">Wind:</Text> {wind}
-        {z2(metar?.wind_speed ?? 0)}
-        {wind_gust}KT {wind_from_to}
+        <Text variant="primaryLabel">{icao}</Text>
       </Box>
       <Box>
         <Text variant="label">ATIS:</Text> {atis?.atis_code ?? "-"}
@@ -45,23 +36,31 @@ const Aerodrome = ({ icao }: { icao: string }) => {
         <Text variant="label">RWY:</Text>{" "}
         {atis?.runways_in_use?.join(" ") ?? "closed"}
       </Box>
+      {metar && (
+        <>
+          <Box>
+            <Text variant="label">QNH:</Text> {qnh}
+          </Box>
+          <Box sx={{ gridRow: "span 2" }}>
+            <Text variant="label">Wind:</Text> {wind}
+            {z2(metar?.wind_speed ?? 0)}
+            {wind_gust}KT {wind_from_to}
+          </Box>
+        </>
+      )}
     </Grid>
   )
 }
 
 export const ADinfo = ({ sx }: { sx?: ThemeUIStyleObject }) => {
-  const activeEbg = useAppSelector(selectActiveEbg)
-  const aerodromes: string[] = [
-    ...EBG_SETTINGS[activeEbg].aerodromes,
-    ...EBG_SETTINGS[activeEbg].relevantAerodromes,
-  ]
+  const aerodromes = useAppSelector(selectPageAerodromes)
 
   return (
     <Flex
       sx={{
         ...sx,
         flexDirection: "column",
-        fontSize: 3,
+        fontSize: 1,
         fontFamily: "monospace",
         gap: "2px",
         backgroundColor: "primary",

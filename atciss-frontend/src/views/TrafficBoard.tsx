@@ -61,11 +61,7 @@ const TrafficBoard = () => {
     return <h1>Set type: arr or dep</h1>
   }
 
-  const {
-    data: results,
-    isLoading,
-    isSuccess,
-  } = usePollGetTraffic("EDDM")
+  const { data: results, isLoading, isSuccess } = usePollGetTraffic("EDDM")
 
   const adWidthStr = searchParams.get("ad_width")
   let adWidth = 18

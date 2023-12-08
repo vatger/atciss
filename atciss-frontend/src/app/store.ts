@@ -20,6 +20,7 @@ import { navaidApi } from "../services/navaidApi"
 import { aircraftApi } from "../services/aircraftApi"
 import { trafficApi } from "../services/trafficApi"
 import { setupListeners } from "@reduxjs/toolkit/query"
+import { atisAfwReducer } from "../services/atisAfwSlice"
 
 export const store = configureStore({
   reducer: {
@@ -41,6 +42,7 @@ export const store = configureStore({
     auth: authReducer,
     activePositions: activePositionReducer,
     config: configReducer,
+    atisAfw: atisAfwReducer,
     map: mapReducer,
     aircraft: aircraftReducer,
   },

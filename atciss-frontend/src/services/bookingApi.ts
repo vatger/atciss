@@ -2,8 +2,8 @@ import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithAuth } from "../app/auth"
 import { createSelector } from "@reduxjs/toolkit"
 import { RootState } from "../app/store"
-import { selectActiveEbg } from "./configSlice"
-import { EBG_SETTINGS } from "../app/config"
+import { selectActiveFir } from "./configSlice"
+import { FIR_SETTINGS } from "../app/config"
 import { DateTime } from "luxon"
 
 type Booking = {
@@ -39,10 +39,10 @@ export const usePollBookingsByRegions: typeof bookingApi.useGetByRegionsQuery =
 
 export const selectAllBookings = createSelector(
   (state: RootState) => state,
-  selectActiveEbg,
-  (state, ebg) =>
+  selectActiveFir,
+  (state, fir) =>
     bookingApi.endpoints.getByRegions
-      .select(EBG_SETTINGS[ebg].neighbourPrefixes)(state)
+      .select(FIR_SETTINGS[fir].neighbourPrefixes)(state)
       ?.data?.map((b) => ({
         id: b.id,
         title: b.cid.toString(),

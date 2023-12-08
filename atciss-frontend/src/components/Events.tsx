@@ -1,17 +1,17 @@
 /** @jsxImportSource theme-ui */
 
 import { Box, Text } from "theme-ui"
-import { EBG_SETTINGS } from "../app/config"
+import { FIR_SETTINGS } from "../app/config"
 import { useAppSelector } from "../app/hooks"
-import { selectActiveEbg } from "../services/configSlice"
+import { selectActiveFir } from "../services/configSlice"
 import { DateTime, Duration } from "luxon"
 import { usePollEventsByFirs } from "../services/eventApi"
 
 export const Events = () => {
-  const activeEbg = useAppSelector(selectActiveEbg)
+  const activeFir = useAppSelector(selectActiveFir)
   const { data: events } = usePollEventsByFirs([
-    ...EBG_SETTINGS[activeEbg].neighbourFirs,
-    EBG_SETTINGS[activeEbg].fir,
+    ...FIR_SETTINGS[activeFir].neighbourFirs,
+    activeFir,
   ])
 
   return events

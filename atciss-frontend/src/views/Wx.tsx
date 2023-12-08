@@ -1,7 +1,10 @@
 import { useState } from "react"
 import { useAppSelector } from "../app/hooks"
-import { selectActiveEbg } from "../services/configSlice"
-import { EBG_SETTINGS } from "../app/config"
+import {
+  selectActiveFir,
+  selectFirAllAerodromes,
+} from "../services/configSlice"
+import { FIR_SETTINGS } from "../app/config"
 import { usePollMetarByIcaoCodes, xmc } from "../services/metarApi"
 import { usePollTafByIcaoCodes } from "../services/tafApi"
 import { Box, Button, Flex, Grid, Text } from "theme-ui"
@@ -9,15 +12,9 @@ import { usePollAtisByIcaoCodes } from "../services/atisApi"
 import { sectorApi, selectAirports } from "../services/sectorApi"
 
 const Wx = () => {
-  const activeEbg = useAppSelector(selectActiveEbg)
-  const ebgADs = [
-    ...EBG_SETTINGS[activeEbg].majorAerodromes,
-    ...EBG_SETTINGS[activeEbg].aerodromes,
-    ...EBG_SETTINGS[activeEbg].minorAerodromes,
-    ...EBG_SETTINGS[activeEbg].relevantAerodromes,
-  ]
-
-  const [selectedAD, setSelectedAD] = useState(ebgADs[0])
+  const activeFir = useAppSelector(selectActiveFir)
+  const firADs = useAppSelector(selectFirAllAerodromes)
+  const [selectedAD, setSelectedAD] = useState(firADs[0])
 
   const { data: _s } = sectorApi.useGetQuery()
   const airports = useAppSelector(selectAirports)
@@ -25,14 +22,14 @@ const Wx = () => {
     .filter(
       ([icaoCode, ad]) =>
         ad.topdown.length > 0 &&
-        !ebgADs.includes(icaoCode) &&
-        EBG_SETTINGS[activeEbg].neighbourPrefixes.some((prefix) =>
+        !firADs.includes(icaoCode) &&
+        FIR_SETTINGS[activeFir].neighbourPrefixes.some((prefix) =>
           icaoCode.startsWith(prefix),
         ),
     )
     .map(([icaoCode]) => icaoCode)
 
-  const aerodromes = [...ebgADs, ...vatglassesADs]
+  const aerodromes = [...firADs, ...vatglassesADs]
   const { data: metars } = usePollMetarByIcaoCodes(aerodromes)
   const { data: tafs } = usePollTafByIcaoCodes(aerodromes)
   const { data: atiss } = usePollAtisByIcaoCodes(aerodromes)

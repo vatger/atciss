@@ -1,68 +1,63 @@
 import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit"
 import { RootState } from "../app/store"
-import { EBG_SETTINGS } from "../app/config"
+import { FIR_SETTINGS } from "../app/config"
 import { localStorageOrDefault, setLocalStorage } from "../app/utils"
 
-type ActivePositionState = {
-  activeEbg: string
+type ConfigState = {
+  activeFir: string
 }
 
 const configSlice = createSlice({
   name: "config",
   initialState: {
-    activeEbg: localStorageOrDefault(
-      "config.activeEbg",
-      Object.keys(EBG_SETTINGS).shift(),
+    activeFir: localStorageOrDefault(
+      "config.activeFir",
+      Object.keys(FIR_SETTINGS).shift(),
     ),
-  } as ActivePositionState,
+  } as ConfigState,
   reducers: {
-    setActiveEbg(state, { payload }: PayloadAction<string>) {
-      state.activeEbg = setLocalStorage("config.activeEbg", payload)
+    setActiveFir(state, { payload }: PayloadAction<string>) {
+      state.activeFir = setLocalStorage("config.activeFir", payload)
     },
   },
 })
 
-export const selectActiveEbg = (store: RootState) => store.config.activeEbg
-export const selectEbgMajorAerodromes = createSelector(
-  selectActiveEbg,
-  (ebg) => EBG_SETTINGS[ebg].majorAerodromes,
-)
-export const selectEbgAerodromes = createSelector(
-  selectActiveEbg,
-  (ebg) => EBG_SETTINGS[ebg].aerodromes,
-)
-export const selectEbgMinorAerodromes = createSelector(
-  selectActiveEbg,
-  (ebg) => EBG_SETTINGS[ebg].minorAerodromes,
-)
-export const selectEbgRelevantAerodromes = createSelector(
-  selectActiveEbg,
-  (ebg) => EBG_SETTINGS[ebg].relevantAerodromes,
-)
-export const selectEbgFir = createSelector(
-  selectActiveEbg,
-  (ebg) => EBG_SETTINGS[ebg].fir,
-)
-export const selectEbgAllAerodromes = createSelector(
-  selectEbgMajorAerodromes,
-  selectEbgAerodromes,
-  selectEbgMinorAerodromes,
-  (major, ads, minor) => [...major, ...ads, ...minor],
-)
-export const selectNotamDesignators = createSelector(
-  selectEbgMajorAerodromes,
-  selectEbgAerodromes,
-  selectEbgMinorAerodromes,
-  selectEbgRelevantAerodromes,
-  selectEbgFir,
-  (major, ads, minor, relevant, fir) => [
-    ...major,
-    fir,
-    ...ads,
-    ...minor,
-    ...relevant,
+export const selectActiveFir = (store: RootState) => store.config.activeFir
+export const selectFirMajorAerodromes = createSelector(
+  selectActiveFir,
+  (fir) => [
+    ...new Set(
+      Object.values(FIR_SETTINGS[fir].pages).flatMap((p) => p.majorAerodromes),
+    ),
   ],
 )
+export const selectFirAerodromes = createSelector(selectActiveFir, (fir) => [
+  ...new Set(
+    Object.values(FIR_SETTINGS[fir].pages).flatMap((p) => p.aerodromes),
+  ),
+])
+export const selectFirRelevantAerodromes = createSelector(
+  selectActiveFir,
+  (fir) => [
+    ...new Set(
+      Object.values(FIR_SETTINGS[fir].pages).flatMap(
+        (p) => p.relevantAerodromes,
+      ),
+    ),
+  ],
+)
+export const selectFirAllAerodromes = createSelector(
+  selectFirMajorAerodromes,
+  selectFirAerodromes,
+  (major, ads) => [...new Set([...major, ...ads])],
+)
+export const selectNotamDesignators = createSelector(
+  selectFirMajorAerodromes,
+  selectFirAerodromes,
+  selectFirRelevantAerodromes,
+  selectActiveFir,
+  (major, ads, relevant, fir) => [...major, fir, ...ads, ...relevant],
+)
 
-export const { setActiveEbg } = configSlice.actions
+export const { setActiveFir } = configSlice.actions
 export const { reducer: configReducer } = configSlice

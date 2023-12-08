@@ -6,7 +6,7 @@ type NavButtonProps = {
   onClick?: () => void
 }
 
-const NavButton = (props: PropsWithChildren<NavButtonProps>) => (
+export const NavButton = (props: PropsWithChildren<NavButtonProps>) => (
   <Button
     sx={{
       ...props.sx,
@@ -33,4 +33,32 @@ const NavButton = (props: PropsWithChildren<NavButtonProps>) => (
   </Button>
 )
 
-export { NavButton }
+export const SecondaryNavButton = (
+  props: PropsWithChildren<NavButtonProps & { active: boolean }>,
+) => (
+  <Button
+    sx={{
+      ...props.sx,
+      border: 2,
+      borderRadius: 0,
+      borderTopColor: "brightshadow",
+      borderLeftColor: "brightshadow",
+      borderBottomColor: "darkshadow",
+      borderRightColor: "darkshadow",
+      borderStyle: "solid",
+      color: props.active ? "background" : "text",
+      backgroundColor: props.active ? "green" : "secondary",
+      p: 1,
+      fontSize: 1,
+      "&:active": {
+        borderTopColor: "darkshadow",
+        borderLeftColor: "darkshadow",
+        borderBottomColor: "brightshadow",
+        borderRightColor: "brightshadow",
+      },
+    }}
+    onClick={props.onClick}
+  >
+    {props.children}
+  </Button>
+)

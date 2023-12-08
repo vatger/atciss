@@ -2,14 +2,14 @@ import { Flex, Grid, Link, ThemeUIStyleObject, useColorMode } from "theme-ui"
 import { Clock } from "./Clock"
 import { NavButton } from "./NavButton"
 import { useNavigate } from "react-router-dom"
-import { EBG_SETTINGS } from "../app/config"
+import { FIR_SETTINGS } from "../app/config"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
-import { selectActiveEbg, setActiveEbg } from "../services/configSlice"
+import { selectActiveFir, setActiveFir } from "../services/configSlice"
 
 const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const activeEbg = useAppSelector(selectActiveEbg)
+  const activeFir = useAppSelector(selectActiveFir)
   const [colorMode, setColorMode] = useColorMode()
 
   return (
@@ -119,11 +119,11 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         </NavButton>
       </Grid>
       <select
-        value={activeEbg}
-        onChange={(e) => dispatch(setActiveEbg(e.target.value))}
+        value={activeFir}
+        onChange={(e) => dispatch(setActiveFir(e.target.value))}
       >
-        {Object.keys(EBG_SETTINGS).map((ebg) => (
-          <option key={ebg}>{ebg}</option>
+        {Object.keys(FIR_SETTINGS).map((fir) => (
+          <option key={fir}>{fir}</option>
         ))}
       </select>
 
