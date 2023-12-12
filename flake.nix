@@ -47,35 +47,13 @@
         (final: prev: let
           python = final.python311;
           overrides = final.poetry2nix.overrides.withDefaults (pyfinal: pyprev: {
-            yarl = pyprev.yarl.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.cython];
-              propagatedBuildInputs = (old.propagatedBuildInputs or []) ++ [pyfinal.expandvars];
-            });
             pynotam = pyprev.pynotam.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry];
-            });
-            pydantic-settings = pyprev.pydantic-settings.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.hatchling];
             });
             pydantic-xml = pyprev.pydantic-xml.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry];
             });
-            astral = pyprev.astral.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry];
-            });
-            celery-types = pyprev.celery-types.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry];
-            });
-            types-pyasn1 = pyprev.types-pyasn1.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
-            });
-            types-python-jose = pyprev.types-python-jose.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
-            });
-            types-xmltodict = pyprev.types-python-jose.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
-            });
-            sqlalchemy-stubs = pyprev.sqlalchemy-stubs.overridePythonAttrs (old: {
+            types-xmltodict = pyprev.types-xmltodict.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
             });
             fastapi-async-sqlalchemy = pyprev.fastapi-async-sqlalchemy.overridePythonAttrs (old: {
@@ -86,9 +64,6 @@
             });
             celery = pyprev.celery.overridePythonAttrs (old: {
               meta = old.meta // {priority = -1;};
-            });
-            multidict = pyprev.multidict.overridePythonAttrs (old: {
-              pythonCatchConflictsPhase = ":";
             });
             asgi-correlation-id = pyprev.asgi-correlation-id.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
