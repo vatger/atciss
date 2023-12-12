@@ -19,7 +19,7 @@ def convert_degsecmin_coordinate(coordinate: str) -> float:
 
 
 def postgis_coordinate_validate(
-    data: Coordinate | tuple[str, str] | str | WKBElement | WKTElement
+    data: Coordinate | tuple[str, str] | str | WKBElement | WKTElement,
 ) -> WKTElement | WKBElement:
     if isinstance(data, (WKTElement, WKBElement)):
         return data
