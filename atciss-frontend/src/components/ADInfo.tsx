@@ -41,7 +41,7 @@ const Aerodrome = ({ icao }: { icao: string }) => {
           <Box>
             <Text variant="label">QNH:</Text> {qnh}
           </Box>
-          <Box sx={{ gridRow: "span 2" }}>
+          <Box sx={{ gridColumn: "span 2" }}>
             <Text variant="label">Wind:</Text> {wind}
             {z2(metar?.wind_speed ?? 0)}
             {wind_gust}KT {wind_from_to}
