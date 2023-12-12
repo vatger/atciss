@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-import re
+import itertools
+import regex
 from typing import Any, List, Optional
 
 from loguru import logger
@@ -41,12 +42,11 @@ class Atis(BaseModel):
             except Exception as e:
                 logger.error(f"{e}, {data}")
 
-            matches = re.search(
-                r"RUNWAYS?\sIN\sUSE\s([0-9]{2}[A-Z]?)(?:\sAND\s([0-9]{2}[A-Z]?))?",
+            matches = regex.search(
+                r"(RWYS|RUNWAYS?)\sIN\sUSE\s(FOR\sLANDING\s)?((?P<first>[0-9]{2}[A-Z]?)\s)+(AND\s(TAKEOFF\s)?(?P<and>[0-9]{2}[A-Z]?))?",
                 data["text_atis"],
             )
-            data["runways_in_use"] = (
-                [] if matches is None else [r for r in matches.groups() if r is not None]
-            )
+            data["runways_in_use"] = [] if matches is None else itertools.chain.from_iterable(matches.captures("first", "and"))
+
 
         return data
