@@ -46,7 +46,10 @@ class Atis(BaseModel):
                 r"(RWYS|RUNWAYS?)\sIN\sUSE\s(FOR\sLANDING\s)?((?P<first>[0-9]{2}[A-Z]?)\s)+(AND\s(TAKEOFF\s)?(?P<and>[0-9]{2}[A-Z]?))?",
                 data["text_atis"],
             )
-            data["runways_in_use"] = [] if matches is None else itertools.chain.from_iterable(matches.captures("first", "and"))
-
+            data["runways_in_use"] = (
+                []
+                if matches is None
+                else itertools.chain.from_iterable(matches.captures("first", "and"))
+            )
 
         return data
