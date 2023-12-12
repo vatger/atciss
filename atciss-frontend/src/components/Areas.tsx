@@ -20,7 +20,7 @@ const Area = ({ name }: { name: string }) => {
       return (
         <Box>
           <Text variant="label">{name}</Text>:
-          <Text color={active ? "text" : "orange"}>
+          <Text color={active ? "text" : "red"}>
             FL{z3(area.lower_limit)}-FL{z3(area.upper_limit)}{" "}
             {start.toFormat("HHmm")}z-{end.toFormat("HHmm")}z
           </Text>
