@@ -2,7 +2,7 @@
   description = "VATSIM Germany ATCISS";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     flake-utils.url = "github:numtide/flake-utils";
 
     pre-commit-hooks = {
@@ -23,7 +23,7 @@
     };
 
     napalm = {
-      url = "github:nix-community/napalm/pull/58/head";
+      url = "github:nix-community/napalm";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
