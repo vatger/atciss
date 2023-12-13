@@ -47,6 +47,8 @@ jobs:
     permissions: write-all
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v9
       - uses: DeterminateSystems/magic-nix-cache-action@main
@@ -74,5 +76,4 @@ jobs:
       - name: Deploy to production
         if: github.ref == 'refs/heads/main'
         run: |
-          git fetch origin
           git push origin HEAD:production
