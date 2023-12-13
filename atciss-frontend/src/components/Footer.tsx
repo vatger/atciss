@@ -7,6 +7,7 @@ const Footer = ({ sx }: { sx?: ThemeUIStyleObject }) => (
       backgroundColor: "primary",
       p: ".5em",
       justifyContent: "space-between",
+      color: "background",
     }}
   >
     <Text sx={{ color: "background" }}>ATCISS</Text>
@@ -17,6 +18,23 @@ const Footer = ({ sx }: { sx?: ThemeUIStyleObject }) => (
     >
       GitHub
     </Link>
+    <Text>
+      <Link
+        sx={{ color: "background" }}
+        target="_blank"
+        href="https://vatsim-germany.org/imprint"
+      >
+        Impressum
+      </Link>{" "}
+      &{" "}
+      <Link
+        sx={{ color: "background" }}
+        target="_blank"
+        href="https://vatsim-germany.org/gdpr"
+      >
+        Datenschutz
+      </Link>
+    </Text>
   </Flex>
 )
 
