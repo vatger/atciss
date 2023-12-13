@@ -88,6 +88,8 @@
               inherit python overrides;
               projectDir = final.poetry2nix.cleanPythonSources {src = ./.;};
               pythonImportCheck = ["atciss"];
+              groups = [];
+              checkgroups = [];
             })
             .overrideAttrs (attrs: {
               postInstall = ''
@@ -138,22 +140,15 @@
           contrib = pkgs.atciss-contrib;
           frontend = pkgs.atciss-frontend;
 
-          backend-image = pkgs.dockerTools.buildImage {
+          backend-image = pkgs.dockerTools.buildLayeredImage {
             name = "ghcr.io/vatger/atciss/atciss-backend";
             tag = "latest";
 
-            copyToRoot = pkgs.buildEnv {
-              name = "image-root";
-              paths = [
-                pkgs.cacert
-                pkgs.tzdata
-                pkgs.atciss
-              ];
-              pathsToLink = ["/bin" "/share"];
-            };
-
-            uid = 1000;
-            gid = 1000;
+            contents = with pkgs; [
+              cacert
+              tzdata
+              atciss
+            ];
 
             config = {
               Env = [
