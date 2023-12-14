@@ -17,7 +17,7 @@
     "@emotion/react": "^11.11.1",
     "@reduxjs/toolkit": "^2.0.1",
     "luxon": "^3.4.4",
-    "re-reselect": "^4.0.1",
+    "re-reselect": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1",
