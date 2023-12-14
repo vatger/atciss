@@ -13,7 +13,7 @@ import {
   selectOwner,
   selectSelectedPosition,
 } from "../../services/activePositionSlice"
-import createCachedSelector from "re-reselect"
+import { createCachedSelector } from "re-reselect"
 import { selectLevel } from "../../services/mapSlice"
 import { selectAllAtis } from "../../services/atisApi"
 import { RootState } from "../../app/store"
@@ -22,13 +22,11 @@ import { VerticalBoundary } from "./VerticalBoundary"
 import { LatLng } from "leaflet"
 
 const selectSectorBounds = createCachedSelector(
-  [
-    selectSector,
-    selectLevel,
-    selectAirports,
-    selectAllAtis,
-    (_state: RootState, id: string) => id,
-  ],
+  selectSector,
+  selectLevel,
+  selectAirports,
+  selectAllAtis,
+  (_state: RootState, id: string) => id,
   (sector, level, airports, atis) =>
     sector.sectors
       .filter((s) => (s.min ?? 0) <= level && level < (s.max ?? 999))

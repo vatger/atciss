@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithAuth } from "../app/auth"
 import { RootState } from "../app/store"
 import { createSelector } from "@reduxjs/toolkit"
-import createCachedSelector from "re-reselect"
+import { createCachedSelector } from "re-reselect"
 import { selectLoaCops } from "./loaApi"
 
 export interface Navaid {
@@ -39,6 +39,7 @@ const selectLoaNavaids = createSelector(
 )
 
 export const selectLoaNavaid = createCachedSelector(
-  [selectLoaNavaids, (_state: RootState, designator: string) => designator],
+  selectLoaNavaids,
+  (_state: RootState, designator: string) => designator,
   (navaids, designator) => navaids.find((n) => n.designator == designator),
 )((_state, designator) => designator)

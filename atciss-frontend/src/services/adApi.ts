@@ -3,7 +3,7 @@ import { fetchWithAuth } from "../app/auth"
 import { createSelector } from "@reduxjs/toolkit"
 import { RootState } from "../app/store"
 import { selectAirportICAOs } from "./sectorApi"
-import createCachedSelector from "re-reselect"
+import { createCachedSelector } from "re-reselect"
 import { LatLngTuple } from "leaflet"
 
 export interface Aerodrome {
@@ -47,6 +47,7 @@ const selectAllDfsAds = createSelector(
 )
 
 export const selectDfsAd = createCachedSelector(
-  [selectAllDfsAds, (_state: RootState, icao: string) => icao],
+  selectAllDfsAds,
+  (_state: RootState, icao: string) => icao,
   (ads, icao) => ads[icao ?? ""],
 )((_state, icao) => icao)

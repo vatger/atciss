@@ -17,7 +17,7 @@ import {
 } from "../../services/metarApi"
 import { selectTaf, usePollTafByIcaoCodes } from "../../services/tafApi"
 import { selectAtis, usePollAtisByIcaoCodes } from "../../services/atisApi"
-import createCachedSelector from "re-reselect"
+import { createCachedSelector } from "re-reselect"
 import {
   selectAirportControllers,
   selectAirportTopdownController,
@@ -25,7 +25,8 @@ import {
 } from "../../services/activePositionSlice"
 
 const selectAirportCoordinates = createCachedSelector(
-  [selectAirport, selectDfsAd],
+  selectAirport,
+  selectDfsAd,
   (vatglassesAirport, dfsAd) =>
     vatglassesAirport?.coord ??
     (dfsAd ? [dfsAd.arp_location[0], dfsAd.arp_location[1]] : null),
@@ -65,10 +66,10 @@ const AerodromeMarker = ({ icao }: { icao: string }) => {
             xmcState == "LVP"
               ? "hotpink"
               : xmcState == "VMC"
-              ? "green"
-              : xmcState == "IMC"
-              ? "darkred"
-              : "darkblue",
+                ? "green"
+                : xmcState == "IMC"
+                  ? "darkred"
+                  : "darkblue",
         }}
       >
         <Tooltip>

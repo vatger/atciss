@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithAuth } from "../app/auth"
-import createCachedSelector from "re-reselect"
+import { createCachedSelector } from "re-reselect"
 import { createSelector } from "@reduxjs/toolkit"
 import { RootState } from "../app/store"
 import { selectAirportICAOs } from "./sectorApi"
@@ -41,6 +41,7 @@ const selectAllTafs = createSelector(
 )
 
 export const selectTaf = createCachedSelector(
-  [selectAllTafs, (_state: RootState, icao: string) => icao],
+  selectAllTafs,
+  (_state: RootState, icao: string) => icao,
   (tafs, icao) => tafs[icao ?? ""],
 )((_state, icao) => icao)

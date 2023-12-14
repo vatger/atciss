@@ -1,9 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithAuth } from "../app/auth"
-import createCachedSelector from "re-reselect"
 import { RootState } from "../app/store"
 import { selectAirportICAOs } from "./sectorApi"
 import { createSelector } from "@reduxjs/toolkit"
+import { createCachedSelector } from "re-reselect"
 
 export interface Clouds {
   cover: "FEW" | "SCT" | "BKN" | "OVC" | "NSC"
@@ -58,8 +58,8 @@ export const xmc: (metar: Metar) => "VMC" | "IMC" | "LVP" = (metar) => {
   return (c && c < 200) || metar.rvr.some((rvr) => rvr.low < 600)
     ? "LVP"
     : (c && c < 1500) || metar.vis.some((v) => v < 5000)
-    ? "IMC"
-    : "VMC"
+      ? "IMC"
+      : "VMC"
 }
 
 export const hpaToInhg: (qnh: number) => number = (qnh) =>
@@ -92,6 +92,7 @@ const selectAllMetars = createSelector(
 )
 
 export const selectMetar = createCachedSelector(
-  [selectAllMetars, (_state: RootState, icao: string) => icao],
+  selectAllMetars,
+  (_state: RootState, icao: string) => icao,
   (metars, icao) => metars[icao ?? ""],
 )((_state, icao) => icao)

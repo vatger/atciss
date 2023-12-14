@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithAuth } from "../app/auth"
 import { LatLngExpression } from "leaflet"
 import { createSelector } from "@reduxjs/toolkit"
-import createCachedSelector from "re-reselect"
+import { createCachedSelector } from "re-reselect"
 import { RootState } from "../app/store"
 import { selectFirAllAerodromes } from "./configSlice"
 
@@ -77,7 +77,8 @@ export const selectPositions = createSelector(
 )
 
 export const selectPosition = createCachedSelector(
-  [selectPositions, (_state: RootState, id: string | null) => id],
+  selectPositions,
+  (_state: RootState, id: string | null) => id,
   (positions, id): Position | null => positions[id ?? ""] ?? null,
 )((_state, id) => id ?? "invalid")
 
@@ -90,7 +91,8 @@ export const selectSectorIDs = createSelector(selectAirspace, (airspace) =>
   Object.keys(airspace),
 )
 export const selectSector = createCachedSelector(
-  [selectAirspace, (_state: RootState, id: string) => id],
+  selectAirspace,
+  (_state: RootState, id: string) => id,
   (airspace, id) => airspace[id ?? ""],
 )((_state, id) => id)
 
@@ -104,7 +106,8 @@ const selectVatglassesAirportICAOs = createSelector(
   (airports) => Object.keys(airports),
 )
 export const selectAirport = createCachedSelector(
-  [selectAirports, (_state: RootState, id: string) => id],
+  selectAirports,
+  (_state: RootState, id: string) => id,
   (airports, icao) => airports[icao ?? ""],
 )((_state, icao) => icao)
 

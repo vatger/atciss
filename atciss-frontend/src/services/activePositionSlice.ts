@@ -12,7 +12,7 @@ import {
   selectSector,
 } from "./sectorApi"
 import { localStorageOrDefault, setLocalStorage } from "../app/utils"
-import createCachedSelector from "re-reselect"
+import { createCachedSelector } from "re-reselect"
 import { Controller, selectControllers } from "./controllerApi"
 
 export type PositionStatus = { [id: string]: boolean }
@@ -129,14 +129,16 @@ export const selectOnlinePositions = createSelector(
     ),
 )
 export const selectControllerFromPosition = createCachedSelector(
-  [selectControllers, selectPosition],
+  selectControllers,
+  selectPosition,
   (controllers, pos) =>
-    controllers.find((c) =>
-      pos?.pre.some(
-        (prefix) =>
-          `${c.callsign.slice(0, c.callsign.indexOf("_"))}${c.frequency}` ===
-          `${prefix}${pos.frequency}`,
-      ),
+    controllers.find(
+      (c) =>
+        pos?.pre.some(
+          (prefix) =>
+            `${c.callsign.slice(0, c.callsign.indexOf("_"))}${c.frequency}` ===
+            `${prefix}${pos.frequency}`,
+        ),
     ),
 )((_state, pos) => pos ?? "invalid")
 
@@ -156,7 +158,8 @@ export const selectSelectedPosition = createSelector(
 )
 
 export const selectIsPositionActive = createCachedSelector(
-  [selectActivePositions, (_state: RootState, pos: string) => pos],
+  selectActivePositions,
+  (_state: RootState, pos: string) => pos,
   (activePositions, pos) => activePositions[pos],
 )((_state, pos) => pos)
 
@@ -173,16 +176,15 @@ export const selectGroupToPositions = createSelector(
 )
 
 export const selectPositionsByGroup = createCachedSelector(
-  [selectGroupToPositions, (_state: RootState, group: string) => group],
+  selectGroupToPositions,
+  (_state: RootState, group: string) => group,
   (groupToPositions, group) => groupToPositions[group] ?? [],
 )((_state, group) => group)
 
 export const selectIsGroupActive = createCachedSelector(
-  [
-    selectActivePositions,
-    selectPositionsByGroup,
-    (_state: RootState, group: string) => group,
-  ],
+  selectActivePositions,
+  selectPositionsByGroup,
+  (_state: RootState, group: string) => group,
   (activePositions, positions) => positions.some((pos) => activePositions[pos]),
 )((_state, group) => group)
 
@@ -194,8 +196,9 @@ export const selectPositionGroups = createSelector(
   (positions, onlinePositions, groupToPositions, syncedToOnline) => {
     const groups = [...new Set(Object.values(positions).flatMap((p) => p.pre))]
     return syncedToOnline
-      ? groups.filter((group) =>
-          groupToPositions[group]?.some((pos) => onlinePositions[pos]),
+      ? groups.filter(
+          (group) =>
+            groupToPositions[group]?.some((pos) => onlinePositions[pos]),
         )
       : groups
   },
@@ -207,7 +210,9 @@ const ownerFromSectorsActivePositions = (
 ) => sector?.owner.find((owner) => positions[owner]) ?? null
 
 export const selectOwnedSectors = createSelector(
-  [selectActivePositions, selectAirspace, selectSelectedPosition],
+  selectActivePositions,
+  selectAirspace,
+  selectSelectedPosition,
   (activePositions, sectors, pos) =>
     pos === null
       ? []
@@ -229,30 +234,24 @@ const getOwner = (
   return owner ? positions[owner] : null
 }
 export const selectOwner = createCachedSelector(
-  [
-    selectSector,
-    selectActivePositions,
-    selectPositions,
-    (_state: RootState, sector: string) => sector,
-  ],
+  selectSector,
+  selectActivePositions,
+  selectPositions,
+  (_state: RootState, sector: string) => sector,
   getOwner,
 )((_state, sector) => sector)
 
 export const selectOnlineOwner = createCachedSelector(
-  [
-    selectSector,
-    selectOnlinePositions,
-    selectPositions,
-    (_state: RootState, sector: string) => sector,
-  ],
+  selectSector,
+  selectOnlinePositions,
+  selectPositions,
+  (_state: RootState, sector: string) => sector,
   getOwner,
 )((_state, sector) => sector)
 
 export const selectAirportControllers = createCachedSelector(
-  [
-    selectControllers,
-    (_state: RootState, airportDesignator: string) => airportDesignator,
-  ],
+  selectControllers,
+  (_state: RootState, airportDesignator: string) => airportDesignator,
   (controllers, airport): Controller[] =>
     controllers.filter((c) => {
       const cs_splits = c.callsign.split("_")
@@ -264,11 +263,10 @@ export const selectAirportControllers = createCachedSelector(
 )((_state, airportDesignator) => airportDesignator)
 
 export const selectAirportTopdownController = createCachedSelector(
-  [
-    selectAirport,
-    selectActivePositions,
-    (_state: RootState, airportDesignator: string) => airportDesignator,
-  ],
+  selectAirport,
+  selectActivePositions,
+  (_state: RootState, airportDesignator: string) => airportDesignator,
+
   (airport, positions): string | null =>
     (airport?.topdown.find(
       (pos) => typeof pos === "string" && positions[pos],

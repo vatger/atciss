@@ -3,7 +3,7 @@ import { fetchWithAuth } from "../app/auth"
 import { createSelector } from "@reduxjs/toolkit"
 import { RootState } from "../app/store"
 import { selectNotamDesignators } from "./configSlice"
-import createCachedSelector from "re-reselect"
+import { createCachedSelector } from "re-reselect"
 import { DateTime } from "luxon"
 
 export type Notam = {
@@ -60,12 +60,14 @@ const selectAllNotams = createSelector(
 )
 
 export const selectNotamsByDesignator = createCachedSelector(
-  [selectAllNotams, (_state: RootState, icao: string) => icao],
+  selectAllNotams,
+  (_state: RootState, icao: string) => icao,
   (notams, icao) => notams[icao ?? ""] ?? [],
 )((_state, icao) => icao)
 
 export const selectActiveNotamsByDesignator = createCachedSelector(
-  [selectNotamsByDesignator, (_state: RootState, icao: string) => icao],
+  selectNotamsByDesignator,
+  (_state: RootState, icao: string) => icao,
   (notams) =>
     notams
       .filter(
@@ -77,7 +79,8 @@ export const selectActiveNotamsByDesignator = createCachedSelector(
 )((_state, icao) => icao)
 
 export const selectInactiveNotamsByDesignator = createCachedSelector(
-  [selectNotamsByDesignator, (_state: RootState, icao: string) => icao],
+  selectNotamsByDesignator,
+  (_state: RootState, icao: string) => icao,
   (notams) =>
     notams
       .filter((n) => DateTime.utc() < DateTime.fromISO(n.valid_from).toUTC())
