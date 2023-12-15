@@ -56,3 +56,9 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=fnord
       - POSTGRES_DB=atciss
+    ports:
+      - "5432:5432"
+
+  redis:
+    ports:
+      - "6379:6379"
