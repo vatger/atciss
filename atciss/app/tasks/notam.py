@@ -1,50 +1,21 @@
 from typing import Optional
 
 from loguru import logger
+from sqlmodel import select
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from bs4 import BeautifulSoup
 from pynotam import Notam
 from parsimonious import ParseError
 
+from atciss.app.views.aerodrome import Aerodrome
 from ..utils import AiohttpClient, ClientConnectorError, RedisClient
+from ...config import settings
 
-NOTAM_ICAO = [
+
+NOTAM_FIRS = [
     "EDGG",
     "EDMM",
     "EDWW",
-    "EDDC",
-    "EDDE",
-    "EDDM",
-    "EDDN",
-    "EDDP",
-    "EDAB",
-    "EDAC",
-    "EDJA",
-    "EDMA",
-    "EDME",
-    "EDMO",
-    "EDMS",
-    "EDPR",
-    "EDQA",
-    "EDQC",
-    "EDQD",
-    "EDQM",
-    "EDNY",
-    "EDTM",
-    "ETEB",
-    "ETHL",
-    "ETIC",
-    "ETSI",
-    "ETSL",
-    "ETSN",
-    "EDDF",
-    "EDDK",
-    "EDDL",
-    "EDDS",
-    "EDFM",
-    "EDLN",
-    "ETAR",
-    "ETNN",
-    "ETNG",
 ]
 
 
@@ -60,24 +31,37 @@ def convert_notam(n: str) -> Optional[Notam]:
 async def fetch_notam() -> None:
     """Periodically fetch relevant NOTAMs."""
     redis_client = await RedisClient.get()
+    engine = create_async_engine(
+        url=str(settings.DATABASE_DSN),
+    )
 
+    all_icao = NOTAM_FIRS
+    async with AsyncSession(engine) as session:
+        statement = select(Aerodrome)
+        ads = await session.execute(statement)
+        for (ad,) in ads.fetchall():
+            all_icao.append(ad.icao_designator)
+
+    notams = []
     async with AiohttpClient.get() as aiohttp_client:
-        try:
-            res = await aiohttp_client.get(
-                "https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do"
-                + f"?reportType=Raw&retrieveLocId={'+'.join(NOTAM_ICAO)}"
-                + "&actionType=notamRetrievalByICAOs&submit=View+NOTAMs"
-            )
-        except ClientConnectorError as e:
-            logger.error(f"Could not connect {str(e)}")
-            return
+        for notams_to_fetch in (
+            all_icao[i * 50 : i * 50 + 50] for i in range(int(len(all_icao) / 50) + 1)
+        ):
+            try:
+                res = await aiohttp_client.get(
+                    "https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do"
+                    + f"?reportType=Raw&retrieveLocId={'+'.join(notams_to_fetch)}"
+                    + "&actionType=notamRetrievalByICAOs&submit=View+NOTAMs"
+                )
+            except ClientConnectorError as e:
+                logger.error(f"Could not connect {str(e)}")
+                return
 
-        notam_html = BeautifulSoup(await res.text(), "html.parser")
-        notams = []
-        for notam_elem in notam_html.find_all("pre"):
-            notam = convert_notam(notam_elem.string)
-            if notam is not None and len(notam.location) > 0:
-                notams.append(notam)
+            notam_html = BeautifulSoup(await res.text(), "html.parser")
+            for notam_elem in notam_html.find_all("pre"):
+                notam = convert_notam(notam_elem.string)
+                if notam is not None and len(notam.location) > 0:
+                    notams.append(notam)
 
     async with redis_client.pipeline() as pipe:
         for notam in notams:
