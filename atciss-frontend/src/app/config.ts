@@ -343,65 +343,67 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
     pages: {
       "ATIS NORD-A": {
         staffingSectors: [
-          "ed/ALR",
-          "ed/HEI",
-          "ed/HAME",
-          "ed/HAMW",
-          "ed/EIDW",
           "ed/EIDE",
-          "ed/MAR",
-          "ed/MRZ",
-          "ed/EMS",
-          "ed/HRZ",
-          "ed/HAN",
+          "ed/EIDW",
           "ed/FRI",
+          "ed/HRZ",
+          "ed/EMS",
+          "ed/HAN",
+          "ed/MRZ",
+          "ed/MAE",
+          "ed/OSE",
+          "ed/HVL",
+          "ed/CEL",
+          "ed/MNS",
+          "ed/JEV",
+          "ed/HOL",
         ],
         statusSectors: [],
         majorAerodromes: ["EDDH"],
-        aerodromes: ["EDHI", "EDHL", "EDDW", "EDDV"],
+        aerodromes: ["EDHI", "EDHL", "EDDW", "EDDV", "ETMN", "ETNH", "ETNS"],
         relevantAerodromes: [],
         areas: {
-          "TRA Friesland": [
-            "ED-R201A",
-            "ED-R201B",
-            "ED-R201C",
-            "ED-R201D",
-            "ED-R201E",
-            "ED-R201F",
-          ],
+          "ED-R10 Totendorf-Putlos": ["ED-R10A", "ED-R10B", "ED-R10C", "ED-R10D", "ED-R10E"],
+          "ED-R11 Ostsee": ["ED-R11A", "ED-R11B"],
+          "ED-R12 Schoenhagen": ["ED-R12A", "ED-R12B"],
+          "ED-R12 Meldorfer Bucht": ["ED-R13A", "ED-R13B"],
+          "ED-R31 Bergen": ["ED-R31"],
+          "ED-R32 Munster": ["ED-R32A", "ED-R32B"],
+          "ED-R33 Unterluess": ["ED-R33A", "ED-R33B"],
         },
       },
       "ATIS NORD-B": {
         staffingSectors: [
-          "ed/EIDW",
-          "ed/EIDE",
-          "ed/FRI",
           "ed/ALR",
           "ed/HEI",
-          "ed/HRZ",
           "ed/HAME",
           "ed/HAMW",
           "ed/EMS",
           "ed/HAN",
+          "ed/JEV",
+          "ed/HOL",
+          "ed/CEL",
+          "ed/MNS",
+          "ed/OSE",
+          "ed/HVL",
         ],
         statusSectors: [],
-        majorAerodromes: ["EDDH", "EDDW"],
-        aerodromes: ["EDDW", "EDXW"],
+        majorAerodromes: ["EDDW", "EDDH"],
+        aerodromes: ["EDXW", "EDDV", "ETNT", "ETMN", "ETNH", "ETNS"],
         relevantAerodromes: [],
         areas: {
-          "TRA Friesland": [
-            "ED-R201A",
-            "ED-R201B",
-            "ED-R201C",
-            "ED-R201D",
-            "ED-R201E",
-            "ED-R201F",
+          "ED-R10 Totendorf-Putlos": ["ED-R10A", "ED-R10B", "ED-R10C", "ED-R10D", "ED-R10E"],
+          "ED-R11 Ostsee": ["ED-R11A", "ED-R11B"],
+          "ED-R12 Schoenhagen": ["ED-R12A", "ED-R12B"],
+          "ED-R12 Meldorfer Bucht": ["ED-R13A", "ED-R13B"],
+          "ED-R34 Meppen": ["ED-R34A", "ED-R34B"],
           ],
         },
       },
       "ATIS OST": {
         staffingSectors: [
           "ed/CEL",
+          "ed/SOL",
           "ed/JEV",
           "ed/TRN",
           "ed/SAS",
@@ -416,16 +418,16 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
         ],
         statusSectors: [],
         majorAerodromes: ["EDDB"],
-        aerodromes: ["EDAH", "ETNL", "EDDV", "EDDC"],
+        aerodromes: ["EDAH", "ETNL", "ETSH", "EDDV", "EDDC"],
         relevantAerodromes: [],
         areas: {
-          "ED-17 Jaegerbrueck": [
+          "ED-R17 Jaegerbrueck": [
             "ED-R17",
           ],
-          "ED-71 Klietz": [
+          "ED-R71 Klietz": [
             "ED-R71",
           ],
-          "ED-73 Altengrabow": [
+          "ED-R73 Altengrabow": [
             "ED-R73A",
             "ED-R73B",
             "ED-R73C",
@@ -450,13 +452,16 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
         aerodromes: ["ETSH"],
         relevantAerodromes: [],
         areas: {
-          "ED-70 Holzdorf": [
+          "ED-R54 Lehnin": [
             "ED-R70",
           ],
-          "ED-71 Klietz": [
+          "ED-R70 Holzdorf": [
+            "ED-R70",
+          ],
+          "ED-R71 Klietz": [
             "ED-R71",
           ],
-          "ED-73 Altengrabow": [
+          "ED-R73 Altengrabow": [
             "ED-R73A",
             "ED-R73B",
             "ED-R73C",
