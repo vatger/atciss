@@ -363,7 +363,13 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
         aerodromes: ["EDHI", "EDHL", "EDDW", "EDDV", "ETMN", "ETNH", "ETNS"],
         relevantAerodromes: [],
         areas: {
-          "ED-R10 Totendorf-Putlos": ["ED-R10A", "ED-R10B", "ED-R10C", "ED-R10D", "ED-R10E"],
+          "ED-R10 Totendorf-Putlos": [
+            "ED-R10A",
+            "ED-R10B",
+            "ED-R10C",
+            "ED-R10D",
+            "ED-R10E",
+          ],
           "ED-R11 Ostsee": ["ED-R11A", "ED-R11B"],
           "ED-R12 Schoenhagen": ["ED-R12A", "ED-R12B"],
           "ED-R12 Meldorfer Bucht": ["ED-R13A", "ED-R13B"],
@@ -392,12 +398,17 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
         aerodromes: ["EDXW", "EDDV", "ETNT", "ETMN", "ETNH", "ETNS"],
         relevantAerodromes: [],
         areas: {
-          "ED-R10 Totendorf-Putlos": ["ED-R10A", "ED-R10B", "ED-R10C", "ED-R10D", "ED-R10E"],
+          "ED-R10 Totendorf-Putlos": [
+            "ED-R10A",
+            "ED-R10B",
+            "ED-R10C",
+            "ED-R10D",
+            "ED-R10E",
+          ],
           "ED-R11 Ostsee": ["ED-R11A", "ED-R11B"],
           "ED-R12 Schoenhagen": ["ED-R12A", "ED-R12B"],
           "ED-R12 Meldorfer Bucht": ["ED-R13A", "ED-R13B"],
           "ED-R34 Meppen": ["ED-R34A", "ED-R34B"],
-          ],
         },
       },
       "ATIS OST": {
@@ -414,24 +425,15 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
           "ed/HAME",
           "ed/HRZ",
           "ed/HAN",
-
         ],
         statusSectors: [],
         majorAerodromes: ["EDDB"],
         aerodromes: ["EDAH", "ETNL", "ETSH", "EDDV", "EDDC"],
         relevantAerodromes: [],
         areas: {
-          "ED-R17 Jaegerbrueck": [
-            "ED-R17",
-          ],
-          "ED-R71 Klietz": [
-            "ED-R71",
-          ],
-          "ED-R73 Altengrabow": [
-            "ED-R73A",
-            "ED-R73B",
-            "ED-R73C",
-          ],
+          "ED-R17 Jaegerbrueck": ["ED-R17"],
+          "ED-R71 Klietz": ["ED-R71"],
+          "ED-R73 Altengrabow": ["ED-R73A", "ED-R73B", "ED-R73C"],
         },
       },
       "ATIS BER": {
@@ -452,20 +454,10 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
         aerodromes: ["ETSH"],
         relevantAerodromes: [],
         areas: {
-          "ED-R54 Lehnin": [
-            "ED-R70",
-          ],
-          "ED-R70 Holzdorf": [
-            "ED-R70",
-          ],
-          "ED-R71 Klietz": [
-            "ED-R71",
-          ],
-          "ED-R73 Altengrabow": [
-            "ED-R73A",
-            "ED-R73B",
-            "ED-R73C",
-          ],
+          "ED-R54 Lehnin": ["ED-R70"],
+          "ED-R70 Holzdorf": ["ED-R70"],
+          "ED-R71 Klietz": ["ED-R71"],
+          "ED-R73 Altengrabow": ["ED-R73A", "ED-R73B", "ED-R73C"],
         },
       },
       "ATIS SÜD": {
