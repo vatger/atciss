@@ -363,7 +363,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
         aerodromes: ["EDHI", "EDHL", "EDDW", "EDDV", "ETMN", "ETNH", "ETNS"],
         relevantAerodromes: [],
         areas: {
-          "ED-R10 Totendorf-Putlos": [
+          "ED-R10 Todendorf-Putlos": [
             "ED-R10A",
             "ED-R10B",
             "ED-R10C",
@@ -398,7 +398,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
         aerodromes: ["EDXW", "EDDV", "ETNT", "ETMN", "ETNH", "ETNS"],
         relevantAerodromes: [],
         areas: {
-          "ED-R10 Totendorf-Putlos": [
+          "ED-R10 Todendorf-Putlos": [
             "ED-R10A",
             "ED-R10B",
             "ED-R10C",
