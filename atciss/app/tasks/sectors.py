@@ -25,9 +25,12 @@ async def fetch_sector_data() -> None:
                 logger.error(f"Could not connect {str(e)}")
                 return
 
-            data[region] = TypeAdapter(SectorData).validate_python(
-                {"region": region} | await res.json(content_type="text/plain")
-            )
+            try:
+                data[region] = TypeAdapter(SectorData).validate_python(
+                    {"region": region} | await res.json(content_type="text/plain")
+                )
+            except ValueError as e:
+                logger.warning(e)
 
     logger.info("Sector data received")
 
@@ -45,4 +48,5 @@ async def fetch_sector_data() -> None:
                 f"sector:airspaces:{region}",
                 TypeAdapter(dict[str, Airspace]).dump_json(region_data.airspace),
             )
+
         await pipe.execute()

@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pydantic import AwareDatetime, TypeAdapter, field_validator
 from pydantic_xml import BaseXmlModel, element
 from pydantic_xml.element.element import SearchMode
@@ -20,7 +20,7 @@ class Booking(SQLModel, table=True):
     @field_validator("start", "end", mode="before")
     @classmethod
     def force_utc(cls, input: str) -> AwareDatetime:
-        return TypeAdapter(datetime).validate_python(input).replace(tzinfo=timezone.utc)
+        return TypeAdapter(datetime).validate_python(input).replace(tzinfo=UTC)
 
 
 class VatbookBooking(BaseXmlModel, tag="booking", search_mode=SearchMode.UNORDERED):

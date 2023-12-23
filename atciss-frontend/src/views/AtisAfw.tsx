@@ -12,6 +12,7 @@ import {
   selectActivePageName,
   setActivePage,
 } from "../services/atisAfwSlice"
+import { SectorStatus } from "../components/SectorStatus"
 import { SectorStaffing } from "../components/SectorStaffing"
 
 const AtisAfwNav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
@@ -56,6 +57,20 @@ const AtisAfwNav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   )
 }
 
+const Sectors = ({ sx }: { sx?: ThemeUIStyleObject }) => {
+  return (
+    <Flex
+      sx={{
+        ...sx,
+        flexDirection: "column",
+      }}
+    >
+      <SectorStatus />
+      <SectorStaffing />
+    </Flex>
+  )
+}
+
 const gridItemSx: ThemeUIStyleObject = {
   padding: "1",
   backgroundColor: "background",
@@ -90,7 +105,7 @@ const AtisAfw = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         <Events />
       </Flex>
       <Areas sx={gridItemSx} />
-      <SectorStaffing sx={gridItemSx} />
+      <Sectors sx={gridItemSx} />
       <ADinfo sx={{ ...gridItemSx, padding: 0 }} />
     </Grid>
   )

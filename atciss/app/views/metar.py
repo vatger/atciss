@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Annotated, Any, List, Optional, Sequence, Tuple, cast
 from pydantic import (
     AwareDatetime,
@@ -117,7 +117,7 @@ class MetarModel(BaseModel):
             {
                 "station_id": parsed.station_id,
                 "raw": raw_metar,
-                "time": cast(datetime, parsed.time).replace(tzinfo=timezone.utc),
+                "time": cast(datetime, parsed.time).replace(tzinfo=UTC),
                 "automatic": parsed.mod == "AUTO",
                 "wind_dir": parsed.wind_dir.value() if parsed.wind_dir is not None else None,
                 "wind_speed": parsed.wind_speed.value("KT")

@@ -1,5 +1,5 @@
 import re
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from heapq import heappush, heappop
 from typing import Sequence, cast, Optional
 
@@ -103,7 +103,7 @@ async def calc_trafficboard_data(pilots: Sequence[Pilot]) -> AerodromeTraffic:
                 arrs,
                 Traffic.from_pilot(
                     pilot,
-                    eta=datetime.utcnow() + timedelta(minutes=minutes_to_touch),
+                    eta=datetime.now(UTC) + timedelta(minutes=minutes_to_touch),
                     dep=await get_ad_name(pilot.flight_plan.departure),
                     arr=await get_ad_name(pilot.flight_plan.arrival),
                 ),

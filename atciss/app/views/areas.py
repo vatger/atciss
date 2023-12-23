@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 import json
 from typing import Any, cast
 from pydantic import (
@@ -62,7 +62,7 @@ class AreaBooking(BaseModel):
     @field_validator("start_datetime", "end_datetime", mode="before")
     @classmethod
     def force_utc(cls, input: str) -> AwareDatetime:
-        return TypeAdapter(datetime).validate_python(input).replace(tzinfo=timezone.utc)
+        return TypeAdapter(datetime).validate_python(input).replace(tzinfo=UTC)
 
 
 class EAUPAreas(BaseModel):

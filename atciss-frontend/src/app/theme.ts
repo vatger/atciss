@@ -22,6 +22,9 @@ export const theme: AtcissTheme = {
     darkshadow: "#003e59",
     brightshadow: "#90c6da",
     green: "#007711",
+    red: "#770011",
+    orange: "#b97700",
+    purple: "#770077",
     modes: {
       dark: {
         text: "#fff",
@@ -31,6 +34,9 @@ export const theme: AtcissTheme = {
         shadow: "#003e59",
         brightshadow: "#a0e6fa",
         green: "#33ff99",
+        red: "#ff7788",
+        orange: "#ffa333",
+        purple: "#ff55ff",
       },
     },
   },

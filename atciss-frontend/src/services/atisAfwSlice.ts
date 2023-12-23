@@ -58,6 +58,10 @@ export const selectPageAtisAerodromes = createSelector(
   selectActivePage,
   (page) => page.majorAerodromes,
 )
+export const selectStatusSectors = createSelector(
+  selectActivePage,
+  (page) => page.statusSectors,
+)
 export const selectStaffingSectors = createSelector(
   selectActivePage,
   (page) => page.staffingSectors,

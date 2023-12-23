@@ -25,7 +25,7 @@ const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
     <Grid
       sx={{
         ...sx,
-        gap: "1rem",
+        gap: 1,
         gridTemplateColumns: "4fr 1fr",
         width: "100%",
       }}

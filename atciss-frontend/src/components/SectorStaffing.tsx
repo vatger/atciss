@@ -1,4 +1,4 @@
-import { Box, Flex, Text, ThemeUIStyleObject } from "theme-ui"
+import { Box, Flex, Text } from "theme-ui"
 import { useAppSelector } from "../app/hooks"
 import { sectorApi, selectSector } from "../services/sectorApi"
 import { usePollControllers } from "../services/controllerApi"
@@ -21,7 +21,7 @@ const Sector = ({ id }: { id: string }) => {
   )
 }
 
-export const SectorStaffing = ({ sx }: { sx?: ThemeUIStyleObject }) => {
+export const SectorStaffing = () => {
   const { data: _c } = usePollControllers()
   const sectors = useAppSelector(selectStaffingSectors)
 
@@ -30,7 +30,6 @@ export const SectorStaffing = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   return (
     <Flex
       sx={{
-        ...sx,
         flexDirection: "column",
         fontSize: 1,
         fontFamily: "monospace",
