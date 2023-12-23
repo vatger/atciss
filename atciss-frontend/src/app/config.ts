@@ -350,7 +350,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
           "ed/EMS",
           "ed/HAN",
           "ed/MRZ",
-          "ed/MAE",
+          "ed/MAR",
           "ed/OSE",
           "ed/HVL",
           "ed/CEL",
