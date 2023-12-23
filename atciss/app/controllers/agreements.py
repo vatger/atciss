@@ -36,8 +36,8 @@ async def sectorstatus_get(
 )
 async def sectorstatus_post(
     fir: str,
-    text: Annotated[str, Body()],
     user: Annotated[User, Depends(get_controller)],
+    text: Annotated[str, Body()] = "",
 ) -> Agreements:
     """Set status for a sector."""
 
