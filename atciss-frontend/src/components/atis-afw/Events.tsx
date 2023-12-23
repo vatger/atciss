@@ -1,11 +1,11 @@
 /** @jsxImportSource theme-ui */
 
 import { Box, Text } from "theme-ui"
-import { FIR_SETTINGS } from "../app/config"
-import { useAppSelector } from "../app/hooks"
-import { selectActiveFir } from "../services/configSlice"
+import { FIR_SETTINGS } from "../../app/config"
+import { useAppSelector } from "../../app/hooks"
+import { selectActiveFir } from "../../services/configSlice"
 import { DateTime, Duration } from "luxon"
-import { usePollEventsByFirs } from "../services/eventApi"
+import { usePollEventsByFirs } from "../../services/eventApi"
 
 export const Events = () => {
   const activeFir = useAppSelector(selectActiveFir)

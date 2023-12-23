@@ -1,9 +1,4 @@
 import { Flex, Grid, ThemeUIStyleObject } from "theme-ui"
-import { Atis } from "../components/Atis"
-import { ADinfo } from "../components/ADInfo"
-import { ECFMP } from "../components/ECFMP"
-import { Events } from "../components/Events"
-import { Areas } from "../components/Areas"
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { selectActiveFir } from "../services/configSlice"
 import { SecondaryNavButton } from "../components/NavButton"
@@ -12,8 +7,14 @@ import {
   selectActivePageName,
   setActivePage,
 } from "../services/atisAfwSlice"
-import { SectorStatus } from "../components/SectorStatus"
-import { SectorStaffing } from "../components/SectorStaffing"
+import { Atis } from "../components/atis-afw/Atis"
+import { ECFMP } from "../components/atis-afw/ECFMP"
+import { Areas } from "../components/atis-afw/Areas"
+import { ADinfo } from "../components/atis-afw/ADInfo"
+import { Events } from "../components/atis-afw/Events"
+import { Agreements } from "../components/atis-afw/Agreements"
+import { SectorStatus } from "../components/atis-afw/SectorStatus"
+import { SectorStaffing } from "../components/atis-afw/SectorStaffing"
 
 const AtisAfwNav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const dispatch = useAppDispatch()
@@ -57,20 +58,6 @@ const AtisAfwNav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   )
 }
 
-const Sectors = ({ sx }: { sx?: ThemeUIStyleObject }) => {
-  return (
-    <Flex
-      sx={{
-        ...sx,
-        flexDirection: "column",
-      }}
-    >
-      <SectorStatus />
-      <SectorStaffing />
-    </Flex>
-  )
-}
-
 const gridItemSx: ThemeUIStyleObject = {
   padding: "1",
   backgroundColor: "background",
@@ -103,9 +90,18 @@ const AtisAfw = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       >
         <ECFMP />
         <Events />
+        <Agreements />
       </Flex>
       <Areas sx={gridItemSx} />
-      <Sectors sx={gridItemSx} />
+      <Flex
+        sx={{
+          flexDirection: "column",
+          ...gridItemSx,
+        }}
+      >
+        <SectorStatus />
+        <SectorStaffing />
+      </Flex>
       <ADinfo sx={{ ...gridItemSx, padding: 0 }} />
     </Grid>
   )

@@ -4,14 +4,14 @@ import {
   hpaToInhg,
   usePollMetarByIcaoCodes,
   xmc,
-} from "../services/metarApi"
-import { usePollAtisByIcaoCodes } from "../services/atisApi"
-import { usePollAdByIcaoCodes } from "../services/adApi"
+} from "../../services/metarApi"
+import { usePollAtisByIcaoCodes } from "../../services/atisApi"
+import { usePollAdByIcaoCodes } from "../../services/adApi"
 import { DateTime } from "luxon"
-import { z2, z3, z4 } from "../app/utils"
-import { useAppSelector } from "../app/hooks"
+import { z2, z3, z4 } from "../../app/utils"
+import { useAppSelector } from "../../app/hooks"
 import { AtisRow } from "./atis/AtisRow"
-import { selectPageAtisAerodromes } from "../services/atisAfwSlice"
+import { selectPageAtisAerodromes } from "../../services/atisAfwSlice"
 
 const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const aerodromes = useAppSelector(selectPageAtisAerodromes)

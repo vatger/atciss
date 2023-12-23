@@ -1,9 +1,9 @@
 import { Box, Flex, Grid, Text, ThemeUIStyleObject } from "theme-ui"
-import { useAppSelector } from "../app/hooks"
-import { usePollMetarByIcaoCodes } from "../services/metarApi"
-import { usePollAtisByIcaoCodes } from "../services/atisApi"
-import { z2, z3 } from "../app/utils"
-import { selectPageAerodromes } from "../services/atisAfwSlice"
+import { useAppSelector } from "../../app/hooks"
+import { usePollMetarByIcaoCodes } from "../../services/metarApi"
+import { usePollAtisByIcaoCodes } from "../../services/atisApi"
+import { z2, z3 } from "../../app/utils"
+import { selectPageAerodromes } from "../../services/atisAfwSlice"
 
 const Aerodrome = ({ icao }: { icao: string }) => {
   const { data: metarData } = usePollMetarByIcaoCodes([icao])

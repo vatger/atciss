@@ -1,9 +1,9 @@
 import { Box, Flex, Text, ThemeUIStyleObject } from "theme-ui"
-import { useAppSelector } from "../app/hooks"
-import { selectArea, usePollAreas } from "../services/areaApi"
-import { z3 } from "../app/utils"
+import { useAppSelector } from "../../app/hooks"
+import { selectArea, usePollAreas } from "../../services/areaApi"
+import { z3 } from "../../app/utils"
 import { DateTime, Duration } from "luxon"
-import { selectAtisAreas } from "../services/atisAfwSlice"
+import { selectAtisAreas } from "../../services/atisAfwSlice"
 
 const Area = ({ name }: { name: string }) => {
   const area = useAppSelector((store) => selectArea(store, name))

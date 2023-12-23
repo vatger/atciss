@@ -22,11 +22,13 @@ import { trafficApi } from "../services/trafficApi"
 import { setupListeners } from "@reduxjs/toolkit/query"
 import { atisAfwReducer } from "../services/atisAfwSlice"
 import { sectorstatusApi } from "../services/sectorstatusApi"
+import { agreementsApi } from "../services/agreementsApi"
 
 export const store = configureStore({
   reducer: {
     [adApi.reducerPath]: adApi.reducer,
     [aircraftApi.reducerPath]: aircraftApi.reducer,
+    [agreementsApi.reducerPath]: agreementsApi.reducer,
     [areaApi.reducerPath]: areaApi.reducer,
     [atisApi.reducerPath]: atisApi.reducer,
     [bookingApi.reducerPath]: bookingApi.reducer,
@@ -52,6 +54,7 @@ export const store = configureStore({
     getDefaultMiddleware()
       .concat(adApi.middleware)
       .concat(aircraftApi.middleware)
+      .concat(agreementsApi.middleware)
       .concat(areaApi.middleware)
       .concat(atisApi.middleware)
       .concat(bookingApi.middleware)

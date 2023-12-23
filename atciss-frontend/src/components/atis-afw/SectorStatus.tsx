@@ -1,13 +1,13 @@
 import { Button, Grid, ThemeUIStyleObject } from "theme-ui"
-import { useAppSelector } from "../app/hooks"
-import { selectStatusSectors } from "../services/atisAfwSlice"
+import { useAppSelector } from "../../app/hooks"
+import { selectStatusSectors } from "../../services/atisAfwSlice"
 import {
   SectorStatus as SectorStatusType,
   StatusEnum,
   sectorstatusApi,
   selectSectorStatus,
   usePollSectorStatus,
-} from "../services/sectorstatusApi"
+} from "../../services/sectorstatusApi"
 
 const StatusButton = ({
   sx,

@@ -140,6 +140,15 @@ async def get_user(token: Annotated[str, Depends(oauth2_scheme)]) -> User:
     return user
 
 
+async def get_controller(token: Annotated[str, Depends(oauth2_scheme)]) -> User:
+    user = await get_user(token)
+
+    if user.rating not in ["S2", "S3", "C1", "C3", "I1", "I3", "SUP", "ADM"]:
+        raise HTTPException(status.HTTP_403_FORBIDDEN, f"not allowed with rating {user.rating}")
+
+    return user
+
+
 async def get_admin(token: Annotated[str, Depends(oauth2_scheme)]) -> User:
     user = await get_user(token)
     payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])

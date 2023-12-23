@@ -1,15 +1,14 @@
 """Application controllers - metar."""
 from dataclasses import dataclass
 from datetime import UTC, datetime
-from typing import Annotated, Dict, Sequence, Optional
+from typing import Annotated, Dict, Sequence
 from fastapi_async_sqlalchemy import db
-from fastapi import APIRouter, HTTPException, Query, Depends
+from fastapi import APIRouter, Query, Depends
 from sqlmodel import select
-from starlette.status import HTTP_403_FORBIDDEN
 
 from ..views.sectorstatus import SectorStatus, Status
 
-from ..controllers.auth import get_user
+from ..controllers.auth import get_controller, get_user
 from ..models import User
 
 router = APIRouter()
@@ -47,12 +46,10 @@ class StatusData:
 )
 async def sectorstatus_post(
     status_data: StatusData,
-    user: Annotated[User, Depends(get_user)],
-) -> Optional[SectorStatus]:
+    user: Annotated[User, Depends(get_controller)],
+) -> SectorStatus:
     """Set status for a sector."""
 
-    if user.rating not in ["S2", "S3", "C1", "C3", "I1", "I3", "SUP", "ADM"]:
-        raise HTTPException(HTTP_403_FORBIDDEN, f"not allowed with rating {user.rating}")
     async with db():
         stmt = select(SectorStatus).where(SectorStatus.id == status_data.id)
         sector = await db.session.scalar(stmt)

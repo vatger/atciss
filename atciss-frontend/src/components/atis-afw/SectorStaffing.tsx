@@ -1,9 +1,9 @@
 import { Box, Flex, Text } from "theme-ui"
-import { useAppSelector } from "../app/hooks"
-import { sectorApi, selectSector } from "../services/sectorApi"
-import { usePollControllers } from "../services/controllerApi"
-import { selectOnlineOwner } from "../services/activePositionSlice"
-import { selectStaffingSectors } from "../services/atisAfwSlice"
+import { useAppSelector } from "../../app/hooks"
+import { sectorApi, selectSector } from "../../services/sectorApi"
+import { usePollControllers } from "../../services/controllerApi"
+import { selectOnlineOwner } from "../../services/activePositionSlice"
+import { selectStaffingSectors } from "../../services/atisAfwSlice"
 
 const Sector = ({ id }: { id: string }) => {
   const sector = useAppSelector((store) => selectSector(store, id))
