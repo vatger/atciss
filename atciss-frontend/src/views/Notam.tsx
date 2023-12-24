@@ -35,10 +35,14 @@ const Notam = ({ notam }: { notam: NotamType }) => {
   return (
     <>
       <Box
-        sx={{ fontSize: 5, color: isRead ? "green" : "grey" }}
+        sx={{
+          fontWeight: "bold",
+          fontSize: 5,
+          color: isRead ? "green" : "grey",
+        }}
         onClick={click}
       >
-        ✔️
+        &#x2713;
       </Box>
       <Box
         onClick={click}
