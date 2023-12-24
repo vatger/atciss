@@ -148,3 +148,8 @@ pre {
     -1px 1px 0 var(--theme-ui-colors-background),
     1px 1px 0 var(--theme-ui-colors-background);
 }
+
+* {
+  transition: backdrop-filter 0.2s;
+  transition: filter 0.2s;
+}

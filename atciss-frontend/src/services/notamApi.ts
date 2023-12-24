@@ -33,12 +33,35 @@ export type Notam = {
 export const notamApi = createApi({
   reducerPath: "notam",
   baseQuery: fetchWithAuth,
+  tagTypes: ["notamSeen"],
   endpoints: (builder) => ({
     getByIcaoCodes: builder.query<{ [icao: string]: Notam[] }, string[]>({
       query: (icaoList) => ({
         url: "notam/",
         params: icaoList.map((icao) => ["icao", icao]),
       }),
+    }),
+    getSeen: builder.query<string[], void>({
+      query: () => ({
+        url: "notam/read",
+      }),
+      providesTags: ["notamSeen"],
+    }),
+    seen: builder.mutation<void, string>({
+      query: (id) => ({
+        url: "notam/read",
+        params: { id },
+        method: "POST",
+      }),
+      invalidatesTags: ["notamSeen"],
+    }),
+    unseen: builder.mutation<void, string>({
+      query: (id) => ({
+        url: "notam/read",
+        params: { id },
+        method: "DELETE",
+      }),
+      invalidatesTags: ["notamSeen"],
     }),
   }),
 })
@@ -58,6 +81,17 @@ const selectAllNotams = createSelector(
   (state, icaos) =>
     notamApi.endpoints.getByIcaoCodes.select(icaos)(state)?.data ?? {},
 )
+
+const selectReadNotamIds = createSelector(
+  (state: RootState) => state,
+  (state) => notamApi.endpoints.getSeen.select()(state)?.data ?? [],
+)
+
+export const selectNotamIsRead = createCachedSelector(
+  selectReadNotamIds,
+  (_state: RootState, icao: string) => icao,
+  (readNotamIds, notamId) => readNotamIds.includes(notamId),
+)((_state, notamId) => notamId)
 
 export const selectNotamsByDesignator = createCachedSelector(
   selectAllNotams,

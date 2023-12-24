@@ -5,6 +5,13 @@ from typing import Dict, List, Optional, Set
 from pydantic import AwareDatetime, BaseModel
 
 from pynotam import Notam
+from sqlmodel import Column, DateTime, Field, SQLModel
+
+
+class NotamSeen(SQLModel, table=True):
+    notam_id: str = Field(primary_key=True, nullable=False)
+    cid: str = Field(primary_key=True, nullable=False)
+    seen_at: AwareDatetime = Field(sa_column=Column(DateTime(timezone=True), nullable=False))
 
 
 class NotamModel(BaseModel):
