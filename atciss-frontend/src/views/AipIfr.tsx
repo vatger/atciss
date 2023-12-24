@@ -1,10 +1,5 @@
-/** @jsxImportSource theme-ui */
+import { ZoomableIframe } from "../components/ZoomableIframe"
 
-const AipIfr = () => (
-  <iframe
-    sx={{ flex: "auto" }}
-    src="https://aip.dfs.de/BasicIFR/pages/C00001.html"
-  ></iframe>
+export const AipIfr = () => (
+  <ZoomableIframe src="https://aip.dfs.de/BasicIFR/pages/C00001.html" />
 )
-
-export { AipIfr }
