@@ -364,8 +364,8 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
           ["ed/JEV", "ed/HOL", "ed/MNS", "ed/CEL", "ed/OSE", "ed/HVL"],
         ],
         majorAerodromes: ["EDDH", "EDDW"],
-        aerodromes: ["EDHI", "EDHL", "EDXW", "EDDV", "ETMN", "ETNH", "ETNS", "ETNT"],
-        relevantAerodromes: [],
+        aerodromes: ["EDHI", "EDHL", "EDXW", "ETMN", "ETNH", "ETNS", "ETNT"],
+        relevantAerodromes: ["EDDV"],
         areas: {
           "ED-R10 Todendorf-Putlos": [
             "ED-R10A",
@@ -405,8 +405,8 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
           ["ed/SAS", "ed/HAME", "ed/HAN", "ed/HOL", "ed/SOL", "ed/CEL"],
         ],
         majorAerodromes: ["EDDB"],
-        aerodromes: ["EDAH", "ETNL", "ETSH", "EDDV", "EDDC"],
-        relevantAerodromes: [],
+        aerodromes: ["EDAH", "ETNL"],
+        relevantAerodromes: ["ETSH", "EDDV", "EDDC", "EDDP"],
         areas: {
           "ED-R17 Jaegerbrueck": ["ED-R17"],
           "ED-R71 Klietz": ["ED-R71"],
@@ -432,8 +432,8 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
           ["ed/SAS", "ed/TRN", "ed/MEI", "ed/SPE", "ed/SAL", "ed/TRN"],
         ],
         majorAerodromes: ["EDDB"],
-        aerodromes: ["ETSH", "EDDC"],
-        relevantAerodromes: [],
+        aerodromes: ["ETSH"],
+        relevantAerodromes: ["EDDC", "EDDP"],
         areas: {
           "ED-R54 Lehnin": ["ED-R70"],
           "ED-R70 Holzdorf": ["ED-R70"],
@@ -468,8 +468,8 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
           ["ed/PADL", "ed/PADH", "ed/HMM", "ed/GIN", "ed/GED", "ed/HEF"],
         ],
         majorAerodromes: ["EDDV"],
-        aerodromes: ["EDVE", "EDVK", "EDDW", "EDDB", "EDDP", "EDLP", "EDDG"],
-        relevantAerodromes: [],
+        aerodromes: ["EDVE", "EDVK"],
+        relevantAerodromes: ["EDDW", "EDDB", "EDDP", "EDLP", "EDDG"],
         areas: {
           "ED-R30 Ehra-Lessien": ["ED-R30"],
           "ED-R31 Bergen": ["ED-R31"],
