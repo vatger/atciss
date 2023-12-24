@@ -385,6 +385,10 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
       },
       "ATIS OST": {
         staffingSectors: [
+          "ed/DBAN",
+          "ed/DBAS",
+          "ed/DBDN",
+          "ed/DBDS",
           "ed/CEL",
           "ed/SOL",
           "ed/JEV",
@@ -425,6 +429,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
           "ed/DBDS",
           "ed/TRN",
           "ed/SAS",
+          "ed/SHR",
         ],
         statusSectors: [
           ["ed/BOR", "ed/FLG", "ed/MAR", "ed/MRZ"],
