@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 
-import { Flex, Grid, ThemeUIStyleObject } from "theme-ui"
+import { Flex, ThemeUIStyleObject } from "theme-ui"
 import { MapContainer } from "react-leaflet"
 import L, { LatLngTuple } from "leaflet"
 import "leaflet/dist/leaflet.css"
@@ -14,6 +14,7 @@ import { selectAreasOnMap } from "../services/mapSlice"
 import { selectSectorsOnMap } from "../services/mapSlice"
 import { useAppSelector } from "../app/hooks"
 import { useRef } from "react"
+import { SidebarLayout } from "../components/SidebarLayout"
 
 const position = [49.2646, 11.4134] as LatLngTuple
 
@@ -23,14 +24,7 @@ export const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const map = useRef<L.Map>(null)
 
   return (
-    <Grid
-      sx={{
-        ...sx,
-        gap: 1,
-        gridTemplateColumns: "4fr 1fr",
-        width: "100%",
-      }}
-    >
+    <SidebarLayout sx={sx}>
       <MapContainer
         center={position}
         zoom={7}
@@ -49,6 +43,6 @@ export const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       >
         <MapControls map={map} />
       </Flex>
-    </Grid>
+    </SidebarLayout>
   )
 }

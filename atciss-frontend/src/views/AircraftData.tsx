@@ -7,6 +7,7 @@ import { selectQuery, setQuery } from "../services/aircraftSlice"
 import { XmButton } from "../components/XmButton"
 import { AircraftInfoBox } from "../components/AircraftInfoBox"
 import { XmInput } from "../components/XmInput"
+import { SidebarLayout } from "../components/SidebarLayout"
 
 const airbusAC = {
   A319: "A319",
@@ -97,13 +98,7 @@ export const AircraftData = () => {
   }
 
   return (
-    <Grid
-      sx={{
-        gap: "1rem",
-        gridTemplateColumns: "4fr 1fr",
-        width: "100%",
-      }}
-    >
+    <SidebarLayout>
       <Box sx={{ padding: 2, overflowX: "auto" }}>{content}</Box>
       <Flex
         sx={{
@@ -148,6 +143,6 @@ export const AircraftData = () => {
           </Box>
         ))}
       </Flex>
-    </Grid>
+    </SidebarLayout>
   )
 }

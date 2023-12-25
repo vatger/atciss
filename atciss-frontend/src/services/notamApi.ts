@@ -5,6 +5,7 @@ import { RootState } from "../app/store"
 import { selectNotamDesignators } from "./configSlice"
 import { createCachedSelector } from "re-reselect"
 import { DateTime } from "luxon"
+import { selectReadFiltered } from "./notamSlice"
 
 export type Notam = {
   full_text: string
@@ -95,8 +96,13 @@ export const selectNotamIsRead = createCachedSelector(
 
 export const selectNotamsByDesignator = createCachedSelector(
   selectAllNotams,
+  selectReadFiltered,
+  selectReadNotamIds,
   (_state: RootState, icao: string) => icao,
-  (notams, icao) => notams[icao ?? ""] ?? [],
+  (notams, readFiltered, readNotams, icao) =>
+    (notams[icao ?? ""] ?? []).filter(
+      (n) => !readFiltered || !readNotams.includes(n.notam_id),
+    ),
 )((_state, icao) => icao)
 
 export const selectActiveNotamsByDesignator = createCachedSelector(

@@ -23,6 +23,7 @@ import { setupListeners } from "@reduxjs/toolkit/query"
 import { atisAfwReducer } from "../services/atisAfwSlice"
 import { sectorstatusApi } from "../services/sectorstatusApi"
 import { agreementsApi } from "../services/agreementsApi"
+import { notamReducer } from "../services/notamSlice"
 
 export const store = configureStore({
   reducer: {
@@ -49,6 +50,7 @@ export const store = configureStore({
     auth: authReducer,
     config: configReducer,
     map: mapReducer,
+    notamView: notamReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()

@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 
-import { Box, Flex, Grid, Input, ThemeUIStyleObject } from "theme-ui"
+import { Box, Flex, Input, ThemeUIStyleObject } from "theme-ui"
 import { SectorControls } from "../components/SectorControls"
 import { useAppSelector } from "../app/hooks"
 import { selectOwnedSectors } from "../services/activePositionSlice"
@@ -11,6 +11,7 @@ import {
 } from "../services/loaApi"
 import { LoaRow } from "../components/LoaRow"
 import { useState } from "react"
+import { SidebarLayout } from "../components/SidebarLayout"
 
 export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const ownedSectors = useAppSelector(selectOwnedSectors)
@@ -25,14 +26,7 @@ export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   )
 
   return (
-    <Grid
-      sx={{
-        ...sx,
-        gap: "1rem",
-        gridTemplateColumns: "4fr 1fr",
-        width: "100%",
-      }}
-    >
+    <SidebarLayout sx={sx}>
       <Box>
         <table sx={{ width: "100%" }}>
           <thead>
@@ -83,6 +77,6 @@ export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         />
         <SectorControls />
       </Flex>
-    </Grid>
+    </SidebarLayout>
   )
 }
