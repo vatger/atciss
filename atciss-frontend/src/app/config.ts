@@ -429,7 +429,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
           "ed/DBDS",
           "ed/TRN",
           "ed/SAS",
-          "ed/SHR",
+          "ed/RHR",
         ],
         statusSectors: [
           ["ed/BOR", "ed/FLG", "ed/MAR", "ed/MRZ"],
