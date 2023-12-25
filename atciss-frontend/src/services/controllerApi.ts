@@ -1,6 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithAuth } from "../app/auth"
 import { createSelector } from "@reduxjs/toolkit"
+import { selectUser } from "../app/auth/slice"
 
 export interface Controller {
   cid: number
@@ -37,4 +38,11 @@ export const usePollControllers: typeof controllerApi.useGetQuery = (
 export const selectControllers = createSelector(
   controllerApi.endpoints.get.select(),
   (response) => response.data ?? [],
+)
+
+export const selectMe = createSelector(
+  selectControllers,
+  selectUser,
+  (controllers, user) =>
+    controllers.find((c) => c.cid.toString() === user?.cid),
 )

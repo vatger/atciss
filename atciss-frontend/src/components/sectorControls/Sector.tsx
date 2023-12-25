@@ -2,14 +2,14 @@ import { Flex } from "theme-ui"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import {
   selectIsPositionActive,
-  selectSyncedToOnline,
+  selectSectorsSyncedToOnline,
   setPosition,
 } from "../../services/activePositionSlice"
 import { selectPosition } from "../../services/sectorApi"
 
 export const Sector = ({ id }: { id: string }) => {
   const dispatch = useAppDispatch()
-  const syncedToOnline = useAppSelector(selectSyncedToOnline)
+  const syncedToOnline = useAppSelector(selectSectorsSyncedToOnline)
   const isActive = useAppSelector((store) => selectIsPositionActive(store, id))
   const position = useAppSelector((store) => selectPosition(store, id))
 

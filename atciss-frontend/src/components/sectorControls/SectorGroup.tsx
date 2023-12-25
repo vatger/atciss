@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import {
   selectIsGroupActive,
   selectPositionsByGroup,
-  selectSyncedToOnline,
+  selectSectorsSyncedToOnline,
   setPositionGroup,
 } from "../../services/activePositionSlice"
 
@@ -15,7 +15,7 @@ export const SectorGroup = ({ group }: { group: string }) => {
     selectPositionsByGroup(store, group),
   )
   const isActive = useAppSelector((store) => selectIsGroupActive(store, group))
-  const syncedToOnline = useAppSelector(selectSyncedToOnline)
+  const syncedToOnline = useAppSelector(selectSectorsSyncedToOnline)
   const dispatch = useAppDispatch()
 
   return (
