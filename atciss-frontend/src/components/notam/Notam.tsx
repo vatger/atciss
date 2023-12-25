@@ -6,6 +6,7 @@ import {
 } from "../../services/notamApi"
 import { useAppSelector } from "../../app/hooks"
 import { Box, Flex, Text } from "theme-ui"
+import { MouseEventHandler } from "react"
 
 export const Notam = ({ notam }: { notam: NotamType }) => {
   const valid_till = DateTime.fromISO(notam.valid_till).toUTC()
@@ -17,7 +18,10 @@ export const Notam = ({ notam }: { notam: NotamType }) => {
   const [seen] = notamApi.useSeenMutation()
   const [unseen] = notamApi.useUnseenMutation()
 
-  const click = () => {
+  const click: MouseEventHandler<HTMLDivElement> = (e) => {
+    if (!window.getSelection()?.isCollapsed) {
+      return e.stopPropagation()
+    }
     if (isRead) {
       unseen(notam.notam_id)
     } else {
