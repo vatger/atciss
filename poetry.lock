@@ -678,13 +678,13 @@ files = [
 
 [[package]]
 name = "geoalchemy2"
-version = "0.14.2"
+version = "0.14.3"
 description = "Using SQLAlchemy with Spatial Databases"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "GeoAlchemy2-0.14.2-py3-none-any.whl", hash = "sha256:ca81c2d924c0724458102bac93f68f3e3c337a65fcb811af5e504ce7c5d56ac2"},
-    {file = "GeoAlchemy2-0.14.2.tar.gz", hash = "sha256:8ca023dcb9a36c6d312f3b4aee631d66385264e2fc9feb0ab0f446eb5609407d"},
+    {file = "GeoAlchemy2-0.14.3-py3-none-any.whl", hash = "sha256:a727198394fcc4760a27c4c5bff8b9f4f79324ec2dd98c4c1b8a7026b8918d81"},
+    {file = "GeoAlchemy2-0.14.3.tar.gz", hash = "sha256:79c432b10dd8c48422f794eaf9a1200929de14f41d2396923bfe92f4c6abaf89"},
 ]
 
 [package.dependencies]
@@ -2697,4 +2697,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "2ca4b856ae4b8dcf9eead1dcabcbd30ef196d847f6d04142b294f0a9aa53ab92"
+content-hash = "c06da1a10f25289535b67a73fcd35b8ab7de6cfa107f4e67c917effacc72ae7a"
