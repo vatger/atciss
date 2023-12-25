@@ -11,6 +11,7 @@ type MapState = {
   sectors: boolean
   areas: boolean
   loa: boolean
+  search: string
 }
 
 const mapSlice = createSlice({
@@ -24,6 +25,7 @@ const mapSlice = createSlice({
     sectors: localStorageOrDefault("map.sectors", true),
     areas: localStorageOrDefault("map.areas", true),
     loa: localStorageOrDefault("map.loa", false),
+    search: "",
   } as MapState,
   reducers: {
     setLevel(state, { payload: level }: PayloadAction<number>) {
@@ -62,6 +64,9 @@ const mapSlice = createSlice({
     setLoa(state, { payload: active }: PayloadAction<boolean>) {
       state.loa = setLocalStorage("map.loa", active)
     },
+    setSearch(state, { payload: search }: PayloadAction<string>) {
+      state.search = search
+    },
   },
 })
 
@@ -73,6 +78,7 @@ export const selectSatelliteOnMap = (store: RootState) => store.map.satellite
 export const selectSectorsOnMap = (store: RootState) => store.map.sectors
 export const selectAreasOnMap = (store: RootState) => store.map.areas
 export const selectLoaOnMap = (store: RootState) => store.map.loa
+export const selectSearch = (store: RootState) => store.map.search
 
 export const {
   setLevel,
@@ -83,5 +89,6 @@ export const {
   setSectors,
   setAreas,
   setLoa,
+  setSearch,
 } = mapSlice.actions
 export const { reducer: mapReducer } = mapSlice

@@ -1,4 +1,4 @@
-import { Box, Text } from "theme-ui"
+import { Box, Grid, Text } from "theme-ui"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { usePollControllers } from "../../services/controllerApi"
 import {
@@ -19,8 +19,11 @@ import {
 } from "../../services/mapSlice"
 import { SectorControls } from "../SectorControls"
 import { LevelChoice } from "./LevelChoice"
+import { RefObject } from "react"
+import { Map } from "leaflet"
+import { Search } from "./search/Search"
 
-export const MapControls = () => {
+export const MapControls = ({ map }: { map: RefObject<Map> }) => {
   const dispatch = useAppDispatch()
 
   const { data: _c } = usePollControllers()
@@ -34,7 +37,7 @@ export const MapControls = () => {
   const loa = useAppSelector(selectLoaOnMap)
 
   return (
-    <>
+    <Search map={map}>
       <Box>
         <Text as="label" variant="label">
           <input
@@ -107,6 +110,6 @@ export const MapControls = () => {
       </Box>
       {(areas || sectors || loa) && <LevelChoice />}
       {sectors && <SectorControls />}
-    </>
+    </Search>
   )
 }

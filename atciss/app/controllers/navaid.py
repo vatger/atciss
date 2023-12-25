@@ -21,3 +21,15 @@ async def get_naviads(
         results = await db.session.execute(stmt)
 
     return results.scalars().all()
+
+
+@router.get("/navaid/search")
+async def search_naviads(
+    search: Annotated[str, Query(alias="q")],
+    _: Annotated[User, Depends(get_user)],
+) -> Sequence[Navaid]:
+    async with db():
+        stmt = select(Navaid).where(Navaid.designator.istartswith(search))
+        results = await db.session.execute(stmt)
+
+    return results.scalars().all()
