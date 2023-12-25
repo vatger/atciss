@@ -34,7 +34,6 @@
     "@types/luxon": "^3.3.7",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
-    "@types/testing-library__jest-dom": "^6.0.0",
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
