@@ -54,7 +54,7 @@ app.conf.beat_schedule = {
     "update_aliases": {"task": "update_aliases", "schedule": crontab(minute="*/60")},
     "update_dfs_aixm": {
         "task": "update_dfs_aixm",
-        "schedule": crontab(day_of_week="1"),
+        "schedule": crontab(day_of_week="1", hour="3", minute="0"),
     },
 }
 
