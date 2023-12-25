@@ -3,7 +3,8 @@
   font-family: "Source Code Pro";
   font-style: normal;
   font-weight: 700;
-  src: local("Source Code Pro Bold"),
+  src:
+    local("Source Code Pro Bold"),
     url("/fonts/SourceCodePro-Bold.otf.woff2") format("woff2");
 }
 @font-face {
@@ -11,7 +12,8 @@
   font-family: "Source Code Pro";
   font-style: italic;
   font-weight: 700;
-  src: local("Source Code Pro Bold Italic"),
+  src:
+    local("Source Code Pro Bold Italic"),
     url("/fonts/SourceCodePro-BoldIt.otf.woff2") format("woff2");
 }
 @font-face {
@@ -19,7 +21,8 @@
   font-family: "Source Code Pro";
   font-style: italic;
   font-weight: 400;
-  src: local("Source Code Pro Italic"),
+  src:
+    local("Source Code Pro Italic"),
     url("/fonts/SourceCodePro-It.otf.woff2") format("woff2");
 }
 @font-face {
@@ -27,7 +30,8 @@
   font-family: "Source Code Pro";
   font-style: normal;
   font-weight: 400;
-  src: local("Source Code Pro"),
+  src:
+    local("Source Code Pro"),
     url("/fonts/SourceCodePro-Regular.otf.woff2") format("woff2");
 }
 
@@ -36,7 +40,8 @@
   font-family: "Source Sans Pro";
   font-style: normal;
   font-weight: 700;
-  src: local("Source Sans Pro Bold"),
+  src:
+    local("Source Sans Pro Bold"),
     url("/fonts/SourceSans3-Bold.otf.woff2") format("woff2");
 }
 @font-face {
@@ -44,7 +49,8 @@
   font-family: "Source Sans Pro";
   font-style: italic;
   font-weight: 700;
-  src: local("Source Sans Pro Bold Italic"),
+  src:
+    local("Source Sans Pro Bold Italic"),
     url("/fonts/SourceSans3-BoldIt.otf.woff2") format("woff2");
 }
 @font-face {
@@ -52,7 +58,8 @@
   font-family: "Source Sans Pro";
   font-style: italic;
   font-weight: 400;
-  src: local("Source Sans Pro Italic"),
+  src:
+    local("Source Sans Pro Italic"),
     url("/fonts/SourceSans3-It.otf.woff2") format("woff2");
 }
 @font-face {
@@ -60,7 +67,8 @@
   font-family: "Source Sans Pro";
   font-style: normal;
   font-weight: 400;
-  src: local("Source Sans Pro"),
+  src:
+    local("Source Sans Pro"),
     url("/fonts/SourceSans3-Regular.otf.woff2") format("woff2");
 }
 
@@ -79,9 +87,19 @@ body {
 
 body {
   margin: 0;
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-    "Helvetica Neue", sans-serif;
+  font-family:
+    "Source Sans Pro",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Roboto",
+    "Oxygen",
+    "Ubuntu",
+    "Cantarell",
+    "Fira Sans",
+    "Droid Sans",
+    "Helvetica Neue",
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-variant-numeric: slashed-zero;
@@ -142,7 +160,8 @@ pre {
 .navaid-label {
   margin-left: 0.7rem;
   margin-top: -0.3rem;
-  text-shadow: 1px 1px 0 var(--theme-ui-colors-background),
+  text-shadow:
+    1px 1px 0 var(--theme-ui-colors-background),
     -1px -1px 0 var(--theme-ui-colors-background),
     1px -1px 0 var(--theme-ui-colors-background),
     -1px 1px 0 var(--theme-ui-colors-background),

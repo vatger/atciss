@@ -10,7 +10,7 @@ const beautify_recat = (recat: string) =>
     C: "C|H↓",
     B: "B|H↑",
     A: "A|SH",
-  }[recat ?? ""] ?? "?")
+  })[recat ?? ""] ?? "?"
 
 export const AircraftInfoBox = ({ ac }: { ac: AircraftPerformanceData }) => {
   const formatter = Intl.NumberFormat(undefined, {

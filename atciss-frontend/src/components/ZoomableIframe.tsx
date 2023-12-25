@@ -29,7 +29,10 @@ export const ZoomableIframe = ({ src }: { src: string }) => {
           zIndex: 2,
         }}
       >
-        <Text onClick={() => setZoom(1)} sx={{ cursor: "pointer" }}>
+        <Text
+          onClick={() => setZoom(1)}
+          sx={{ cursor: "pointer", color: "black" }}
+        >
           🔎 {zoom.toFixed(2)}x
         </Text>
         <Button onClick={() => setZoom(zoom - 0.2)}>-</Button>
