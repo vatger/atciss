@@ -4,7 +4,7 @@ import { SearchInput } from "./SearchInput"
 import { ICONS } from "../NavaidMarker"
 import { useAppSelector } from "../../../app/hooks"
 import { selectSearch } from "../../../services/mapSlice"
-import { ReactNode, RefObject } from "react"
+import { Fragment, ReactNode, RefObject } from "react"
 import { Map } from "leaflet"
 
 export const Search = ({
@@ -27,9 +27,9 @@ export const Search = ({
         <SearchInput />
       </Box>
       {search.length >= 2 ? (
-        <Grid sx={{ gridTemplateColumns: "auto 1fr" }}>
+        <Grid sx={{ gridTemplateColumns: "auto 1fr", overflow: "auto" }}>
           {foundNavaids?.map((n) => (
-            <>
+            <Fragment key={n.id}>
               <Box
                 sx={{ cursor: "pointer" }}
                 onClick={() => map.current?.flyTo(n.location, 9)}
@@ -54,7 +54,7 @@ export const Search = ({
                   {n.frequency && ` (${n.frequency})`}
                 </Box>
               </Box>
-            </>
+            </Fragment>
           ))}
         </Grid>
       ) : (
