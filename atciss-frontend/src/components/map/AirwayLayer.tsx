@@ -1,8 +1,13 @@
 import { LayerGroup, Polyline, Popup } from "react-leaflet"
-import { useAppSelector } from "../../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { airwayApi, selectAirways } from "../../services/airwayApi"
-import { selectAirwayLowerUpper } from "../../services/mapSlice"
+import {
+  selectAirwayLowerUpper,
+  selectSelectedAirway,
+  setSelectedAirway,
+} from "../../services/mapSlice"
 import { Box, Flex, Text } from "theme-ui"
+import { useAppTheme } from "../../app/theme"
 
 const levelFormat = (level: number, uom: "FL" | "FT") =>
   uom === "FL" ? `FL${level}` : `${level}ft`
@@ -11,6 +16,9 @@ export const AirwayLayer = () => {
   const lowerUpper = useAppSelector(selectAirwayLowerUpper)
   const { data: _a } = airwayApi.useGetQuery(lowerUpper)
   const airways = useAppSelector(selectAirways)
+  const selectedAirway = useAppSelector(selectSelectedAirway)
+  const dispatch = useAppDispatch()
+  const theme = useAppTheme()
 
   return (
     <LayerGroup>
@@ -18,7 +26,21 @@ export const AirwayLayer = () => {
         <Polyline
           key={airway.id}
           positions={airway.curve_extent}
-          pathOptions={{ weight: 1, color: "#000000" }}
+          pathOptions={{
+            weight: selectedAirway == airway.airway_id ? 3 : 1,
+            color:
+              selectedAirway == airway.airway_id
+                ? theme.colors.primary
+                : "#000000",
+          }}
+          eventHandlers={{
+            click: () => {
+              dispatch(setSelectedAirway(airway.airway_id))
+            },
+            popupclose: () => {
+              dispatch(setSelectedAirway(null))
+            },
+          }}
         >
           <Popup>
             <Flex

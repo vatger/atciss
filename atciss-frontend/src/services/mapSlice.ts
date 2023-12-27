@@ -12,6 +12,7 @@ type MapState = {
   areas: boolean
   loa: boolean
   search: string
+  selectedAirway: string | null
   airway: boolean
   airwayLowerUpper: "LOWER" | "UPPER"
 }
@@ -28,6 +29,7 @@ const mapSlice = createSlice({
     areas: localStorageOrDefault("map.areas", true),
     loa: localStorageOrDefault("map.loa", false),
     search: "",
+    selectedAirway: null,
     airway: localStorageOrDefault("map.airway", false),
     airwayLowerUpper: localStorageOrDefault("map.airwayLowerUpper", "LOWER"),
   } as MapState,
@@ -71,6 +73,9 @@ const mapSlice = createSlice({
     setSearch(state, { payload: search }: PayloadAction<string>) {
       state.search = search
     },
+    setSelectedAirway(state, { payload: airway }: PayloadAction<string | null>) {
+      state.selectedAirway = airway
+    },
     setAirwayOnMap(state, { payload: active }: PayloadAction<boolean>) {
       state.airway = setLocalStorage("map.airway", active)
     },
@@ -96,6 +101,8 @@ export const selectAreasOnMap = (store: RootState) => store.map.areas
 export const selectLoaOnMap = (store: RootState) => store.map.loa
 export const selectSearch = (store: RootState) => store.map.search
 export const selectAirwayOnMap = (store: RootState) => store.map.airway
+export const selectSelectedAirway = (store: RootState) =>
+  store.map.selectedAirway
 export const selectAirwayLowerUpper = (store: RootState) =>
   store.map.airwayLowerUpper
 
@@ -111,5 +118,6 @@ export const {
   setSearch,
   setAirwayOnMap,
   setAirwayLowerUpper,
+  setSelectedAirway,
 } = mapSlice.actions
 export const { reducer: mapReducer } = mapSlice
