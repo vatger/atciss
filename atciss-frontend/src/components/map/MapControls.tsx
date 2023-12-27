@@ -1,7 +1,9 @@
-import { Box, Grid, Text } from "theme-ui"
+import { Box, Flex, Grid, Text } from "theme-ui"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { usePollControllers } from "../../services/controllerApi"
 import {
+  selectAirwayLowerUpper,
+  selectAirwayOnMap,
   selectAreasOnMap,
   selectDFSOnMap,
   selectDWDOnMap,
@@ -9,6 +11,8 @@ import {
   selectOpenFlightmapsOnMap,
   selectSatelliteOnMap,
   selectSectorsOnMap,
+  setAirwayLowerUpper,
+  setAirwayOnMap,
   setAreas,
   setDFS,
   setDWD,
@@ -35,6 +39,8 @@ export const MapControls = ({ map }: { map: RefObject<Map> }) => {
   const sectors = useAppSelector(selectSectorsOnMap)
   const areas = useAppSelector(selectAreasOnMap)
   const loa = useAppSelector(selectLoaOnMap)
+  const airways = useAppSelector(selectAirwayOnMap)
+  const airwayLowerUpper = useAppSelector(selectAirwayLowerUpper)
 
   return (
     <Search map={map}>
@@ -108,6 +114,27 @@ export const MapControls = ({ map }: { map: RefObject<Map> }) => {
           LOA
         </Text>
       </Box>
+      <Flex sx={{ gap: 2 }}>
+        <Text as="label" variant="label">
+          <input
+            type="checkbox"
+            checked={airways}
+            onChange={(e) => dispatch(setAirwayOnMap(e.target.checked))}
+          />
+          Airways
+        </Text>
+        {airways && (
+          <select
+            value={airwayLowerUpper}
+            onChange={(e) =>
+              dispatch(setAirwayLowerUpper(e.target.value as "LOWER" | "UPPER"))
+            }
+          >
+            <option value="LOWER">Lower</option>
+            <option value="UPPER">Upper</option>
+          </select>
+        )}
+      </Flex>
       {(areas || sectors || loa) && <LevelChoice />}
       {sectors && <SectorControls />}
     </Search>

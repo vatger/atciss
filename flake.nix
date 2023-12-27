@@ -68,6 +68,9 @@
             fastapi-async-sqlalchemy = pyprev.fastapi-async-sqlalchemy.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
             });
+            frozenlist = pyprev.frozenlist.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.expandvars];
+            });
             alembic = pyprev.alembic.overridePythonAttrs (old: {
               meta = old.meta // {priority = -1;};
             });

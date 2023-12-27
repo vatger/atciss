@@ -24,11 +24,13 @@ import { atisAfwReducer } from "../services/atisAfwSlice"
 import { sectorstatusApi } from "../services/sectorstatusApi"
 import { agreementsApi } from "../services/agreementsApi"
 import { notamReducer } from "../services/notamSlice"
+import { airwayApi } from "../services/airwayApi"
 
 export const store = configureStore({
   reducer: {
     [adApi.reducerPath]: adApi.reducer,
     [aircraftApi.reducerPath]: aircraftApi.reducer,
+    [airwayApi.reducerPath]: airwayApi.reducer,
     [agreementsApi.reducerPath]: agreementsApi.reducer,
     [areaApi.reducerPath]: areaApi.reducer,
     [atisApi.reducerPath]: atisApi.reducer,
@@ -56,6 +58,7 @@ export const store = configureStore({
     getDefaultMiddleware()
       .concat(adApi.middleware)
       .concat(aircraftApi.middleware)
+      .concat(airwayApi.middleware)
       .concat(agreementsApi.middleware)
       .concat(areaApi.middleware)
       .concat(atisApi.middleware)

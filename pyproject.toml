@@ -37,8 +37,7 @@ python-jose = "^3.3.0"
 redis = "^4"
 shapely = "^2.0.2"
 sqlalchemy = { version = "^2.0.21", extras = [ "asyncio" ] }
-# fork until sqlalchemy2 support is merged https://github.com/AntonDeMeester/sqlmodel
-sqlmodel = {git = "https://github.com/AntonDeMeester/sqlmodel.git", rev = "f926d9d01915581562d48ce1cea608163418afa4"}
+sqlmodel = "0.0.14"
 uvicorn = {extras = ["standard"], version = "^0.25"}
 watchfiles = "~0.21.0"
 xmltodict = "^0.13.0"

@@ -9,6 +9,7 @@ from .controllers import (
     admin,
     agreements,
     airspace,
+    airway,
     aliases,
     areas,
     atis,
@@ -34,6 +35,7 @@ root_api_router.include_router(ad.router, tags=["aerodrome"])
 root_api_router.include_router(admin.router, tags=["admin"])
 root_api_router.include_router(agreements.router, tags=["info"])
 root_api_router.include_router(airspace.router, tags=["airspace"])
+root_api_router.include_router(airway.router, tags=["airway"])
 root_api_router.include_router(aliases.router, tags=["info"])
 root_api_router.include_router(areas.router, tags=["airspace"])
 root_api_router.include_router(atis.router, tags=["aerodrome"])

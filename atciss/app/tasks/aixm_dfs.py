@@ -4,11 +4,13 @@ from typing import Any
 from uuid import UUID
 
 from loguru import logger
-from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlmodel import select
 
 from atciss.app.utils.aiohttp_client import AiohttpClient
 from atciss.app.utils.aixm_parser import AIXMData, AIXMFeature
 from atciss.app.views.aerodrome import Aerodrome
+from atciss.app.views.airway import Airway, AirwaySegment
 from atciss.app.views.navaid import Navaid
 from atciss.app.views.runway import Runway, RunwayDirection
 from .utils import create_or_update
@@ -23,6 +25,7 @@ async def fetch_dfs_aixm_data():
     runway_url = get_dfs_aixm_url(datasets, 0, "ED Runway")
     navaid_url = get_dfs_aixm_url(datasets, 0, "ED Navaids")
     waypoint_url = get_dfs_aixm_url(datasets, 0, "ED Waypoints")
+    route_url = get_dfs_aixm_url(datasets, 0, "ED Routes")
 
     if ad_url is None:
         logger.error("Could not retrieve ADHP URL, aborting.")
@@ -40,6 +43,10 @@ async def fetch_dfs_aixm_data():
         logger.error("Could not retrieve WPT URL, aborting.")
         return
 
+    if route_url is None:
+        logger.error("Could not retrieve Routes URL, aborting.")
+        return
+
     async with AiohttpClient.get() as aiohttp_client:
         ad_res = await aiohttp_client.get(ad_url)
         ad_bytes = io.BytesIO(await ad_res.read())
@@ -49,8 +56,10 @@ async def fetch_dfs_aixm_data():
         navaid_bytes = io.BytesIO(await navaid_res.read())
         waypoint_res = await aiohttp_client.get(waypoint_url)
         waypoint_bytes = io.BytesIO(await waypoint_res.read())
+        route_res = await aiohttp_client.get(route_url)
+        route_bytes = io.BytesIO(await route_res.read())
 
-        aixm_data = [ad_bytes, runway_bytes, navaid_bytes, waypoint_bytes]
+        aixm_data = [ad_bytes, runway_bytes, navaid_bytes, waypoint_bytes, route_bytes]
 
     aixm = AIXMData(aixm_data)
 
@@ -62,6 +71,7 @@ async def fetch_dfs_aixm_data():
     await process_runways(aixm, engine)
     await process_waypoints(aixm, engine)
     await process_navaids(aixm, engine)
+    await process_routes(aixm, engine)
 
 
 async def process_aerodromes(aixm: AIXMData, engine: Any):
@@ -224,6 +234,81 @@ async def process_navaid(aixm: AIXMData, feature: AIXMFeature, engine: Any):
             data["channel"] = eq["aixm:channel", "#text"].get()
 
     await create_or_update(engine, Navaid, UUID(feature.id), data)
+
+
+async def process_routes(aixm: AIXMData, engine: Any):
+    logger.info("Processing DFS route data")
+
+    routes = []
+
+    for route in aixm.type("Route"):
+        routes.append({
+            "id": UUID(route.id),
+            "designatorPrefix": route["aixm:designatorPrefix"].get(),
+            "designatorSecondLetter": route["aixm:designatorSecondLetter"].get(),
+            "designatorNumber": route["aixm:designatorNumber"].get(),
+            "locationDesignator": route["aixm:locationDesignator"].get(),
+        })
+
+    route_segments = []
+
+    for route_segment in aixm.type("RouteSegment"):
+        upper_limit = route_segment["aixm:upperLimit", "#text"].int()
+        upper_limit_uom = route_segment["aixm:upperLimit", "@uom"].get()
+        lower_limit = route_segment["aixm:lowerLimit", "#text"].int()
+        lower_limit_uom = route_segment["aixm:lowerLimit", "@uom"].get()
+        start_dict = route_segment["aixm:start", "aixm:EnRouteSegmentPoint"].get()
+        start = start_dict.get(
+            "aixm:pointChoice_fixDesignatedPoint", start_dict.get("aixm:pointChoice_navaidSystem")
+        )
+        try:
+            start_id = UUID(start["@xlink:href"][9:])
+        except ValueError:
+            # non-ED: gml urn, not uuid
+            stmt = select(Navaid).where(Navaid.designator == start["@xlink:title"])
+            async with AsyncSession(engine) as session:
+                wpt = await session.scalar(stmt)
+                start_id = wpt.id
+        end_dict = route_segment["aixm:end", "aixm:EnRouteSegmentPoint"].get()
+        end = end_dict.get(
+            "aixm:pointChoice_fixDesignatedPoint", end_dict.get("aixm:pointChoice_navaidSystem")
+        )
+        try:
+            end_id = UUID(end["@xlink:href"][9:])
+        except ValueError:
+            # non-ED: gml urn, not uuid
+            stmt = select(Navaid).where(Navaid.designator == end["@xlink:title"])
+            async with AsyncSession(engine) as session:
+                wpt = await session.scalar(stmt)
+                end_id = wpt.id
+
+        route_segments.append({
+            "id": UUID(route_segment.id),
+            "level": route_segment["aixm:level"].get(),
+            "true_track": route_segment["aixm:trueTrack"].float(),
+            "reverse_true_track": route_segment["aixm:reverseTrueTrack"].float(),
+            "length": route_segment["aixm:length", "#text"].float(),
+            "upper_limit": upper_limit,
+            "upper_limit_uom": upper_limit_uom,
+            "lower_limit": lower_limit,
+            "lower_limit_uom": lower_limit_uom,
+            "start_id": start_id,
+            "end_id": end_id,
+            "airway_id": UUID(route_segment["aixm:routeFormed", "@xlink:href"].get()[9:]),
+            "curve_extent": route_segment[
+                "aixm:curveExtent",
+                "aixm:Curve",
+                "gml:segments",
+                "gml:LineStringSegment",
+                "gml:posList",
+            ].get(),
+        })
+
+    for route in routes:
+        await create_or_update(engine, Airway, route["id"], route)
+
+    for route_segment in route_segments:
+        await create_or_update(engine, AirwaySegment, route_segment["id"], route_segment)
 
 
 def ensure_list(thing: Any | list[Any]) -> list[Any]:
