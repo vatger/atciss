@@ -18,7 +18,7 @@ asyncpg = "^0.29.0"
 beautifulsoup4 = "^4.12.2"
 celery = {version = "^5.3.5", extras = ["redis,gevent"]}
 click = "^8.1"
-fastapi = "^0.106"
+fastapi = "^0.108"
 fastapi-async-sqlalchemy = "^0.6.0"
 geoalchemy2 = "^0.14.3"
 greenlet = "^3.0.3"
