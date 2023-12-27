@@ -242,13 +242,15 @@ async def process_routes(aixm: AIXMData, engine: Any):
     routes = []
 
     for route in aixm.type("Route"):
-        routes.append({
-            "id": UUID(route.id),
-            "designatorPrefix": route["aixm:designatorPrefix"].get(),
-            "designatorSecondLetter": route["aixm:designatorSecondLetter"].get(),
-            "designatorNumber": route["aixm:designatorNumber"].get(),
-            "locationDesignator": route["aixm:locationDesignator"].get(),
-        })
+        routes.append(
+            {
+                "id": UUID(route.id),
+                "designatorPrefix": route["aixm:designatorPrefix"].get(),
+                "designatorSecondLetter": route["aixm:designatorSecondLetter"].get(),
+                "designatorNumber": route["aixm:designatorNumber"].get(),
+                "locationDesignator": route["aixm:locationDesignator"].get(),
+            }
+        )
 
     route_segments = []
 
@@ -282,27 +284,29 @@ async def process_routes(aixm: AIXMData, engine: Any):
                 wpt = await session.scalar(stmt)
                 end_id = wpt.id
 
-        route_segments.append({
-            "id": UUID(route_segment.id),
-            "level": route_segment["aixm:level"].get(),
-            "true_track": route_segment["aixm:trueTrack"].float(),
-            "reverse_true_track": route_segment["aixm:reverseTrueTrack"].float(),
-            "length": route_segment["aixm:length", "#text"].float(),
-            "upper_limit": upper_limit,
-            "upper_limit_uom": upper_limit_uom,
-            "lower_limit": lower_limit,
-            "lower_limit_uom": lower_limit_uom,
-            "start_id": start_id,
-            "end_id": end_id,
-            "airway_id": UUID(route_segment["aixm:routeFormed", "@xlink:href"].get()[9:]),
-            "curve_extent": route_segment[
-                "aixm:curveExtent",
-                "aixm:Curve",
-                "gml:segments",
-                "gml:LineStringSegment",
-                "gml:posList",
-            ].get(),
-        })
+        route_segments.append(
+            {
+                "id": UUID(route_segment.id),
+                "level": route_segment["aixm:level"].get(),
+                "true_track": route_segment["aixm:trueTrack"].float(),
+                "reverse_true_track": route_segment["aixm:reverseTrueTrack"].float(),
+                "length": route_segment["aixm:length", "#text"].float(),
+                "upper_limit": upper_limit,
+                "upper_limit_uom": upper_limit_uom,
+                "lower_limit": lower_limit,
+                "lower_limit_uom": lower_limit_uom,
+                "start_id": start_id,
+                "end_id": end_id,
+                "airway_id": UUID(route_segment["aixm:routeFormed", "@xlink:href"].get()[9:]),
+                "curve_extent": route_segment[
+                    "aixm:curveExtent",
+                    "aixm:Curve",
+                    "gml:segments",
+                    "gml:LineStringSegment",
+                    "gml:posList",
+                ].get(),
+            }
+        )
 
     for route in routes:
         await create_or_update(engine, Airway, route["id"], route)
