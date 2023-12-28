@@ -8,13 +8,31 @@ using [Nix Flakes](https://nixos.wiki/wiki/Flakes) and
 ## Run the API
 
 ```
-poetry run atciss serve
+atciss serve
 ```
 
-## Build docker image
+## Run the worker
 
 ```
-nix build .#image
+celery -A atciss worker
+```
+
+Automatic scheduling of tasks:
+```
+celery -A atciss beat
+```
+
+## Run the frontend
+
+```
+npm start
+```
+
+## Build docker images
+
+```
+nix build .#frontend-image
+nix build .#backend-image
 ```
 
 ## Migrations

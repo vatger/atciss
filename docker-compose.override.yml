@@ -4,13 +4,10 @@ services:
       context: .
       target: dev
     entrypoint:
-      - "uvicorn"
-      - "atciss.app.asgi:get_application"
-      - "--factory"
-      - "--host=0.0.0.0"
-      - "--reload"
-      - "--reload-dir=/code/atciss"
-      - "--log-level=info"
+      - python
+      - -m
+      - atciss.cli.cli
+      - serve
     ports:
       - "8000:8000"
     environment:

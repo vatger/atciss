@@ -59,11 +59,6 @@ async def run_async_migrations():
 async def lifespan(_app: FastAPI):
     await run_async_migrations()
     yield
-
-
-async def on_shutdown() -> None:
-    """Shutdown event handler."""
-    logger.debug("Execute FastAPI shutdown event handler")
     await RedisClient.close()
 
 
@@ -78,7 +73,6 @@ def get_application() -> FastAPI:
         version=settings.VERSION,
         docs_url=settings.DOCS_URL,
         lifespan=lifespan,
-        on_shutdown=[on_shutdown],
     )
 
     _ = PrometheusInstrumentator().instrument(app).expose(app, tags=["monitoring"])

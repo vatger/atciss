@@ -41,16 +41,15 @@ def serve(host: str, port: int, workers: int) -> None:
     """Define command-line interface serve command."""
     setup_logging()
 
-    config = uvicorn.Config(
+    uvicorn.run(
         "atciss.app.asgi:get_application",
         factory=True,
         host=host,
         port=port,
-        workers=workers,
+        workers=None if settings.DEBUG else workers,
         log_level=settings.LOG_LEVEL.lower(),
         log_config=None,
         proxy_headers=True,
         forwarded_allow_ips=["*"],
+        reload=settings.DEBUG,
     )
-    server = uvicorn.Server(config)
-    server.run()
