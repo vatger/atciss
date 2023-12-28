@@ -16,7 +16,7 @@ import { LOA } from "../views/LOA"
 import { AipIfr } from "../views/AipIfr"
 import { AipVfr } from "../views/AipVfr"
 import { Windy } from "../views/Windy"
-import { Alias, aliasLoader } from "../views/Alias"
+import { Alias } from "../views/Alias"
 import { AircraftData } from "../views/AircraftData"
 import { TrafficBoard } from "../views/TrafficBoard"
 import { Admin } from "../views/Admin"
@@ -42,7 +42,6 @@ const router = createBrowserRouter([
       {
         path: "alias",
         element: <Alias />,
-        loader: aliasLoader,
       },
       {
         path: "wx",

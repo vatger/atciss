@@ -12,13 +12,6 @@ from ..utils import AiohttpClient, ClientConnectorError, RedisClient
 from ...config import settings
 
 
-NOTAM_FIRS = [
-    "EDGG",
-    "EDMM",
-    "EDWW",
-]
-
-
 def convert_notam(n: str) -> Optional[Notam]:
     try:
         return Notam.from_str(f"({n.strip()})")
@@ -35,7 +28,7 @@ async def fetch_notam() -> None:
         url=str(settings.DATABASE_DSN),
     )
 
-    all_icao = NOTAM_FIRS
+    all_icao = settings.FIRS
     async with AsyncSession(engine) as session:
         statement = select(Aerodrome)
         ads = await session.execute(statement)

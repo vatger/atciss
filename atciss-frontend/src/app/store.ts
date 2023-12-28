@@ -25,13 +25,15 @@ import { sectorstatusApi } from "../services/sectorstatusApi"
 import { agreementsApi } from "../services/agreementsApi"
 import { notamReducer } from "../services/notamSlice"
 import { airwayApi } from "../services/airwayApi"
+import { aliasesApi } from "../services/aliasesApi"
 
 export const store = configureStore({
   reducer: {
     [adApi.reducerPath]: adApi.reducer,
+    [agreementsApi.reducerPath]: agreementsApi.reducer,
     [aircraftApi.reducerPath]: aircraftApi.reducer,
     [airwayApi.reducerPath]: airwayApi.reducer,
-    [agreementsApi.reducerPath]: agreementsApi.reducer,
+    [aliasesApi.reducerPath]: aliasesApi.reducer,
     [areaApi.reducerPath]: areaApi.reducer,
     [atisApi.reducerPath]: atisApi.reducer,
     [bookingApi.reducerPath]: bookingApi.reducer,
@@ -57,9 +59,10 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(adApi.middleware)
+      .concat(agreementsApi.middleware)
       .concat(aircraftApi.middleware)
       .concat(airwayApi.middleware)
-      .concat(agreementsApi.middleware)
+      .concat(aliasesApi.middleware)
       .concat(areaApi.middleware)
       .concat(atisApi.middleware)
       .concat(bookingApi.middleware)

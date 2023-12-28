@@ -3,6 +3,7 @@ from loguru import logger
 from atciss.app.utils.redis import RedisClient
 
 from ..utils import AiohttpClient, ClientConnectorError
+from ...config import settings
 
 
 async def fetch_aliases() -> None:
@@ -10,20 +11,26 @@ async def fetch_aliases() -> None:
     redis_client = await RedisClient.get()
 
     async with AiohttpClient.get() as aiohttp_client:
-        try:
-            res_edmm = await aiohttp_client.get(
-                "https://raw.githubusercontent.com/VATGER-Nav/aliases/EDMM/EDMM.txt",
-            )
-            res = await aiohttp_client.get(
-                "https://raw.githubusercontent.com/VATGER-Nav/aliases/EDMM/alias.txt",
-            )
-        except ClientConnectorError as e:
-            logger.exception(f"Could not connect {e!s}")
-            return
+        for fir in settings.FIRS:
+            try:
+                res_fir = await aiohttp_client.get(
+                    f"https://raw.githubusercontent.com/VATGER-Nav/aliases/{fir}/{fir}.txt",
+                )
+                fir_aliases = await res_fir.text() if res_fir.ok else ""
+            except ClientConnectorError as e:
+                logger.exception(f"Could not connect {e!s}")
+                fir_aliases = ""
 
-        aliases = await res_edmm.text() + "\n" + await res.text()
+            try:
+                res = await aiohttp_client.get(
+                    f"https://raw.githubusercontent.com/VATGER-Nav/aliases/{fir}/alias.txt",
+                )
+                aliases = await res.text()
+            except ClientConnectorError as e:
+                logger.exception(f"Could not connect {e!s}")
+                return
 
-    async with redis_client.pipeline() as pipe:
-        pipe.set("aliases", aliases)
+            async with redis_client.pipeline() as pipe:
+                pipe.set(f"aliases:{fir}", "\n".join([fir_aliases, aliases]))
 
-        await pipe.execute()
+                await pipe.execute()

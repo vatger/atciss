@@ -1,22 +1,13 @@
 /** @jsxImportSource theme-ui */
 
-import { useLoaderData } from "react-router-dom"
-import { LOCAL_STORAGE_JWT_KEY } from "../app/auth/slice"
-
-export const aliasLoader = async () => {
-  const token = localStorage.getItem(LOCAL_STORAGE_JWT_KEY)
-
-  const response = await fetch(`/api/aliases`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-
-  return response.json()
-}
+import { useAppSelector } from "../app/hooks"
+import { selectActiveFir } from "../services/configSlice"
+import { aliasesApi, selectAliases } from "../services/aliasesApi"
 
 export const Alias = () => {
-  const aliases = useLoaderData() as string
+  const fir = useAppSelector(selectActiveFir)
+  const { data: _a } = aliasesApi.useGetQuery(fir)
+  const aliases = useAppSelector(selectAliases)
 
   return (
     <pre

@@ -29,6 +29,8 @@ class Application(BaseSettings):
 
     ADMINS: list[str] = ["10000010", "1519114", "1586741", "1532450"]  # dev  # RG  # AL  # FP
 
+    FIRS: list[str] = ["EDGG", "EDMM", "EDWW"]
+
     # check https://github.com/lennycolton/vatglasses-data/tree/main/data
     SECTOR_REGIONS: list[str] = [
         "ed",
