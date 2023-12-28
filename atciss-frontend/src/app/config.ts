@@ -149,6 +149,40 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
           "ED-R141 Altenstadt": ["ED-R141"],
         },
       },
+      "ATIS OST": {
+        staffingSectors: [
+          "ed/BBG",
+          "ed/HOF",
+          "ed/HAL",
+          "ed/GER",
+          "ed/MEI",
+          "ed/FRK",
+          "ed/TRN",
+          "ed/TRS",
+          "ed/SAS",
+          "ed/ALB",
+          "ed/RDG",
+        ],
+        statusSectors: [
+          ["ed/SOL", "ed/DON", "ed/ERL", "ed/SAL", "ed/SPE", "ed/HVL"],
+          ["ed/WUR", "ed/HRZ", "ed/HOF", "ed/HAL", "ed/MEI", "ed/BOR"],
+          ["ed/FUL", "ed/RDG", "ed/BBG", "ed/GER", "ed/SAS", "ed/FLG"],
+          ["ed/GED", "ed/ALB", "ed/FRK", "ed/TRN", "ed/TRS", "ed/DBAS"],
+          // LKAA, EPWW
+        ],
+        majorAerodromes: ["EDDN", "EDDP"],
+        aerodromes: ["EDDC", "EDDE", "EDQM"],
+        relevantAerodromes: [],
+        areas: {
+          "ED-R136": ["ED-R136A", "ED-R136B", "ED-R136C"],
+          "ED-R137": ["ED-R137A", "ED-R137B"],
+          "ED-R144/170/171": ["ED-R144", "ED-R170A", "ED-R170B", "ED-R171"],
+          "ED-R208": ["ED-R208A", "ED-R208B"],
+          "ED-R308": ["ED-R308"],
+          "ED-R95": ["ED-R95A", "ED-R95B"],
+          "ED-R45": ["ED-R45"],
+        },
+      },
       "ATIS EDDN": {
         staffingSectors: [
           "ed/BBG",
