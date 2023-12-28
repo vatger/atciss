@@ -99,22 +99,26 @@ export const selectNotamsByDesignator = createCachedSelector(
   selectReadFiltered,
   selectReadNotamIds,
   (_state: RootState, icao: string) => icao,
-  (notams, readFiltered, readNotams, icao) =>
-    (notams[icao ?? ""] ?? []).filter(
-      (n) => !readFiltered || !readNotams.includes(n.notam_id),
-    ),
+  (notams, readFiltered, readNotams, icao) => {
+    const icaoNotams = (notams[icao ?? ""] ?? []).filter(
+      (n) => DateTime.utc() <= DateTime.fromISO(n.valid_till).toUTC(),
+    )
+
+    return {
+      notams: icaoNotams.filter(
+        (n) => !readFiltered || !readNotams.includes(n.notam_id),
+      ),
+      total: icaoNotams.length,
+    }
+  },
 )((_state, icao) => icao)
 
 export const selectActiveNotamsByDesignator = createCachedSelector(
   selectNotamsByDesignator,
   (_state: RootState, icao: string) => icao,
   (notams) =>
-    notams
-      .filter(
-        (n) =>
-          DateTime.utc() <= DateTime.fromISO(n.valid_till).toUTC() &&
-          DateTime.utc() >= DateTime.fromISO(n.valid_from).toUTC(),
-      )
+    notams.notams
+      .filter((n) => DateTime.utc() >= DateTime.fromISO(n.valid_from).toUTC())
       .sort((n1, n2) => n1.notam_code.localeCompare(n2.notam_code)),
 )((_state, icao) => icao)
 
@@ -122,7 +126,7 @@ export const selectInactiveNotamsByDesignator = createCachedSelector(
   selectNotamsByDesignator,
   (_state: RootState, icao: string) => icao,
   (notams) =>
-    notams
+    notams.notams
       .filter((n) => DateTime.utc() < DateTime.fromISO(n.valid_from).toUTC())
       .sort((n1, n2) =>
         DateTime.fromISO(n1.valid_from).toUTC() <
@@ -130,4 +134,10 @@ export const selectInactiveNotamsByDesignator = createCachedSelector(
           ? -1
           : 1,
       ),
+)((_state, icao) => icao)
+
+export const selectTotalNotamsByDesignator = createCachedSelector(
+  selectNotamsByDesignator,
+  (_state: RootState, icao: string) => icao,
+  (notams) => notams.total,
 )((_state, icao) => icao)

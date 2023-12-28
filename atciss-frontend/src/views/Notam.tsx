@@ -17,7 +17,6 @@ export const Notams = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         {designators.map((icao, idx) => {
           return (
             <details key={icao} open={idx === 0}>
-              <summary>{icao}</summary>
               <NotamsByDesignator icao={icao} />
             </details>
           )
