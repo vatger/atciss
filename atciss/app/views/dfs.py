@@ -42,7 +42,7 @@ class Amdt(BaseModel):
     amdt: int = Field(alias="Amdt")
     amdt_date: str = Field(alias="AmdtDate")
     amdt_numeric: str = Field(alias="AmdtNumeric")
-    metadata: Metadata = Field(alias="Metadata")
+    metadata: Metadata | None = Field(alias="Metadata")
 
 
 class DFSDataset(BaseModel):

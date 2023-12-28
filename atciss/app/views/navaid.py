@@ -1,6 +1,6 @@
-from typing import Any, Optional
+from typing import Optional
 import uuid
-from geoalchemy2 import Geometry
+from geoalchemy2 import Geometry, WKBElement, WKTElement
 from pydantic import ConfigDict, field_serializer, field_validator
 from sqlmodel import Column, Field, Relationship, SQLModel
 
@@ -10,17 +10,19 @@ from atciss.app.views.runway import RunwayDirection
 
 
 class Navaid(SQLModel, table=True):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, nullable=False)
     designator: str = Field(nullable=False)
     type: str = Field(nullable=False)
-    location: Any = Field(sa_column=Column(Geometry("Point")))
+    location: WKTElement | WKBElement = Field(sa_column=Column(Geometry("Point")))
     channel: Optional[str] = None
     frequency: Optional[float] = None
-    aerodrome_id: Optional[uuid.UUID] = Field(nullable=True, foreign_key="aerodrome.id")
+    aerodrome_id: Optional[uuid.UUID] = Field(
+        nullable=True, default=None, foreign_key="aerodrome.id"
+    )
     runway_direction_id: Optional[uuid.UUID] = Field(
-        nullable=True, foreign_key="runway_direction.id"
+        nullable=True, default=None, foreign_key="runway_direction.id"
     )
     remark: Optional[str] = None
     operation_remark: Optional[str] = None

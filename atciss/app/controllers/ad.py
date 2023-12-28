@@ -1,5 +1,5 @@
 """Application controllers - metar."""
-from typing import Annotated, Dict, List, cast
+from typing import Annotated, cast
 from fastapi import APIRouter, Depends, Query
 from fastapi_async_sqlalchemy import db
 from sqlmodel import select
@@ -12,13 +12,11 @@ from ..models import User
 router = APIRouter()
 
 
-@router.get(
-    "/aerodrome",
-)
+@router.get("/aerodrome")
 async def ad_get(
-    icao: Annotated[List[str], Query(...)],
+    icao: Annotated[list[str], Query(...)],
     user: Annotated[User, Depends(get_user)],
-) -> Dict[str, Aerodrome]:
+) -> dict[str, Aerodrome]:
     """Get METAR for airport."""
     async with db():
         stmt = select(Aerodrome).where(Aerodrome.icao_designator.in_(icao))

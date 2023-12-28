@@ -73,7 +73,10 @@ const mapSlice = createSlice({
     setSearch(state, { payload: search }: PayloadAction<string>) {
       state.search = search
     },
-    setSelectedAirway(state, { payload: airway }: PayloadAction<string | null>) {
+    setSelectedAirway(
+      state,
+      { payload: airway }: PayloadAction<string | null>,
+    ) {
       state.selectedAirway = airway
     },
     setAirwayOnMap(state, { payload: active }: PayloadAction<boolean>) {

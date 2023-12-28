@@ -90,6 +90,7 @@ async def process_aerodromes(aixm: AIXMData, engine: Any):
             continue
 
         ad_data = {
+            "id": UUID(ad.id),
             "name": ad["aixm:name"].get(),
             "type": ad["aixm:type"].get(),
             "local_designator": ad["aixm:designator"].get(),
@@ -105,8 +106,7 @@ async def process_aerodromes(aixm: AIXMData, engine: Any):
             "source": "DFS",
         }
         logger.trace(f"Processing AD: {ad_data}")
-
-        await create_or_update(engine, Aerodrome, UUID(ad.id), ad_data)
+        await create_or_update(engine, Aerodrome, ad_data)
 
 
 async def process_runways(aixm: AIXMData, engine: Any):
@@ -133,6 +133,7 @@ async def process_runways(aixm: AIXMData, engine: Any):
         ad = UUID(rwy["aixm:associatedAirportHeliport", "@xlink:href"].get()[9:])
 
         rwy_data = {
+            "id": UUID(rwy.id),
             "designator": rwy["aixm:designator"].get(),
             "length": rwy["aixm:nominalLength", "#text"].float(),
             "aerodrome_id": ad,
@@ -144,17 +145,15 @@ async def process_runways(aixm: AIXMData, engine: Any):
             ].get(),
         }
 
-        await create_or_update(engine, Runway, UUID(rwy.id), rwy_data)
+        await create_or_update(engine, Runway, rwy_data)
         for rwy_direction in rwy_directions:
-            await create_or_update(engine, RunwayDirection, rwy_direction["id"], rwy_direction)
+            await create_or_update(engine, RunwayDirection, rwy_direction)
 
 
 async def process_waypoints(aixm: AIXMData, engine: Any):
     logger.info("Processing DFS waypoint data")
 
     for wpt in aixm.type("DesignatedPoint"):
-        wpt_id = UUID(wpt.id)
-
         navaid_type = wpt["aixm:type"].get()
         if navaid_type is None:
             logger.warning("Waypoint {wpt_id} has no type, discarding.")
@@ -163,6 +162,7 @@ async def process_waypoints(aixm: AIXMData, engine: Any):
         navaid_type = navaid_type.replace("OTHER:ADHP", "TERMINAL")
 
         wpt_data = {
+            "id": UUID(wpt.id),
             "designator": wpt["aixm:designator"].get(),
             "name": wpt["aixm:name"].get(),
             "type": navaid_type,
@@ -189,7 +189,7 @@ async def process_waypoints(aixm: AIXMData, engine: Any):
         if remark is str:  # TODO: VRP/Multiple remarks
             wpt_data["remark"] = remark
 
-        await create_or_update(engine, Navaid, wpt_id, wpt_data)
+        await create_or_update(engine, Navaid, wpt_data)
 
 
 async def process_navaids(aixm: AIXMData, engine: Any):
@@ -211,6 +211,7 @@ async def process_navaids(aixm: AIXMData, engine: Any):
 
 async def process_navaid(aixm: AIXMData, feature: AIXMFeature, engine: Any):
     data = {
+        "id": UUID(feature.id),
         "designator": feature["aixm:designator"].get(),
         "name": feature["aixm:name"].get() or feature["aixm:designator"].get(),
         "type": feature["aixm:type"].get(),
@@ -233,7 +234,7 @@ async def process_navaid(aixm: AIXMData, feature: AIXMFeature, engine: Any):
         if eq["aixm:channel", "#text"].get() is not None:
             data["channel"] = eq["aixm:channel", "#text"].get()
 
-    await create_or_update(engine, Navaid, UUID(feature.id), data)
+    await create_or_update(engine, Navaid, data)
 
 
 async def process_routes(aixm: AIXMData, engine: Any):
@@ -309,10 +310,10 @@ async def process_routes(aixm: AIXMData, engine: Any):
         )
 
     for route in routes:
-        await create_or_update(engine, Airway, route["id"], route)
+        await create_or_update(engine, Airway, route)
 
     for route_segment in route_segments:
-        await create_or_update(engine, AirwaySegment, route_segment["id"], route_segment)
+        await create_or_update(engine, AirwaySegment, route_segment)
 
 
 def ensure_list(thing: Any | list[Any]) -> list[Any]:
