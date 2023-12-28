@@ -1,11 +1,15 @@
 import { LayerGroup } from "react-leaflet"
-import { navaidApi, selectSearchedNavaids } from "../../services/navaidApi"
+import {
+  navaidApi,
+  selectAirwayNavaids,
+  selectSearchedNavaids,
+} from "../../services/navaidApi"
 import { loaApi, selectLoaCops } from "../../services/loaApi"
 import { useAppSelector } from "../../app/hooks"
 import { selectOwnedSectors } from "../../services/activePositionSlice"
 import { LoaNavaidMarker } from "./LoaNavaidMarker"
 import { NavaidMarker } from "./NavaidMarker"
-import { selectLoaOnMap } from "../../services/mapSlice"
+import { selectLoaOnMap, selectSelectedAirway } from "../../services/mapSlice"
 
 export const NavaidLayer = () => {
   const loaOnMap = useAppSelector(selectLoaOnMap)
@@ -17,6 +21,12 @@ export const NavaidLayer = () => {
   const { data: _n } = navaidApi.useGetByDesignatorsQuery(cops)
   const foundNavaids = useAppSelector(selectSearchedNavaids)
 
+  const airway = useAppSelector(selectSelectedAirway)
+  const { data: _a } = navaidApi.useGetByAirwayQuery(airway, {
+    skip: airway === null,
+  })
+  const airwayNavaids = useAppSelector(selectAirwayNavaids)
+
   return (
     <LayerGroup>
       {loaOnMap &&
@@ -24,7 +34,9 @@ export const NavaidLayer = () => {
       {foundNavaids.map((navaid) => (
         <NavaidMarker navaid={navaid} key={navaid.id} />
       ))}
-      )
+      {airwayNavaids.map((navaid) => (
+        <NavaidMarker navaid={navaid} key={navaid.id} />
+      ))}
     </LayerGroup>
   )
 }

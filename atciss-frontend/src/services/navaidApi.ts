@@ -5,7 +5,7 @@ import { createSelector } from "@reduxjs/toolkit"
 import { createCachedSelector } from "re-reselect"
 import { selectLoaCops } from "./loaApi"
 import { LatLngExpression } from "leaflet"
-import { selectSearch } from "./mapSlice"
+import { selectSearch, selectSelectedAirway } from "./mapSlice"
 
 export interface Navaid {
   id: string
@@ -36,6 +36,11 @@ export const navaidApi = createApi({
         params: { q: searchStr },
       }),
     }),
+    getByAirway: builder.query<Navaid[], string | null>({
+      query: (airway) => ({
+        url: `navaid/airway/${airway}`,
+      }),
+    }),
   }),
 })
 
@@ -57,4 +62,11 @@ export const selectSearchedNavaids = createSelector(
   selectSearch,
   (state, search) =>
     navaidApi.endpoints.search.select(search)(state)?.data ?? [],
+)
+
+export const selectAirwayNavaids = createSelector(
+  (state: RootState) => state,
+  selectSelectedAirway,
+  (state, airway) =>
+    navaidApi.endpoints.getByAirway.select(airway)(state)?.data ?? [],
 )
