@@ -41,6 +41,7 @@ export const AirwayLayer = () => {
               dispatch(setSelectedAirway(null))
             },
           }}
+          pane="shadowPane"
         >
           <Popup>
             <Flex
