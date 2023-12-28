@@ -40,6 +40,7 @@ async def process(
             manufacturer = mfs[ac.manufacturer].name
 
         ac_data = {
+            "id": UUID(ac.id),
             "manufacturer": manufacturer,
             "model": ac.name,
             "iata_designator": ac.iataCode,
@@ -76,12 +77,13 @@ async def process(
         ac_data["cat_arc"] = get_arc(get_float(ac_data["wingspan"]))
         ac_data["cat_app"] = get_app_code(get_float(ac_data["v_at"]))
 
-        await create_or_update(engine, AircraftPerformanceData, UUID(ac.id), ac_data)
+        await create_or_update(engine, AircraftPerformanceData, ac_data)
 
 
 async def process_own_data(engine: Any, data: Sequence[AircraftPerformanceData]):
     for ac in data:
         ac_data = {
+            "id": ac.id,
             "manufacturer": ac.manufacturer,
             "model": ac.model,
             "iata_designator": ac.iata_designator,
@@ -108,7 +110,7 @@ async def process_own_data(engine: Any, data: Sequence[AircraftPerformanceData])
             "cat_app": get_app_code(get_float(ac.v_at)),
         }
 
-        await create_or_update(engine, AircraftPerformanceData, ac.id, ac_data)
+        await create_or_update(engine, AircraftPerformanceData, ac_data)
 
 
 def get_wtc(

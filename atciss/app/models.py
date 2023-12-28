@@ -24,26 +24,26 @@ class AircraftPerformanceData(SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, nullable=False)
     manufacturer: str
     model: str
-    icao_designator: Optional[str]
-    iata_designator: Optional[str]
-    type: Optional[str]
-    engine_type: Optional[str]
+    icao_designator: Optional[str] = None
+    iata_designator: Optional[str] = None
+    type: Optional[str] = None
+    engine_type: Optional[str] = None
     engine_count: int
-    fuel_capacity: Optional[float]
-    service_ceiling: Optional[float]
-    wingspan: Optional[float]
-    length: Optional[float]
-    height: Optional[float]
-    max_speed_indicated: Optional[float]
-    max_speed_mach: Optional[float]
-    max_weight_taxi: Optional[float]
-    max_weight_takeoff: Optional[float]
-    max_weight_landing: Optional[float]
-    max_weight_zerofuel: Optional[float]
-    v_at: Optional[float]
-    cruise_tas: Optional[float]
-    cat_wtc: Optional[str]
-    cat_recat: Optional[str]
-    cat_app: Optional[str]
-    cat_arc: Optional[str]
-    remarks: Optional[str]
+    fuel_capacity: Optional[float] = None
+    service_ceiling: Optional[float] = None
+    wingspan: Optional[float] = None
+    length: Optional[float] = None
+    height: Optional[float] = None
+    max_speed_indicated: Optional[float] = None
+    max_speed_mach: Optional[float] = None
+    max_weight_taxi: Optional[float] = None
+    max_weight_takeoff: Optional[float] = None
+    max_weight_landing: Optional[float] = None
+    max_weight_zerofuel: Optional[float] = None
+    v_at: Optional[float] = None
+    cruise_tas: Optional[float] = None
+    cat_wtc: Optional[str] = None
+    cat_recat: Optional[str] = None
+    cat_app: Optional[str] = None
+    cat_arc: Optional[str] = None
+    remarks: Optional[str] = None
