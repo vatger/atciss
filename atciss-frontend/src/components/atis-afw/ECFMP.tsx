@@ -29,8 +29,8 @@ export const ECFMP = () => {
             <Text variant="label">{fm.ident}</Text>:{" "}
             <Text variant="label" sx={{ color: active ? "green" : "primary" }}>
               {active
-                ? `Active, expires ${end.toRelative()}`
-                : `Will be active ${start.toRelative()}`}
+                ? `Active, expires ${end.setLocale("en").toRelative()}`
+                : `Will be active ${start.setLocale("en").toRelative()}`}
             </Text>{" "}
             (
             {`${start.toFormat("y-MM-dd HH:mm")}-${end.toFormat(

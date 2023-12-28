@@ -56,23 +56,31 @@ export const Notam = ({ notam }: { notam: NotamType }) => {
           },
         }}
       >
-        <Box
+        <Flex
           title={`${valid_from.toFormat("y-MM-dd HH:mm")}-${
             valid_till.year !== 9999
               ? valid_till.toFormat("y-MM-dd HH:mm")
               : "permanent"
           }`}
+          sx={{ gap: 2, alignItems: "baseline" }}
         >
           <Text variant="label" sx={{ color: active ? "green" : "primary" }}>
             {active
               ? `Active, ${
                   valid_till.year !== 9999
-                    ? `expires ${valid_till.toRelative()}`
+                    ? `expires ${valid_till.setLocale("en").toRelative()}`
                     : "permanent"
                 }`
-              : `Will be active ${valid_from.toRelative()}`}
+              : `Will be active ${valid_from.setLocale("en").toRelative()}`}
           </Text>
-        </Box>
+          <Text sx={{ fontSize: 0 }}>
+            ({valid_from.toFormat("y-MM-dd HH:mm")}z-
+            {valid_till.year !== 9999
+              ? `${valid_till.toFormat("y-MM-dd HH:mm")}z`
+              : "permanent"}
+            )
+          </Text>
+        </Flex>
         <Text variant="label">
           {notam.notam_id} NOTAM{notam.notam_type[0]} {notam.ref_notam_id}
         </Text>

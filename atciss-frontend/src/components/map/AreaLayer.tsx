@@ -47,8 +47,8 @@ const Area = ({ area }: { area: AreaBooking }) => {
         <Box sx={{ fontSize: "1" }}>
           <Text variant="label" sx={{ color: active ? "#ff0000" : "#ff9900" }}>
             {active
-              ? `Active, deactivates ${end.toRelative()}`
-              : `Will be active ${start.toRelative()}`}
+              ? `Active, deactivates ${end.setLocale("en").toRelative()}`
+              : `Will be active ${start.setLocale("en").toRelative()}`}
           </Text>{" "}
         </Box>
         <Box sx={{ fontSize: "1" }}>

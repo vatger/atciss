@@ -32,8 +32,8 @@ export const Events = () => {
             <Text variant="label">{e.fir}</Text>:{" "}
             <Text variant="label" sx={{ color: active ? "green" : "primary" }}>
               {active
-                ? `Active, ends ${end.toRelative()}`
-                : `Will start ${start.toRelative()}`}
+                ? `Active, ends ${end.setLocale("en").toRelative()}`
+                : `Will start ${start.setLocale("en").toRelative()}`}
             </Text>{" "}
             (
             {`${start.toFormat("y-MM-dd HH:mm")}-${end.toFormat(
