@@ -468,7 +468,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
         statusSectors: [
           ["ed/BOR", "ed/FLG", "ed/MAR", "ed/MRZ"],
           ["ed/DBAN", "ed/DBAS", "ed/DBDN", "ed/DBDS"],
-          ["ed/SAS", "ed/TRN", "ed/MEI", "ed/SPE", "ed/SAL", "ed/TRN"],
+          ["ed/SAS", "ed/TRN", "ed/MEI", "ed/SPE", "ed/SAL"],
         ],
         majorAerodromes: ["EDDB"],
         aerodromes: ["ETSH"],
