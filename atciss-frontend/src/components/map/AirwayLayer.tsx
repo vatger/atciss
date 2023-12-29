@@ -1,4 +1,4 @@
-import { LayerGroup, Polyline, Popup } from "react-leaflet"
+import { LayerGroup, Polyline, Popup, useMap, useMapEvent } from "react-leaflet"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { airwayApi, selectAirways } from "../../services/airwayApi"
 import {
@@ -8,6 +8,7 @@ import {
 } from "../../services/mapSlice"
 import { Box, Flex, Text } from "theme-ui"
 import { useAppTheme } from "../../app/theme"
+import { useState } from "react"
 
 const levelFormat = (level: number, uom: "FL" | "FT") =>
   uom === "FL" ? `FL${level}` : `${level}ft`
@@ -19,6 +20,10 @@ export const AirwayLayer = () => {
   const selectedAirway = useAppSelector(selectSelectedAirway)
   const dispatch = useAppDispatch()
   const theme = useAppTheme()
+  const map = useMap()
+  const [zoom, setZoom] = useState(map.getZoom())
+
+  useMapEvent("zoomend", () => setZoom(map.getZoom()))
 
   return (
     <LayerGroup>
@@ -27,7 +32,8 @@ export const AirwayLayer = () => {
           key={airway.id}
           positions={airway.curve_extent}
           pathOptions={{
-            weight: selectedAirway == airway.airway_id ? 3 : 1,
+            weight:
+              (selectedAirway == airway.airway_id ? 3 : 1) * zoom > 8 ? 3 : 1,
             color:
               selectedAirway == airway.airway_id
                 ? theme.colors.primary
