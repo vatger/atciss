@@ -17,6 +17,7 @@ services:
       - "-A"
       - "atciss"
       - "worker"
+      - "--loglevel=info"
     environment:
       ATCISS_REDIS_HOST: redis
     depends_on:
@@ -33,6 +34,7 @@ services:
       - "atciss"
       - "beat"
       - "--schedule=/beat/celerybeat-schedule"
+      - "--loglevel=info"
     environment:
       ATCISS_REDIS_HOST: redis
     volumes:
