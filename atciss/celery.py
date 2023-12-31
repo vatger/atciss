@@ -50,7 +50,7 @@ app.conf.beat_schedule = {
     "update_taf_metar": {"task": "update_taf_metar", "schedule": crontab(minute="*")},
     "update_ecfmp": {"task": "update_ecfmp", "schedule": crontab(minute="*")},
     "update_areas": {"task": "update_areas", "schedule": crontab(minute="*/10")},
-    "update_booking": {"task": "update_booking", "schedule": crontab(minute="*/10")},
+    #"update_booking": {"task": "update_booking", "schedule": crontab(minute="*/10")},
     "update_aliases": {"task": "update_aliases", "schedule": crontab(minute="*/60")},
     "update_dfs_aixm": {
         "task": "update_dfs_aixm",
