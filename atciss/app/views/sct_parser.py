@@ -80,40 +80,51 @@ class SctTransformer(Transformer):
     def location(self, children: tuple[str, float, Coordinate]) -> Navaid | Aerodrome:
         designator, frequency, location = children
         if frequency > 0 and frequency < 150:
-            return Navaid(
-                designator=designator,
-                type="VOR",
-                frequency=frequency,
-                location=location,
-                aerodrome_id=None,
-                runway_direction_id=None,
-                source="SCT",
+            return Navaid.model_validate(
+                {
+                    "designator": designator,
+                    "type": "VOR",
+                    "frequency": frequency,
+                    "location": location,
+                    "aerodrome_id": None,
+                    "runway_direction_id": None,
+                    "source": "SCT",
+                }
             )
         elif frequency > 150:
-            return Navaid(
-                designator=designator,
-                type="NDB",
-                frequency=frequency,
-                location=location,
-                aerodrome_id=None,
-                runway_direction_id=None,
-                source="SCT",
+            return Navaid.model_validate(
+                {
+                    "designator": designator,
+                    "type": "NDB",
+                    "frequency": frequency,
+                    "location": location,
+                    "aerodrome_id": None,
+                    "runway_direction_id": None,
+                    "source": "SCT",
+                }
             )
         else:
-            return Aerodrome(
-                icao_designator=designator, type="AD", arp_location=location, source="SCT"
+            return Aerodrome.model_validate(
+                {
+                    "icao_designator": designator,
+                    "type": "AD",
+                    "arp_location": location,
+                    "source": "SCT",
+                }
             )
 
     def fix(self, children: tuple[str, Coordinate]) -> Navaid:
         designator, location = children
 
-        return Navaid(
-            designator=designator,
-            type="ICAO",
-            location=location,
-            aerodrome_id=None,
-            runway_direction_id=None,
-            source="SCT",
+        return Navaid.model_validate(
+            {
+                "designator": designator,
+                "type": "ICAO",
+                "location": location,
+                "aerodrome_id": None,
+                "runway_direction_id": None,
+                "source": "SCT",
+            }
         )
 
     def runway(self, children: tuple[str, str, int, int, Coordinate, Coordinate, str]):
