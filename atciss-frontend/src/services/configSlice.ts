@@ -51,6 +51,10 @@ export const selectFirAllAerodromes = createSelector(
   selectFirAerodromes,
   (major, ads) => [...new Set([...major, ...ads])],
 )
+export const selectNeighbourFirs = createSelector(
+  selectActiveFir,
+  (fir) => FIR_SETTINGS[fir].neighbourFirs,
+)
 export const selectNotamDesignators = createSelector(
   selectFirMajorAerodromes,
   selectFirAerodromes,

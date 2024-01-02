@@ -26,6 +26,7 @@ import { agreementsApi } from "../services/agreementsApi"
 import { notamReducer } from "../services/notamSlice"
 import { airwayApi } from "../services/airwayApi"
 import { aliasesApi } from "../services/aliasesApi"
+import { sigmetApi } from "../services/sigmetApi"
 
 export const store = configureStore({
   reducer: {
@@ -46,6 +47,7 @@ export const store = configureStore({
     [notamApi.reducerPath]: notamApi.reducer,
     [sectorApi.reducerPath]: sectorApi.reducer,
     [sectorstatusApi.reducerPath]: sectorstatusApi.reducer,
+    [sigmetApi.reducerPath]: sigmetApi.reducer,
     [tafApi.reducerPath]: tafApi.reducer,
     [trafficApi.reducerPath]: trafficApi.reducer,
     activePositions: activePositionReducer,
@@ -75,6 +77,7 @@ export const store = configureStore({
       .concat(notamApi.middleware)
       .concat(sectorApi.middleware)
       .concat(sectorstatusApi.middleware)
+      .concat(sigmetApi.middleware)
       .concat(tafApi.middleware)
       .concat(trafficApi.middleware),
 })

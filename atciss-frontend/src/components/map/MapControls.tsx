@@ -11,6 +11,7 @@ import {
   selectOpenFlightmapsOnMap,
   selectSatelliteOnMap,
   selectSectorsOnMap,
+  selectSigmetOnMap,
   setAirwayLowerUpper,
   setAirwayOnMap,
   setAreas,
@@ -20,6 +21,7 @@ import {
   setOpenFlightmaps,
   setSatellite,
   setSectors,
+  setSigmet,
 } from "../../services/mapSlice"
 import { SectorControls } from "../SectorControls"
 import { LevelChoice } from "./LevelChoice"
@@ -41,6 +43,7 @@ export const MapControls = ({ map }: { map: RefObject<Map> }) => {
   const loa = useAppSelector(selectLoaOnMap)
   const airways = useAppSelector(selectAirwayOnMap)
   const airwayLowerUpper = useAppSelector(selectAirwayLowerUpper)
+  const sigmet = useAppSelector(selectSigmetOnMap)
 
   return (
     <Search map={map}>
@@ -82,6 +85,16 @@ export const MapControls = ({ map }: { map: RefObject<Map> }) => {
             onChange={(e) => dispatch(setDWD(e.target.checked))}
           />
           DWD Niederschlagsradar
+        </Text>
+      </Box>
+      <Box>
+        <Text as="label" variant="label">
+          <input
+            type="checkbox"
+            checked={sigmet}
+            onChange={(e) => dispatch(setSigmet(e.target.checked))}
+          />
+          SIGMET
         </Text>
       </Box>
       <Box>

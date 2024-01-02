@@ -11,6 +11,7 @@ type MapState = {
   sectors: boolean
   areas: boolean
   loa: boolean
+  sigmet: boolean
   search: string
   selectedAirway: string | null
   airway: boolean
@@ -26,6 +27,7 @@ const mapSlice = createSlice({
     dwd: localStorageOrDefault("map.dwd", false),
     satellite: localStorageOrDefault("map.satellite", false),
     sectors: localStorageOrDefault("map.sectors", true),
+    sigmet: localStorageOrDefault("map.sigmet", false),
     areas: localStorageOrDefault("map.areas", true),
     loa: localStorageOrDefault("map.loa", false),
     search: "",
@@ -67,6 +69,9 @@ const mapSlice = createSlice({
     setAreas(state, { payload: active }: PayloadAction<boolean>) {
       state.areas = setLocalStorage("map.areas", active)
     },
+    setSigmet(state, { payload: active }: PayloadAction<boolean>) {
+      state.sigmet = setLocalStorage("map.sigmet", active)
+    },
     setLoa(state, { payload: active }: PayloadAction<boolean>) {
       state.loa = setLocalStorage("map.loa", active)
     },
@@ -102,6 +107,7 @@ export const selectSatelliteOnMap = (store: RootState) => store.map.satellite
 export const selectSectorsOnMap = (store: RootState) => store.map.sectors
 export const selectAreasOnMap = (store: RootState) => store.map.areas
 export const selectLoaOnMap = (store: RootState) => store.map.loa
+export const selectSigmetOnMap = (store: RootState) => store.map.sigmet
 export const selectSearch = (store: RootState) => store.map.search
 export const selectAirwayOnMap = (store: RootState) => store.map.airway
 export const selectSelectedAirway = (store: RootState) =>
@@ -118,6 +124,7 @@ export const {
   setSectors,
   setAreas,
   setLoa,
+  setSigmet,
   setSearch,
   setAirwayOnMap,
   setAirwayLowerUpper,
