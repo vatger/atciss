@@ -6,6 +6,7 @@ import celery.signals
 from asgiref.sync import async_to_sync
 
 from atciss.app.tasks.sct import import_sct
+from atciss.app.tasks.sigmet import fetch_sigmet
 
 from .app.tasks.basic_ad import fetch_basic_ads
 from .config import settings, redis
@@ -50,6 +51,7 @@ app.conf.beat_schedule = {
     "update_taf_metar": {"task": "update_taf_metar", "schedule": crontab(minute="*")},
     "update_ecfmp": {"task": "update_ecfmp", "schedule": crontab(minute="*")},
     "update_areas": {"task": "update_areas", "schedule": crontab(minute="*/10")},
+    "update_sigmet": {"task": "update_sigmet", "schedule": crontab(minute="*/10")},
     # "update_booking": {"task": "update_booking", "schedule": crontab(minute="*/10")},
     "update_aliases": {"task": "update_aliases", "schedule": crontab(minute="*/60")},
     "update_dfs_aixm": {
@@ -117,6 +119,11 @@ def update_aliases() -> None:
 @app.task(name="update_ac_data")
 def update_ac_data() -> None:
     async_to_sync(fetch_ac_data)()
+
+
+@app.task(name="update_sigmet")
+def update_sigmet() -> None:
+    async_to_sync(fetch_sigmet)()
 
 
 @app.task(name="import_sct_data")

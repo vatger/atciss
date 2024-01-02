@@ -1,13 +1,15 @@
 from math import copysign
-from typing import Tuple, cast
+from typing import Tuple, TypedDict, cast
 
 from geoalchemy2 import WKBElement, WKTElement
 from geoalchemy2.shape import to_shape
+from loguru import logger
 from pydantic import SerializationInfo
-from shapely import LineString, Point
+from shapely import LineString, Point, Polygon
 
 
 Coordinate = Tuple[float, float]
+LatLonDict = TypedDict("LatLonDict", {"lat": float, "lon": float})
 
 
 def convert_degsecmin_coordinate(coordinate: str) -> float:
@@ -59,3 +61,30 @@ def postgis_line_serialize(
     line: LineString = to_shape(loc)
 
     return [(point[1], point[0]) for point in line.coords]
+
+
+def postgis_polygon_validate(
+    data: list[tuple[str, str]] | list[LatLonDict] | str | WKBElement | WKTElement,
+) -> WKTElement | WKBElement:
+    if isinstance(data, (WKTElement, WKBElement)):
+        return data
+
+    if isinstance(data, str):
+        it = iter(data.split(" "))
+        data = cast(list[tuple[str, str]], zip(it, it))
+
+    logger.info(data)
+    if len(data) and isinstance(data[0], dict):
+        polygon = ",".join(f"{p['lat']} {p['lon']}" for p in cast(list[LatLonDict], data))
+    else:
+        polygon = ",".join(f"{p[1]} {p[0]}" for p in cast(list[tuple[str, str]], data))
+
+    return WKTElement(f"POLYGON(({polygon}))")
+
+
+def postgis_polygon_serialize(
+    loc: WKBElement | WKTElement, _info: SerializationInfo
+) -> list[tuple[float, float]]:
+    polygon: Polygon = to_shape(loc)
+
+    return [(point[1], point[0]) for point in polygon.exterior.coords]

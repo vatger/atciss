@@ -6,7 +6,6 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlmodel import select
 from atciss.app.utils.aiohttp_client import AiohttpClient
 
-from atciss.app.utils.redis import RedisClient
 from atciss.app.views.aerodrome import Aerodrome
 from atciss.app.views.navaid import Navaid
 
@@ -46,9 +45,6 @@ async def extract_sct_file(zipfile: ZipFile) -> str | None:
 
 
 async def import_sct() -> None:
-    """Periodically fetch ECFMP flow measures."""
-    redis_client = await RedisClient.get()
-
     airac_zip_url = await find_airac_zip_url()
     airac_zip = await fetch_airac_zip(airac_zip_url)
     airac_sct_file = await extract_sct_file(airac_zip)
@@ -82,5 +78,3 @@ async def import_sct() -> None:
         logger.info(
             f"SCT: Updated {len(filtered_navaids)} navaids and {len(filtered_aerodromes)} aerodromes"
         )
-
-    _ = await redis_client.delete("sct_file")

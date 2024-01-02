@@ -20,6 +20,7 @@ from .controllers import (
     navaid,
     notam,
     sectorstatus,
+    sigmet,
     taf,
     traffic,
     vatsim,
@@ -46,6 +47,7 @@ root_api_router.include_router(metar.router, tags=["wx"])
 root_api_router.include_router(navaid.router, tags=["navaid"])
 root_api_router.include_router(notam.router, tags=["notam"])
 root_api_router.include_router(sectorstatus.router, tags=["ampel"])
+root_api_router.include_router(sigmet.router, tags=["wx"])
 root_api_router.include_router(taf.router, tags=["wx"])
 root_api_router.include_router(traffic.router, tags=["vatsim"])
 root_api_router.include_router(vatsim.router, tags=["vatsim"])
