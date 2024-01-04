@@ -16,7 +16,7 @@ def convert_notam(n: str) -> Optional[Notam]:
     try:
         return Notam.from_str(f"({n.strip()})")
     except ParseError as e:
-        logger.error(f"could not parse notam: {n}\n{e}")
+        logger.debug(f"could not parse notam: {n}\n{e}")
 
     return None
 
