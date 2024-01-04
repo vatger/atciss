@@ -11,6 +11,12 @@ services:
     env_file:
       - stack.env
 
+  flower:
+    environment:
+      FLOWER_URL_PREFIX: https://atciss.vatsim-germany.org/admin/flower
+    env_file:
+      - stack.env
+
   db:
     env_file:
       - stack.env
