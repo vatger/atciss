@@ -1,6 +1,6 @@
 """Application controllers - ECFMP."""
 from typing import Annotated, Optional, cast
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, Query
 from loguru import logger
 from pydantic import TypeAdapter
 
@@ -26,7 +26,7 @@ async def get_flow_measures(
     async with RedisClient.open() as redis_client:
         flow_measures = cast(Optional[str], await redis_client.get(f"ecfmp:flow_measures:{fir}"))
         if flow_measures is None:
-            raise HTTPException(status_code=404)
+            flow_measures = "[]"
 
     return TypeAdapter(list[FlowMeasure]).validate_json(flow_measures)
 

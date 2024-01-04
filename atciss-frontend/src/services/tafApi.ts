@@ -41,7 +41,10 @@ const selectAllTafs = createSelector(
 )
 
 export const selectTaf = createCachedSelector(
+  (state: RootState) => state,
   selectAllTafs,
   (_state: RootState, icao: string) => icao,
-  (tafs, icao) => tafs[icao ?? ""],
+  (state, tafs, icao) =>
+    tafs[icao ?? ""] ??
+    tafApi.endpoints.getByIcaoCodes.select([icao])(state)?.data?.[icao ?? ""],
 )((_state, icao) => icao)

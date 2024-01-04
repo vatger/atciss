@@ -42,7 +42,10 @@ export const selectAllAtis = createSelector(
 )
 
 export const selectAtis = createCachedSelector(
+  (state: RootState) => state,
   selectAllAtis,
   (_state: RootState, icao: string) => icao,
-  (atis, icao) => atis[icao ?? ""],
+  (state, atis, icao) =>
+    atis[icao ?? ""] ??
+    atisApi.endpoints.getByIcaoCodes.select([icao])(state)?.data?.[icao ?? ""],
 )((_state, icao) => icao)

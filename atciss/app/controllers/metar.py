@@ -48,10 +48,12 @@ async def metar_raw_get(
     icao: Annotated[AirportIcao, Query(alias="id")],
 ) -> str:
     """Get METAR for a single airport. Compatible to metar.vatsim.net."""
-    metar = await fetch_metar(icao)
-    if metar is None:
-        raise HTTPException(status_code=404)
-    return metar.raw
+    async with RedisClient.open() as redis_client:
+        metar = cast(Optional[str], await redis_client.get(f"metar:{icao}"))
+        if metar is None:
+            raise HTTPException(status_code=404)
+
+    return metar
 
 
 @router.get(

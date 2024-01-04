@@ -1,18 +1,18 @@
 /** @jsxImportSource theme-ui */
 
 import { Box, Text } from "theme-ui"
-import { FIR_SETTINGS } from "../../app/config"
 import { useAppSelector } from "../../app/hooks"
-import { selectActiveFir } from "../../services/configSlice"
+import {
+  selectActiveFir,
+  selectNeighbourFirs,
+} from "../../services/configSlice"
 import { DateTime, Duration } from "luxon"
 import { usePollEventsByFirs } from "../../services/eventApi"
 
 export const Events = () => {
   const activeFir = useAppSelector(selectActiveFir)
-  const { data: events } = usePollEventsByFirs([
-    ...FIR_SETTINGS[activeFir].neighbourFirs,
-    activeFir,
-  ])
+  const neighbourFirs = useAppSelector(selectNeighbourFirs)
+  const { data: events } = usePollEventsByFirs([...neighbourFirs, activeFir])
 
   return events
     ?.filter(
