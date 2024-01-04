@@ -14,11 +14,10 @@ services:
     image: ghcr.io/vatger/atciss/atciss-backend
     entrypoint:
       - "celery"
-      - "-A"
-      - "atciss"
       - "worker"
       - "--loglevel=info"
     environment:
+      CELERY_APP: atciss
       ATCISS_REDIS_HOST: redis
     depends_on:
       redis:
@@ -30,12 +29,11 @@ services:
     image: ghcr.io/vatger/atciss/atciss-backend
     entrypoint:
       - "celery"
-      - "-A"
-      - "atciss"
       - "beat"
       - "--schedule=/beat/celerybeat-schedule"
       - "--loglevel=info"
     environment:
+      CELERY_APP: atciss
       ATCISS_REDIS_HOST: redis
     volumes:
       - atciss-beat:/beat
