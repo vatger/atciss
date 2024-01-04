@@ -198,7 +198,7 @@
                         proxy_pass $backend_target;
                       }
 
-                      location /metrics/ {
+                      location /metrics {
                         proxy_pass $backend_target;
                       }
                     }
