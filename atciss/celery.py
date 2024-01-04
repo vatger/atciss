@@ -53,7 +53,7 @@ app.conf.beat_schedule = {
     "update_areas": {"task": "update_areas", "schedule": crontab(minute="*/10")},
     "update_sigmet": {"task": "update_sigmet", "schedule": crontab(minute="*/10")},
     # "update_booking": {"task": "update_booking", "schedule": crontab(minute="*/10")},
-    "update_aliases": {"task": "update_aliases", "schedule": crontab(minute="*/60")},
+    # "update_aliases": {"task": "update_aliases", "schedule": crontab(minute="*/60")},
     "update_dfs_aixm": {
         "task": "update_dfs_aixm",
         "schedule": crontab(day_of_week="1", hour="3", minute="0"),
