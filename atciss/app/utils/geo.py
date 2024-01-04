@@ -73,7 +73,7 @@ def postgis_polygon_validate(
         it = iter(data.split(" "))
         data = cast(list[tuple[str, str]], zip(it, it))
 
-    logger.info(data)
+    logger.debug(data)
     if len(data) and isinstance(data[0], dict):
         polygon = ",".join(f"{p['lon']} {p['lat']}" for p in cast(list[LatLonDict], data))
     else:
