@@ -7,6 +7,7 @@ from haversine import haversine, Unit
 from loguru import logger
 from aiohttp import ClientConnectorError
 from pydantic import TypeAdapter
+from redis.asyncio import Redis
 
 from ..utils import AiohttpClient, RedisClient
 from ..views.basic_ad import BasicAD
@@ -14,8 +15,9 @@ from ..views.atis import Atis
 from ..views.vatsim import Controller, Pilot, VatsimData, AerodromeTraffic, Traffic
 
 
-async def get_ad_name(icao: str) -> Optional[str]:
-    redis_client = RedisClient.get()
+async def get_ad_name(icao: str, redis_client: Optional[Redis] = None) -> Optional[str]:
+    if redis_client is None:
+        redis_client = RedisClient.get()
 
     ad_json = cast(str | None, await redis_client.get(f"basic:ad:{icao}"))
     if ad_json is None:
@@ -27,9 +29,10 @@ async def get_ad_name(icao: str) -> Optional[str]:
     return re.sub(r"\s+", " ", name).strip()
 
 
-async def fetch_vatsim_data() -> None:
+async def fetch_vatsim_data(redis_client: Optional[Redis] = None) -> None:
     """Periodically fetch sector data."""
-    redis_client = await RedisClient.get()
+    if redis_client is None:
+        redis_client = await RedisClient.get()
 
     async with AiohttpClient.get() as aiohttp_client:
         try:
@@ -47,7 +50,7 @@ async def fetch_vatsim_data() -> None:
         + f"{len(data.atis)} ATIS, {len(data.pilots)} pilots"
     )
 
-    traffic = await calc_trafficboard_data(data.pilots)
+    traffic = await calc_trafficboard_data(data.pilots, redis_client)
 
     async with redis_client.pipeline() as pipe:
         keys = await redis_client.keys("vatsim:atis:*")
@@ -75,9 +78,9 @@ async def fetch_vatsim_data() -> None:
         await pipe.execute()
 
 
-async def calc_trafficboard_data(pilots: Sequence[Pilot]) -> AerodromeTraffic:
-    arrs = []
-    deps = []
+async def calc_trafficboard_data(pilots: Sequence[Pilot], redis_client: Redis) -> AerodromeTraffic:
+    arrs: list[Traffic] = []
+    deps: list[Traffic] = []
 
     arp = (48.353783944, 11.786084889)
 
@@ -92,8 +95,8 @@ async def calc_trafficboard_data(pilots: Sequence[Pilot]) -> AerodromeTraffic:
                 Traffic.from_pilot(
                     pilot,
                     eta=None,
-                    dep=await get_ad_name(pilot.flight_plan.departure),
-                    arr=await get_ad_name(pilot.flight_plan.arrival),
+                    dep=await get_ad_name(pilot.flight_plan.departure, redis_client),
+                    arr=await get_ad_name(pilot.flight_plan.arrival, redis_client),
                 )
             )
 
@@ -104,8 +107,8 @@ async def calc_trafficboard_data(pilots: Sequence[Pilot]) -> AerodromeTraffic:
                 Traffic.from_pilot(
                     pilot,
                     eta=datetime.now(UTC) + timedelta(minutes=minutes_to_touch),
-                    dep=await get_ad_name(pilot.flight_plan.departure),
-                    arr=await get_ad_name(pilot.flight_plan.arrival),
+                    dep=await get_ad_name(pilot.flight_plan.departure, redis_client),
+                    arr=await get_ad_name(pilot.flight_plan.arrival, redis_client),
                 ),
             )
 
