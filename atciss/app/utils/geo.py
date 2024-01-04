@@ -3,7 +3,6 @@ from typing import Tuple, TypedDict, cast
 
 from geoalchemy2 import WKBElement, WKTElement
 from geoalchemy2.shape import to_shape
-from loguru import logger
 from pydantic import SerializationInfo
 from shapely import LineString, Point, Polygon
 
@@ -73,7 +72,6 @@ def postgis_polygon_validate(
         it = iter(data.split(" "))
         data = cast(list[tuple[str, str]], zip(it, it))
 
-    logger.debug(data)
     if len(data) and isinstance(data[0], dict):
         polygon = ",".join(f"{p['lon']} {p['lat']}" for p in cast(list[LatLonDict], data))
     else:
