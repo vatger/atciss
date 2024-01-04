@@ -71,6 +71,9 @@
             frozenlist = pyprev.frozenlist.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.expandvars];
             });
+            pyrasite = pyprev.pyrasite.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
+            });
             alembic = pyprev.alembic.overridePythonAttrs (old: {
               meta = old.meta // {priority = -1;};
             });

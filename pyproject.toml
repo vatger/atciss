@@ -54,6 +54,7 @@ ruff = "0.1.8"
 celery-types = "^0.20.0"
 flower = "^2.0.1"
 types-xmltodict = "^0.13.0.3"
+pyrasite = "^2.0"
 
 [tool.poetry.scripts]
 atciss = 'atciss.cli:cli'
