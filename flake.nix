@@ -199,7 +199,7 @@
                         proxy_pass $backend_target;
                       }
 
-                      location /api/flower {
+                      location /admin/flower {
                         proxy_pass $flower_target;
                       }
 
