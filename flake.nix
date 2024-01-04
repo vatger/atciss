@@ -188,13 +188,18 @@
                       root ${pkgs.atciss-frontend}/;
                       include ${pkgs.mailcap}/etc/nginx/mime.types;
 
+                      set $backend_target "http://backend:8000";
+
                       location / {
-                        try_files $uri /index.html ;
+                        try_files $uri /index.html;
                       }
 
                       location /api/ {
-                        set $proxy_target "http://backend:8000";
-                        proxy_pass $proxy_target;
+                        proxy_pass $backend_target;
+                      }
+
+                      location /metrics/ {
+                        proxy_pass $backend_target;
                       }
                     }
                   }
