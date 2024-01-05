@@ -16,7 +16,6 @@ services:
       - "celery"
       - "worker"
       - "--loglevel=info"
-      - "--concurrency=1"
     environment:
       CELERY_APP: atciss
       ATCISS_REDIS_HOST: redis
