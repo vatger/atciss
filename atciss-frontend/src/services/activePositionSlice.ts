@@ -67,7 +67,7 @@ const activePositionSlice = createSlice({
       { payload: synced }: PayloadAction<boolean>,
     ) {
       state.sectorsSyncedToOnline = setLocalStorage(
-        "activePositions.sectorSyncedToOnline",
+        "activePositions.sectorsSyncedToOnline",
         synced,
       )
     },
