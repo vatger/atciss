@@ -1,9 +1,4 @@
-import { createBrowserRouter } from "react-router-dom"
-import { AtisAfw } from "../views/AtisAfw"
-import { Map } from "../views/Map"
-import { Wx } from "../views/Wx"
-import { App } from "../App"
-import { Notams } from "../views/Notam"
+import { Atciss } from "app/atciss/App"
 import {
   Auth,
   AuthCallback,
@@ -11,23 +6,29 @@ import {
   RequireAdmin,
   RequireAuth,
   authCallbackLoader,
-} from "./auth"
-import { LOA } from "../views/LOA"
-import { AipIfr } from "../views/AipIfr"
-import { AipVfr } from "../views/AipVfr"
-import { Windy } from "../views/Windy"
-import { Alias } from "../views/Alias"
-import { AircraftData } from "../views/AircraftData"
-import { TrafficBoard } from "../views/TrafficBoard"
-import { Admin } from "../views/Admin"
-// import { Bookings } from "../views/Bookings"
+} from "app/auth"
+import { Idvs } from "app/idvs/App"
+import { createBrowserRouter } from "react-router-dom"
+import { Admin } from "views/Admin"
+import { TrafficBoard } from "views/TrafficBoard"
+import { AipIfr } from "views/atciss/AipIfr"
+import { AipVfr } from "views/atciss/AipVfr"
+import { AircraftData } from "views/atciss/AircraftData"
+import { Alias } from "views/atciss/Alias"
+import { AtisAfw } from "views/atciss/AtisAfw"
+import { LOA } from "views/atciss/LOA"
+import { Map } from "views/atciss/Map"
+import { Notams } from "views/atciss/Notam"
+import { Windy } from "views/atciss/Windy"
+import { Wx } from "views/atciss/Wx"
+// import { Bookings } from "src/views/Bookings"
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <RequireAuth>
-        <App />
+        <Atciss />
       </RequireAuth>
     ),
     children: [
@@ -75,15 +76,15 @@ const router = createBrowserRouter([
         path: "aip-vfr",
         element: <AipVfr />,
       },
-      {
-        path: "admin",
-        element: (
-          <RequireAdmin>
-            <Admin />
-          </RequireAdmin>
-        ),
-      },
     ],
+  },
+  {
+    path: "/idvs",
+    element: (
+      <RequireAuth>
+        <Idvs />
+      </RequireAuth>
+    ),
   },
   {
     path: "/auth",
@@ -92,6 +93,14 @@ const router = createBrowserRouter([
   {
     path: "/traffic/:icao/:type",
     element: <TrafficBoard />,
+  },
+  {
+    path: "/admin",
+    element: (
+      <RequireAdmin>
+        <Admin />
+      </RequireAdmin>
+    ),
   },
   {
     path: "/auth/callback",

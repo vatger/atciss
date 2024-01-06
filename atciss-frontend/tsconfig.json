@@ -15,7 +15,13 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "types": ["jest-dom"],
-    "typeRoots": ["./node_modules/@types", "./node_modules/@testing-library"]
+    "typeRoots": ["./node_modules/@types", "./node_modules/@testing-library"],
+    "paths": {
+      "app/*": ["./src/app/*"],
+      "components/*": ["./src/components/*"],
+      "views/*": ["./src/views/*"],
+      "services/*": ["./src/services/*"],
+    }
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
