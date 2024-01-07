@@ -1,17 +1,19 @@
-import { useNavigate } from "react-router-dom"
-import { Flex, Grid, Link, ThemeUIStyleObject, useColorMode } from "theme-ui"
+/** @jsxImportSource theme-ui */
+
+import { Link } from "react-router-dom"
+import { Button, Flex, Grid, ThemeUIStyleObject, useColorMode } from "theme-ui"
 
 import { FIR_SETTINGS } from "app/config"
 import { useAppDispatch, useAppSelector } from "app/hooks"
 import { Clock } from "components/atciss/Clock"
-import { NavButton } from "components/atciss/NavButton"
 import { selectActiveFir, setActiveFir } from "services/configSlice"
+import { selectUser } from "app/auth/slice"
 
 const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
-  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const activeFir = useAppSelector(selectActiveFir)
   const [colorMode, setColorMode] = useColorMode()
+  const user = useAppSelector(selectUser)
 
   return (
     <Flex
@@ -35,89 +37,46 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           flex: "auto",
         }}
       >
-        <NavButton
-          onClick={() => {
-            navigate("/")
-          }}
-        >
-          ATIS-AFW
-        </NavButton>
-        <NavButton
-          onClick={() => {
-            navigate("/map")
-          }}
-        >
-          Map
-        </NavButton>
-        <NavButton
-          onClick={() => {
-            navigate("/wx")
-          }}
-        >
-          Wx
-        </NavButton>
-        <NavButton
-          onClick={() => {
-            navigate("/loa")
-          }}
-        >
-          LOA
-        </NavButton>
-        <NavButton
-          onClick={() => {
-            navigate("/notam")
-          }}
-        >
-          NOTAM
-        </NavButton>
-        <NavButton
-          sx={{ gridRow: "2/3" }}
-          onClick={() => {
-            navigate("/alias")
-          }}
-        >
-          Alias
-        </NavButton>
-        <NavButton
-          sx={{ gridRow: "2/3" }}
-          onClick={() => {
-            navigate("/windy")
-          }}
-        >
-          Windy
-        </NavButton>
-        <NavButton
-          sx={{ gridRow: "2/3" }}
-          onClick={() => {
-            navigate("/ac")
-          }}
-        >
-          A/C-Type
-        </NavButton>
-        <NavButton
-          sx={{ gridRow: "2/3" }}
-          onClick={() => {
-            navigate("/aip-ifr")
-          }}
-        >
-          AIP IFR
-        </NavButton>
-        <NavButton
-          sx={{ gridRow: "2/3" }}
-          onClick={() => {
-            navigate("/aip-vfr")
-          }}
-        >
-          AIP VFR
-        </NavButton>
-        <NavButton
-          sx={{ gridRow: "2/3" }}
-          onClick={() => {
-            navigate("/bookings")
-          }}
-        >
-          Bookings
-        </NavButton>
+        <Link to="">
+          <Button variant="nav">ATIS-AFW</Button>
+        </Link>
+        <Link to="map">
+          <Button variant="nav">Map</Button>
+        </Link>
+        <Link to="wx">
+          <Button variant="nav">Wx</Button>
+        </Link>
+        <Link to="loa">
+          <Button variant="nav">LOA</Button>
+        </Link>
+        <Link to="notam">
+          <Button variant="nav">NOTAM</Button>
+        </Link>
+        {user?.admin && (
+          <Link to="idvs">
+            <Button variant="nav">IDVS</Button>
+          </Link>
+        )}
+        <Link to="alias" sx={{ gridRow: "2/3" }}>
+          <Button variant="nav">Alias</Button>
+        </Link>
+        <Link to="windy" sx={{ gridRow: "2/3" }}>
+          <Button variant="nav">Windy</Button>
+        </Link>
+        <Link to="ac" sx={{ gridRow: "2/3" }}>
+          <Button variant="nav">A/C-Type</Button>
+        </Link>
+        <Link to="aip-ifr" sx={{ gridRow: "2/3" }}>
+          <Button variant="nav">AIP IFR</Button>
+        </Link>
+        <Link to="aip-vfr" sx={{ gridRow: "2/3" }}>
+          <Button variant="nav">AIP VFR</Button>
+        </Link>
+        {user?.admin && (
+          <Link to="bookings" sx={{ gridRow: "2/3" }}>
+            <Button variant="nav">Bookings</Button>
+          </Link>
+        )}
       </Grid>
       <select
         value={activeFir}
@@ -128,14 +87,14 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         ))}
       </select>
 
-      <Link
+      <a
         sx={{ color: "background" }}
         onClick={() =>
           setColorMode(colorMode === "default" ? "dark" : "default")
         }
       >
         {colorMode === "default" ? <>&#x263E;</> : <>&#x263C;</>}
-      </Link>
+      </a>
     </Flex>
   )
 }

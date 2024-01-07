@@ -76,15 +76,45 @@ const router = createBrowserRouter([
         path: "aip-vfr",
         element: <AipVfr />,
       },
+      {
+        path: "/admin",
+        element: (
+          <RequireAdmin>
+            <Admin />
+          </RequireAdmin>
+        ),
+      },
     ],
   },
   {
-    path: "/idvs",
+    path: "/idvs/:icao?",
     element: (
       <RequireAuth>
         <Idvs />
       </RequireAuth>
     ),
+    children: [
+      {
+        index: true,
+        element: <>AFW</>,
+      },
+      {
+        path: "atis",
+        element: <>ATIS</>,
+      },
+      {
+        path: "opmet",
+        element: <>OPMET</>,
+      },
+      {
+        path: "notam",
+        element: <>NOTAM</>,
+      },
+      {
+        path: "info",
+        element: <>ℹ️</>,
+      },
+    ],
   },
   {
     path: "/auth",
@@ -93,14 +123,6 @@ const router = createBrowserRouter([
   {
     path: "/traffic/:icao/:type",
     element: <TrafficBoard />,
-  },
-  {
-    path: "/admin",
-    element: (
-      <RequireAdmin>
-        <Admin />
-      </RequireAdmin>
-    ),
   },
   {
     path: "/auth/callback",

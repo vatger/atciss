@@ -1,5 +1,4 @@
 import { useAppDispatch, useAppSelector } from "app/hooks"
-import { SecondaryNavButton } from "components/atciss/NavButton"
 import { ADinfo } from "components/atciss/atis-afw/ADInfo"
 import { Agreements } from "components/atciss/atis-afw/Agreements"
 import { Areas } from "components/atciss/atis-afw/Areas"
@@ -14,7 +13,7 @@ import {
   setActivePage,
 } from "services/atisAfwSlice"
 import { selectActiveFir } from "services/configSlice"
-import { Flex, Grid, ThemeUIStyleObject } from "theme-ui"
+import { Button, Flex, Grid, ThemeUIStyleObject } from "theme-ui"
 
 const AtisAfwNav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const dispatch = useAppDispatch()
@@ -43,15 +42,17 @@ const AtisAfwNav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         }}
       >
         {pages.map((page) => (
-          <SecondaryNavButton
+          <Button
+            variant={
+              page === activePage ? "selectedSecondaryNav" : "secondaryNav"
+            }
             onClick={() => {
               dispatch(setActivePage({ fir, page }))
             }}
             key={page}
-            active={page === activePage}
           >
             {page}
-          </SecondaryNavButton>
+          </Button>
         ))}
       </Grid>
     </Flex>
