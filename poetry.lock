@@ -2249,13 +2249,13 @@ files = [
 
 [[package]]
 name = "types-python-jose"
-version = "3.3.4.8"
+version = "3.3.4.20240106"
 description = "Typing stubs for python-jose"
 optional = false
-python-versions = "*"
+python-versions = ">=3.8"
 files = [
-    {file = "types-python-jose-3.3.4.8.tar.gz", hash = "sha256:3c316675c3cee059ccb9aff87358254344915239fa7f19cee2787155a7db14ac"},
-    {file = "types_python_jose-3.3.4.8-py3-none-any.whl", hash = "sha256:95592273443b45dc5cc88f7c56aa5a97725428753fb738b794e63ccb4904954e"},
+    {file = "types-python-jose-3.3.4.20240106.tar.gz", hash = "sha256:b18cf8c5080bbfe1ef7c3b707986435d9efca3e90889acb6a06f65e06bc3405a"},
+    {file = "types_python_jose-3.3.4.20240106-py3-none-any.whl", hash = "sha256:b515a6c0c61f5e2a53bc93e3a2b024cbd42563e2e19cbde9fd1c2cc2cfe77ccc"},
 ]
 
 [package.dependencies]
@@ -2684,4 +2684,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "30bf5c0281261034a9425a278dad2b7fcdc896509d9c8fe30b32e4ac0d9e3581"
+content-hash = "a12d44669bdc11b4222071aa230e6b590c9494a62e03f3be5ef66dc0c89e0689"
