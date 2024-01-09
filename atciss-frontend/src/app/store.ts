@@ -27,6 +27,7 @@ import { notamReducer } from "../services/notamSlice"
 import { airwayApi } from "../services/airwayApi"
 import { aliasesApi } from "../services/aliasesApi"
 import { sigmetApi } from "../services/sigmetApi"
+import { idvsReducer } from "services/idvsSlice"
 
 export const store = configureStore({
   reducer: {
@@ -55,6 +56,7 @@ export const store = configureStore({
     atisAfw: atisAfwReducer,
     auth: authReducer,
     config: configReducer,
+    idvs: idvsReducer,
     map: mapReducer,
     notamView: notamReducer,
   },

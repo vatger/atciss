@@ -18,8 +18,9 @@ export const theme: IdvsTheme = {
     text: "#000",
     background: "#aaa",
     primary: "#ccc",
-    navbutton: "background",
     secondary: "#a0e6fa",
+    primaryText: "var(--theme-ui-colors-text)",
+    clockBackground: "var(--theme-ui-colors-primary)",
     darkshadow: "#333",
     brightshadow: "#eee",
     green: "#007711",
@@ -29,8 +30,8 @@ export const theme: IdvsTheme = {
     modes: {
       dark: {
         text: "#fff",
-        background: "#555",
-        primary: "#333",
+        background: "#333",
+        primary: "#555",
         secondary: "#0082b3",
         brightshadow: "#ccc",
         darkshadow: "#111",
@@ -76,6 +77,13 @@ export const theme: IdvsTheme = {
       color: "primary",
       fontSize: "3",
       fontWeight: "bold",
+    },
+    clock: {
+      fontSize: 4,
+      letterSpacing: 5,
+    },
+    clockMin: {
+      fontSize: 6,
     },
   },
   buttons: {

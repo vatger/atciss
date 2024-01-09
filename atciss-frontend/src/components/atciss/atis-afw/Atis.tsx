@@ -2,7 +2,7 @@ import { useAppSelector } from "app/hooks"
 import { z2, z3, z4 } from "app/utils"
 import { AtisRow } from "components/atciss/atis-afw/atis/AtisRow"
 import { DateTime } from "luxon"
-import { usePollAdByIcaoCodes } from "services/adApi"
+import { adApi } from "services/adApi"
 import { selectPageAtisAerodromes } from "services/atisAfwSlice"
 import { usePollAtisByIcaoCodes } from "services/atisApi"
 import {
@@ -19,7 +19,8 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
     usePollMetarByIcaoCodes(aerodromes)
   const { data: atis, isLoading: atisIsLoading } =
     usePollAtisByIcaoCodes(aerodromes)
-  const { data: ads, isLoading: adIsLoading } = usePollAdByIcaoCodes(aerodromes)
+  const { data: ads, isLoading: adIsLoading } =
+    adApi.useGetByIcaoCodesQuery(aerodromes)
 
   if (!metarIsLoading && metars && !atisIsLoading && !adIsLoading && ads) {
     const filteredAerodromes = aerodromes.filter((ad) => metars[ad] && ads[ad])

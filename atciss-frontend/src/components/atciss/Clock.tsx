@@ -21,24 +21,24 @@ const Clock = () => {
     <Box
       sx={{
         cursor: "default",
-        fontFamily: "monospace",
-        fontWeight: "bold",
-        backgroundColor: "#565964",
-        color: "#fff",
-        px: ".4rem",
-        py: ".2rem",
-        border: "solid 2px",
+        px: 2,
+        color: "clockText",
+        backgroundColor: "clockBackground",
+        border: "inset 2px",
         borderTopColor: "darkshadow",
         borderLeftColor: "darkshadow",
         borderBottomColor: "brightshadow",
         borderRightColor: "brightshadow",
-        letterSpacing: ".15rem",
       }}
     >
-      <Text sx={{ fontSize: "1.8rem" }}>
-        {hours}:{mins}
+      <Text variant="clock">
+        <Text variant="clockHr">{hours}:</Text>
+        <Text variant="clockMin">{mins}</Text>
+        <Text variant="clockSec">
+          <Text variant="clockMinSecSep">:</Text>
+          {secs}
+        </Text>
       </Text>
-      <Text sx={{ fontSize: "1.2rem" }}>{secs}</Text>
     </Box>
   )
 }

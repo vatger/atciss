@@ -35,11 +35,6 @@ export const adApi = createApi({
   }),
 })
 
-export const usePollAdByIcaoCodes: typeof adApi.useGetByIcaoCodesQuery = (
-  icao,
-  options,
-) => adApi.useGetByIcaoCodesQuery(icao, { pollingInterval: 60000, ...options })
-
 const selectAllDfsAds = createSelector(
   (state: RootState) => state,
   selectAirportICAOs,
@@ -47,7 +42,10 @@ const selectAllDfsAds = createSelector(
 )
 
 export const selectDfsAd = createCachedSelector(
+  (state: RootState) => state,
   selectAllDfsAds,
   (_state: RootState, icao: string) => icao,
-  (ads, icao) => ads[icao ?? ""],
+  (state, ads, icao) =>
+    ads[icao ?? ""] ??
+    adApi.endpoints.getByIcaoCodes.select([icao])(state)?.data?.[icao ?? ""],
 )((_state, icao) => icao)

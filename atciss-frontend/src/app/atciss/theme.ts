@@ -19,6 +19,9 @@ export const theme: AtcissTheme = {
     background: "#fff",
     primary: "#0082b3",
     secondary: "#a0e6fa",
+    primaryText: "var(--theme-ui-colors-background)",
+    clockBackground: "#565964",
+    clockText: "#fff",
     darkshadow: "#003e59",
     brightshadow: "#90c6da",
     green: "#007711",
@@ -75,6 +78,18 @@ export const theme: AtcissTheme = {
       color: "primary",
       fontSize: "3",
       fontWeight: "bold",
+    },
+    clock: {
+      fontWeight: "bold",
+      fontFamily: "monospace",
+      fontSize: 5,
+      letterSpacing: ".15rem",
+    },
+    clockMinSecSep: {
+      display: "none",
+    },
+    clockSec: {
+      fontSize: 3,
     },
   },
   buttons: {

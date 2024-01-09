@@ -21,6 +21,7 @@ import { Map } from "views/atciss/Map"
 import { Notams } from "views/atciss/Notam"
 import { Windy } from "views/atciss/Windy"
 import { Wx } from "views/atciss/Wx"
+import { Afw } from "views/idvs/Afw"
 // import { Bookings } from "src/views/Bookings"
 
 const router = createBrowserRouter([
@@ -96,7 +97,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <>AFW</>,
+        element: <Afw />,
       },
       {
         path: "atis",
