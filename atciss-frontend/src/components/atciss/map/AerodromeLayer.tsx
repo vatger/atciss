@@ -110,7 +110,22 @@ const AerodromeMarker = ({ icao }: { icao: string }) => {
           )}
           {atis?.text_atis && (
             <Box sx={{ fontSize: "1", mt: 1 }}>
-              <Text variant="label">ATIS</Text>
+              <Flex
+                sx={{
+                  justifyContent: "space-between",
+                  alignItems: "baseline",
+                  gap: "2",
+                }}
+              >
+                <Text variant="label">
+                  ATIS
+                  {atis.runways_in_use.length > 0 &&
+                    ` (${atis.runways_in_use.join(", ")})`}
+                </Text>
+                <Text>
+                  {atis.name} ({atis.cid}, {atis.frequency})
+                </Text>
+              </Flex>
               <pre>{atis?.text_atis}</pre>
             </Box>
           )}

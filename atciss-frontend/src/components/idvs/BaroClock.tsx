@@ -1,5 +1,4 @@
 import { useAppSelector } from "app/hooks"
-import { z2 } from "app/utils"
 import { Clock } from "components/atciss/Clock"
 import { InfoBox } from "components/idvs/InfoBox"
 import { adApi, selectDfsAd } from "services/adApi"
