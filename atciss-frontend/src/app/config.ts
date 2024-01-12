@@ -14,8 +14,17 @@ type Page = {
 // TODO move to UI?
 export const FIR_SETTINGS: { [name: string]: FIR } = {
   EDMM: {
-    neighbourPrefixes: ["ED", "ET", "LK", "LO", "LS"],
-    neighbourFirs: ["EDGG", "LKAA", "LOVV", "LSAS"],
+    neighbourPrefixes: ["ED", "ET", "EP", "LI", "LK", "LO", "LS"],
+    neighbourFirs: [
+      "EDGG",
+      "EDWW",
+      "EPWW",
+      "LIMM",
+      "LIPP",
+      "LKAA",
+      "LOVV",
+      "LSAS",
+    ],
     pages: {
       "ATIS APP": {
         staffingSectors: [
@@ -251,7 +260,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
     neighbourFirs: ["EDMM", "EDWW", "EHAA", "EBBU", "LFEE", "LSAS"],
     pages: {
       // TODO: IRL different layout
-      "ATIS EBG02": {
+      "ATIS EBG02/04": {
         staffingSectors: [
           "ed/BAD",
           "ed/MAN",
@@ -270,15 +279,15 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
         ],
         statusSectors: [
           ["ed/BAD", "ed/MAN", "ed/LBU", "ed/NKRH", "ed/NKRL"],
+          ["ed/DKB", "ed/KTG", "ed/HAB", "ed/KNG"],
           ["ed/GED", "ed/SIG", "ed/TAU", "ed/GIN", "ed/HEF"],
-          ["ed/DKB", "ed/KTG", "ed/HAB", "ed/PSA", "ed/KNG"],
           ["ed/EIF", "ed/PFA", "ed/KIR", "ed/RUD"],
           ["ed/STG", "ed/REU"],
           ["ed/DFDN", "ed/DFDS", "ed/DFAN", "ed/DFAS"],
         ],
         majorAerodromes: ["EDDF", "EDDS"],
-        aerodromes: ["ETAR", "EDFM"],
-        relevantAerodromes: [],
+        aerodromes: ["ETAR", "EDFM", "EDSB", "EDTL"],
+        relevantAerodromes: ["EDDM"],
         areas: {
           // Murgtal: [],
           "TRA 205": ["ED-R205A", "ED-R205B", "ED-R205C", "ED-R205D"],
@@ -286,7 +295,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
           "ED-R 132 Heuberg": ["ED-R132A", "ED-R132B"],
         },
       },
-      "ATIS EBG03": {
+      "ATIS EBG03/05": {
         staffingSectors: [
           "ed/GED",
           "ed/SIG",
@@ -305,14 +314,23 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
         ],
         statusSectors: [
           ["ed/GED", "ed/SIG", "ed/TAU", "ed/GIN", "ed/HEF"],
-          ["ed/DKB", "ed/KTG", "ed/HAB", "ed/PSA", "ed/KNG"],
+          ["ed/DKB", "ed/KTG", "ed/HAB", "ed/KNG"],
           ["ed/BAD", "ed/MAN", "ed/LBU", "ed/NKRH", "ed/NKRL"],
           ["ed/EIF", "ed/PFA", "ed/KIR", "ed/RUD"],
           ["ed/STG", "ed/REU"],
           ["ed/DFDN", "ed/DFDS", "ed/DFAN", "ed/DFAS"],
         ],
         majorAerodromes: ["EDDF"],
-        aerodromes: ["ETOU"],
+        aerodromes: [
+          "EDDR",
+          "EDFH",
+          "ETAR",
+          "EDDL",
+          "EDDK",
+          "EDDG",
+          "EDLW",
+          "EDLP",
+        ],
         relevantAerodromes: [],
         areas: {
           "ED-R 134 Wildflecken": ["ED-R134"],
@@ -320,8 +338,55 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
           "ED-R 97 Schwarzenborn": ["ED-R97A", "ED-R97B"],
         },
       },
+      "ATIS EBG06": {
+        staffingSectors: [
+          "ed/PADH",
+          "ed/PADL",
+          "ed/HMM",
+          "ed/DUS",
+          "ed/BOT",
+          "ed/DKA",
+          "ed/NOR",
+          "ed/TAU",
+          "ed/SIG",
+          "ed/GIN",
+        ],
+        statusSectors: [
+          ["ed/PADH", "ed/PADL", "ed/HMM"],
+          ["ed/DUS", "ed/BOT", "ed/DLD"],
+          ["ed/DKA", "ed/NOR", "ed/TAU", "ed/SIG", "ed/GIN"],
+          ["ed/RHR", "ed/MNS"],
+        ],
+        majorAerodromes: ["EDDK", "EDDL"],
+        aerodromes: ["EDDG", "EDLW", "EDLP", "EDLN", "ETNN", "ETNG"],
+        relevantAerodromes: [],
+        areas: {},
+      },
+      "ATIS DUS": {
+        staffingSectors: [
+          "ed/DUS",
+          "ed/BOT",
+          "ed/DKA",
+          "ed/NOR",
+          "ed/PADH",
+          "ed/PADL",
+          "ed/HMM",
+          "ed/TAU",
+          "ed/SIG",
+        ],
+        statusSectors: [
+          ["ed/DUS", "ed/BOT", "ed/DLD"],
+          ["ed/DKA", "ed/NOR", "ed/TAU", "ed/SIG"],
+          ["ed/PADH", "ed/PADL", "ed/HMM"],
+          ["ed/RHR", "ed/MNS"],
+        ],
+        majorAerodromes: ["EDDL", "EDLV"],
+        aerodromes: ["EDDK", "EDDG", "EDLW", "EDLP", "EDLN", "ETNN", "ETNG"],
+        relevantAerodromes: [],
+        areas: { "Eisenborn Areas": ["ED-R117"] },
+      },
       // TODO: IRL different layout
-      "ATIS EBG07": {
+      "ATIS DKA": {
         staffingSectors: [
           "ed/DKA",
           "ed/NOR",
@@ -337,6 +402,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
         statusSectors: [
           ["ed/DKA", "ed/NOR"],
           ["ed/PADL", "ed/PADH", "ed/BOT", "ed/DUS"],
+          ["ed/EIF", "ed/RUD", "ed/TAU", "ed/SIG"],
         ],
         majorAerodromes: ["EDDK", "EDDL"],
         aerodromes: ["EDDG", "EDLV", "EDLW", "EDLP", "EDLN", "ETNN", "ETNG"],
@@ -344,7 +410,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
         areas: { "Eisenborn Areas": ["ED-R117"] },
       },
       // TODO: IRL different layout
-      "ATIS EBG08": {
+      "ATIS STG": {
         staffingSectors: [
           "ed/STG",
           "ed/REU",
@@ -361,7 +427,35 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
           ["ed/NKRH", "ed/NKRL", "ed/KNG", "ed/DKB", "ed/PFA"],
         ],
         majorAerodromes: ["EDDS"],
-        aerodromes: [],
+        aerodromes: ["EDSB", "EDTL", "EDTY"],
+        relevantAerodromes: [],
+        areas: {
+          "ED-R132": ["ED-R132A", "ED-R132B"],
+          "ED-R205": ["ED-R205A", "ED-R205B", "ED-R205C", "ED-R205D"],
+          "ED-R207": ["ED-R207C", "ED-R207S", "ED-R207W"],
+        },
+      },
+      "ATIS FRA": {
+        staffingSectors: [
+          "ed/STG",
+          "ed/REU",
+          "ed/BAD",
+          "ed/LBU",
+          "ed/NKRH",
+          "ed/NKRL",
+          "ed/KNG",
+          "ed/DKB",
+          "ed/PFA",
+        ],
+        statusSectors: [
+          ["ed/DFDN", "ed/DFDS", "ed/DFAN", "ed/DFAS"],
+          ["ed/GED", "ed/TAU", "ed/GIN"],
+          ["ed/DKB", "ed/HAB", "ed/KNG"],
+          ["ed/MAN", "ed/NKRH", "ed/NKRL"],
+          ["ed/EIF", "ed/PFA", "ed/KIR", "ed/RUD"],
+        ],
+        majorAerodromes: ["EDDS"],
+        aerodromes: ["EDSB", "EDTL", "EDTY"],
         relevantAerodromes: [],
         areas: {
           "ED-R132": ["ED-R132A", "ED-R132B"],

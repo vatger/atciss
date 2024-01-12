@@ -37,7 +37,7 @@ const AtisAfwNav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       <Grid
         sx={{
           gap: ".5rem",
-          gridTemplateColumns: "repeat(auto-fit, 6rem)",
+          gridTemplateColumns: "repeat(auto-fit, 7rem)",
           flex: "auto",
         }}
       >
