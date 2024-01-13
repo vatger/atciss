@@ -15,7 +15,7 @@ const levelFormat = (level: number, uom: "FL" | "FT") =>
 
 export const AirwayLayer = () => {
   const lowerUpper = useAppSelector(selectAirwayLowerUpper)
-  const { data: _a } = airwayApi.useGetQuery(lowerUpper)
+  airwayApi.useGetQuery(lowerUpper)
   const airways = useAppSelector(selectAirways)
   const selectedAirway = useAppSelector(selectSelectedAirway)
   const dispatch = useAppDispatch()

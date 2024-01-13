@@ -68,7 +68,7 @@ const Sigmet = ({ sigmet }: { sigmet: SigmetType }) => {
 export const SigmetLayer = () => {
   const fir = useAppSelector(selectActiveFir)
   const neighbourFirs = useAppSelector(selectNeighbourFirs)
-  const { data: _s } = usePollSigmet([fir, ...neighbourFirs])
+  usePollSigmet([fir, ...neighbourFirs])
   const sigmets = useAppSelector(selectSigmets)
 
   return (

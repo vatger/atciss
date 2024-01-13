@@ -3,7 +3,6 @@ import { fetchWithAuth } from "../app/auth"
 import { createSelector } from "@reduxjs/toolkit"
 import { RootState } from "../app/store"
 import { selectOwnedSectors } from "./activePositionSlice"
-import { createCachedSelector } from "re-reselect"
 
 export type LoaItem = {
   aerodrome: string // FIXME: should be string[]
@@ -86,33 +85,33 @@ const filterFn = (filter: string, to_from: "to" | "from") => (loa: LoaItem) =>
   loa.special_conditions.toLowerCase().includes(filter.toLowerCase()) ||
   loa.cop.toLowerCase().includes(filter.toLowerCase())
 
-export const selectFilteredExitLoas = createCachedSelector(
+export const selectFilteredExitLoas = createSelector(
   selectRelevantExitLoas,
   (_state: RootState, filter: string) => filter,
   (loas, filter) => loas.filter(filterFn(filter, "to")),
-)((_state, icao) => icao)
+)
 
-export const selectFilteredEntryLoas = createCachedSelector(
+export const selectFilteredEntryLoas = createSelector(
   selectRelevantEntryLoas,
   (_state: RootState, filter: string) => filter,
   (loas, filter) => loas.filter(filterFn(filter, "from")),
-)((_state, icao) => icao)
+)
 
 export const selectLoaCops = createSelector(
   selectRelevantLoas,
   (relevantLoas) => [...new Set(relevantLoas.map((loa) => loa.cop))],
 )
 
-export const selectExitLoasByNavaid = createCachedSelector(
+export const selectExitLoasByNavaid = createSelector(
   selectRelevantExitLoas,
   (_state: RootState, designator: string) => designator,
   (relevantLoas, designator) =>
     relevantLoas.filter((loa) => loa.cop == designator),
-)((_state, designator) => designator)
+)
 
-export const selectEntryLoasByNavaid = createCachedSelector(
+export const selectEntryLoasByNavaid = createSelector(
   selectRelevantEntryLoas,
   (_state: RootState, designator: string) => designator,
   (relevantLoas, designator) =>
     relevantLoas.filter((loa) => loa.cop == designator),
-)((_state, designator) => designator)
+)

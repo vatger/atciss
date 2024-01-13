@@ -15,7 +15,7 @@ export const Search = ({
   map: RefObject<Map>
 }) => {
   const search = useAppSelector(selectSearch)
-  const { data: _n } = navaidApi.useSearchQuery(search, {
+  navaidApi.useSearchQuery(search, {
     skip: search.length < 2,
   })
 

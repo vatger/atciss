@@ -3,7 +3,6 @@ import { fetchWithAuth } from "../app/auth"
 import { RootState } from "../app/store"
 import { selectAirportICAOs } from "./sectorApi"
 import { createSelector } from "@reduxjs/toolkit"
-import { createCachedSelector } from "re-reselect"
 
 export interface Clouds {
   cover: "FEW" | "SCT" | "BKN" | "OVC" | "NSC"
@@ -103,17 +102,17 @@ const selectAllMetars = createSelector(
     metarApi.endpoints.getByIcaoCodes.select(ads)(state)?.data ?? {},
 )
 
-export const selectMetar = createCachedSelector(
+export const selectMetar = createSelector(
   (state: RootState) => state,
   selectAllMetars,
   (_state: RootState, icao: string) => icao,
   (state, metars, icao) =>
     metars[icao ?? ""] ??
     metarApi.endpoints.getByIcaoCodes.select([icao])(state)?.data?.[icao ?? ""],
-)((_state, icao) => icao)
+)
 
-export const selectRawMetar = createCachedSelector(
+export const selectRawMetar = createSelector(
   (state: RootState) => state,
   (_state: RootState, icao: string) => icao,
   (state, icao) => metarApi.endpoints.getRaw.select(icao)(state)?.data,
-)((_state, icao) => icao)
+)

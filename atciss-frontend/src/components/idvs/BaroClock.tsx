@@ -12,8 +12,8 @@ import { Flex } from "theme-ui"
 
 export const BaroClock = () => {
   const aerodrome = useAppSelector(selectActiveAerodrome)
-  const { data: _m } = usePollMetarByIcaoCodes([aerodrome])
-  const { data: _a } = adApi.useGetByIcaoCodesQuery([aerodrome])
+  usePollMetarByIcaoCodes([aerodrome])
+  adApi.useGetByIcaoCodesQuery([aerodrome])
 
   const metar = useAppSelector((store) => selectMetar(store, aerodrome))
   const ad = useAppSelector((store) => selectDfsAd(store, aerodrome))

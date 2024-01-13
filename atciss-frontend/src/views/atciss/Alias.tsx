@@ -6,7 +6,7 @@ import { selectActiveFir } from "services/configSlice"
 
 export const Alias = () => {
   const fir = useAppSelector(selectActiveFir)
-  const { data: _a } = aliasesApi.useGetQuery(fir)
+  aliasesApi.useGetQuery(fir)
   const aliases = useAppSelector(selectAliases)
 
   return (

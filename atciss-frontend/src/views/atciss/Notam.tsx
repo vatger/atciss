@@ -8,8 +8,8 @@ import { Flex, ThemeUIStyleObject } from "theme-ui"
 
 export const Notams = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const designators = useAppSelector(selectNotamDesignators)
-  const { data: _n } = usePollNotamByIcaoCodes(designators)
-  const { data: _ns } = notamApi.useGetSeenQuery()
+  usePollNotamByIcaoCodes(designators)
+  notamApi.useGetSeenQuery()
 
   return (
     <SidebarLayout sx={sx}>

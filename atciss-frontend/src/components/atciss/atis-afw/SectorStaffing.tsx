@@ -22,10 +22,10 @@ const Sector = ({ id }: { id: string }) => {
 }
 
 export const SectorStaffing = () => {
-  const { data: _c } = usePollControllers()
+  usePollControllers()
   const sectors = useAppSelector(selectStaffingSectors)
 
-  const { data: _s } = sectorApi.useGetQuery()
+  sectorApi.useGetQuery()
 
   return (
     <Flex

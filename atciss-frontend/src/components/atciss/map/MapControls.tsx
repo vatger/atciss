@@ -32,7 +32,7 @@ import { Search } from "./search/Search"
 export const MapControls = ({ map }: { map: RefObject<Map> }) => {
   const dispatch = useAppDispatch()
 
-  const { data: _c } = usePollControllers()
+  usePollControllers()
 
   const ofm = useAppSelector(selectOpenFlightmapsOnMap)
   const dfs = useAppSelector(selectDFSOnMap)

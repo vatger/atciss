@@ -17,8 +17,8 @@ import { Box, Button, Flex, Text } from "theme-ui"
 export const SectorControls = () => {
   const dispatch = useAppDispatch()
 
-  const { data: _s } = sectorApi.useGetQuery()
-  const { data: _c } = usePollControllers()
+  sectorApi.useGetQuery()
+  usePollControllers()
 
   const positionSyncedToOnline = useAppSelector(selectPositionSyncedToOnline)
   const sectorsSyncedToOnline = useAppSelector(selectSectorsSyncedToOnline)

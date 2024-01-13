@@ -60,7 +60,7 @@ const StatusButton = ({
 
 export const SectorStatus = () => {
   const sectors = useAppSelector(selectStatusSectors)
-  const { data: _s } = usePollSectorStatus(sectors.flat())
+  usePollSectorStatus(sectors.flat())
   const status = useAppSelector(selectSectorStatus)
 
   return (

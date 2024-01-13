@@ -3,7 +3,6 @@ import { fetchWithAuth } from "../app/auth"
 import { createSelector } from "@reduxjs/toolkit"
 import { selectAirportICAOs } from "./sectorApi"
 import { RootState } from "../app/store"
-import { createCachedSelector } from "re-reselect"
 
 export interface Atis {
   cid: number
@@ -41,11 +40,11 @@ export const selectAllAtis = createSelector(
     atisApi.endpoints.getByIcaoCodes.select(ads)(state)?.data ?? {},
 )
 
-export const selectAtis = createCachedSelector(
+export const selectAtis = createSelector(
   (state: RootState) => state,
   selectAllAtis,
   (_state: RootState, icao: string) => icao,
   (state, atis, icao) =>
     atis[icao ?? ""] ??
     atisApi.endpoints.getByIcaoCodes.select([icao])(state)?.data?.[icao ?? ""],
-)((_state, icao) => icao)
+)

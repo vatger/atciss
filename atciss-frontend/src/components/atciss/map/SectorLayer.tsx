@@ -10,13 +10,13 @@ import {
 } from "services/sectorApi"
 
 export const SectorLayer = () => {
-  const { data: _c } = usePollControllers()
+  usePollControllers()
 
-  const { data: _s } = sectorApi.useGetQuery()
+  sectorApi.useGetQuery()
   const sectors = useAppSelector(selectSectorIDs)
 
   const airports = useAppSelector(selectAirportICAOs)
-  const { data: _a } = usePollAtisByIcaoCodes(airports)
+  usePollAtisByIcaoCodes(airports)
 
   return (
     <LayerGroup>

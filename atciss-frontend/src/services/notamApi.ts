@@ -3,7 +3,6 @@ import { fetchWithAuth } from "../app/auth"
 import { createSelector } from "@reduxjs/toolkit"
 import { RootState } from "../app/store"
 import { selectNotamDesignators } from "./configSlice"
-import { createCachedSelector } from "re-reselect"
 import { DateTime } from "luxon"
 import { selectReadFiltered } from "./notamSlice"
 
@@ -88,13 +87,13 @@ const selectReadNotamIds = createSelector(
   (state) => notamApi.endpoints.getSeen.select()(state)?.data ?? [],
 )
 
-export const selectNotamIsRead = createCachedSelector(
+export const selectNotamIsRead = createSelector(
   selectReadNotamIds,
   (_state: RootState, icao: string) => icao,
   (readNotamIds, notamId) => readNotamIds.includes(notamId),
-)((_state, notamId) => notamId)
+)
 
-export const selectNotamsByDesignator = createCachedSelector(
+export const selectNotamsByDesignator = createSelector(
   selectAllNotams,
   selectReadFiltered,
   selectReadNotamIds,
@@ -111,18 +110,18 @@ export const selectNotamsByDesignator = createCachedSelector(
       total: icaoNotams.length,
     }
   },
-)((_state, icao) => icao)
+)
 
-export const selectActiveNotamsByDesignator = createCachedSelector(
+export const selectActiveNotamsByDesignator = createSelector(
   selectNotamsByDesignator,
   (_state: RootState, icao: string) => icao,
   (notams) =>
     notams.notams
       .filter((n) => DateTime.utc() >= DateTime.fromISO(n.valid_from).toUTC())
       .sort((n1, n2) => n1.notam_code.localeCompare(n2.notam_code)),
-)((_state, icao) => icao)
+)
 
-export const selectInactiveNotamsByDesignator = createCachedSelector(
+export const selectInactiveNotamsByDesignator = createSelector(
   selectNotamsByDesignator,
   (_state: RootState, icao: string) => icao,
   (notams) =>
@@ -134,10 +133,10 @@ export const selectInactiveNotamsByDesignator = createCachedSelector(
           ? -1
           : 1,
       ),
-)((_state, icao) => icao)
+)
 
-export const selectTotalNotamsByDesignator = createCachedSelector(
+export const selectTotalNotamsByDesignator = createSelector(
   selectNotamsByDesignator,
   (_state: RootState, icao: string) => icao,
   (notams) => notams.total,
-)((_state, icao) => icao)
+)

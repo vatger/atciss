@@ -2,7 +2,6 @@ import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithAuth } from "../app/auth"
 import { RootState } from "../app/store"
 import { createSelector } from "@reduxjs/toolkit"
-import { createCachedSelector } from "re-reselect"
 import { selectLoaCops } from "./loaApi"
 import { LatLngExpression } from "leaflet"
 import { selectSearch, selectSelectedAirway } from "./mapSlice"
@@ -51,11 +50,11 @@ const selectLoaNavaids = createSelector(
     navaidApi.endpoints.getByDesignators.select(navaids)(state)?.data ?? [],
 )
 
-export const selectLoaNavaid = createCachedSelector(
+export const selectLoaNavaid = createSelector(
   selectLoaNavaids,
   (_state: RootState, designator: string) => designator,
   (navaids, designator) => navaids.find((n) => n.designator == designator),
-)((_state, designator) => designator)
+)
 
 export const selectSearchedNavaids = createSelector(
   (state: RootState) => state,

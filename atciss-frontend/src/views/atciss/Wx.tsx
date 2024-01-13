@@ -17,10 +17,10 @@ import { selectTaf, usePollTafByIcaoCodes } from "services/tafApi"
 import { Box, Button, Flex, Grid, Text } from "theme-ui"
 
 const AerodromeWx = ({ ad }: { ad: string }) => {
-  const { data: _m } = usePollMetarByIcaoCodes([ad])
-  const { data: _rm } = usePollRawMetar(ad)
-  const { data: _t } = usePollTafByIcaoCodes([ad])
-  const { data: _a } = usePollAtisByIcaoCodes([ad])
+  usePollMetarByIcaoCodes([ad])
+  usePollRawMetar(ad)
+  usePollTafByIcaoCodes([ad])
+  usePollAtisByIcaoCodes([ad])
 
   const aerodrome = useAppSelector((store) => selectAirport(store, ad))
   const atis = useAppSelector((store) => selectAtis(store, ad))
@@ -82,7 +82,7 @@ const Wx = () => {
   const neighbourPrefixes = useAppSelector(selectNeighbourPrefixes)
   const [selectedAD, setSelectedAD] = useState(firADs[0])
 
-  const { data: _s } = sectorApi.useGetQuery()
+  sectorApi.useGetQuery()
   const airports = useAppSelector(selectAirports)
   const vatglassesADs = Object.entries(airports)
     .filter(

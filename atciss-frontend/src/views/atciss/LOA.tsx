@@ -15,7 +15,7 @@ import { Box, Flex, Input, ThemeUIStyleObject } from "theme-ui"
 
 export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const ownedSectors = useAppSelector(selectOwnedSectors)
-  const { data: _l } = loaApi.useGetBySectorsQuery(ownedSectors, {
+  loaApi.useGetBySectorsQuery(ownedSectors, {
     skip: ownedSectors.length == 0,
   })
   const [filter, setFilter] = useState("")

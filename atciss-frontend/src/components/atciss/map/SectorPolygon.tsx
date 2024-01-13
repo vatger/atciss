@@ -1,9 +1,9 @@
+import { createSelector } from "@reduxjs/toolkit"
 import { useAppSelector } from "app/hooks"
 import { RootState } from "app/store"
 import { z3 } from "app/utils"
 import { VerticalBoundary } from "components/atciss/map/VerticalBoundary"
 import { LatLng } from "leaflet"
-import { createCachedSelector } from "re-reselect"
 import { useState } from "react"
 import { Polygon, Tooltip } from "react-leaflet"
 import {
@@ -21,7 +21,7 @@ import {
 } from "services/sectorApi"
 import { Box, Text } from "theme-ui"
 
-const selectSectorBounds = createCachedSelector(
+const selectSectorBounds = createSelector(
   selectSector,
   selectLevel,
   selectAirports,
@@ -45,7 +45,7 @@ const selectSectorBounds = createCachedSelector(
               : rwyPriority[0] === rwy.runway
           }),
       ),
-)((_state, id) => id)
+)
 
 export const Sector = ({ id }: { id: string }) => {
   const owner = useAppSelector((store) => selectOwner(store, id))
@@ -67,7 +67,7 @@ export const SectorPolygon = ({
   sectorBounds: { points, min, max },
   id,
 }: SectorPolygonProps) => {
-  const { data: _s } = sectorApi.useGetQuery()
+  sectorApi.useGetQuery()
   const owner = useAppSelector((store) => selectOwner(store, id))
   const sector = useAppSelector((store) => selectSector(store, id))
   const selectedPosition = useAppSelector(selectSelectedPosition)

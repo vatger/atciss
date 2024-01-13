@@ -11,7 +11,7 @@ import { Textarea } from "theme-ui"
 export const Agreements = () => {
   const agreements = useAppSelector(selectAgreements)
   const fir = useAppSelector(selectActiveFir)
-  const { data: _a } = usePollAgreements(fir)
+  usePollAgreements(fir)
   const [edit] = agreementsApi.useEditMutation()
   const [value, setValue] = useState(agreements)
   const textarea = useRef<HTMLTextAreaElement>(null)

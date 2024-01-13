@@ -1,5 +1,5 @@
+import { createSelector } from "@reduxjs/toolkit"
 import { useAppSelector } from "app/hooks"
-import { createCachedSelector } from "re-reselect"
 import { CircleMarker, LayerGroup, Tooltip } from "react-leaflet"
 import {
   selectAirportControllers,
@@ -19,13 +19,13 @@ import {
 import { selectTaf, usePollTafByIcaoCodes } from "services/tafApi"
 import { Box, Flex, Text } from "theme-ui"
 
-const selectAirportCoordinates = createCachedSelector(
+const selectAirportCoordinates = createSelector(
   selectAirport,
   selectDfsAd,
   (vatglassesAirport, dfsAd) =>
     vatglassesAirport?.coord ??
     (dfsAd ? [dfsAd.arp_location[0], dfsAd.arp_location[1]] : null),
-)((_state, icao) => icao)
+)
 
 const AerodromeMarker = ({ icao }: { icao: string }) => {
   const airport = useAppSelector((store) => selectAirport(store, icao))
@@ -136,15 +136,15 @@ const AerodromeMarker = ({ icao }: { icao: string }) => {
 }
 
 export const AerodromeLayer = () => {
-  const { data: _c } = usePollControllers()
+  usePollControllers()
 
-  const { data: _s } = sectorApi.useGetQuery()
+  sectorApi.useGetQuery()
   const airports = useAppSelector(selectAirportICAOs)
 
-  const { data: _m } = usePollMetarByIcaoCodes(airports)
-  const { data: _t } = usePollTafByIcaoCodes(airports)
-  const { data: _a } = usePollAtisByIcaoCodes(airports)
-  const { data: _ad } = adApi.useGetByIcaoCodesQuery(airports)
+  usePollMetarByIcaoCodes(airports)
+  usePollTafByIcaoCodes(airports)
+  usePollAtisByIcaoCodes(airports)
+  adApi.useGetByIcaoCodesQuery(airports)
 
   return (
     <LayerGroup>

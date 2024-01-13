@@ -76,7 +76,7 @@ export const Item = (
 
 export const Bookings = () => {
   const fir = useAppSelector(selectActiveFir)
-  const { data: _b } = usePollBookingsByRegions(
+  usePollBookingsByRegions(
     FIR_SETTINGS[fir].neighbourPrefixes,
   )
   const bookings = useAppSelector(selectAllBookings)

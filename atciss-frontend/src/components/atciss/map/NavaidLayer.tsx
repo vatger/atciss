@@ -14,15 +14,15 @@ import {
 export const NavaidLayer = () => {
   const loaOnMap = useAppSelector(selectLoaOnMap)
   const ownedSectors = useAppSelector(selectOwnedSectors)
-  const { data: _l } = loaApi.useGetBySectorsQuery(ownedSectors, {
+  loaApi.useGetBySectorsQuery(ownedSectors, {
     skip: ownedSectors.length == 0,
   })
   const cops = useAppSelector(selectLoaCops)
-  const { data: _n } = navaidApi.useGetByDesignatorsQuery(cops)
+  navaidApi.useGetByDesignatorsQuery(cops)
   const foundNavaids = useAppSelector(selectSearchedNavaids)
 
   const airway = useAppSelector(selectSelectedAirway)
-  const { data: _a } = navaidApi.useGetByAirwayQuery(airway, {
+  navaidApi.useGetByAirwayQuery(airway, {
     skip: airway === null,
   })
   const airwayNavaids = useAppSelector(selectAirwayNavaids)

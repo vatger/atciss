@@ -12,7 +12,6 @@ import {
   selectSector,
 } from "./sectorApi"
 import { localStorageOrDefault, setLocalStorage } from "../app/utils"
-import { createCachedSelector } from "re-reselect"
 import { Controller, selectControllers, selectMe } from "./controllerApi"
 
 export type PositionStatus = { [id: string]: boolean }
@@ -144,7 +143,7 @@ export const selectOnlinePositions = createSelector(
       ]),
     ),
 )
-export const selectControllerFromPosition = createCachedSelector(
+export const selectControllerFromPosition = createSelector(
   selectControllers,
   selectPosition,
   (controllers, pos) =>
@@ -154,7 +153,7 @@ export const selectControllerFromPosition = createCachedSelector(
           (prefix) => controllerMatchString(c) === `${prefix}${pos.frequency}`,
         ),
     ),
-)((_state, pos) => pos ?? "invalid")
+)
 
 export const selectActivePositions = (state: RootState) =>
   state.activePositions.sectorsSyncedToOnline
@@ -184,11 +183,11 @@ export const selectSelectedPosition = createSelector(
         : Object.entries(active).find(([, isActive]) => isActive)?.[0] ?? null,
 )
 
-export const selectIsPositionActive = createCachedSelector(
+export const selectIsPositionActive = createSelector(
   selectActivePositions,
   (_state: RootState, pos: string) => pos,
   (activePositions, pos) => activePositions[pos],
-)((_state, pos) => pos)
+)
 
 export const selectGroupToPositions = createSelector(
   selectPositions,
@@ -202,18 +201,18 @@ export const selectGroupToPositions = createSelector(
     ),
 )
 
-export const selectPositionsByGroup = createCachedSelector(
+export const selectPositionsByGroup = createSelector(
   selectGroupToPositions,
   (_state: RootState, group: string) => group,
   (groupToPositions, group) => groupToPositions[group] ?? [],
-)((_state, group) => group)
+)
 
-export const selectIsGroupActive = createCachedSelector(
+export const selectIsGroupActive = createSelector(
   selectActivePositions,
   selectPositionsByGroup,
   (_state: RootState, group: string) => group,
   (activePositions, positions) => positions.some((pos) => activePositions[pos]),
-)((_state, group) => group)
+)
 
 export const selectPositionGroups = createSelector(
   selectPositions,
@@ -260,23 +259,23 @@ const getOwner = (
   const owner = ownerFromSectorsActivePositions(sector, activePositions)
   return owner ? positions[owner] : null
 }
-export const selectOwner = createCachedSelector(
+export const selectOwner = createSelector(
   selectSector,
   selectActivePositions,
   selectPositions,
   (_state: RootState, sector: string) => sector,
   getOwner,
-)((_state, sector) => sector)
+)
 
-export const selectOnlineOwner = createCachedSelector(
+export const selectOnlineOwner = createSelector(
   selectSector,
   selectOnlinePositions,
   selectPositions,
   (_state: RootState, sector: string) => sector,
   getOwner,
-)((_state, sector) => sector)
+)
 
-export const selectAirportControllers = createCachedSelector(
+export const selectAirportControllers = createSelector(
   selectControllers,
   (_state: RootState, airportDesignator: string) => airportDesignator,
   (controllers, airport): Controller[] =>
@@ -287,9 +286,9 @@ export const selectAirportControllers = createCachedSelector(
         ["DEL", "GND", "TWR"].includes(cs_splits[cs_splits.length - 1])
       )
     }),
-)((_state, airportDesignator) => airportDesignator)
+)
 
-export const selectAirportTopdownController = createCachedSelector(
+export const selectAirportTopdownController = createSelector(
   selectAirport,
   selectActivePositions,
   (_state: RootState, airportDesignator: string) => airportDesignator,
@@ -299,7 +298,7 @@ export const selectAirportTopdownController = createCachedSelector(
       (pos) => typeof pos === "string" && positions[pos],
     ) as string | undefined) ?? null,
   //  TODO don't ignore rwy-dependent topdown
-)((_state, airportDesignator) => airportDesignator)
+)
 
 export const {
   setPosition,

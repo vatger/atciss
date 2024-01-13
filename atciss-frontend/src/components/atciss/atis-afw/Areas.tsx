@@ -34,7 +34,7 @@ const Area = ({ name }: { name: string }) => {
 
 export const Areas = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const areaGroups = useAppSelector(selectAtisAreas)
-  const { data: _a } = usePollAreas()
+  usePollAreas()
 
   return (
     <Flex

@@ -2,7 +2,6 @@ import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithAuth } from "../app/auth"
 import { LatLngTuple } from "leaflet"
 import { createSelector } from "@reduxjs/toolkit"
-import { createCachedSelector } from "re-reselect"
 import { RootState } from "../app/store"
 
 export type AreaBooking = {
@@ -35,8 +34,8 @@ const selectAllAreas = createSelector(
 )
 
 // FIXME currently or next active
-export const selectArea = createCachedSelector(
+export const selectArea = createSelector(
   selectAllAreas,
   (_state: RootState, name: string) => name,
   (areas, name) => areas.find((area) => area.name == name),
-)((_state, name) => name)
+)

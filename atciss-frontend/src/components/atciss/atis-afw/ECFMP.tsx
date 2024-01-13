@@ -9,7 +9,7 @@ import { Box, Text } from "theme-ui"
 
 export const ECFMP = () => {
   const activeFir = useAppSelector(selectActiveFir)
-  const { data: _f } = usePollEcfmpByFir(activeFir)
+  usePollEcfmpByFir(activeFir)
   const flowMeasures = useAppSelector(selectEcfmpMeasures)
 
   return flowMeasures
