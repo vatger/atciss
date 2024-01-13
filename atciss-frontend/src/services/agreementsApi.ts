@@ -1,8 +1,7 @@
-import { createApi } from "@reduxjs/toolkit/query/react"
-import { fetchWithAuth } from "../app/auth"
-import { RootState } from "../app/store"
 import { createSelector } from "@reduxjs/toolkit"
+import { RootState } from "../app/store"
 import { selectActiveFir } from "./configSlice"
+import { api } from "services/api"
 
 export interface Agreements {
   fir: string
@@ -11,39 +10,21 @@ export interface Agreements {
   updated_at: string
 }
 
-export const agreementsApi = createApi({
-  reducerPath: "agreements",
-  baseQuery: fetchWithAuth,
-  tagTypes: ["agreements"],
-  endpoints: (builder) => ({
-    getByFir: builder.query<Agreements, string>({
-      query: (fir) => ({
-        url: `agreements/${fir}`,
-      }),
-      providesTags: (result, _, arg) =>
-        result
-          ? ["agreements", { type: "agreements", id: arg }]
-          : ["agreements"],
-    }),
-    edit: builder.mutation<Agreements, { fir: string; agreements: string }>({
-      query: ({ fir, agreements }) => ({
-        url: `agreements/${fir}`,
-        body: agreements,
-        method: "POST",
-      }),
-      invalidatesTags: (_r, _e, arg) => [{ type: "agreements", id: arg.fir }],
-    }),
-  }),
-})
-
-export const usePollAgreements: typeof agreementsApi.useGetByFirQuery = (
+export const usePollAgreements: typeof api.useAgreementsByFirQuery = (
   fir,
   options,
-) => agreementsApi.useGetByFirQuery(fir, { pollingInterval: 5000, ...options })
+) =>
+  api.useAgreementsByFirQuery(fir, {
+    pollingInterval: 5000,
+    ...options,
+  })
 
+const selectByFir = createSelector(
+  selectActiveFir,
+  api.endpoints.agreementsByFir.select,
+)
 export const selectAgreements = createSelector(
   (state: RootState) => state,
-  selectActiveFir,
-  (state, fir) =>
-    agreementsApi.endpoints.getByFir.select(fir)(state)?.data?.text ?? "",
+  selectByFir,
+  (state, selector) => selector(state)?.data?.text ?? "",
 )

@@ -17,7 +17,7 @@ router = APIRouter()
 
 
 @router.get(
-    "/airspace/",
+    "/airspace",
     tags=["airspace"],
 )
 async def airspace_get(

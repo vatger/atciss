@@ -1,5 +1,7 @@
 import { useAppSelector } from "app/hooks"
 import { useState } from "react"
+import { selectAirport, selectAirports } from "services/aerodrome"
+import { api } from "services/api"
 import { selectAtis, usePollAtisByIcaoCodes } from "services/atisApi"
 import {
   selectFirAllAerodromes,
@@ -12,7 +14,6 @@ import {
   usePollRawMetar,
   xmc,
 } from "services/metarApi"
-import { sectorApi, selectAirport, selectAirports } from "services/sectorApi"
 import { selectTaf, usePollTafByIcaoCodes } from "services/tafApi"
 import { Box, Button, Flex, Grid, Text } from "theme-ui"
 
@@ -82,7 +83,7 @@ const Wx = () => {
   const neighbourPrefixes = useAppSelector(selectNeighbourPrefixes)
   const [selectedAD, setSelectedAD] = useState(firADs[0])
 
-  sectorApi.useGetQuery()
+  api.useSectorsQuery()
   const airports = useAppSelector(selectAirports)
   const vatglassesADs = Object.entries(airports)
     .filter(

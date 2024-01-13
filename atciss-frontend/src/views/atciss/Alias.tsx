@@ -1,12 +1,13 @@
 /** @jsxImportSource theme-ui */
 
 import { useAppSelector } from "app/hooks"
-import { aliasesApi, selectAliases } from "services/aliasesApi"
+import { selectAliases } from "services/aliasesApi"
+import { api } from "services/api"
 import { selectActiveFir } from "services/configSlice"
 
 export const Alias = () => {
   const fir = useAppSelector(selectActiveFir)
-  aliasesApi.useGetQuery(fir)
+  api.useAliasesQuery(fir)
   const aliases = useAppSelector(selectAliases)
 
   return (

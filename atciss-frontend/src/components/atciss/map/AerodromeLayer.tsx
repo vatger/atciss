@@ -5,17 +5,17 @@ import {
   selectAirportControllers,
   selectAirportTopdownController,
   selectControllerFromPosition,
-} from "services/activePositionSlice"
-import { adApi, selectDfsAd } from "services/adApi"
+} from "services/activePositions"
+import {
+  selectAirport,
+  selectAirportICAOs,
+  selectDfsAd,
+} from "services/aerodrome"
+import { api } from "services/api"
 import { selectAtis, usePollAtisByIcaoCodes } from "services/atisApi"
 import { usePollControllers } from "services/controllerApi"
 import { selectMetar, usePollMetarByIcaoCodes, xmc } from "services/metarApi"
-import {
-  sectorApi,
-  selectAirport,
-  selectAirportICAOs,
-  selectPosition,
-} from "services/sectorApi"
+import { selectPosition } from "services/sectorApi"
 import { selectTaf, usePollTafByIcaoCodes } from "services/tafApi"
 import { Box, Flex, Text } from "theme-ui"
 
@@ -138,13 +138,13 @@ const AerodromeMarker = ({ icao }: { icao: string }) => {
 export const AerodromeLayer = () => {
   usePollControllers()
 
-  sectorApi.useGetQuery()
+  api.useSectorsQuery()
   const airports = useAppSelector(selectAirportICAOs)
 
   usePollMetarByIcaoCodes(airports)
   usePollTafByIcaoCodes(airports)
   usePollAtisByIcaoCodes(airports)
-  adApi.useGetByIcaoCodesQuery(airports)
+  api.useAerodromesByIcaosQuery(airports)
 
   return (
     <LayerGroup>

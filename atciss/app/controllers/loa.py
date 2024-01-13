@@ -12,7 +12,7 @@ router = APIRouter()
 
 
 @router.get(
-    "/loa/",
+    "/loa",
     tags=["loa"],
 )
 async def metar_get(

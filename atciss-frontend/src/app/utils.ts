@@ -15,3 +15,8 @@ export function setLocalStorage<T>(item: string, value: T): T {
 
   return value
 }
+
+export const tafFormat = (taf: string) =>
+  taf
+    ?.replace(/.*?[A-Z]{4}\s/, "")
+    .replaceAll(/\s(BECMG|PROB\d{2}\sTEMPO|TEMPO|FM\d{6})/g, "\n  $1")

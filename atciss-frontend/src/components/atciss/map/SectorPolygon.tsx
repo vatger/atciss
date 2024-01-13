@@ -10,16 +10,14 @@ import {
   selectControllerFromPosition,
   selectOwner,
   selectSelectedPosition,
-} from "services/activePositionSlice"
+} from "services/activePositions"
+import { selectAirports } from "services/aerodrome"
+import { api } from "services/api"
 import { selectAllAtis } from "services/atisApi"
 import { selectLevel } from "services/mapSlice"
-import {
-  Sector as SectorBounds,
-  sectorApi,
-  selectAirports,
-  selectSector,
-} from "services/sectorApi"
+import { selectSector } from "services/sectorApi"
 import { Box, Text } from "theme-ui"
+import { Sector as SectorBounds } from "types/vatglasses"
 
 const selectSectorBounds = createSelector(
   selectSector,
@@ -67,7 +65,7 @@ export const SectorPolygon = ({
   sectorBounds: { points, min, max },
   id,
 }: SectorPolygonProps) => {
-  sectorApi.useGetQuery()
+  api.useSectorsQuery()
   const owner = useAppSelector((store) => selectOwner(store, id))
   const sector = useAppSelector((store) => selectSector(store, id))
   const selectedPosition = useAppSelector(selectSelectedPosition)

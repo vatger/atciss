@@ -1,6 +1,6 @@
 import { AircraftInfoBit } from "components/atciss/AircraftInfoBit"
-import { AircraftPerformanceData } from "services/aircraftApi"
 import { Box, Flex, Heading } from "theme-ui"
+import { AircraftPerformanceData } from "types/aircraft"
 
 const beautify_recat = (recat: string) =>
   ({

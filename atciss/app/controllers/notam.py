@@ -17,7 +17,7 @@ router = APIRouter()
 
 
 @router.get(
-    "/notam/",
+    "/notam",
 )
 async def notam_get(
     icao: Annotated[list[str], Query(...)],

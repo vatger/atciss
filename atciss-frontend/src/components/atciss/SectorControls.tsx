@@ -4,20 +4,22 @@ import { SelectedPosition } from "components/atciss/sectorControls/SelectedPosit
 import {
   disableAllPositions,
   enableAllPositions,
-  selectPositionGroups,
-  selectPositionSyncedToOnline,
-  selectSectorsSyncedToOnline,
   setPositionSyncedToOnline,
   setSectorsSyncedToOnline,
 } from "services/activePositionSlice"
+import {
+  selectPositionGroups,
+  selectPositionSyncedToOnline,
+  selectSectorsSyncedToOnline,
+} from "services/activePositions"
+import { api } from "services/api"
 import { selectMe, usePollControllers } from "services/controllerApi"
-import { sectorApi } from "services/sectorApi"
 import { Box, Button, Flex, Text } from "theme-ui"
 
 export const SectorControls = () => {
   const dispatch = useAppDispatch()
 
-  sectorApi.useGetQuery()
+  api.useSectorsQuery()
   usePollControllers()
 
   const positionSyncedToOnline = useAppSelector(selectPositionSyncedToOnline)

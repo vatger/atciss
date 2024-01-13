@@ -8,12 +8,9 @@ import { DateTime } from "luxon"
 import { useState } from "react"
 import { LayerGroup, Polygon, Tooltip } from "react-leaflet"
 import { selectActiveFir, selectNeighbourFirs } from "services/configSlice"
-import {
-  Sigmet as SigmetType,
-  selectSigmets,
-  usePollSigmet,
-} from "services/sigmetApi"
+import { selectSigmets, usePollSigmet } from "services/sigmetApi"
 import { Box, Text } from "theme-ui"
+import { Sigmet as SigmetType } from "types/wx"
 
 const Sigmet = ({ sigmet }: { sigmet: SigmetType }) => {
   const [center, setCenter] = useState<LatLng | null>(null)

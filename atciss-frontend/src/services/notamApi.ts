@@ -1,90 +1,32 @@
-import { createApi } from "@reduxjs/toolkit/query/react"
-import { fetchWithAuth } from "../app/auth"
 import { createSelector } from "@reduxjs/toolkit"
+import { DateTime } from "luxon"
+import { api } from "services/api"
 import { RootState } from "../app/store"
 import { selectNotamDesignators } from "./configSlice"
-import { DateTime } from "luxon"
 import { selectReadFiltered } from "./notamSlice"
 
-export type Notam = {
-  full_text: string
-  notam_id: string
-  notam_type: string
-  ref_notam_id: string | null
-  fir: string
-  notam_code: string
-  traffic_type: string[]
-  purpose: string[]
-  scope: string[]
-  fl_lower: number
-  fl_upper: number
-  area: { [index: string]: string | number }
-  location: string[]
-  valid_from: string
-  valid_till: string
-  schedule: string | null
-  body: string
-  limit_lower: string | null
-  limit_upper: string | null
-  source: string | null
-  created: string | null
-}
-
-export const notamApi = createApi({
-  reducerPath: "notam",
-  baseQuery: fetchWithAuth,
-  tagTypes: ["notamSeen"],
-  endpoints: (builder) => ({
-    getByIcaoCodes: builder.query<{ [icao: string]: Notam[] }, string[]>({
-      query: (icaoList) => ({
-        url: "notam/",
-        params: icaoList.map((icao) => ["icao", icao]),
-      }),
-    }),
-    getSeen: builder.query<string[], void>({
-      query: () => ({
-        url: "notam/read",
-      }),
-      providesTags: ["notamSeen"],
-    }),
-    seen: builder.mutation<void, string>({
-      query: (id) => ({
-        url: "notam/read",
-        params: { id },
-        method: "POST",
-      }),
-      invalidatesTags: ["notamSeen"],
-    }),
-    unseen: builder.mutation<void, string>({
-      query: (id) => ({
-        url: "notam/read",
-        params: { id },
-        method: "DELETE",
-      }),
-      invalidatesTags: ["notamSeen"],
-    }),
-  }),
-})
-
-export const usePollNotamByIcaoCodes: typeof notamApi.useGetByIcaoCodesQuery = (
+export const usePollNotamByIcaoCodes: typeof api.useNotamsByIcaoCodesQuery = (
   icao,
   options,
 ) =>
-  notamApi.useGetByIcaoCodesQuery(icao, {
+  api.useNotamsByIcaoCodesQuery(icao, {
     pollingInterval: 3600000,
     ...options,
   })
 
+const selectByDesignators = createSelector(
+  selectNotamDesignators,
+  api.endpoints.notamsByIcaoCodes.select,
+)
 const selectAllNotams = createSelector(
   (state: RootState) => state,
-  selectNotamDesignators,
-  (state, icaos) =>
-    notamApi.endpoints.getByIcaoCodes.select(icaos)(state)?.data ?? {},
+  selectByDesignators,
+  (state, selector) => selector(state)?.data ?? {},
 )
 
 const selectReadNotamIds = createSelector(
   (state: RootState) => state,
-  (state) => notamApi.endpoints.getSeen.select()(state)?.data ?? [],
+  (state) => api.endpoints.notamsSeen.select()(state)?.data ?? [],
 )
 
 export const selectNotamIsRead = createSelector(

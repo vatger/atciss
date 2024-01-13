@@ -2,7 +2,8 @@ import { useAtcissTheme } from "app/atciss/theme"
 import { useAppDispatch, useAppSelector } from "app/hooks"
 import { useState } from "react"
 import { LayerGroup, Polyline, Popup, useMap, useMapEvent } from "react-leaflet"
-import { airwayApi, selectAirways } from "services/airwayApi"
+import { selectAirways } from "services/airwayApi"
+import { api } from "services/api"
 import {
   selectAirwayLowerUpper,
   selectSelectedAirway,
@@ -15,7 +16,7 @@ const levelFormat = (level: number, uom: "FL" | "FT") =>
 
 export const AirwayLayer = () => {
   const lowerUpper = useAppSelector(selectAirwayLowerUpper)
-  airwayApi.useGetQuery(lowerUpper)
+  api.useAirwaysQuery(lowerUpper)
   const airways = useAppSelector(selectAirways)
   const selectedAirway = useAppSelector(selectSelectedAirway)
   const dispatch = useAppDispatch()

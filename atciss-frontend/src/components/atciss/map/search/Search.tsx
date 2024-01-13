@@ -3,8 +3,9 @@ import { ICONS } from "components/atciss/map/NavaidMarker"
 import { SearchInput } from "components/atciss/map/search/SearchInput"
 import { Map } from "leaflet"
 import { Fragment, ReactNode, RefObject } from "react"
+import { api } from "services/api"
 import { selectSearch } from "services/mapSlice"
-import { navaidApi, selectSearchedNavaids } from "services/navaidApi"
+import { selectSearchedNavaids } from "services/navaidApi"
 import { Box, Grid } from "theme-ui"
 
 export const Search = ({
@@ -15,7 +16,7 @@ export const Search = ({
   map: RefObject<Map>
 }) => {
   const search = useAppSelector(selectSearch)
-  navaidApi.useSearchQuery(search, {
+  api.useSearchNavaidsQuery(search, {
     skip: search.length < 2,
   })
 

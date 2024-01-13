@@ -1,50 +1,20 @@
-import { createApi } from "@reduxjs/toolkit/query/react"
-import { fetchWithAuth } from "../app/auth"
-import { LatLngTuple } from "leaflet"
 import { createSelector } from "@reduxjs/toolkit"
+import { api } from "services/api"
 import { RootState } from "../app/store"
 import { selectActiveFir, selectNeighbourFirs } from "./configSlice"
 
-export type Sigmet = {
-  isigmetId: number
-  icaoId: string
-  firId: string
-  receiptTime: string
-  validTimeFrom: string
-  validTimeTo: string
-  seriesId: string
-  hazard: string
-  qualifier: string
-  base: number | null
-  top: number | null
-  geom: string
-  dir: string | null
-  spd: number | null
-  chng: string | null
-  coords: LatLngTuple[]
-  rawSigmet: string
-}
+export const usePollSigmet: typeof api.useSigmetQuery = (_, options) =>
+  api.useSigmetQuery(_, { pollingInterval: 60000, ...options })
 
-export const sigmetApi = createApi({
-  reducerPath: "sigmet",
-  baseQuery: fetchWithAuth,
-  endpoints: (builder) => ({
-    get: builder.query<Sigmet[], string[]>({
-      query: (firs) => ({
-        url: "sigmet",
-        params: firs.map((fir) => ["fir", fir]),
-      }),
-    }),
-  }),
-})
-
-export const usePollSigmet: typeof sigmetApi.useGetQuery = (_, options) =>
-  sigmetApi.useGetQuery(_, { pollingInterval: 60000, ...options })
-
-export const selectSigmets = createSelector(
-  (state: RootState) => state,
+const selectByFirs = createSelector(
   selectActiveFir,
   selectNeighbourFirs,
-  (state, fir, firs) =>
-    sigmetApi.endpoints.get.select([fir, ...firs])(state)?.data ?? [],
+  (activeFir, neighbourFirs) =>
+    api.endpoints.sigmet.select([activeFir, ...neighbourFirs]),
+)
+export const selectSigmets = createSelector(
+  (state: RootState) => state,
+
+  selectByFirs,
+  (state, selector) => selector(state)?.data ?? [],
 )

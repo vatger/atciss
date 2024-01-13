@@ -21,6 +21,7 @@
       "components/*": ["./src/components/*"],
       "views/*": ["./src/views/*"],
       "services/*": ["./src/services/*"],
+      "types/*": ["./src/types/*"]
     }
   },
   "include": ["src"],

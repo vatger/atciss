@@ -1,8 +1,9 @@
 import { useAppSelector } from "app/hooks"
-import { selectOnlineOwner } from "services/activePositionSlice"
+import { selectOnlineOwner } from "services/activePositions"
+import { api } from "services/api"
 import { selectStaffingSectors } from "services/atisAfwSlice"
 import { usePollControllers } from "services/controllerApi"
-import { sectorApi, selectSector } from "services/sectorApi"
+import { selectSector } from "services/sectorApi"
 import { Box, Flex, Text } from "theme-ui"
 
 const Sector = ({ id }: { id: string }) => {
@@ -25,7 +26,7 @@ export const SectorStaffing = () => {
   usePollControllers()
   const sectors = useAppSelector(selectStaffingSectors)
 
-  sectorApi.useGetQuery()
+  api.useSectorsQuery()
 
   return (
     <Flex

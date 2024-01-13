@@ -6,8 +6,8 @@ import {
   selectIsGroupActive,
   selectPositionsByGroup,
   selectSectorsSyncedToOnline,
-  setPositionGroup,
-} from "services/activePositionSlice"
+} from "services/activePositions"
+import { setPositionGroup } from "services/activePositionSlice"
 import { Flex, Text } from "theme-ui"
 
 export const SectorGroup = ({ group }: { group: string }) => {

@@ -1,42 +1,21 @@
-import { createApi } from "@reduxjs/toolkit/query/react"
-import { fetchWithAuth } from "../app/auth"
 import { createSelector } from "@reduxjs/toolkit"
+import { api } from "services/api"
 import { RootState } from "../app/store"
-import { selectAirportICAOs } from "./sectorApi"
+import { selectAirportICAOs } from "services/aerodrome"
 
-const tafFormat = (taf: string) =>
-  taf
-    ?.replace(/.*?[A-Z]{4}\s/, "")
-    .replaceAll(/\s(BECMG|PROB\d{2}\sTEMPO|TEMPO|FM\d{6})/g, "\n  $1")
-
-export const tafApi = createApi({
-  reducerPath: "taf",
-  baseQuery: fetchWithAuth,
-  endpoints: (builder) => ({
-    getByIcaoCodes: builder.query<{ [id: string]: string }, string[]>({
-      query: (icaoList) => ({
-        url: `taf`,
-        params: icaoList.map((icao) => ["icao", icao]),
-      }),
-      transformResponse: (tafs) =>
-        Object.entries(tafs ?? {}).reduce(
-          (acc, [ad, taf]) => ({ ...acc, [ad]: tafFormat(taf) }),
-          {},
-        ),
-    }),
-  }),
-})
-
-export const usePollTafByIcaoCodes: typeof tafApi.useGetByIcaoCodesQuery = (
+export const usePollTafByIcaoCodes: typeof api.useTafByIcaoCodesQuery = (
   icao,
   options,
-) => tafApi.useGetByIcaoCodesQuery(icao, { pollingInterval: 60000, ...options })
+) => api.useTafByIcaoCodesQuery(icao, { pollingInterval: 60000, ...options })
 
+const selectByIcaoCodes = createSelector(
+  selectAirportICAOs,
+  api.endpoints.tafByIcaoCodes.select,
+)
 const selectAllTafs = createSelector(
   (state: RootState) => state,
-  selectAirportICAOs,
-  (state, ads) =>
-    tafApi.endpoints.getByIcaoCodes.select(ads)(state)?.data ?? {},
+  selectByIcaoCodes,
+  (state, selector) => selector(state)?.data ?? {},
 )
 
 export const selectTaf = createSelector(
@@ -45,5 +24,5 @@ export const selectTaf = createSelector(
   (_state: RootState, icao: string) => icao,
   (state, tafs, icao) =>
     tafs[icao ?? ""] ??
-    tafApi.endpoints.getByIcaoCodes.select([icao])(state)?.data?.[icao ?? ""],
+    api.endpoints.tafByIcaoCodes.select([icao])(state)?.data?.[icao ?? ""],
 )

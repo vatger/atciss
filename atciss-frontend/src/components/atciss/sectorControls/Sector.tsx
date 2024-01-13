@@ -1,9 +1,9 @@
 import { useAppDispatch, useAppSelector } from "app/hooks"
+import { setPosition } from "services/activePositionSlice"
 import {
   selectIsPositionActive,
   selectSectorsSyncedToOnline,
-  setPosition,
-} from "services/activePositionSlice"
+} from "services/activePositions"
 import { selectPosition } from "services/sectorApi"
 import { Flex } from "theme-ui"
 

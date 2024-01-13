@@ -1,10 +1,7 @@
 import { FIR_TO_VATGLASSES } from "app/config"
 import { useAppSelector } from "app/hooks"
-import {
-  selectOwner,
-  selectSelectedPosition,
-} from "services/activePositionSlice"
-import { LoaItem } from "services/loaApi"
+import { selectOwner, selectSelectedPosition } from "services/activePositions"
+import { LoaItem } from "types/loa"
 
 const PositionInformation = ({
   loa,

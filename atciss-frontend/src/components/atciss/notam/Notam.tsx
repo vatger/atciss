@@ -1,12 +1,10 @@
 import { useAppSelector } from "app/hooks"
 import { DateTime } from "luxon"
 import { MouseEventHandler } from "react"
-import {
-  Notam as NotamType,
-  notamApi,
-  selectNotamIsRead,
-} from "services/notamApi"
+import { api } from "services/api"
+import { selectNotamIsRead } from "services/notamApi"
 import { Box, Flex, Text } from "theme-ui"
+import { Notam as NotamType } from "types/notam"
 
 export const Notam = ({ notam }: { notam: NotamType }) => {
   const valid_till = DateTime.fromISO(notam.valid_till).toUTC()
@@ -15,8 +13,8 @@ export const Notam = ({ notam }: { notam: NotamType }) => {
   const isRead = useAppSelector((store) =>
     selectNotamIsRead(store, notam.notam_id),
   )
-  const [seen] = notamApi.useSeenMutation()
-  const [unseen] = notamApi.useUnseenMutation()
+  const [seen] = api.useNotamSeenMutation()
+  const [unseen] = api.useNotamUnseenMutation()
 
   const click: MouseEventHandler<HTMLDivElement> = (e) => {
     if (!window.getSelection()?.isCollapsed) {

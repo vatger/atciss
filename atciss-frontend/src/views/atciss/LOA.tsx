@@ -5,9 +5,9 @@ import { SidebarLayout } from "components/SidebarLayout"
 import { LoaRow } from "components/atciss/LoaRow"
 import { SectorControls } from "components/atciss/SectorControls"
 import { useState } from "react"
-import { selectOwnedSectors } from "services/activePositionSlice"
+import { selectOwnedSectors } from "services/activePositions"
+import { api } from "services/api"
 import {
-  loaApi,
   selectFilteredEntryLoas,
   selectFilteredExitLoas,
 } from "services/loaApi"
@@ -15,7 +15,7 @@ import { Box, Flex, Input, ThemeUIStyleObject } from "theme-ui"
 
 export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const ownedSectors = useAppSelector(selectOwnedSectors)
-  loaApi.useGetBySectorsQuery(ownedSectors, {
+  api.useLoaBySectorsQuery(ownedSectors, {
     skip: ownedSectors.length == 0,
   })
   const [filter, setFilter] = useState("")

@@ -3,8 +3,8 @@ import {
   selectActivePositions,
   selectPositionSyncedToOnline,
   selectSelectedPosition,
-  setSelectedPosition,
-} from "services/activePositionSlice"
+} from "services/activePositions"
+import { setSelectedPosition } from "services/activePositionSlice"
 import { selectMe } from "services/controllerApi"
 import { selectPosition } from "services/sectorApi"
 import { Box, Text } from "theme-ui"

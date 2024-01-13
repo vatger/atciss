@@ -32,7 +32,7 @@ async def get_flow_measures(
 
 
 @router.get(
-    "/event/",
+    "/event",
     responses={404: {}},
 )
 async def get_events(

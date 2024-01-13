@@ -1,6 +1,3 @@
-import { createApi } from "@reduxjs/toolkit/query/react"
-import { fetchWithAuth } from "../app/auth"
-
 export interface AircraftPerformanceData {
   id: string
   manufacturer: string
@@ -29,16 +26,3 @@ export interface AircraftPerformanceData {
   cat_arc?: string
   remarks?: string
 }
-
-export const aircraftApi = createApi({
-  reducerPath: "ac_data",
-  baseQuery: fetchWithAuth,
-  endpoints: (builder) => ({
-    search: builder.query<AircraftPerformanceData[], string>({
-      query: (q) => ({
-        url: `aircraft/search`,
-        params: { query: q },
-      }),
-    }),
-  }),
-})

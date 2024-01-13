@@ -1,43 +1,8 @@
-import { createApi } from "@reduxjs/toolkit/query/react"
-import { fetchWithAuth } from "../app/auth"
-import { RootState } from "../app/store"
-import { selectAirportICAOs } from "./sectorApi"
 import { createSelector } from "@reduxjs/toolkit"
-
-export interface Clouds {
-  cover: "FEW" | "SCT" | "BKN" | "OVC" | "NSC"
-  height: number | null
-  type: string | null
-}
-
-export interface Rvr {
-  runway: string
-  low: number
-  high: number | null
-  trend: string | null
-}
-
-export interface Metar {
-  raw: string
-  station_id: string
-  time: string
-  automatic: boolean
-  wind_dir: number | null
-  wind_speed: number
-  wind_gust: number | null
-  wind_dir_from: number | null
-  wind_dir_to: number | null
-  vis: number[]
-  temp: number
-  dewpt: number
-  qnh: number
-  rvr: Rvr[]
-  weather: string[]
-  recent_weather: string[]
-  clouds: Clouds[]
-  trend: string
-  tl: number | null
-}
+import { selectAirportICAOs } from "services/aerodrome"
+import { api } from "services/api"
+import { RootState } from "../app/store"
+import { Metar, Clouds } from "types/wx"
 
 export const ceiling: (metar: Metar) => number | null = (metar) =>
   metar.clouds.reduce((acc: number | null, clouds: Clouds) => {
@@ -64,42 +29,26 @@ export const xmc: (metar: Metar) => "VMC" | "IMC" | "LVP" = (metar) => {
 export const hpaToInhg: (qnh: number) => number = (qnh) =>
   qnh * 0.02952998057228486
 
-export const metarApi = createApi({
-  reducerPath: "metar",
-  baseQuery: fetchWithAuth,
-  endpoints: (builder) => ({
-    getByIcaoCodes: builder.query<{ [id: string]: Metar }, string[]>({
-      query: (icaoList) => ({
-        url: "metar",
-        params: icaoList.map((icao) => ["icao", icao]),
-      }),
-    }),
-    getRaw: builder.query<string, string>({
-      query: (icao) => ({
-        url: "metar/raw",
-        params: [["id", icao]],
-        responseHandler: "text",
-      }),
-    }),
-  }),
-})
-
-export const usePollMetarByIcaoCodes: typeof metarApi.useGetByIcaoCodesQuery = (
+export const usePollMetarByIcaoCodes: typeof api.useMetarsByIcaoCodesQuery = (
   icao,
   options,
 ) =>
-  metarApi.useGetByIcaoCodesQuery(icao, { pollingInterval: 60000, ...options })
+  api.useMetarsByIcaoCodesQuery(icao, {
+    pollingInterval: 60000,
+    ...options,
+  })
 
-export const usePollRawMetar: typeof metarApi.useGetRawQuery = (
-  icao,
-  options,
-) => metarApi.useGetRawQuery(icao, { pollingInterval: 60000, ...options })
+export const usePollRawMetar: typeof api.useRawMetarQuery = (icao, options) =>
+  api.useRawMetarQuery(icao, { pollingInterval: 60000, ...options })
 
+const selectByIcaoCodes = createSelector(
+  selectAirportICAOs,
+  api.endpoints.metarsByIcaoCodes.select,
+)
 const selectAllMetars = createSelector(
   (state: RootState) => state,
-  selectAirportICAOs,
-  (state, ads) =>
-    metarApi.endpoints.getByIcaoCodes.select(ads)(state)?.data ?? {},
+  selectByIcaoCodes,
+  (state, selector) => selector(state)?.data ?? {},
 )
 
 export const selectMetar = createSelector(
@@ -108,11 +57,11 @@ export const selectMetar = createSelector(
   (_state: RootState, icao: string) => icao,
   (state, metars, icao) =>
     metars[icao ?? ""] ??
-    metarApi.endpoints.getByIcaoCodes.select([icao])(state)?.data?.[icao ?? ""],
+    api.endpoints.metarsByIcaoCodes.select([icao])(state)?.data?.[icao ?? ""],
 )
 
 export const selectRawMetar = createSelector(
   (state: RootState) => state,
   (_state: RootState, icao: string) => icao,
-  (state, icao) => metarApi.endpoints.getRaw.select(icao)(state)?.data,
+  (state, icao) => api.endpoints.rawMetar.select(icao)(state)?.data,
 )

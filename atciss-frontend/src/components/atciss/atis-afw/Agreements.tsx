@@ -1,10 +1,7 @@
 import { useAppSelector } from "app/hooks"
 import { useRef, useState } from "react"
-import {
-  agreementsApi,
-  selectAgreements,
-  usePollAgreements,
-} from "services/agreementsApi"
+import { selectAgreements, usePollAgreements } from "services/agreementsApi"
+import { api } from "services/api"
 import { selectActiveFir } from "services/configSlice"
 import { Textarea } from "theme-ui"
 
@@ -12,7 +9,7 @@ export const Agreements = () => {
   const agreements = useAppSelector(selectAgreements)
   const fir = useAppSelector(selectActiveFir)
   usePollAgreements(fir)
-  const [edit] = agreementsApi.useEditMutation()
+  const [edit] = api.useEditAgreementMutation()
   const [value, setValue] = useState(agreements)
   const textarea = useRef<HTMLTextAreaElement>(null)
 

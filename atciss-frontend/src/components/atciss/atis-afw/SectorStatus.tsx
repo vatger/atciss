@@ -1,9 +1,9 @@
 import { useAppSelector } from "app/hooks"
+import { api } from "services/api"
 import { selectStatusSectors } from "services/atisAfwSlice"
 import {
   SectorStatus as SectorStatusType,
   StatusEnum,
-  sectorstatusApi,
   selectSectorStatus,
   usePollSectorStatus,
 } from "services/sectorstatusApi"
@@ -18,7 +18,7 @@ const StatusButton = ({
   id: string
   sectorStatus: SectorStatusType
 }) => {
-  const [edit] = sectorstatusApi.useEditMutation()
+  const [edit] = api.useEditSectorStatusMutation()
 
   return (
     <Button

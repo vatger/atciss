@@ -5,8 +5,8 @@ import { SidebarLayout } from "components/SidebarLayout"
 import { AircraftInfoBox } from "components/atciss/AircraftInfoBox"
 import { XmButton } from "components/atciss/XmButton"
 import { XmInput } from "components/atciss/XmInput"
-import { aircraftApi } from "services/aircraftApi"
 import { selectQuery, setQuery } from "services/aircraftSlice"
+import { api } from "services/api"
 import { Box, Flex, Grid, Spinner } from "theme-ui"
 
 const airbusAC = {
@@ -83,7 +83,7 @@ export const AircraftData = () => {
     isSuccess,
     isError,
     error,
-  } = aircraftApi.useSearchQuery(query)
+  } = api.useSearchAircraftsQuery(query)
 
   let content
 

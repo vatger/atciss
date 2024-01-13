@@ -1,7 +1,8 @@
 import { useAppSelector } from "app/hooks"
 import { Clock } from "components/atciss/Clock"
 import { InfoBox } from "components/idvs/InfoBox"
-import { adApi, selectDfsAd } from "services/adApi"
+import { selectDfsAd } from "services/aerodrome"
+import { api } from "services/api"
 import { selectActiveAerodrome } from "services/idvsSlice"
 import {
   hpaToInhg,
@@ -13,7 +14,7 @@ import { Flex } from "theme-ui"
 export const BaroClock = () => {
   const aerodrome = useAppSelector(selectActiveAerodrome)
   usePollMetarByIcaoCodes([aerodrome])
-  adApi.useGetByIcaoCodesQuery([aerodrome])
+  api.useAerodromesByIcaosQuery([aerodrome])
 
   const metar = useAppSelector((store) => selectMetar(store, aerodrome))
   const ad = useAppSelector((store) => selectDfsAd(store, aerodrome))

@@ -4,9 +4,10 @@ import { LatLng } from "leaflet"
 import { DateTime, Duration } from "luxon"
 import { useState } from "react"
 import { LayerGroup, Polygon, Tooltip } from "react-leaflet"
-import { AreaBooking, usePollAreas } from "services/areaApi"
+import { usePollAreas } from "services/areaApi"
 import { selectLevel } from "services/mapSlice"
 import { Box, Text } from "theme-ui"
+import { AreaBooking } from "types/area"
 import { VerticalBoundary } from "./VerticalBoundary"
 
 const Area = ({ area }: { area: AreaBooking }) => {

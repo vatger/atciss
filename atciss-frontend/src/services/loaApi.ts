@@ -1,35 +1,8 @@
-import { createApi } from "@reduxjs/toolkit/query/react"
-import { fetchWithAuth } from "../app/auth"
 import { createSelector } from "@reduxjs/toolkit"
+import { api } from "services/api"
 import { RootState } from "../app/store"
-import { selectOwnedSectors } from "./activePositionSlice"
-
-export type LoaItem = {
-  aerodrome: string // FIXME: should be string[]
-  adep_ades: "ADEP" | "ADES" | null
-  cop: string
-  level: number
-  feet: boolean
-  xc: string | null
-  special_conditions: string
-  from_sector: string
-  to_sector: string
-  from_fir: string
-  to_fir: string
-}
-
-export const loaApi = createApi({
-  reducerPath: "loa",
-  baseQuery: fetchWithAuth,
-  endpoints: (builder) => ({
-    getBySectors: builder.query<LoaItem[], string[]>({
-      query: (sectors) => ({
-        url: `loa/`,
-        params: sectors.map((sector) => ["sector", sector.replace(/.*\//, "")]),
-      }),
-    }),
-  }),
-})
+import { selectOwnedSectors } from "services/activePositions"
+import { LoaItem } from "types/loa"
 
 const sortBy = (attrs: (keyof LoaItem)[]) => (a: LoaItem, b: LoaItem) => {
   for (const attr of attrs) {
@@ -44,13 +17,20 @@ const sortBy = (attrs: (keyof LoaItem)[]) => (a: LoaItem, b: LoaItem) => {
   return 0
 }
 
-const selectRelevantLoas = createSelector(
-  (state: RootState) => state,
+const selectByOwnedSectors = createSelector(
   selectOwnedSectors,
-  (state, ownedSectors) =>
-    (
-      loaApi.endpoints.getBySectors.select(ownedSectors)(state)?.data ?? []
-    ).filter(
+  api.endpoints.loaBySectors.select,
+)
+const selectOwnedLoas = createSelector(
+  (state: RootState) => state,
+  selectByOwnedSectors,
+  (state, selector) => selector(state)?.data ?? [],
+)
+const selectRelevantLoas = createSelector(
+  selectOwnedLoas,
+  selectOwnedSectors,
+  (loas, ownedSectors) =>
+    loas.filter(
       (loa) =>
         !ownedSectors.includes(loa.from_sector) ||
         !ownedSectors.includes(loa.to_sector),

@@ -1,43 +1,21 @@
-import { createApi } from "@reduxjs/toolkit/query/react"
-import { fetchWithAuth } from "../app/auth"
 import { createSelector } from "@reduxjs/toolkit"
-import { selectAirportICAOs } from "./sectorApi"
+import { selectAirportICAOs } from "services/aerodrome"
+import { api } from "services/api"
 import { RootState } from "../app/store"
 
-export interface Atis {
-  cid: number
-  name: string
-  callsign: string
-  frequency: string
-  atis_code: string
-  text_atis: string
-  runways_in_use: string[]
-}
-
-export const atisApi = createApi({
-  reducerPath: "atis",
-  baseQuery: fetchWithAuth,
-  endpoints: (builder) => ({
-    getByIcaoCodes: builder.query<{ [id: string]: Atis }, string[]>({
-      query: (icaoList) => ({
-        url: `atis`,
-        params: icaoList.map((icao) => ["icao", icao]),
-      }),
-    }),
-  }),
-})
-
-export const usePollAtisByIcaoCodes: typeof atisApi.useGetByIcaoCodesQuery = (
+export const usePollAtisByIcaoCodes: typeof api.useAtisByIcaoCodesQuery = (
   icao,
   options,
-) =>
-  atisApi.useGetByIcaoCodesQuery(icao, { pollingInterval: 60000, ...options })
+) => api.useAtisByIcaoCodesQuery(icao, { pollingInterval: 60000, ...options })
 
+const selectByIcaoCodes = createSelector(
+  selectAirportICAOs,
+  api.endpoints.atisByIcaoCodes.select,
+)
 export const selectAllAtis = createSelector(
   (state: RootState) => state,
-  selectAirportICAOs,
-  (state, ads) =>
-    atisApi.endpoints.getByIcaoCodes.select(ads)(state)?.data ?? {},
+  selectByIcaoCodes,
+  (state, selector) => selector(state)?.data ?? {},
 )
 
 export const selectAtis = createSelector(
@@ -46,5 +24,5 @@ export const selectAtis = createSelector(
   (_state: RootState, icao: string) => icao,
   (state, atis, icao) =>
     atis[icao ?? ""] ??
-    atisApi.endpoints.getByIcaoCodes.select([icao])(state)?.data?.[icao ?? ""],
+    api.endpoints.atisByIcaoCodes.select([icao])(state)?.data?.[icao ?? ""],
 )
