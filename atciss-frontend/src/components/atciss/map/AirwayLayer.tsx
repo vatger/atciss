@@ -38,7 +38,7 @@ export const AirwayLayer = () => {
             color:
               selectedAirway == airway.airway_id
                 ? theme.colors.primary
-                : "#000000",
+                : theme.colors.text,
           }}
           eventHandlers={{
             click: () => {
