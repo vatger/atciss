@@ -6,7 +6,7 @@ from sqlalchemy import Column
 from sqlmodel import Field, Relationship, SQLModel
 from atciss.app.utils.geo import postgis_line_serialize, postgis_line_validate
 
-from atciss.app.views.navaid import Navaid
+from atciss.app.views.dfs_aixm import Navaid
 
 
 class Airway(SQLModel, table=True):

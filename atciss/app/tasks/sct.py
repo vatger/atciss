@@ -6,8 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlmodel import select
 from atciss.app.utils.aiohttp_client import AiohttpClient
 
-from atciss.app.views.aerodrome import Aerodrome
-from atciss.app.views.navaid import Navaid
+from atciss.app.views.dfs_aixm import Aerodrome, Navaid
 
 from ...config import settings
 from ..views import sct_parser

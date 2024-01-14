@@ -1,9 +1,10 @@
 """Application controllers - metar."""
 from datetime import UTC, datetime
 from typing import Annotated
-from fastapi_async_sqlalchemy import db
 from fastapi import APIRouter, Body, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
+from atciss.app.utils.db import get_session
 
 from atciss.app.views.agreements import Agreements
 
@@ -19,11 +20,12 @@ router = APIRouter()
 async def sectorstatus_get(
     fir: str,
     user: Annotated[User, Depends(get_user)],
+    session: Annotated[AsyncSession, Depends(get_session)],
 ) -> Agreements:
     """Get status for multiple sectors."""
 
     stmt = select(Agreements).where(Agreements.fir == fir)
-    agreements = await db.session.scalar(stmt)
+    agreements = await session.scalar(stmt)
 
     if agreements is None:
         return Agreements(fir=fir, text="", changed_by_cid="unset", updated_at=datetime.now(UTC))
@@ -37,27 +39,27 @@ async def sectorstatus_get(
 async def sectorstatus_post(
     fir: str,
     user: Annotated[User, Depends(get_controller)],
+    session: Annotated[AsyncSession, Depends(get_session)],
     text: Annotated[str, Body()] = "",
 ) -> Agreements:
     """Set status for a sector."""
 
-    async with db():
-        stmt = select(Agreements).where(Agreements.fir == fir)
-        agreements = await db.session.scalar(stmt)
+    stmt = select(Agreements).where(Agreements.fir == fir)
+    agreements = await session.scalar(stmt)
 
-        if agreements is None:
-            agreements = Agreements(
-                fir=fir,
-                text=text,
-                changed_by_cid=str(user.cid),
-                updated_at=datetime.now(UTC),
-            )
-        else:
-            agreements.text = text
-            agreements.changed_by_cid = str(user.cid)
-            agreements.updated_at = datetime.now(UTC)
+    if agreements is None:
+        agreements = Agreements(
+            fir=fir,
+            text=text,
+            changed_by_cid=str(user.cid),
+            updated_at=datetime.now(UTC),
+        )
+    else:
+        agreements.text = text
+        agreements.changed_by_cid = str(user.cid)
+        agreements.updated_at = datetime.now(UTC)
 
-        agreements = await db.session.merge(agreements)
-        await db.session.commit()
+    agreements = await session.merge(agreements)
+    await session.commit()
 
     return agreements

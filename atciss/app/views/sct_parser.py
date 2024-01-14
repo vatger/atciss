@@ -7,8 +7,7 @@ from pydantic import TypeAdapter
 from lark import Discard, Lark, Transformer
 
 from atciss.app.utils.geo import Coordinate
-from atciss.app.views.aerodrome import Aerodrome
-from atciss.app.views.navaid import Navaid
+from atciss.app.views.dfs_aixm import Aerodrome, Navaid
 
 
 @dataclass

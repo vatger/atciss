@@ -13,7 +13,6 @@ from asgiref.typing import (
     Scope,
 )
 from fastapi import FastAPI
-from fastapi_async_sqlalchemy import SQLAlchemyMiddleware
 from prometheus_fastapi_instrumentator import Instrumentator as PrometheusInstrumentator
 from asgi_correlation_id import CorrelationIdMiddleware, correlation_id
 from asgi_correlation_id.middleware import is_valid_uuid4
@@ -76,16 +75,6 @@ def get_application() -> FastAPI:
     )
 
     _ = PrometheusInstrumentator().instrument(app).expose(app, tags=["monitoring"])
-
-    app.add_middleware(
-        SQLAlchemyMiddleware,
-        db_url=str(settings.DATABASE_DSN),
-        engine_args={  # engine arguments example
-            "pool_pre_ping": True,
-            "pool_size": 5,
-            "max_overflow": 10,
-        },
-    )
 
     app.add_middleware(CorrelationIdLogMiddleware)
     app.add_middleware(

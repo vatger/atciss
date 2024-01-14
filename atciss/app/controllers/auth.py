@@ -8,8 +8,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2AuthorizationCodeBearer
 from jose import JWTError, jwt
 from pydantic import TypeAdapter
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
-from fastapi_async_sqlalchemy import db
+
+from atciss.app.utils.db import get_session
 
 from ..utils.aiohttp_client import AiohttpClient
 from ...config import settings
@@ -114,7 +116,10 @@ oauth2_scheme = OAuth2AuthorizationCodeBearer(
 )
 
 
-async def get_user(token: Annotated[str, Depends(oauth2_scheme)]) -> User:
+async def get_user(
+    token: Annotated[str, Depends(oauth2_scheme)],
+    session: Annotated[AsyncSession, Depends(get_session)],
+) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -127,9 +132,8 @@ async def get_user(token: Annotated[str, Depends(oauth2_scheme)]) -> User:
             raise credentials_exception
 
         user: Optional[User] = None
-        async with db():
-            stmt = select(User).where(User.cid == int(cid))
-            user = await db.session.scalar(stmt)
+        stmt = select(User).where(User.cid == int(cid))
+        user = await session.scalar(stmt)
 
         if user is None:
             raise HTTPException(500, "User not not found in database")
@@ -140,17 +144,16 @@ async def get_user(token: Annotated[str, Depends(oauth2_scheme)]) -> User:
     return user
 
 
-async def get_controller(token: Annotated[str, Depends(oauth2_scheme)]) -> User:
-    user = await get_user(token)
-
+async def get_controller(user: Annotated[User, Depends(get_user)]) -> User:
     if user.rating not in ["S2", "S3", "C1", "C3", "I1", "I3", "SUP", "ADM"]:
         raise HTTPException(status.HTTP_403_FORBIDDEN, f"not allowed with rating {user.rating}")
 
     return user
 
 
-async def get_admin(token: Annotated[str, Depends(oauth2_scheme)]) -> User:
-    user = await get_user(token)
+async def get_admin(
+    token: Annotated[str, Depends(oauth2_scheme)], user: Annotated[User, Depends(get_user)]
+) -> User:
     payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
 
     if not user or not payload.get("admin"):
@@ -175,7 +178,10 @@ async def auth_config() -> AuthInfoModel:
 @router.post(
     "/auth",
 )
-async def auth(req: AuthRequest) -> AuthModel:
+async def auth(
+    req: AuthRequest,
+    session: Annotated[AsyncSession, Depends(get_session)],
+) -> AuthModel:
     """Authenticate with VATSIM."""
     async with AiohttpClient.get() as aiohttp_client:
         res = await aiohttp_client.post(
@@ -209,23 +215,22 @@ async def auth(req: AuthRequest) -> AuthModel:
     if user_response.data.vatsim.rating.short in ("INAC", "SUS"):
         raise HTTPException(401, "Account inactive or suspended")
 
-    async with db():
-        cid = int(user_response.data.cid)
-        user = await db.session.get(User, cid)
+    cid = int(user_response.data.cid)
+    user = await session.get(User, cid)
 
-        user_data = {
-            "name": user_response.data.personal.name_full,
-            "rating": user_response.data.vatsim.rating.short,
-        }
+    user_data = {
+        "name": user_response.data.personal.name_full,
+        "rating": user_response.data.vatsim.rating.short,
+    }
 
-        if user is None:
-            user = User(cid=cid, **user_data)
-        else:
-            for k, v in user_data.items():
-                setattr(user, k, v)
+    if user is None:
+        user = User(cid=cid, **user_data)
+    else:
+        for k, v in user_data.items():
+            setattr(user, k, v)
 
-        db.session.add(user)
+    session.add(user)
 
-        await db.session.commit()
+    await session.commit()
 
     return AuthModel(jwt=create_jwt(user_response.data.cid, auth_response.refresh_token))

@@ -3,7 +3,7 @@ from typing import Any, List, Optional
 from loguru import logger
 
 from atciss.app.utils.aiohttp_client import AiohttpClient
-from atciss.app.views.dfs import DFSDataset, Item
+from atciss.app.views.dfs_rest import DFSDataset, Item
 
 
 async def get_dfs_aixm_datasets(amdt_id: int) -> dict[str, Any]:

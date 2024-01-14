@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from pynotam import Notam
 from parsimonious import ParseError
 
-from atciss.app.views.aerodrome import Aerodrome
+from atciss.app.views.dfs_aixm import Aerodrome
 from ..utils import AiohttpClient, ClientConnectorError, RedisClient
 from ...config import settings
 

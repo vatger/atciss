@@ -3,8 +3,10 @@ from datetime import UTC, datetime
 from typing import Annotated, Sequence, cast
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from fastapi_async_sqlalchemy import db
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import delete, select
+
+from atciss.app.utils.db import get_session
 
 from ..controllers.auth import get_user
 from ..models import User
@@ -21,7 +23,7 @@ router = APIRouter()
 )
 async def notam_get(
     icao: Annotated[list[str], Query(...)],
-    user: Annotated[User, Depends(get_user)],
+    _: Annotated[User, Depends(get_user)],
 ) -> dict[str, list[NotamModel]]:
     """Get METAR for airport."""
     redis_client = RedisClient.open()
@@ -44,11 +46,10 @@ async def notam_get(
     "/notam/read",
 )
 async def notam_seen_get(
-    user: Annotated[User, Depends(get_user)],
+    user: Annotated[User, Depends(get_user)], session: Annotated[AsyncSession, Depends(get_session)]
 ) -> Sequence[str]:
-    async with db():
-        stmt = select(NotamSeen.notam_id).where(NotamSeen.cid == str(user.cid))
-        read_notams = await db.session.scalars(stmt)
+    stmt = select(NotamSeen.notam_id).where(NotamSeen.cid == str(user.cid))
+    read_notams = await session.scalars(stmt)
 
     return read_notams.all()
 
@@ -59,13 +60,11 @@ async def notam_seen_get(
 async def notam_seen(
     id: str,
     user: Annotated[User, Depends(get_user)],
+    session: Annotated[AsyncSession, Depends(get_session)],
 ) -> None:
     """Get METAR for airport."""
-    async with db():
-        _ = await db.session.merge(
-            NotamSeen(notam_id=id, cid=str(user.cid), seen_at=datetime.now(UTC))
-        )
-        await db.session.commit()
+    _ = await session.merge(NotamSeen(notam_id=id, cid=str(user.cid), seen_at=datetime.now(UTC)))
+    await session.commit()
 
 
 @router.delete(
@@ -74,11 +73,9 @@ async def notam_seen(
 async def notam_unseen(
     id: str,
     user: Annotated[User, Depends(get_user)],
+    session: Annotated[AsyncSession, Depends(get_session)],
 ) -> None:
     """Get METAR for airport."""
-    async with db():
-        stmt = (
-            delete(NotamSeen).where(NotamSeen.notam_id == id).where(NotamSeen.cid == str(user.cid))
-        )
-        _ = await db.session.execute(stmt)
-        await db.session.commit()
+    stmt = delete(NotamSeen).where(NotamSeen.notam_id == id).where(NotamSeen.cid == str(user.cid))
+    _ = await session.execute(stmt)
+    await session.commit()

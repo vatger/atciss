@@ -2,10 +2,8 @@ from typing import Optional
 import uuid
 from sqlmodel import SQLModel, Field
 
-from .views.aerodrome import Aerodrome  # noqa: F401 pylint: disable=unused-import
+from .views.dfs_aixm import Aerodrome, Navaid, Runway, RunwayDirection  # noqa: F401 pylint: disable=unused-import
 from .views.booking import Booking  # noqa: F401 pylint: disable=unused-import
-from .views.navaid import Navaid  # noqa: F401 pylint: disable=unused-import
-from .views.runway import Runway, RunwayDirection  # noqa: F401 pylint: disable=unused-import
 
 
 class UserBase(SQLModel):

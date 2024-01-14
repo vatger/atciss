@@ -540,21 +540,6 @@ typing-extensions = ">=4.8.0"
 all = ["email-validator (>=2.0.0)", "httpx (>=0.23.0)", "itsdangerous (>=1.1.0)", "jinja2 (>=2.11.2)", "orjson (>=3.2.1)", "pydantic-extra-types (>=2.0.0)", "pydantic-settings (>=2.0.0)", "python-multipart (>=0.0.5)", "pyyaml (>=5.3.1)", "ujson (>=4.0.1,!=4.0.2,!=4.1.0,!=4.2.0,!=4.3.0,!=5.0.0,!=5.1.0)", "uvicorn[standard] (>=0.12.0)"]
 
 [[package]]
-name = "fastapi-async-sqlalchemy"
-version = "0.6.0"
-description = "SQLAlchemy middleware for FastAPI"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "fastapi-async-sqlalchemy-0.6.0.tar.gz", hash = "sha256:3a14370bda53528f3597a25caa1eecad6a884d158de6b9fc6e1554025b315092"},
-    {file = "fastapi_async_sqlalchemy-0.6.0-py3-none-any.whl", hash = "sha256:c1b1d27f1a64c009f114c9315878ef7fac84f94bdfc773c73ddfd0bdabd43504"},
-]
-
-[package.dependencies]
-SQLAlchemy = ">=1.4.19"
-starlette = ">=0.13.6"
-
-[[package]]
 name = "flower"
 version = "2.0.1"
 description = "Celery Flower"
@@ -2674,4 +2659,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "22b6353a867a3c0237e958a75067a1202a16e7c96300a4811c3065eaef6028a2"
+content-hash = "f109bd76da4473c9b5ba2564a7d5a035d4f179076a442d559ec08ef632b11528"

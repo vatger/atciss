@@ -9,10 +9,8 @@ from sqlmodel import select
 
 from atciss.app.utils.aiohttp_client import AiohttpClient
 from atciss.app.utils.aixm_parser import AIXMData, AIXMFeature
-from atciss.app.views.aerodrome import Aerodrome
+from atciss.app.views.dfs_aixm import Aerodrome, Runway, RunwayDirection, Navaid
 from atciss.app.views.airway import Airway, AirwaySegment
-from atciss.app.views.navaid import Navaid
-from atciss.app.views.runway import Runway, RunwayDirection
 from .utils import create_or_update
 from ..utils.dfs import get_dfs_aixm_datasets, get_dfs_aixm_url
 from ...config import settings
