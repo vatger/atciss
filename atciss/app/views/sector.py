@@ -45,6 +45,7 @@ class Airspace:
     id: str
     group: str
     owner: list[str]
+    uid: Optional[str] = None
     remark: Optional[str] = None
     sectors: list[Sector] = field(default_factory=list)
 
@@ -87,7 +88,7 @@ class Airport:
 def reformat_airspace(airspaces: list[dict[str, Any]], region: str | None) -> dict[str, Any]:
     result = {}
     for airspace in airspaces:
-        key = f"{region}/{airspace.get('remark', airspace['id']).upper()}"
+        key = f"{region}/{airspace.get('uid', airspace.get('remark', airspace['id'])).upper()}"
         owners = []
         for owner in airspace["owner"]:
             if "/" in owner or region is None:

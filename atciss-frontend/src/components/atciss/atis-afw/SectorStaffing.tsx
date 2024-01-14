@@ -12,7 +12,9 @@ const Sector = ({ id }: { id: string }) => {
 
   return (
     <Box key={id}>
-      <Text variant="primaryLabel">{sector?.remark ?? sector?.id}</Text>
+      <Text variant="primaryLabel">
+        {sector?.uid ?? sector?.remark ?? sector?.id}
+      </Text>
       {owner
         ? id === owner.id
           ? ` open (${owner.frequency})`

@@ -97,7 +97,9 @@ export const SectorPolygon = ({
         <Tooltip>
           <Box sx={{ fontSize: "1" }}>
             <Text variant="label">{sector.id}</Text>
-            {sector.remark && ` (${sector.remark})`} by {owner?.name}
+            {(sector.remark || sector.uid) &&
+              ` (${sector.uid ?? sector.remark})`}{" "}
+            by {owner?.name}
           </Box>
           {controller && (
             <Box sx={{ fontSize: "1" }}>

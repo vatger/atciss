@@ -14,7 +14,8 @@ export type Sector = {
 
 export type Airspace = {
   id: string
-  remark: string
+  uid: string | null
+  remark: string | null
   group: string
   owner: string[]
   sectors: Sector[]
