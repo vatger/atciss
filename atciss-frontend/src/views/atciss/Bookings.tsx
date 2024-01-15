@@ -1,3 +1,4 @@
+// eslint-disable-next-line  @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
 import "@florianbepunkt/timeline/src/timeline.scss"
@@ -106,7 +107,6 @@ export const Bookings = () => {
         maxZoom={28 * 24 * 60 * 60 * 1000} // 4w
         canMove={false}
         canChangeGroup={false}
-        // @ts-ignore
         canResize={false}
         canSelect={false}
         onTimeChange={onTimeChange}

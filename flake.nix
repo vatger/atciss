@@ -111,6 +111,15 @@
             extraPackages = ps: [ps.ipython];
           };
 
+          atciss-frontend-env = final.napalm.buildPackage ./atciss-frontend {
+            nodejs = final.nodejs_20;
+            npmCommands = [
+              "npm install --include=dev --nodedir=${final.nodejs_20}/include/node --loglevel verbose --ignore-scripts"
+            ];
+            installPhase = ''
+              cp -R . $out
+            '';
+          };
           atciss-frontend = final.napalm.buildPackage ./atciss-frontend {
             NODE_ENV = "production";
             nodejs = final.nodejs_20;
@@ -137,6 +146,7 @@
           inherit system;
           overlays = [self.overlays.default];
         };
+        nodejs = pkgs.nodejs_20;
       in {
         legacyPackages = pkgs;
 
@@ -220,11 +230,11 @@
         devShells.default = pkgs.atciss-dev.env.overrideAttrs (oldAttrs: {
           nativeBuildInputs =
             oldAttrs.nativeBuildInputs
+            ++ [nodejs]
             ++ (with pkgs; [
               nil
               poetry
               ruff
-              nodejs_20
               curl
               docker-compose
             ]);
@@ -236,7 +246,26 @@
               export PYTHONPATH=${pkgs.atciss-dev}/${pkgs.atciss-dev.sitePackages}
               unset SOURCE_DATE_EPOCH
             ''
-            + self.checks.${system}.pre-commit-check.shellHook;
+            + (pre-commit-hooks.lib.${system}.run {
+              src = ./.;
+              settings = {
+                pylint.binPath = "${pkgs.atciss-dev}/bin/pylint";
+                eslint = {
+                  binPath = "${pkgs.atciss-frontend-env}/node_modules/.bin/eslint";
+                  extensions = "\\.(j|t)sx?";
+                };
+              };
+              hooks = {
+                alejandra.enable = true;
+                statix.enable = true;
+                nil.enable = true;
+                eslint.enable = true;
+                pylint.enable = true;
+                # pyright.enable = true;
+                ruff.enable = true;
+              };
+            })
+            .shellHook;
         });
 
         apps = let
@@ -262,25 +291,13 @@
             echo "[nix][lint] Run atciss black checks."
             ruff format --check --diff atciss
           '';
+          eslint = mkCIApp "eslint" [nodejs pkgs.bash] ''
+            echo "[nix][lint] Run atciss eslint checks."
+            (cd atciss-frontend && npm install && npm run lint)
+          '';
         };
 
         formatter = pkgs.alejandra;
-
-        checks = {
-          pre-commit-check = pre-commit-hooks.lib.${system}.run {
-            src = ./.;
-            settings.pylint.binPath = "${pkgs.atciss-dev}/bin/pylint";
-            hooks = {
-              alejandra.enable = true;
-              # statix.enable = true;
-              nil.enable = true;
-              eslint.enable = true;
-              # pylint.enable = true;
-              # pyright.enable = true;
-              ruff.enable = true;
-            };
-          };
-        };
 
         failingChecks = {
           # FIXME: needs kvm on builder
