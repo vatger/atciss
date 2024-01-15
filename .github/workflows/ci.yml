@@ -26,6 +26,8 @@ jobs:
         run: 'nix run .#format'
       - name: Run ruff
         run: 'nix run .#ruff'
+      - name: Run eslint
+        run: 'nix run .#eslint'
 
   flake-check:
     name: Flake Check

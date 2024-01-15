@@ -36,17 +36,19 @@ in {
       virtualHosts."${cfg.host}" = {
         forceSSL = cfg.tls;
         enableACME = cfg.tls;
-        locations."/" = {
-          root = pkgs.atciss-frontend;
-          extraConfig = ''
-            try_files $uri /index.html;
-          '';
-        };
-        locations."/openapi.json" = {
-          proxyPass = "http://localhost:8000";
-        };
-        locations."/api" = {
-          proxyPass = "http://localhost:8000";
+        locations = {
+          "/" = {
+            root = pkgs.atciss-frontend;
+            extraConfig = ''
+              try_files $uri /index.html;
+            '';
+          };
+          "/openapi.json" = {
+            proxyPass = "http://localhost:8000";
+          };
+          "/api" = {
+            proxyPass = "http://localhost:8000";
+          };
         };
       };
     };
@@ -65,58 +67,60 @@ in {
       ];
     };
 
-    systemd.services.atciss = {
-      wantedBy = ["multi-user.target"];
+    systemd.services = {
+      atciss = {
+        wantedBy = ["multi-user.target"];
 
-      environment = {
-        inherit ATCISS_DEBUG;
-        ATCISS_BASE_URL = "https://${cfg.host}";
-        ATCISS_DATABASE_DSN = "postgresql+asyncpg://localhost/atciss?host=/run/postgresql";
-        ATCISS_CONTRIB_PATH = pkgs.atciss-contrib;
+        environment = {
+          inherit ATCISS_DEBUG;
+          ATCISS_BASE_URL = "https://${cfg.host} ";
+          ATCISS_DATABASE_DSN = "postgresql+asyncpg://localhost/atciss?host=/run/postgresql";
+          ATCISS_CONTRIB_PATH = pkgs.atciss-contrib;
+        };
+
+        serviceConfig = {
+          ExecStartPre = "${pkgs.atciss}/bin/alembic upgrade head";
+          ExecStart = "${pkgs.atciss}/bin/atciss serve";
+          DynamicUser = true;
+          User = "atciss";
+          Restart = "always";
+          RestartSec = "1s";
+          EnvironmentFile = cfg.environmentFile;
+          WorkingDirectory = "${pkgs.atciss}/share/atciss";
+        };
       };
 
-      serviceConfig = {
-        ExecStartPre = "${pkgs.atciss}/bin/alembic upgrade head";
-        ExecStart = "${pkgs.atciss}/bin/atciss serve";
-        DynamicUser = true;
-        User = "atciss";
-        Restart = "always";
-        RestartSec = "1s";
-        EnvironmentFile = cfg.environmentFile;
-        WorkingDirectory = "${pkgs.atciss}/share/atciss";
+      atciss-worker = {
+        wantedBy = ["multi-user.target"];
+
+        environment = {
+          inherit ATCISS_DEBUG;
+          ATCISS_DATABASE_DSN = "postgresql+asyncpg://localhost/atciss?host=/run/postgresql";
+          ATCISS_CONTRIB_PATH = pkgs.atciss-contrib;
+        };
+
+        serviceConfig = {
+          ExecStart = "${pkgs.atciss}/bin/celery -A atciss worker --loglevel=INFO";
+          DynamicUser = true;
+          User = "atciss";
+          Restart = "always";
+          RestartSec = "1s";
+          StateDirectory = "atciss-worker";
+          WorkingDirectory = "/var/lib/atciss-worker";
+        };
       };
-    };
 
-    systemd.services.atciss-worker = {
-      wantedBy = ["multi-user.target"];
+      atciss-beat = {
+        wantedBy = ["multi-user.target"];
 
-      environment = {
-        inherit ATCISS_DEBUG;
-        ATCISS_DATABASE_DSN = "postgresql+asyncpg://localhost/atciss?host=/run/postgresql";
-        ATCISS_CONTRIB_PATH = pkgs.atciss-contrib;
-      };
-
-      serviceConfig = {
-        ExecStart = "${pkgs.atciss}/bin/celery -A atciss worker --loglevel=INFO";
-        DynamicUser = true;
-        User = "atciss";
-        Restart = "always";
-        RestartSec = "1s";
-        StateDirectory = "atciss-worker";
-        WorkingDirectory = "/var/lib/atciss-worker";
-      };
-    };
-
-    systemd.services.atciss-beat = {
-      wantedBy = ["multi-user.target"];
-
-      serviceConfig = {
-        ExecStart = "${pkgs.atciss}/bin/celery -A atciss beat --loglevel=INFO";
-        DynamicUser = true;
-        Restart = "always";
-        RestartSec = "1s";
-        StateDirectory = "atciss-beat";
-        WorkingDirectory = "/var/lib/atciss-beat";
+        serviceConfig = {
+          ExecStart = "${pkgs.atciss}/bin/celery -A atciss beat --loglevel=INFO";
+          DynamicUser = true;
+          Restart = "always";
+          RestartSec = "1s";
+          StateDirectory = "atciss-beat";
+          WorkingDirectory = "/var/lib/atciss-beat";
+        };
       };
     };
   };
