@@ -6,6 +6,18 @@ implementation that aims to replicate the real ATCISS with information and data
 from the [VATSIM](https://vatsim.net/) network for use by the controllers of
 [VATSIM Germany](https://vatsim-germany.org/).
 
+## Screenshots
+
+![map](./screenshots/map.png)
+
+![atis-afw](./screenshots/atis-afw.png)
+
+![ac-data](./screenshots/ac-data.png)
+
+![notam](./screenshots/notam.png)
+
+![loa](./screenshots/loa.png)
+
 ## Development
 The backend is packaged with [poetry](https://python-poetry.org/).
 A package build, docker image build and development shell is available
