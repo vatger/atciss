@@ -402,17 +402,17 @@ zstd = ["zstandard (==0.22.0)"]
 
 [[package]]
 name = "celery-types"
-version = "0.20.0"
+version = "0.21.0"
 description = "Type stubs for Celery and its related packages"
 optional = false
-python-versions = ">=3.10,<4.0"
+python-versions = ">=3.9,<4.0"
 files = [
-    {file = "celery-types-0.20.0.tar.gz", hash = "sha256:e5c762555605ed0592baed9d519230046ce8e7a11c67a821555c08b7cece1960"},
-    {file = "celery_types-0.20.0-py3-none-any.whl", hash = "sha256:5ebf858a4bf73ca610652d82940dc3a2e4c86afed0421ab1becbff66b49feea4"},
+    {file = "celery_types-0.21.0-py3-none-any.whl", hash = "sha256:a447e653b70b47385b67175cd2f87b6e1dff6bc88dadcedb7a72143bd92118f2"},
+    {file = "celery_types-0.21.0.tar.gz", hash = "sha256:c6f1628943280c7a253fbb30381621771f3d9e3a3e77c36979ed35043d6d416b"},
 ]
 
 [package.dependencies]
-typing-extensions = ">=3.10.0,<5.0.0"
+typing-extensions = ">=4.9.0,<5.0.0"
 
 [[package]]
 name = "click"
@@ -2659,4 +2659,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "f109bd76da4473c9b5ba2564a7d5a035d4f179076a442d559ec08ef632b11528"
+content-hash = "6436257596a0d080438b4472cce06ebff3039496fc746a926d45811fe11b6a67"
