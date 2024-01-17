@@ -745,13 +745,13 @@ files = [
 
 [[package]]
 name = "haversine"
-version = "2.8.0"
+version = "2.8.1"
 description = "Calculate the distance between 2 points on Earth."
 optional = false
 python-versions = ">=3.5"
 files = [
-    {file = "haversine-2.8.0-py2.py3-none-any.whl", hash = "sha256:524529d6c39619a513629b68331ce8153ccfc7c30049ed43405c27b12614e8f6"},
-    {file = "haversine-2.8.0.tar.gz", hash = "sha256:cca39afd2ae5f1e6ed9231b332395bb8afb2e0a64edf70c238c176492e60c150"},
+    {file = "haversine-2.8.1-py2.py3-none-any.whl", hash = "sha256:1acdd7e35115e00346898984acd55b0827d289df434efef98376f0bed37c8fa7"},
+    {file = "haversine-2.8.1.tar.gz", hash = "sha256:ab750caa0c8f2168bd7b00a429757a83a8393be1aa30f91c2becf6b523189e2a"},
 ]
 
 [[package]]
@@ -2659,4 +2659,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "34eeb0405b392fbc8dab6062a5c762790e2c5827148025848a709ca77dabfd64"
+content-hash = "05b785b6af72053559032dc0a1c23b5e4921123d23eec8ec563a4ec8b1a9b415"
