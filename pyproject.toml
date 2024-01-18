@@ -15,7 +15,7 @@ asgi-correlation-id = "^4.3.0"
 asgiref = "^3.7.2"
 astral = "^3.2"
 asyncpg = "^0.29.0"
-beautifulsoup4 = "^4.12.2"
+beautifulsoup4 = "^4.12.3"
 celery = {version = "^5.3.5", extras = ["redis,gevent"]}
 click = "^8.1"
 fastapi = "^0.109"
