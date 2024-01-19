@@ -1,6 +1,8 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit"
 import { RootState } from "../app/store"
 import { localStorageOrDefault, setLocalStorage } from "../app/utils"
+import { selectDfsAd } from "services/aerodrome"
+import { selectAtis } from "services/atisApi"
 
 type ConfigState = {
   activeAerodrome: string
@@ -20,6 +22,30 @@ const idvsSlice = createSlice({
 
 export const selectActiveAerodrome = (store: RootState) =>
   store.idvs.activeAerodrome
+
+export const selectRunwayDirection = createSelector(
+  (store) => store,
+  selectActiveAerodrome,
+  (_store, idx) => idx,
+  (store, ad, idx) => {
+    const aerodrome = selectDfsAd(store, ad)
+    const atis = selectAtis(store, ad)
+
+    const runways =
+      aerodrome?.runways?.filter((rwy) => !rwy.designator.match(/G|Y/)) ?? []
+
+    if (runways.length > 1 && atis?.runways_in_use) {
+      const rwy = atis?.runways_in_use[idx]
+      return runways
+        .flatMap((rwy) => rwy.directions)
+        .find((dir) => dir.designator === rwy)
+    } else if (runways.length > 1) {
+      return runways[idx]?.directions?.[0]
+    } else {
+      return runways[0]?.directions?.[idx]
+    }
+  },
+)
 
 export const { setActiveAerodrome } = idvsSlice.actions
 export const { reducer: idvsReducer } = idvsSlice

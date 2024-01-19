@@ -10,7 +10,7 @@ const Footer = ({ sx }: { sx?: ThemeUIStyleObject }) => (
       color: "primaryText",
     }}
   >
-    <Text sx={{ color: "primaryText" }}>ATCISS</Text>
+    <Text sx={{ color: "primaryText" }}>ATCISS/IDVS</Text>
     <Link
       sx={{ color: "primaryText" }}
       target="_blank"

@@ -19,6 +19,7 @@ export const selectAirportICAOs = createSelector(
   selectFirAllAerodromes,
   (vatglassesAds, firAds) => [...new Set([...vatglassesAds, ...firAds])],
 )
+
 export const selectAirport = createSelector(
   selectAirports,
   (_state: RootState, id: string) => id,
@@ -42,4 +43,32 @@ export const selectDfsAd = createSelector(
   (state, ads, icao) =>
     ads[icao ?? ""] ??
     api.endpoints.aerodromesByIcaos.select([icao])(state)?.data?.[icao ?? ""],
+)
+
+export const selectAerodromesWithPrefixes = createSelector(
+  (state: RootState) => state,
+  (_state: RootState, prefixes: string[]) => prefixes,
+  (state: RootState, prefixes: string[]) =>
+    api.endpoints.aerodromesByPrefixes.select(prefixes)(state)?.data ?? {},
+)
+
+export const selectAerodromesWithMetarFromPrefixes = createSelector(
+  (state: RootState) => state,
+  selectAerodromesWithPrefixes,
+  (state, ads) =>
+    Object.entries(
+      api.endpoints.metarsByIcaoCodes.select(Object.keys(ads))(state).data ??
+        {},
+    )
+      .filter(([, metar]) => metar !== null)
+      .map(([icao]) => icao),
+)
+
+export const selectIdvsAerodromes = createSelector(
+  selectAerodromesWithPrefixes,
+  selectAerodromesWithMetarFromPrefixes,
+  (ads, icaos) =>
+    Object.entries(ads)
+      .filter(([icao, ad]) => ad.runways.length > 0 && icaos.includes(icao))
+      .map(([icao]) => icao),
 )

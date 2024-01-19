@@ -9,7 +9,7 @@ import {
   selectMetar,
   usePollMetarByIcaoCodes,
 } from "services/metarApi"
-import { Flex } from "theme-ui"
+import { Box, Flex, Grid } from "theme-ui"
 
 export const BaroClock = () => {
   const aerodrome = useAppSelector(selectActiveAerodrome)
@@ -26,20 +26,22 @@ export const BaroClock = () => {
 
   return (
     <Flex sx={{ justifyContent: "space-between" }}>
-      <Flex sx={{ gap: 3, alignItems: "baseline" }}>
-        QNH{" "}
+      <Grid sx={{ gap: 3, gridAutoFlow: "column", alignItems: "baseline" }}>
+        <Box>QNH</Box>
         <Flex>
           <InfoBox sx={{ fontSize: 6 }}>{metar?.qnh.toFixed(0)}</InfoBox>
           <InfoBox>{hpaToInhg(metar?.qnh).toFixed(2)}</InfoBox>
         </Flex>
-        {qfe && <>QFE </>}
         {qfe && (
-          <Flex>
-            <InfoBox>{qfe.toFixed(0)}</InfoBox>
-            <InfoBox>{hpaToInhg(qfe).toFixed(2)}</InfoBox>
-          </Flex>
+          <>
+            <Box>QFE</Box>
+            <Flex>
+              <InfoBox>{qfe.toFixed(0)}</InfoBox>
+              <InfoBox>{hpaToInhg(qfe).toFixed(2)}</InfoBox>
+            </Flex>
+          </>
         )}
-      </Flex>
+      </Grid>
       <Flex sx={{ gap: 3, alignItems: "baseline" }}>
         UTC <Clock />
       </Flex>

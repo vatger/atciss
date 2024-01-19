@@ -88,8 +88,29 @@ export const theme: IdvsTheme = {
   },
   buttons: {
     primary: {
-      color: "background",
-      bg: "primary",
+      color: "text",
+      bg: "background",
+      fontSize: 3,
+      border: 2,
+      borderRadius: 0,
+      borderTopColor: "brightshadow",
+      borderLeftColor: "brightshadow",
+      borderBottomColor: "darkshadow",
+      borderRightColor: "darkshadow",
+      borderStyle: "solid",
+      backgroundColor: "background",
+      px: 2,
+      py: 0,
+      "&:active:not(:disabled)": {
+        borderTopColor: "darkshadow",
+        borderLeftColor: "darkshadow",
+        borderBottomColor: "brightshadow",
+        borderRightColor: "brightshadow",
+      },
+      "&:disabled": {
+        cursor: "not-allowed",
+        color: "darkshadow",
+      },
     },
     nav: {
       height: "100%",
@@ -105,7 +126,7 @@ export const theme: IdvsTheme = {
       color: "text",
       px: 2,
       py: 1,
-      "&:active": {
+      "&:active:not(:disabled)": {
         borderTopColor: "darkshadow",
         borderLeftColor: "darkshadow",
         borderBottomColor: "brightshadow",

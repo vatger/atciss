@@ -12,6 +12,7 @@ export const InfoBox = ({
     <Box
       sx={{
         cursor: "default",
+        py: 0,
         px: 2,
         fontSize: 4,
         backgroundColor: "primary",

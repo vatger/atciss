@@ -24,6 +24,12 @@ export const api = createApi({
         params: icaoList.map((icao) => ["icao", icao]),
       }),
     }),
+    aerodromesByPrefixes: builder.query<{ [id: string]: Aerodrome }, string[]>({
+      query: (prefixes) => ({
+        url: "aerodrome",
+        params: prefixes.map((prefix) => ["prefix", prefix]),
+      }),
+    }),
 
     agreementsByFir: builder.query<Agreements, string>({
       query: (fir) => ({

@@ -1,4 +1,5 @@
 import { BaroClock } from "components/idvs/BaroClock"
+import { Wind } from "components/idvs/Wind"
 import { Box, Flex } from "theme-ui"
 
 export const Afw = () => {
@@ -11,7 +12,7 @@ export const Afw = () => {
         p: 2,
       }}
     >
-      <Box>Wind</Box>
+      <Wind />
       <Box>Rwy</Box>
       <BaroClock />
       <Box>remark</Box>

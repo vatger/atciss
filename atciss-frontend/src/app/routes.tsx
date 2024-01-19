@@ -88,7 +88,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/idvs/:icao?",
+    path: "/idvs",
     element: (
       <RequireAuth>
         <Idvs />

@@ -1,5 +1,24 @@
 import { LatLngExpression, LatLngTuple } from "leaflet"
 
+export interface Runway {
+  id: string
+  aerodrome_id: string
+  designator: string
+  length: number | null
+  width: number | null
+  surface: string | null
+  directions: RunwayDirection[]
+}
+
+export interface RunwayDirection {
+  id: string
+  runway_id: string
+  designator: string
+  true_bearing: number | null
+  magnetic_bearing: number | null
+  guidance: string | null
+}
+
 export interface Aerodrome {
   id: string
   name: string | null
@@ -14,6 +33,7 @@ export interface Aerodrome {
   ifr: boolean | null
   sunrise: string
   sunset: string
+  runways: Runway[]
 }
 
 export interface Airway {
