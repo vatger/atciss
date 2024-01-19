@@ -111,15 +111,6 @@
             extraPackages = ps: [ps.ipython];
           };
 
-          atciss-frontend-env = final.napalm.buildPackage ./atciss-frontend {
-            nodejs = final.nodejs_20;
-            npmCommands = [
-              "npm install --include=dev --nodedir=${final.nodejs_20}/include/node --loglevel verbose --ignore-scripts"
-            ];
-            installPhase = ''
-              cp -R . $out
-            '';
-          };
           atciss-frontend = final.napalm.buildPackage ./atciss-frontend {
             NODE_ENV = "production";
             nodejs = final.nodejs_20;
@@ -251,7 +242,7 @@
               settings = {
                 pylint.binPath = "${pkgs.atciss-dev}/bin/pylint";
                 eslint = {
-                  binPath = "${pkgs.atciss-frontend-env}/node_modules/.bin/eslint";
+                  binPath = pkgs.writeShellScript "eslint" ''./atciss-frontend/node_modules/.bin/eslint "$@"'';
                   extensions = "\\.(j|t)sx?";
                 };
               };
@@ -260,7 +251,7 @@
                 statix.enable = true;
                 nil.enable = true;
                 eslint.enable = true;
-                pylint.enable = true;
+                # pylint.enable = true;
                 # pyright.enable = true;
                 ruff.enable = true;
               };
