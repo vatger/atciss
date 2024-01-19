@@ -70,5 +70,6 @@ export const selectIdvsAerodromes = createSelector(
   (ads, icaos) =>
     Object.entries(ads)
       .filter(([icao, ad]) => ad.runways.length > 0 && icaos.includes(icao))
-      .map(([icao]) => icao),
+      .map(([icao]) => icao)
+      .sort(),
 )
