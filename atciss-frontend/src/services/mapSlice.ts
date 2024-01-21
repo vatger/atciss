@@ -18,15 +18,18 @@ type MapState = {
   airwayLowerUpper: "LOWER" | "UPPER"
 }
 
+const queryParams = new URLSearchParams(window.location.search)
+
 const mapSlice = createSlice({
   name: "map",
   initialState: {
-    level: localStorageOrDefault("map.level", 200),
+    level: queryParams.get("level") ?? localStorageOrDefault("map.level", 200),
     ofm: localStorageOrDefault("map.ofm", true),
     dfs: localStorageOrDefault("map.dfs", false),
     dwd: localStorageOrDefault("map.dwd", false),
     satellite: localStorageOrDefault("map.satellite", false),
-    sectors: localStorageOrDefault("map.sectors", true),
+    sectors:
+      queryParams.has("sector") || localStorageOrDefault("map.sectors", true),
     sigmet: localStorageOrDefault("map.sigmet", false),
     areas: localStorageOrDefault("map.areas", true),
     loa: localStorageOrDefault("map.loa", false),

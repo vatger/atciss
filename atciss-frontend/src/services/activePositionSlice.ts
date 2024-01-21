@@ -4,6 +4,8 @@ import { localStorageOrDefault, setLocalStorage } from "../app/utils"
 import { SectorData } from "types/vatglasses"
 import { ActivePositionState } from "types/activePositions"
 
+const queryParams = new URLSearchParams(window.location.search)
+
 const activePositionSlice = createSlice({
   name: "activePositions",
   initialState: {
@@ -12,15 +14,16 @@ const activePositionSlice = createSlice({
       "activePositions.selectedPosition",
       null,
     ),
-    sectorsSyncedToOnline: localStorageOrDefault(
-      "activePositions.sectorsSyncedToOnline",
-      true,
-    ),
+    sectorsSyncedToOnline:
+      localStorageOrDefault("activePositions.sectorsSyncedToOnline", true) &&
+      !queryParams.has("sector"),
     positionSyncedToOnline: localStorageOrDefault(
       "activePositions.positionSyncedToOnline",
       true,
     ),
-    manualActive: {},
+    manualActive: queryParams
+      .getAll("sector")
+      .reduce((acc, sector) => ({ ...acc, [sector]: true }), {}),
     onlineActive: {},
   } as ActivePositionState,
   reducers: {
@@ -94,7 +97,7 @@ const activePositionSlice = createSlice({
             ...Object.keys(positions).reduce(
               (acc, id) => ({
                 ...acc,
-                [id]: true,
+                [id]: true && !queryParams.has("sector"),
               }),
               {},
             ),
