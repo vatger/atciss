@@ -104,7 +104,8 @@ const mapSlice = createSlice({
 
 export const selectLevel = (store: RootState) => store.map.level
 export const selectOpenFlightmapsOnMap = (store: RootState) => store.map.ofm
-export const selectDFSOnMap = (store: RootState) => store.map.dfs
+export const selectDFSOnMap = (store: RootState) =>
+  store.map.dfs && store.auth.user?.admin
 export const selectDWDOnMap = (store: RootState) => store.map.dwd
 export const selectSatelliteOnMap = (store: RootState) => store.map.satellite
 export const selectSectorsOnMap = (store: RootState) => store.map.sectors
