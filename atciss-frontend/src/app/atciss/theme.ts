@@ -96,6 +96,22 @@ export const theme: AtcissTheme = {
     primary: {
       color: "background",
       bg: "primary",
+      border: 2,
+      borderRadius: 0,
+      borderTopColor: "brightshadow",
+      borderLeftColor: "brightshadow",
+      borderBottomColor: "darkshadow",
+      borderRightColor: "darkshadow",
+      borderStyle: "solid",
+      backgroundColor: "primary",
+      px: 2,
+      py: 1,
+      "&:active": {
+        borderTopColor: "darkshadow",
+        borderLeftColor: "darkshadow",
+        borderBottomColor: "brightshadow",
+        borderRightColor: "brightshadow",
+      },
     },
     nav: {
       height: "100%",
