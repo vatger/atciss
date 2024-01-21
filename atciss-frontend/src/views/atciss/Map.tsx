@@ -10,10 +10,11 @@ import { MapControls } from "components/atciss/map/MapControls"
 import { NavaidLayer } from "components/atciss/map/NavaidLayer"
 import { SectorLayer } from "components/atciss/map/SectorLayer"
 import { SigmetLayer } from "components/atciss/map/SigmetLayer"
-import L, { LatLngTuple } from "leaflet"
+import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 import { useRef } from "react"
 import { MapContainer } from "react-leaflet"
+import { selectMapCentre } from "services/configSlice"
 import {
   selectAirwayOnMap,
   selectAreasOnMap,
@@ -22,19 +23,18 @@ import {
 } from "services/mapSlice"
 import { Flex, ThemeUIStyleObject } from "theme-ui"
 
-const position = [49.2646, 11.4134] as LatLngTuple
-
 export const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const sectorsOnMap = useAppSelector(selectSectorsOnMap)
   const areasOnMap = useAppSelector(selectAreasOnMap)
   const airwaysOnMap = useAppSelector(selectAirwayOnMap)
   const sigmetOnMap = useAppSelector(selectSigmetOnMap)
+  const centre = useAppSelector(selectMapCentre)
   const map = useRef<L.Map>(null)
 
   return (
     <SidebarLayout sx={sx}>
       <MapContainer
-        center={position}
+        center={centre}
         zoom={7}
         scrollWheelZoom={true}
         sx={{ height: "100%" }}

@@ -1,4 +1,7 @@
+import { LatLngTuple } from "leaflet"
+
 type FIR = {
+  mapCentre: LatLngTuple
   neighbourPrefixes: string[]
   neighbourFirs: string[]
   pages: { [name: string]: Page }
@@ -14,6 +17,7 @@ type Page = {
 // TODO move to UI?
 export const FIR_SETTINGS: { [name: string]: FIR } = {
   EDMM: {
+    mapCentre: [49.2646, 11.4134],
     neighbourPrefixes: ["ED", "ET", "EP", "LI", "LK", "LO", "LS"],
     neighbourFirs: [
       "EDGG",
@@ -258,6 +262,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
   EDGG: {
     neighbourPrefixes: ["ED", "ET", "EB", "EH", "EL", "LF", "LS"],
     neighbourFirs: ["EDMM", "EDWW", "EHAA", "EBBU", "LFEE", "LSAS"],
+    mapCentre: [50.03330525, 8.570456],
     pages: {
       // TODO: IRL different layout
       "ATIS EBG02/04": {
@@ -468,6 +473,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
   EDWW: {
     neighbourPrefixes: ["ED", "ET", "EH", "EK", "EP", "ES"],
     neighbourFirs: ["EDGG", "EDMM", "EHAA", "EKDK", "ESMM", "EPWW"],
+    mapCentre: [53.047399804, 9.988227138],
     pages: {
       "ATIS NORD": {
         staffingSectors: [
