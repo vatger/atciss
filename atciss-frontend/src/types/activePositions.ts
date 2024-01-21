@@ -5,4 +5,5 @@ export type ActivePositionState = {
   sectorsSyncedToOnline: boolean
   positionSyncedToOnline: boolean
   selectedPosition: string | null
+  controlType: "presets" | "manual"
 }

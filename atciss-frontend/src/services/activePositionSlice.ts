@@ -16,15 +16,18 @@ const activePositionSlice = createSlice({
     ),
     sectorsSyncedToOnline:
       localStorageOrDefault("activePositions.sectorsSyncedToOnline", true) &&
-      !queryParams.has("sector"),
+      !queryParams.has("pos"),
     positionSyncedToOnline: localStorageOrDefault(
       "activePositions.positionSyncedToOnline",
       true,
     ),
     manualActive: queryParams
-      .getAll("sector")
-      .reduce((acc, sector) => ({ ...acc, [sector]: true }), {}),
+      .getAll("pos")
+      .reduce((acc, pos) => ({ ...acc, [pos]: true }), {}),
     onlineActive: {},
+    controlType: queryParams.has("pos")
+      ? "presets"
+      : localStorageOrDefault("activePositions.controlType", "manual"),
   } as ActivePositionState,
   reducers: {
     setPosition(
@@ -86,6 +89,23 @@ const activePositionSlice = createSlice({
         ),
       }
     },
+    enableOnlyPositions(state, { payload: sectors }: PayloadAction<string[]>) {
+      return {
+        ...state,
+        manualActive: Object.fromEntries(
+          Object.keys(state.manualActive).map((id) => [
+            id,
+            sectors.includes(id),
+          ]),
+        ),
+      }
+    },
+    setControlType(
+      state,
+      { payload: controlType }: PayloadAction<"manual" | "presets">,
+    ) {
+      state.controlType = controlType
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
@@ -97,7 +117,7 @@ const activePositionSlice = createSlice({
             ...Object.keys(positions).reduce(
               (acc, id) => ({
                 ...acc,
-                [id]: true && !queryParams.has("sector"),
+                [id]: true && !queryParams.has("pos"),
               }),
               {},
             ),
@@ -113,9 +133,11 @@ export const {
   setPosition,
   setPositionGroup,
   enableAllPositions,
+  enableOnlyPositions,
   disableAllPositions,
   setSectorsSyncedToOnline,
   setPositionSyncedToOnline,
   setSelectedPosition,
+  setControlType,
 } = activePositionSlice.actions
 export const { reducer: activePositionReducer } = activePositionSlice

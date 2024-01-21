@@ -14,6 +14,45 @@ type Page = {
   relevantAerodromes: string[]
   areas: { [name: string]: string[] }
 }
+
+export const SPLIT_PRESETS: {
+  [fir: string]: { [name: string]: { level: number; positions: string[] } }
+} = {
+  EDMM: {
+    "ZUG-HOF": { level: 200, positions: ["ed/ZUG", "ed/HOF"] },
+    "RDG-GER": { level: 200, positions: ["ed/RDG", "ed/GER"] },
+    "HOF-GER": { level: 200, positions: ["ed/HOF", "ed/GER"] },
+    "ZUG-ALB": { level: 200, positions: ["ed/ZUG", "ed/ALB"] },
+    "TRU-ALB": { level: 200, positions: ["ed/TRU", "ed/ALB"] },
+    "ZUG-WLD": { level: 200, positions: ["ed/ZUG", "ed/WLD"] },
+    "TRU-WLD": { level: 200, positions: ["ed/TRU", "ed/WLD"] },
+    "ALB-EGG": { level: 200, positions: ["ed/ALB", "ed/EGG"] },
+    "WLD-EGG": { level: 200, positions: ["ed/WLD", "ed/EGG"] },
+    "ZUG-NDG-ALB": { level: 200, positions: ["ed/ZUG", "ed/NDG", "ed/ALB"] },
+    "TRU-NDG-ALB": { level: 200, positions: ["ed/TRU", "ed/NDG", "ed/ALB"] },
+    "ZUG-WLD-EGG": { level: 200, positions: ["ed/TRU", "ed/WLD", "ed/EGG"] },
+    "TRU-WLD-EGG": { level: 200, positions: ["ed/ZUG", "ed/WLD", "ed/EGG"] },
+  },
+  EDGG: {
+    "KTG-PADH": { level: 200, positions: ["ed/KTG", "ed/PADH"] },
+    "DKB-GIN-PADH": { level: 200, positions: ["ed/DKB", "ed/GIN", "ed/PADH"] },
+    "BAD-DKB-GIN": { level: 200, positions: ["ed/BAD", "ed/DKB", "ed/GIN"] },
+    "DKB-GIN-RUD": { level: 200, positions: ["ed/DKB", "ed/GIN", "ed/RUD"] },
+  },
+  EDWW: {
+    "EIDW-MRZ": { level: 200, positions: ["ed/EIDW", "ed/MRZ"] },
+    "ALR-DST": { level: 200, positions: ["ed/ALR", "ed/DST"] },
+    "MRZ-BOR": { level: 200, positions: ["ed/MRZ", "ed/BOR"] },
+  },
+  EDUU: {
+    "ERL-HVL-WUR": { level: 320, positions: ["ed/SAL", "ed/HVL", "ed/WUR"] },
+    "ERL-DON": { level: 320, positions: ["ed/ERL", "ed/DON"] },
+    "ALP-DON": { level: 320, positions: ["ed/ALP", "ed/DON"] },
+    "ALP-DON-SAL": { level: 320, positions: ["ed/ALP", "ed/DON", "ed/SAL"] },
+    "NTM-SLN": { level: 320, positions: ["ed/NTM", "ed/SLN"] },
+  },
+}
+
 // TODO move to UI?
 export const FIR_SETTINGS: { [name: string]: FIR } = {
   EDMM: {

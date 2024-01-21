@@ -184,3 +184,6 @@ export const selectAirportTopdownController = createSelector(
     ) as string | undefined) ?? null,
   //  TODO don't ignore rwy-dependent topdown
 )
+
+export const selectControlType = (state: RootState) =>
+  state.activePositions.controlType

@@ -29,7 +29,7 @@ const mapSlice = createSlice({
     dwd: localStorageOrDefault("map.dwd", false),
     satellite: localStorageOrDefault("map.satellite", false),
     sectors:
-      queryParams.has("sector") || localStorageOrDefault("map.sectors", true),
+      queryParams.has("pos") || localStorageOrDefault("map.sectors", true),
     sigmet: localStorageOrDefault("map.sigmet", false),
     areas: localStorageOrDefault("map.areas", true),
     loa: localStorageOrDefault("map.loa", false),
