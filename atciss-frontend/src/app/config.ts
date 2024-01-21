@@ -40,16 +40,35 @@ export const SPLIT_PRESETS: {
     "DKB-GIN-RUD": { level: 200, positions: ["ed/DKB", "ed/GIN", "ed/RUD"] },
   },
   EDWW: {
-    "EIDW-MRZ": { level: 200, positions: ["ed/EIDW", "ed/MRZ"] },
     "ALR-DST": { level: 200, positions: ["ed/ALR", "ed/DST"] },
+    "ALR-EIDE": { level: 200, positions: ["ed/ALR", "ed/EIDE"] },
+    "ALR-HEI": { level: 200, positions: ["ed/ALR", "ed/HEI"] },
+    "DST-HRZ": { level: 200, positions: ["ed/DST", "ed/HRZ"] },
+    "DST-EMS": { level: 200, positions: ["ed/DST", "ed/EMS"] },
+    "ALR-HEI-EIDE": { level: 200, positions: ["ed/ALR", "ed/HEI", "ed/EIDE"] },
+    "MRZ-FLG": { level: 200, positions: ["ed/MRZ", "ed/FLG"] },
     "MRZ-BOR": { level: 200, positions: ["ed/MRZ", "ed/BOR"] },
+    "MRZ-MAR": { level: 200, positions: ["ed/MRZ", "ed/MAR"] },
+    "MAR-FLG": { level: 200, positions: ["ed/MAR", "ed/FLG"] },
+    "MRZ-MAR-FLG": { level: 200, positions: ["ed/MRZ", "ed/MAR", "ed/FLG"] },
+    "MRZ-MAR-BOR": { level: 200, positions: ["ed/MRZ", "ed/MAR", "ed/BOR"] },
+    "MRZ-BOR-FLG": { level: 200, positions: ["ed/MRZ", "ed/BOR", "ed/FLG"] },
   },
   EDUU: {
     "ERL-HVL-WUR": { level: 320, positions: ["ed/SAL", "ed/HVL", "ed/WUR"] },
+    "OSE-HVL-SAL": { level: 320, positions: ["ed/OSE", "ed/HVL", "ed/SAL"] },
+    "OSE-HVL": { level: 320, positions: ["ed/OSE", "ed/HVL"] },
     "ERL-DON": { level: 320, positions: ["ed/ERL", "ed/DON"] },
     "ALP-DON": { level: 320, positions: ["ed/ALP", "ed/DON"] },
     "ALP-DON-SAL": { level: 320, positions: ["ed/ALP", "ed/DON", "ed/SAL"] },
     "NTM-SLN": { level: 320, positions: ["ed/NTM", "ed/SLN"] },
+  },
+  EDYY: {
+    "JEV-CEL": { level: 320, positions: ["ed/JEV", "ed/CEL"] },
+    "JEV-SOL": { level: 320, positions: ["ed/JEV", "ed/SOL"] },
+    "JEV-HOL": { level: 320, positions: ["ed/JEV", "ed/HOL"] },
+    "CEL-SOL": { level: 320, positions: ["ed/CEL", "ed/SOL"] },
+    "RHR-MNS": { level: 320, positions: ["ed/RHR", "ed/MNS"] },
   },
 }
 
@@ -588,6 +607,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
           "ED-R17 Jaegerbrueck": ["ED-R17"],
           "ED-R71 Klietz": ["ED-R71"],
           "ED-R73 Altengrabow": ["ED-R73A", "ED-R73B", "ED-R73C"],
+          "ED-R74 Altmark": ["ED-R74A", "ED-R74B", "ED-R74C"],
         },
       },
       "ATIS BER": {
@@ -612,10 +632,11 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
         aerodromes: ["ETSH"],
         relevantAerodromes: ["EDDC", "EDDP"],
         areas: {
-          "ED-R54 Lehnin": ["ED-R70"],
+          "ED-R54 Lehnin": ["ED-R54"],
           "ED-R70 Holzdorf": ["ED-R70"],
           "ED-R71 Klietz": ["ED-R71"],
           "ED-R73 Altengrabow": ["ED-R73A", "ED-R73B", "ED-R73C"],
+          "ED-R74 Altmark": ["ED-R74A", "ED-R74B", "ED-R74C"],
         },
       },
       "ATIS SÜD": {
