@@ -14,6 +14,8 @@ export const SidebarLayout = ({
       gap: 1,
       gridTemplateColumns: "4fr 1fr",
       width: "100%",
+      height: "100%",
+      overflowY: "auto",
     }}
   >
     {children}
