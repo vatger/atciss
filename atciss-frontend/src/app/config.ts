@@ -30,8 +30,8 @@ export const SPLIT_PRESETS: {
     "WLD-EGG": { level: 200, positions: ["ed/WLD", "ed/EGG"] },
     "ZUG-NDG-ALB": { level: 200, positions: ["ed/ZUG", "ed/NDG", "ed/ALB"] },
     "TRU-NDG-ALB": { level: 200, positions: ["ed/TRU", "ed/NDG", "ed/ALB"] },
-    "ZUG-WLD-EGG": { level: 200, positions: ["ed/TRU", "ed/WLD", "ed/EGG"] },
-    "TRU-WLD-EGG": { level: 200, positions: ["ed/ZUG", "ed/WLD", "ed/EGG"] },
+    "ZUG-WLD-EGG": { level: 200, positions: ["ed/ZUG", "ed/WLD", "ed/EGG"] },
+    "TRU-WLD-EGG": { level: 200, positions: ["ed/TRU", "ed/WLD", "ed/EGG"] },
   },
   EDGG: {
     "KTG-PADH": { level: 200, positions: ["ed/KTG", "ed/PADH"] },
