@@ -2,6 +2,7 @@ result*
 .direnv/
 .mypy_cache/
 .pre-commit-config.yaml
+.venv/
 
 # python bytecode
 __pycache__/
