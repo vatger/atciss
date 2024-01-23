@@ -446,7 +446,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
         majorAerodromes: ["EDDL", "EDLV"],
         aerodromes: ["EDDK", "EDDG", "EDLW", "EDLP", "EDLN", "ETNN", "ETNG"],
         relevantAerodromes: [],
-        areas: { "Eisenborn Areas": ["ED-R117"] },
+        areas: { "Elsenborn Areas": ["ED-R117"] },
       },
       // TODO: IRL different layout
       "ATIS DKA": {
@@ -470,7 +470,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
         majorAerodromes: ["EDDK", "EDDL"],
         aerodromes: ["EDDG", "EDLV", "EDLW", "EDLP", "EDLN", "ETNN", "ETNG"],
         relevantAerodromes: [],
-        areas: { "Eisenborn Areas": ["ED-R117"] },
+        areas: { "Elsenborn Areas": ["ED-R117"] },
       },
       // TODO: IRL different layout
       "ATIS STG": {
