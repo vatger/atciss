@@ -1567,13 +1567,13 @@ python-dotenv = ">=0.21.0"
 
 [[package]]
 name = "pydantic-xml"
-version = "2.8.0"
+version = "2.8.1"
 description = "pydantic xml extension"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pydantic_xml-2.8.0-py3-none-any.whl", hash = "sha256:80f1477ea506fb7993d7f5fe00015ba88e644ad1b41aff182caf46e634814610"},
-    {file = "pydantic_xml-2.8.0.tar.gz", hash = "sha256:6623ed7edcbf04ff72f8ee2b0c56c2744717af554341b222bd924e18dd65401b"},
+    {file = "pydantic_xml-2.8.1-py3-none-any.whl", hash = "sha256:568f916c593214b0d83402644ce5a314c23cd3fb2bad0660548f6c49b03eeaba"},
+    {file = "pydantic_xml-2.8.1.tar.gz", hash = "sha256:d83136be5016c7d4b83a522fcb70ac2cd9da31d3caa0f6cb836f5373ffc5928a"},
 ]
 
 [package.dependencies]
@@ -2663,4 +2663,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "5d8ddccc4694765f5186a05840d88e0d7f282a885a511ca8afc82ff62d792c08"
+content-hash = "d3df71f660c6f7aff8d02b5faab4a3fa0ed1994d4074d353e52a8ca7280e4889"
