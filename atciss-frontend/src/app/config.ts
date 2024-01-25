@@ -19,19 +19,31 @@ export const SPLIT_PRESETS: {
   [fir: string]: { [name: string]: { level: number; positions: string[] } }
 } = {
   EDMM: {
-    "ZUG-HOF": { level: 200, positions: ["ed/ZUG", "ed/HOF"] },
-    "RDG-GER": { level: 200, positions: ["ed/RDG", "ed/GER"] },
+    "ZUG-HOF": { level: 200, positions: ["ed/ZUG", "ed/HOF", "ed/DMNH"] },
+    "RDG-GER": { level: 200, positions: ["ed/RDG", "ed/GER", "ed/DMNH"] },
     "HOF-GER": { level: 200, positions: ["ed/HOF", "ed/GER"] },
-    "ZUG-ALB": { level: 200, positions: ["ed/ZUG", "ed/ALB"] },
-    "TRU-ALB": { level: 200, positions: ["ed/TRU", "ed/ALB"] },
-    "ZUG-WLD": { level: 200, positions: ["ed/ZUG", "ed/WLD"] },
-    "TRU-WLD": { level: 200, positions: ["ed/TRU", "ed/WLD"] },
+    "ZUG-ALB": { level: 200, positions: ["ed/ZUG", "ed/ALB", "ed/DMNH"] },
+    "TRU-ALB": { level: 200, positions: ["ed/TRU", "ed/ALB", "ed/DMNH"] },
+    "ZUG-WLD": { level: 200, positions: ["ed/ZUG", "ed/WLD", "ed/DMNH"] },
+    "TRU-WLD": { level: 200, positions: ["ed/TRU", "ed/WLD", "ed/DMNH"] },
     "ALB-EGG": { level: 200, positions: ["ed/ALB", "ed/EGG"] },
     "WLD-EGG": { level: 200, positions: ["ed/WLD", "ed/EGG"] },
-    "ZUG-NDG-ALB": { level: 200, positions: ["ed/ZUG", "ed/NDG", "ed/ALB"] },
-    "TRU-NDG-ALB": { level: 200, positions: ["ed/TRU", "ed/NDG", "ed/ALB"] },
-    "ZUG-WLD-EGG": { level: 200, positions: ["ed/ZUG", "ed/WLD", "ed/EGG"] },
-    "TRU-WLD-EGG": { level: 200, positions: ["ed/TRU", "ed/WLD", "ed/EGG"] },
+    "ZUG-NDG-ALB": {
+      level: 200,
+      positions: ["ed/ZUG", "ed/NDG", "ed/ALB", "ed/DMNH"],
+    },
+    "TRU-NDG-ALB": {
+      level: 200,
+      positions: ["ed/TRU", "ed/NDG", "ed/ALB", "ed/DMNH"],
+    },
+    "ZUG-WLD-EGG": {
+      level: 200,
+      positions: ["ed/ZUG", "ed/WLD", "ed/EGG", "ed/DMNH"],
+    },
+    "TRU-WLD-EGG": {
+      level: 200,
+      positions: ["ed/TRU", "ed/WLD", "ed/EGG", "ed/DMNH"],
+    },
   },
   EDGG: {
     "KTG-PADH": { level: 200, positions: ["ed/KTG", "ed/PADH"] },
