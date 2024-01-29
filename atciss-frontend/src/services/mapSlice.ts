@@ -8,6 +8,7 @@ type MapState = {
   dfs: boolean
   dwd: boolean
   satellite: boolean
+  lightning: boolean
   sectors: boolean
   areas: boolean
   loa: boolean
@@ -28,6 +29,7 @@ const mapSlice = createSlice({
     dfs: localStorageOrDefault("map.dfs", false),
     dwd: localStorageOrDefault("map.dwd", false),
     satellite: localStorageOrDefault("map.satellite", false),
+    lightning: localStorageOrDefault("map.lightning", false),
     sectors:
       queryParams.has("pos") || localStorageOrDefault("map.sectors", true),
     sigmet: localStorageOrDefault("map.sigmet", false),
@@ -65,6 +67,9 @@ const mapSlice = createSlice({
       state.satellite = setLocalStorage("map.satellite", active)
       state.ofm = setLocalStorage("map.ofm", state.ofm && !active)
       state.dfs = setLocalStorage("map.dfs", state.dfs && !active)
+    },
+    setLightning(state, { payload: active }: PayloadAction<boolean>) {
+      state.lightning = setLocalStorage("map.lightning", active)
     },
     setSectors(state, { payload: active }: PayloadAction<boolean>) {
       state.sectors = setLocalStorage("map.sectors", active)
@@ -108,6 +113,7 @@ export const selectDFSOnMap = (store: RootState) =>
   store.map.dfs && store.auth.user?.admin
 export const selectDWDOnMap = (store: RootState) => store.map.dwd
 export const selectSatelliteOnMap = (store: RootState) => store.map.satellite
+export const selectLightning = (store: RootState) => store.map.lightning
 export const selectSectorsOnMap = (store: RootState) => store.map.sectors
 export const selectAreasOnMap = (store: RootState) => store.map.areas
 export const selectLoaOnMap = (store: RootState) => store.map.loa
@@ -125,6 +131,7 @@ export const {
   setDFS,
   setDWD,
   setSatellite,
+  setLightning,
   setSectors,
   setAreas,
   setLoa,

@@ -3,6 +3,7 @@ import { TileLayer, WMSTileLayer } from "react-leaflet"
 import {
   selectDFSOnMap,
   selectDWDOnMap,
+  selectLightning,
   selectOpenFlightmapsOnMap,
   selectSatelliteOnMap,
 } from "services/mapSlice"
@@ -12,6 +13,7 @@ export const BackgroundTiles = () => {
   const ofm = useAppSelector(selectOpenFlightmapsOnMap)
   const dfs = useAppSelector(selectDFSOnMap)
   const dwd = useAppSelector(selectDWDOnMap)
+  const lightning = useAppSelector(selectLightning)
   const satellite = useAppSelector(selectSatelliteOnMap)
   const [colorMode] = useColorMode()
 
@@ -27,6 +29,12 @@ export const BackgroundTiles = () => {
         <TileLayer
           attribution="Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community"
           url="https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+        />
+      )}
+      {lightning && (
+        <TileLayer
+          attribution="Lightning data © Lightningmaps.org and Blitzortung.org contributors CC-BY-SA 4.0"
+          url="https://tiles.lightningmaps.org/?x={x}&y={y}&z={z}&s=256"
         />
       )}
       {ofm && (

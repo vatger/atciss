@@ -8,6 +8,7 @@ import {
   selectAreasOnMap,
   selectDFSOnMap,
   selectDWDOnMap,
+  selectLightning,
   selectLoaOnMap,
   selectOpenFlightmapsOnMap,
   selectSatelliteOnMap,
@@ -18,6 +19,7 @@ import {
   setAreas,
   setDFS,
   setDWD,
+  setLightning,
   setLoa,
   setOpenFlightmaps,
   setSatellite,
@@ -39,6 +41,7 @@ export const MapControls = ({ map }: { map: RefObject<Map> }) => {
   const dfs = useAppSelector(selectDFSOnMap)
   const dwd = useAppSelector(selectDWDOnMap)
   const satellite = useAppSelector(selectSatelliteOnMap)
+  const lightning = useAppSelector(selectLightning)
   const sectors = useAppSelector(selectSectorsOnMap)
   const areas = useAppSelector(selectAreasOnMap)
   const loa = useAppSelector(selectLoaOnMap)
@@ -89,6 +92,16 @@ export const MapControls = ({ map }: { map: RefObject<Map> }) => {
             onChange={(e) => dispatch(setDWD(e.target.checked))}
           />
           DWD Niederschlagsradar
+        </Text>
+      </Box>
+      <Box>
+        <Text as="label" variant="label">
+          <input
+            type="checkbox"
+            checked={lightning}
+            onChange={(e) => dispatch(setLightning(e.target.checked))}
+          />
+          Blitzortung
         </Text>
       </Box>
       <Box>
