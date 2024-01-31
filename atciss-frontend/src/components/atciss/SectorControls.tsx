@@ -106,30 +106,39 @@ export const SectorControls = () => {
           </Box>
         </>
       ) : (
-        Object.entries(SPLIT_PRESETS).map(([group, presets]) => (
-          <Grid key={group} sx={{ gap: 1, gridTemplateColumns: "1fr 1fr 1fr" }}>
-            <Text variant="label" sx={{ gridColumnEnd: "span 3" }}>
-              {group}
-            </Text>
-            {Object.entries(presets).map(([name, preset]) => (
-              <Button
-                key={name}
-                onClick={() => {
-                  dispatch(enableOnlyPositions(preset.positions))
-                  dispatch(setLevel(preset.level))
-                  setSearchParams(
-                    new URLSearchParams([
-                      ["level", preset.level.toString()],
-                      ...preset.positions.map((id) => ["pos", id]),
-                    ]),
-                  )
-                }}
-              >
-                {name}
-              </Button>
-            ))}
-          </Grid>
-        ))
+        <Box sx={{ overflow: "auto", flex: "auto" }}>
+          {Object.entries(SPLIT_PRESETS).map(([group, presets]) => (
+            <Grid
+              key={group}
+              sx={{ gap: 1, gridTemplateColumns: "1fr 1fr 1fr" }}
+            >
+              <Text variant="label" sx={{ gridColumnEnd: "span 3" }}>
+                {group}
+              </Text>
+              {Object.entries(presets).map(([name, preset]) => (
+                <Button
+                  key={name}
+                  onClick={() => {
+                    dispatch(enableOnlyPositions(preset.positions))
+                    if (preset.level !== undefined) {
+                      dispatch(setLevel(preset.level))
+                    }
+                    setSearchParams(
+                      new URLSearchParams([
+                        preset.level !== undefined
+                          ? ["level", preset.level.toString()]
+                          : [],
+                        ...preset.positions.map((id) => ["pos", id]),
+                      ]),
+                    )
+                  }}
+                >
+                  {name}
+                </Button>
+              ))}
+            </Grid>
+          ))}
+        </Box>
       )}
     </>
   )
