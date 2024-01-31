@@ -56,11 +56,14 @@
         (final: prev: let
           python = final.python311;
           overrides = final.poetry2nix.overrides.withDefaults (pyfinal: pyprev: {
+            vatsim = pyprev.vatsim.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
+            });
             pynotam = pyprev.pynotam.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry];
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
             });
             pydantic-xml = pyprev.pydantic-xml.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry];
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
             });
             types-xmltodict = pyprev.types-xmltodict.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
@@ -224,6 +227,7 @@
             ++ [nodejs]
             ++ (with pkgs; [
               nil
+              pyright
               poetry
               ruff
               curl

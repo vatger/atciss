@@ -6,13 +6,13 @@ from fastapi.responses import PlainTextResponse
 from loguru import logger
 
 from pydantic import TypeAdapter
+from vatsim.types import Atis
 
 from ..controllers.metar import fetch_metar
 from ..views.sector import Airport
 
 from ...config import settings
 from ..utils.redis import RedisClient
-from ..views.atis import Atis
 from ..views.metar import AirportIcao
 
 

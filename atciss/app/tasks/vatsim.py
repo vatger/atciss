@@ -8,11 +8,11 @@ from loguru import logger
 from aiohttp import ClientConnectorError
 from pydantic import TypeAdapter
 from redis.asyncio import Redis
+from vatsim.types import Controller, Pilot, VatsimData, Atis
 
 from ..utils import AiohttpClient, RedisClient
 from ..views.basic_ad import BasicAD
-from ..views.atis import Atis
-from ..views.vatsim import Controller, Pilot, VatsimData, AerodromeTraffic, Traffic
+from ..views.vatsim import AerodromeTraffic, Traffic
 
 
 async def get_ad_name(icao: str, redis_client: Optional[Redis] = None) -> Optional[str]:

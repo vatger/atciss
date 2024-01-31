@@ -3,10 +3,9 @@
 from typing import Annotated, List, Optional, cast
 
 from fastapi import APIRouter, Depends
-
 from pydantic import TypeAdapter
+from vatsim.types import Controller
 
-from ..views.vatsim import Controller
 from ..controllers.auth import get_user
 from ..models import User
 
