@@ -125,9 +125,9 @@ export const SectorControls = () => {
                     }
                     setSearchParams(
                       new URLSearchParams([
-                        preset.level !== undefined
-                          ? ["level", preset.level.toString()]
-                          : [],
+                        ...(preset.level !== undefined
+                          ? [["level", preset.level.toString()]]
+                          : []),
                         ...preset.positions.map((id) => ["pos", id]),
                       ]),
                     )
