@@ -153,8 +153,8 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                 </AtisRow>
                 <AtisRow>
                   <Text>
-                    <Text variant="label">Temp/Dew:</Text> {z2(metar.temp)}/
-                    {z2(metar.dewpt)}
+                    <Text variant="label">Temp/Dew:</Text>{" "}
+                    {z2(Math.round(metar.temp))}/{z2(Math.round(metar.dewpt))}
                   </Text>
                   <Box>
                     <Text>
@@ -179,12 +179,14 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                     </Text>
                     /{hpaToInhg(metar.qnh).toFixed(2)}
                   </Text>
-                  {qfe !== null && (
-                    <Text>
-                      <Text variant="label">QFE:</Text> {qfe.toFixed(0)}/
-                      {hpaToInhg(qfe).toFixed(2)}
-                    </Text>
-                  )}
+                  <Text>
+                    {qfe !== null && (
+                      <>
+                        <Text variant="label">QFE:</Text> {qfe.toFixed(0)}/
+                        {hpaToInhg(qfe).toFixed(2)}
+                      </>
+                    )}
+                  </Text>
                 </AtisRow>
                 <AtisRow>
                   <Text variant="label">Trend:</Text> {metar.trend}
