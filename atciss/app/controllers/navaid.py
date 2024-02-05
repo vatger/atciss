@@ -1,5 +1,7 @@
-from typing import Annotated, Sequence
+from collections.abc import Sequence
+from typing import Annotated
 from uuid import UUID
+
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased
@@ -51,7 +53,7 @@ async def airway_navaids(
         .distinct()
         .outerjoin(AirwaySegment, Navaid.id == AirwaySegment.start_id)
         .outerjoin(end_as, Navaid.id == end_as.end_id)
-        .where((AirwaySegment.airway_id == airway_id) | (end_as.airway_id == airway_id))
+        .where((AirwaySegment.airway_id == airway_id) | (end_as.airway_id == airway_id)),
     )
 
     return navaids.all()

@@ -140,6 +140,7 @@
           inherit system;
           overlays = [self.overlays.default];
         };
+        inherit (pkgs) lib;
         nodejs = pkgs.nodejs_20;
       in {
         legacyPackages = pkgs;
@@ -257,7 +258,10 @@
                 eslint.enable = true;
                 # pylint.enable = true;
                 # pyright.enable = true;
-                ruff.enable = true;
+                ruff = {
+                  enable = true;
+                  entry = lib.mkForce "${pkgs.atciss-dev}/bin/ruff --fix";
+                };
               };
             })
             .shellHook;
@@ -267,7 +271,7 @@
           mkCIApp = name: packages: script: {
             type = "app";
             program = toString (pkgs.writeScript name ''
-              export PATH="${pkgs.lib.makeBinPath (
+              export PATH="${lib.makeBinPath (
                 [pkgs.atciss-dev] ++ packages
               )}"
               ${script}

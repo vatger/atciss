@@ -1,12 +1,14 @@
 """Application controllers - Areas."""
-from typing import Annotated, Optional, cast
+
+from typing import Annotated, cast
+
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import TypeAdapter
 
-from ..views.areas import AreaBooking
 from ..controllers.auth import get_user
 from ..models import User
 from ..utils.redis import RedisClient
+from ..views.areas import AreaBooking
 
 router = APIRouter()
 
@@ -20,7 +22,7 @@ async def get_areas(
 ) -> list[AreaBooking]:
     """Get all area bookings from EAUP for today."""
     async with RedisClient.open() as redis_client:
-        areas = cast(Optional[str], await redis_client.get("areas:bookings"))
+        areas = cast(str | None, await redis_client.get("areas:bookings"))
         if areas is None:
             raise HTTPException(status_code=404)
 

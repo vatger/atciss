@@ -1,5 +1,7 @@
 """Application controllers - ECFMP."""
-from typing import Annotated, Optional, cast
+
+from typing import Annotated, cast
+
 from fastapi import APIRouter, Depends, Query
 from loguru import logger
 from pydantic import TypeAdapter
@@ -8,7 +10,6 @@ from atciss.app.views.ecfmp import Event, FlowMeasure
 
 from ..controllers.auth import get_user
 from ..models import User
-
 from ..utils.redis import RedisClient
 
 router = APIRouter()
@@ -24,7 +25,7 @@ async def get_flow_measures(
 ) -> list[FlowMeasure]:
     """Get ECFMP flow measures for a FIR."""
     async with RedisClient.open() as redis_client:
-        flow_measures = cast(Optional[str], await redis_client.get(f"ecfmp:flow_measures:{fir}"))
+        flow_measures = cast(str | None, await redis_client.get(f"ecfmp:flow_measures:{fir}"))
         if flow_measures is None:
             flow_measures = "[]"
 
@@ -43,7 +44,7 @@ async def get_events(
     events = []
     async with RedisClient.open() as redis_client:
         for f in fir:
-            fir_events = cast(Optional[str], await redis_client.get(f"ecfmp:events:{f}"))
+            fir_events = cast(str | None, await redis_client.get(f"ecfmp:events:{f}"))
             if fir_events is None:
                 logger.warning(f"No event for {f}")
                 continue

@@ -1,4 +1,3 @@
-from typing import List, Optional
 from pydantic import BaseModel, Field
 
 
@@ -14,7 +13,7 @@ class Checksum(BaseModel):
 
 class Release(BaseModel):
     type: str
-    content: List[ContentItem]
+    content: list[ContentItem]
     published_date: str = Field(alias="publishedDate")
     effective_date: str = Field(alias="effectiveDate")
     filename: str
@@ -25,17 +24,17 @@ class Item(BaseModel):
     type: str
     name: str
     name_de: str
-    description: Optional[str] = None
-    description_de: Optional[str] = None
-    releases: Optional[List[Release]] = None
-    items: Optional[List["Item"]] = None
+    description: str | None = None
+    description_de: str | None = None
+    releases: list[Release] | None = None
+    items: list["Item"] | None = None
 
 
 class Metadata(BaseModel):
     dataset_published: str
-    airac: Optional[str] = None
-    dataset_type: Optional[str] = None
-    datasets: List[Item]
+    airac: str | None = None
+    dataset_type: str | None = None
+    datasets: list[Item]
 
 
 class Amdt(BaseModel):
@@ -50,4 +49,4 @@ class DFSDataset(BaseModel):
     api_version: str = Field(alias="API_Version")
     copyright: str = Field(alias="Copyright")
     timestamp: str = Field(alias="Timestamp")
-    amdts: List[Amdt] = Field(alias="Amdts")
+    amdts: list[Amdt] = Field(alias="Amdts")

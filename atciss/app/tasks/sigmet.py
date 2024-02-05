@@ -1,10 +1,10 @@
 from aiohttp import ClientConnectorError
 from loguru import logger
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from atciss.app.utils.aiohttp_client import AiohttpClient
 
-from atciss.config import settings
+from atciss.app.utils.aiohttp_client import AiohttpClient
 from atciss.app.views.sigmet import Sigmet
+from atciss.config import settings
 
 
 async def fetch_sigmet() -> None:

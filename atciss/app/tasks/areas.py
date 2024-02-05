@@ -3,8 +3,8 @@ from pydantic import TypeAdapter
 
 from atciss.app.utils.redis import RedisClient
 
-from ..views.areas import EAUPAreas, AreaBooking
 from ..utils import AiohttpClient, ClientConnectorError
+from ..views.areas import AreaBooking, EAUPAreas
 
 
 async def fetch_areas() -> None:

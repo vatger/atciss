@@ -1,12 +1,10 @@
-from loguru import logger
 from aiohttp import ClientConnectorError
+from loguru import logger
 from pydantic import TypeAdapter
 
-from ..views.sector import Airport, Airspace, Position, SectorData
-
-from ..utils import AiohttpClient, RedisClient
-
 from ...config import settings
+from ..utils import AiohttpClient, RedisClient
+from ..views.sector import Airport, Airspace, Position, SectorData
 
 
 async def fetch_sector_data() -> None:
@@ -19,15 +17,15 @@ async def fetch_sector_data() -> None:
             try:
                 res = await aiohttp_client.get(
                     "https://raw.githubusercontent.com/VATGER-Nav/vatglasses-data/"
-                    + f"atciss/data/{region}.json"
+                    + f"atciss/data/{region}.json",
                 )
             except ClientConnectorError as e:
-                logger.error(f"Could not connect {str(e)}")
+                logger.error(f"Could not connect {e!s}")
                 return
 
             try:
                 data[region] = TypeAdapter(SectorData).validate_python(
-                    {"region": region} | await res.json(content_type="text/plain")
+                    {"region": region} | await res.json(content_type="text/plain"),
                 )
             except ValueError as e:
                 logger.warning(e)

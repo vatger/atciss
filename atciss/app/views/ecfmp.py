@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from pydantic import AwareDatetime, BaseModel, model_validator
 
@@ -21,7 +21,7 @@ class FIR:
 @dataclass
 class FilterEvent:
     event_id: int
-    event_vatcan: Optional[str]
+    event_vatcan: str | None
 
 
 @dataclass
@@ -54,19 +54,19 @@ class Measure:
         "ground_stop",
         "mandatory_route",
     ]
-    value: Optional[int | list[str]]
+    value: int | list[str] | None
 
 
 class FlowMeasure(BaseModel):
     ident: str
-    event_id: Optional[int]
+    event_id: int | None
     reason: str
     starttime: AwareDatetime
     endtime: AwareDatetime
     measure: Measure
     filters: list[Filter]
     notified_firs: list[str]
-    withdrawn_at: Optional[AwareDatetime]
+    withdrawn_at: AwareDatetime | None
 
 
 class ECFMP(BaseModel):
@@ -76,7 +76,7 @@ class ECFMP(BaseModel):
 
     @model_validator(mode="before")
     @classmethod
-    def replace_fir_id(cls, input: Any) -> Any:
+    def replace_fir_id(cls, inp: Any) -> Any:
         flow_measures = [
             fm
             | {
@@ -85,15 +85,15 @@ class ECFMP(BaseModel):
                     next(
                         (
                             fir["identifier"]
-                            for fir in input["flight_information_regions"]
+                            for fir in inp["flight_information_regions"]
                             if fir["id"] == fir_id
                         ),
                         "ZZZZ",
                     )
                     for fir_id in fm["notified_flight_information_regions"]
-                ]
+                ],
             }
-            for fm in input["flow_measures"]
+            for fm in inp["flow_measures"]
         ]
         events = [
             e
@@ -102,13 +102,13 @@ class ECFMP(BaseModel):
                 or next(
                     (
                         fir["identifier"]
-                        for fir in input["flight_information_regions"]
+                        for fir in inp["flight_information_regions"]
                         if fir["id"] == e["flight_information_region_id"]
                     ),
                     "ZZZZ",
-                )
+                ),
             }
-            for e in input["events"]
+            for e in inp["events"]
         ]
 
-        return input | {"flow_measures": flow_measures, "events": events}
+        return inp | {"flow_measures": flow_measures, "events": events}

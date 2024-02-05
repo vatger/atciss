@@ -5,18 +5,19 @@ Revises: 81848795e2fa
 Create Date: 2023-11-28 00:19:54.676953+00:00
 
 """
-from typing import Sequence, Union
 
-from alembic import op
+from collections.abc import Sequence
+
 import sqlalchemy as sa
 import sqlmodel
 
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = "2b6394ea5779"
-down_revision: Union[str, None] = "81848795e2fa"
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+down_revision: str | None = "81848795e2fa"
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:

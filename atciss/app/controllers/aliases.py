@@ -1,5 +1,7 @@
 """Application controllers - Areas."""
+
 from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException
 
 from ..controllers.auth import get_user

@@ -1,14 +1,14 @@
 from typing import Annotated, Literal
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from sqlmodel import select
+
 from atciss.app.controllers.auth import get_user
 from atciss.app.models import User
 from atciss.app.utils.db import get_session
-
 from atciss.app.views.airway import AirwaySegment, AirwaySegmentWithRefs
-
 
 router = APIRouter()
 

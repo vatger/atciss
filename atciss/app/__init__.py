@@ -13,7 +13,7 @@ Resources:
 .. _Pydantic documentation:
     https://pydantic-docs.helpmanual.io/
 """
-from .asgi import get_application
 
+from .asgi import get_application
 
 __all__ = ("get_application",)

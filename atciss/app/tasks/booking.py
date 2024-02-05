@@ -1,14 +1,13 @@
-from loguru import logger
 from aiohttp import ClientConnectorError
+from loguru import logger
 from pydantic import TypeAdapter
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from ...config import settings
-from ..views.booking import Booking, VatbookData
-
 from ..utils import AiohttpClient
+from ..views.booking import Booking, VatbookData
 
 
 async def fetch_booking() -> None:
@@ -17,7 +16,7 @@ async def fetch_booking() -> None:
         try:
             res = await aiohttp_client.get("https://atc-bookings.vatsim.net/api/booking")
         except ClientConnectorError as e:
-            logger.error(f"Could not connect {str(e)}")
+            logger.error(f"Could not connect {e!s}")
             return
 
         data = TypeAdapter(list[Booking]).validate_python(await res.json())
@@ -25,14 +24,14 @@ async def fetch_booking() -> None:
         try:
             res = await aiohttp_client.get("http://vatbook.euroutepro.com/xml2.php")
         except ClientConnectorError as e:
-            logger.error(f"Could not connect {str(e)}")
+            logger.error(f"Could not connect {e!s}")
             return
 
         try:
             vatbook_data = VatbookData.from_xml(await res.read())
         except Exception as e:
             logger.warning(e)
-            raise e
+            raise
 
     logger.info(f"Vatsim bookings received: {len(data)} bookings")
     logger.info(f"Vatbook bookings received: {len(vatbook_data.atcs.bookings)} bookings")

@@ -1,6 +1,8 @@
 """Application controllers - notam."""
+
+from collections.abc import Sequence
 from datetime import UTC, datetime
-from typing import Annotated, Sequence, cast
+from typing import Annotated, cast
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -10,10 +12,8 @@ from atciss.app.utils.db import get_session
 
 from ..controllers.auth import get_user
 from ..models import User
-
-from ..views.notam import NotamModel, NotamSeen
-
 from ..utils.redis import RedisClient
+from ..views.notam import NotamModel, NotamSeen
 
 router = APIRouter()
 
@@ -31,7 +31,7 @@ async def notam_get(
 
     for i in icao:
         i = i.upper()
-        notam_keys = await redis_client.keys("notam:{}:*".format(i))
+        notam_keys = await redis_client.keys(f"notam:{i}:*")
         notam_text = cast(list[str], await redis_client.mget(notam_keys))
         icao_notams = [NotamModel.from_str(n) for n in notam_text]
         notams[i] = icao_notams
@@ -46,7 +46,8 @@ async def notam_get(
     "/notam/read",
 )
 async def notam_seen_get(
-    user: Annotated[User, Depends(get_user)], session: Annotated[AsyncSession, Depends(get_session)]
+    user: Annotated[User, Depends(get_user)],
+    session: Annotated[AsyncSession, Depends(get_session)],
 ) -> Sequence[str]:
     stmt = select(NotamSeen.notam_id).where(NotamSeen.cid == str(user.cid))
     read_notams = await session.scalars(stmt)

@@ -1,9 +1,14 @@
-from typing import Optional
 import uuid
-from sqlmodel import SQLModel, Field
 
-from .views.dfs_aixm import Aerodrome, Navaid, Runway, RunwayDirection  # noqa: F401 pylint: disable=unused-import
+from sqlmodel import Field, SQLModel
+
 from .views.booking import Booking  # noqa: F401 pylint: disable=unused-import
+from .views.dfs_aixm import (  # noqa: F401 pylint: disable=unused-import
+    Aerodrome,
+    Navaid,
+    Runway,
+    RunwayDirection,
+)
 
 
 class UserBase(SQLModel):
@@ -22,26 +27,26 @@ class AircraftPerformanceData(SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, nullable=False)
     manufacturer: str
     model: str
-    icao_designator: Optional[str] = None
-    iata_designator: Optional[str] = None
-    type: Optional[str] = None
-    engine_type: Optional[str] = None
+    icao_designator: str | None = None
+    iata_designator: str | None = None
+    type: str | None = None
+    engine_type: str | None = None
     engine_count: int
-    fuel_capacity: Optional[float] = None
-    service_ceiling: Optional[float] = None
-    wingspan: Optional[float] = None
-    length: Optional[float] = None
-    height: Optional[float] = None
-    max_speed_indicated: Optional[float] = None
-    max_speed_mach: Optional[float] = None
-    max_weight_taxi: Optional[float] = None
-    max_weight_takeoff: Optional[float] = None
-    max_weight_landing: Optional[float] = None
-    max_weight_zerofuel: Optional[float] = None
-    v_at: Optional[float] = None
-    cruise_tas: Optional[float] = None
-    cat_wtc: Optional[str] = None
-    cat_recat: Optional[str] = None
-    cat_app: Optional[str] = None
-    cat_arc: Optional[str] = None
-    remarks: Optional[str] = None
+    fuel_capacity: float | None = None
+    service_ceiling: float | None = None
+    wingspan: float | None = None
+    length: float | None = None
+    height: float | None = None
+    max_speed_indicated: float | None = None
+    max_speed_mach: float | None = None
+    max_weight_taxi: float | None = None
+    max_weight_takeoff: float | None = None
+    max_weight_landing: float | None = None
+    max_weight_zerofuel: float | None = None
+    v_at: float | None = None
+    cruise_tas: float | None = None
+    cat_wtc: str | None = None
+    cat_recat: str | None = None
+    cat_app: str | None = None
+    cat_arc: str | None = None
+    remarks: str | None = None

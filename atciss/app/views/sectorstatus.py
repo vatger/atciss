@@ -1,6 +1,6 @@
 import enum
-from pydantic import AwareDatetime
 
+from pydantic import AwareDatetime
 from sqlmodel import Column, DateTime, Enum, Field, SQLModel
 
 

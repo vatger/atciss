@@ -1,14 +1,15 @@
 """Command-line interface - serve command."""
+
 from multiprocessing import cpu_count
-import uvicorn
+
 import click
+import uvicorn
 
 from ..config import settings
 from ..log import setup_logging
 
-
 CMD_HELP = """\
-Run production uvicorn server. 
+Run production uvicorn server.
 """
 
 

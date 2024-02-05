@@ -1,5 +1,4 @@
 """Application configuration - Redis."""
-from typing import Optional
 
 from pydantic_settings import BaseSettings
 
@@ -28,8 +27,8 @@ class Redis(BaseSettings):
 
     REDIS_HOST: str = "127.0.0.1"
     REDIS_PORT: int = 6379
-    REDIS_USERNAME: Optional[str] = None
-    REDIS_PASSWORD: Optional[str] = None
+    REDIS_USERNAME: str | None = None
+    REDIS_PASSWORD: str | None = None
     REDIS_USE_SENTINEL: bool = False
 
     class Config:

@@ -1,12 +1,12 @@
 from collections import defaultdict
+
 from loguru import logger
 from pydantic import TypeAdapter
 
 from atciss.app.utils.redis import RedisClient
 
-from ..views.ecfmp import ECFMP, Event, FlowMeasure
-
 from ..utils import AiohttpClient, ClientConnectorError
+from ..views.ecfmp import ECFMP, Event, FlowMeasure
 
 
 async def fetch_ecfmp() -> None:

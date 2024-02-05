@@ -1,6 +1,6 @@
 from typing import Any
-from loguru import logger
 
+from loguru import logger
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import SQLModel
 
@@ -14,4 +14,4 @@ async def create_or_update(engine: Any, db_model: type[SQLModel], data: dict[str
             await session.commit()
         except ValueError as e:
             logger.exception(e)
-            raise e
+            raise

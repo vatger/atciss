@@ -1,28 +1,27 @@
 from typing import Any
 
-from celery import Celery
-from celery.schedules import crontab
 import celery.signals
 from asgiref.sync import async_to_sync
+from celery import Celery
+from celery.schedules import crontab
 
 from atciss.app.tasks.sct import import_sct
 from atciss.app.tasks.sigmet import fetch_sigmet
 
-from .app.tasks.basic_ad import fetch_basic_ads
-from .config import settings, redis
-from .log import setup_logging
-
-from .app.tasks.notam import fetch_notam
-from .app.tasks.loa import fetch_loas
-from .app.tasks.sectors import fetch_sector_data
-from .app.tasks.vatsim import fetch_vatsim_data
-from .app.tasks.taf_metar import fetch_taf_metar
-from .app.tasks.aixm_dfs import fetch_dfs_aixm_data
-from .app.tasks.ecfmp import fetch_ecfmp
-from .app.tasks.areas import fetch_areas
-from .app.tasks.booking import fetch_booking
-from .app.tasks.aliases import fetch_aliases
 from .app.tasks.ac_data import fetch_ac_data
+from .app.tasks.aixm_dfs import fetch_dfs_aixm_data
+from .app.tasks.aliases import fetch_aliases
+from .app.tasks.areas import fetch_areas
+from .app.tasks.basic_ad import fetch_basic_ads
+from .app.tasks.booking import fetch_booking
+from .app.tasks.ecfmp import fetch_ecfmp
+from .app.tasks.loa import fetch_loas
+from .app.tasks.notam import fetch_notam
+from .app.tasks.sectors import fetch_sector_data
+from .app.tasks.taf_metar import fetch_taf_metar
+from .app.tasks.vatsim import fetch_vatsim_data
+from .config import redis, settings
+from .log import setup_logging
 
 app = Celery(__name__)
 

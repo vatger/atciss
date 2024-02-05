@@ -1,6 +1,7 @@
-from typing import Any, Dict, Optional, Sequence
+from collections.abc import Sequence
+from pathlib import Path
+from typing import Any
 from uuid import UUID
-import os.path
 
 from loguru import logger
 from pydantic import TypeAdapter
@@ -8,8 +9,9 @@ from sqlalchemy.ext.asyncio import create_async_engine
 
 from atciss.app.models import AircraftPerformanceData
 from atciss.app.views.ac_data import AcdbAcType, AcdbManufacturer
-from .utils import create_or_update
+
 from ...config import settings
+from .utils import create_or_update
 
 
 async def fetch_ac_data():
@@ -31,7 +33,7 @@ async def process(
     engine: Any,
     mfs: dict[str, AcdbManufacturer],
     acts: Sequence[AcdbAcType],
-    wtc_data: Dict[str, Sequence[str]],
+    wtc_data: dict[str, Sequence[str]],
 ):
     for ac in acts:
         props = {pr.property: pr.value for pr in ac.propertyValues}
@@ -113,9 +115,7 @@ async def process_own_data(engine: Any, data: Sequence[AircraftPerformanceData])
         await create_or_update(engine, AircraftPerformanceData, ac_data)
 
 
-def get_wtc(
-    wtc_data: Dict[str, Sequence[str]], icao: Optional[str], mtow: Optional[float]
-) -> Optional[str]:
+def get_wtc(wtc_data: dict[str, Sequence[str]], icao: str | None, mtow: float | None) -> str | None:
     if icao in wtc_data:
         return wtc_data[icao][0]
 
@@ -132,8 +132,8 @@ def get_wtc(
 
 
 def get_arc(
-    span: Optional[float],
-) -> Optional[str]:
+    span: float | None,
+) -> str | None:
     # pylint: disable=too-many-return-statements
     if span is None:
         return None
@@ -154,7 +154,7 @@ def get_arc(
     return "?"
 
 
-def get_app_code(vat: Optional[float]) -> Optional[str]:
+def get_app_code(vat: float | None) -> str | None:
     if vat is None:
         return None
 
@@ -171,11 +171,11 @@ def get_app_code(vat: Optional[float]) -> Optional[str]:
 
 
 def get_recat(
-    wtc_data: Dict[str, Sequence[str]],
-    icao: Optional[str],
-    span: Optional[float],
-    mtow: Optional[float],
-) -> Optional[str]:
+    wtc_data: dict[str, Sequence[str]],
+    icao: str | None,
+    span: float | None,
+    mtow: float | None,
+) -> str | None:
     # pylint: disable=too-many-return-statements
     if icao in wtc_data:
         return wtc_data[icao][1]
@@ -204,37 +204,39 @@ def get_recat(
     return "A"
 
 
-def contrib_ac_path(*pa: Sequence[str]) -> str:
-    return os.path.join(settings.CONTRIB_PATH, "ac-data", *pa)
+def contrib_ac_path(*pa: Sequence[str]) -> Path:
+    return Path(settings.CONTRIB_PATH).resolve().joinpath(*(["ac-data"] + [str(p) for p in pa]))
 
 
 def read_manufacturers() -> Sequence[AcdbManufacturer]:
-    with open(contrib_ac_path("aircraft-db", "manufacturers.json"), "rb") as mf:
-        return TypeAdapter(Sequence[AcdbManufacturer]).validate_json(mf.read())
+    return TypeAdapter(Sequence[AcdbManufacturer]).validate_json(
+        contrib_ac_path("aircraft-db", "manufacturers.json").read_text(encoding="utf-8")
+    )
 
 
 def read_ac_types() -> Sequence[AcdbAcType]:
-    with open(contrib_ac_path("aircraft-db", "aircraft-types.json"), "rb") as tf:
-        return TypeAdapter(Sequence[AcdbAcType]).validate_json(tf.read())
+    return TypeAdapter(Sequence[AcdbAcType]).validate_json(
+        contrib_ac_path("aircraft-db", "aircraft-types.json").read_text(encoding="utf-8")
+    )
 
 
 def read_wtc_overrides() -> dict[str, Sequence[str]]:
     data = {}
 
-    with open(contrib_ac_path("wtc-overrides.txt"), "r", encoding="utf-8") as of:
-        for line in of.readlines():
-            [icao, wtc, recat] = line.split(",")
-            data[icao] = [wtc.strip(), recat.strip()]
+    for line in contrib_ac_path("wtc-overrides.txt").read_text(encoding="utf-8").split("\n"):
+        [icao, wtc, recat] = line.split(",")
+        data[icao] = [wtc.strip(), recat.strip()]
 
     return data
 
 
 def read_own_types() -> Sequence[AircraftPerformanceData]:
-    with open(contrib_ac_path("ac-data.json"), "rb") as df:
-        return TypeAdapter(Sequence[AircraftPerformanceData]).validate_json(df.read())
+    return TypeAdapter(Sequence[AircraftPerformanceData]).validate_json(
+        contrib_ac_path("ac-data.json").read_text(encoding="utf-8"),
+    )
 
 
-def get_float(in_val: Any) -> Optional[float]:
+def get_float(in_val: Any) -> float | None:
     if in_val is None:
         return None
 

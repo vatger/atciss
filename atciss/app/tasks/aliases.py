@@ -2,8 +2,8 @@ from loguru import logger
 
 from atciss.app.utils.redis import RedisClient
 
-from ..utils import AiohttpClient, ClientConnectorError
 from ...config import settings
+from ..utils import AiohttpClient, ClientConnectorError
 
 
 async def fetch_aliases() -> None:

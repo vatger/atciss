@@ -1,9 +1,10 @@
 from datetime import UTC, datetime
-from typing import Optional
+
 from geoalchemy2 import Geometry, WKBElement, WKTElement
 from pydantic import AwareDatetime, ConfigDict, TypeAdapter, field_serializer, field_validator
 from sqlalchemy import Column
 from sqlmodel import DateTime, Field, SQLModel
+
 from atciss.app.utils.geo import postgis_polygon_serialize, postgis_polygon_validate
 
 
@@ -19,12 +20,12 @@ class Sigmet(SQLModel, table=True):
     seriesId: str
     hazard: str
     qualifier: str
-    base: Optional[int]
-    top: Optional[int]
+    base: int | None
+    top: int | None
     geom: str
-    dir: Optional[str]
-    spd: Optional[int]
-    chng: Optional[str]
+    dir: str | None
+    spd: int | None
+    chng: str | None
     coords: WKTElement | WKBElement = Field(sa_column=Column(Geometry("Polygon")))
     rawSigmet: str
 
@@ -33,5 +34,5 @@ class Sigmet(SQLModel, table=True):
 
     @field_validator("receiptTime", mode="before")
     @classmethod
-    def force_utc(cls, input: str) -> AwareDatetime:
-        return TypeAdapter(datetime).validate_python(input).replace(tzinfo=UTC)
+    def force_utc(cls, inp: str) -> AwareDatetime:
+        return TypeAdapter(datetime).validate_python(inp).replace(tzinfo=UTC)

@@ -1,8 +1,9 @@
 import csv
 import gzip
+
 from loguru import logger
 
-from ..utils import RedisClient, ClientConnectorError, AiohttpClient
+from ..utils import AiohttpClient, ClientConnectorError, RedisClient
 
 
 async def fetch_taf_metar() -> None:
@@ -13,11 +14,11 @@ async def fetch_taf_metar() -> None:
         for taf_metar in ["taf", "metar"]:
             try:
                 res = await aiohttp_client.get(
-                    f"https://aviationweather.gov/data/cache/{taf_metar}s.cache.csv.gz"
+                    f"https://aviationweather.gov/data/cache/{taf_metar}s.cache.csv.gz",
                 )
                 decompressed = gzip.decompress(await res.read())
             except ClientConnectorError as e:
-                logger.error(f"Could not connect {str(e)}")
+                logger.error(f"Could not connect {e!s}")
                 return
 
             csv_data = csv.reader(decompressed.decode("latin1").split("\n"), delimiter=",")

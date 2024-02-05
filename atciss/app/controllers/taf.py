@@ -1,18 +1,20 @@
 """Application controllers - taf."""
-from typing import Annotated, Dict, Sequence, Optional
-from fastapi import APIRouter, Query, Depends, HTTPException
+
+from collections.abc import Sequence
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, Query
 
 from atciss.app.views.metar import AirportIcao
 
 from ..controllers.auth import get_user
 from ..models import User
-
 from ..utils.redis import RedisClient
 
 router = APIRouter()
 
 
-async def fetch_taf(icao: AirportIcao) -> Optional[str]:
+async def fetch_taf(icao: AirportIcao) -> str | None:
     redis_client = RedisClient.open()
     taf = await redis_client.get(f"taf:{icao}")
     if taf is None:
@@ -26,7 +28,7 @@ async def fetch_taf(icao: AirportIcao) -> Optional[str]:
 async def tafs_get(
     airports: Annotated[Sequence[AirportIcao], Query(alias="icao")],
     user: Annotated[User, Depends(get_user)],
-) -> Dict[AirportIcao, Optional[str]]:
+) -> dict[AirportIcao, str | None]:
     """Get taf for multiple airports."""
     return {apt: await fetch_taf(apt) for apt in airports}
 
@@ -35,7 +37,7 @@ async def tafs_get(
     "/taf/{icao}",
     responses={404: {}},
 )
-async def taf_get(icao: AirportIcao) -> Optional[str]:
+async def taf_get(icao: AirportIcao) -> str | None:
     """Get taf for a single airport."""
     taf = await fetch_taf(icao)
     if taf is None:

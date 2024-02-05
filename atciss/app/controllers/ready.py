@@ -1,12 +1,12 @@
 """Application controllers - ready."""
 
-from loguru import logger
 from fastapi import APIRouter
 from fastapi.exceptions import HTTPException
+from loguru import logger
+from redis.exceptions import RedisError
 
 from ..utils import RedisClient
 from ..views.ready import ReadyResponse
-
 
 router = APIRouter()
 
@@ -26,11 +26,11 @@ async def readiness_check() -> ReadyResponse:
         if not await RedisClient.open().ping():
             logger.error("Redis ping failed")
             raise HTTPException(status_code=503, detail="Redis ping failed")
-    except Exception as e:
+    except RedisError as e:
         logger.error("Could not connect to redis")
         raise HTTPException(
             status_code=503,
-            detail=f"Redis connection failed: {str(e)}",
-        )
+            detail=f"Redis connection failed: {e!s}",
+        ) from e
 
     return ReadyResponse(status="ok")

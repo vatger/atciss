@@ -1,4 +1,5 @@
-from typing import Annotated, Sequence
+from collections.abc import Sequence
+from typing import Annotated
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -28,7 +29,7 @@ async def ad_get(
             col(AircraftPerformanceData.icao_designator).icontains(query),
             col(AircraftPerformanceData.model).icontains(query),
             col(AircraftPerformanceData.manufacturer).icontains(query),
-        )
+        ),
     )
     results = await session.execute(stmt)
 

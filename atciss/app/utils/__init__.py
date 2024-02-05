@@ -1,4 +1,5 @@
 """Application implementation - utilities."""
+
 from .aiohttp_client import AiohttpClient, ClientConnectorError
 from .redis import RedisClient
 

@@ -1,28 +1,31 @@
 """Application controllers - metar."""
-from typing import Annotated, Dict, Sequence, Optional, cast
-from loguru import logger
-from fastapi import APIRouter, Query, Depends, HTTPException
+
+from collections.abc import Sequence
+from typing import Annotated, cast
+
+from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import PlainTextResponse
+from loguru import logger
 from metar.Metar import ParserError
 
 from ..controllers.auth import get_user
 from ..models import User
-
-from ..views.metar import MetarModel, AirportIcao
 from ..utils.redis import RedisClient
+from ..views.metar import AirportIcao, MetarModel
 
 router = APIRouter()
 
 
-async def fetch_metar(icao: AirportIcao) -> Optional[MetarModel]:
+async def fetch_metar(icao: AirportIcao) -> MetarModel | None:
     async with RedisClient.open() as redis_client:
         try:
-            metar = cast(Optional[str], await redis_client.get(f"metar:{icao}"))
+            metar = cast(str | None, await redis_client.get(f"metar:{icao}"))
             if metar is None:
                 return None
-            parsed = MetarModel.from_str(metar)
-            parsed.raw = metar
-            return parsed
+            else:
+                parsed = MetarModel.from_str(metar)
+                parsed.raw = metar
+                return parsed
         except ParserError as e:
             logger.warning(e)
         return None
@@ -34,7 +37,7 @@ async def fetch_metar(icao: AirportIcao) -> Optional[MetarModel]:
 async def metars_get(
     airports: Annotated[Sequence[AirportIcao], Query(alias="icao")],
     user: Annotated[User, Depends(get_user)],
-) -> Dict[AirportIcao, Optional[MetarModel]]:
+) -> dict[AirportIcao, MetarModel | None]:
     """Get METAR for multiple airports."""
     return {apt: await fetch_metar(apt) for apt in airports}
 
@@ -49,7 +52,7 @@ async def metar_raw_get(
 ) -> str:
     """Get METAR for a single airport. Compatible to metar.vatsim.net."""
     async with RedisClient.open() as redis_client:
-        metar = cast(Optional[str], await redis_client.get(f"metar:{icao}"))
+        metar = cast(str | None, await redis_client.get(f"metar:{icao}"))
         if metar is None:
             raise HTTPException(status_code=404)
 
@@ -62,7 +65,7 @@ async def metar_raw_get(
 )
 async def metar_get(
     icao: AirportIcao,
-) -> Optional[MetarModel]:
+) -> MetarModel | None:
     """Get METAR for a single airport."""
     metar = await fetch_metar(icao)
     if metar is None:

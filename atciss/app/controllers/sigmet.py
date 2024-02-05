@@ -1,6 +1,9 @@
 """Application controllers - booking."""
+
+from collections.abc import Sequence
 from datetime import UTC, datetime
-from typing import Annotated, Sequence
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select

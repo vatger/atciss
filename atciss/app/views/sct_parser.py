@@ -1,13 +1,15 @@
 import itertools
 import sys
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Sequence, cast
-from pydantic import TypeAdapter
+from pathlib import Path
+from typing import cast
 
 from lark import Discard, Lark, Transformer
+from pydantic import TypeAdapter
 
-from atciss.app.utils.geo import Coordinate
-from atciss.app.views.dfs_aixm import Aerodrome, Navaid
+from ..utils.geo import Coordinate
+from .dfs_aixm import Aerodrome, Navaid
 
 
 @dataclass
@@ -30,7 +32,8 @@ class SctFile:
 
     def navaids(self) -> list[Navaid]:
         return cast(
-            list[Navaid], self.sections["VOR"] + self.sections["NDB"] + self.sections["FIXES"]
+            list[Navaid],
+            self.sections["VOR"] + self.sections["NDB"] + self.sections["FIXES"],
         )
 
     def aerodromes(self) -> list[Aerodrome]:
@@ -54,13 +57,11 @@ class SctTransformer(Transformer):
 
     # TODO regions, airways, sectors, ...
     def start(self, children: list[SctSection]) -> SctFile:
-        return SctFile(
-            {
-                s.name: s.data
-                for s in children
-                if s.name in ["VOR", "NDB", "FIXES", "AIRPORT", "RUNWAY"]
-            }
-        )
+        return SctFile({
+            s.name: s.data
+            for s in children
+            if s.name in ["VOR", "NDB", "FIXES", "AIRPORT", "RUNWAY"]
+        })
 
     def section(self, children: Sequence[str | Navaid | Aerodrome | list[SctRunway]]) -> SctSection:
         name, *rest = children
@@ -69,8 +70,8 @@ class SctTransformer(Transformer):
         return SctSection(cast(str, name), cast(list[Navaid | Aerodrome | SctRunway], list(rest)))
 
     def coord_part(self, children: tuple[str, int, int, float]) -> float:
-        hemi, deg, min, sec = children
-        return (-1 if hemi in ["N", "E"] else 1) * (deg + min / 60 + sec / 3600)
+        hemi, deg, minute, sec = children
+        return (-1 if hemi in ["N", "E"] else 1) * (deg + minute / 60 + sec / 3600)
 
     def coordinate(self, children: tuple[float, float]) -> Coordinate:
         lat, lng = children
@@ -79,52 +80,44 @@ class SctTransformer(Transformer):
     def location(self, children: tuple[str, float, Coordinate]) -> Navaid | Aerodrome:
         designator, frequency, location = children
         if frequency > 0 and frequency < 150:
-            return Navaid.model_validate(
-                {
-                    "designator": designator,
-                    "type": "VOR",
-                    "frequency": frequency,
-                    "location": location,
-                    "aerodrome_id": None,
-                    "runway_direction_id": None,
-                    "source": "SCT",
-                }
-            )
-        elif frequency > 150:
-            return Navaid.model_validate(
-                {
-                    "designator": designator,
-                    "type": "NDB",
-                    "frequency": frequency,
-                    "location": location,
-                    "aerodrome_id": None,
-                    "runway_direction_id": None,
-                    "source": "SCT",
-                }
-            )
-        else:
-            return Aerodrome.model_validate(
-                {
-                    "icao_designator": designator,
-                    "type": "AD",
-                    "arp_location": location,
-                    "source": "SCT",
-                }
-            )
-
-    def fix(self, children: tuple[str, Coordinate]) -> Navaid:
-        designator, location = children
-
-        return Navaid.model_validate(
-            {
+            return Navaid.model_validate({
                 "designator": designator,
-                "type": "ICAO",
+                "type": "VOR",
+                "frequency": frequency,
                 "location": location,
                 "aerodrome_id": None,
                 "runway_direction_id": None,
                 "source": "SCT",
-            }
-        )
+            })
+        elif frequency > 150:
+            return Navaid.model_validate({
+                "designator": designator,
+                "type": "NDB",
+                "frequency": frequency,
+                "location": location,
+                "aerodrome_id": None,
+                "runway_direction_id": None,
+                "source": "SCT",
+            })
+        else:
+            return Aerodrome.model_validate({
+                "icao_designator": designator,
+                "type": "AD",
+                "arp_location": location,
+                "source": "SCT",
+            })
+
+    def fix(self, children: tuple[str, Coordinate]) -> Navaid:
+        designator, location = children
+
+        return Navaid.model_validate({
+            "designator": designator,
+            "type": "ICAO",
+            "location": location,
+            "aerodrome_id": None,
+            "runway_direction_id": None,
+            "source": "SCT",
+        })
 
     def runway(self, children: tuple[str, str, int, int, Coordinate, Coordinate, str]):
         des1, des2, deg1, deg2, thr1, thr2, icao = children
@@ -135,10 +128,10 @@ class SctTransformer(Transformer):
         ]
 
 
-def parse(input: str) -> SctFile:
+def parse(inp: str) -> SctFile:
     parser = Lark.open("sct.lark", rel_to=__file__)
 
-    tree = parser.parse(input)
+    tree = parser.parse(inp)
     # with open("pretty_tree", "w") as pf:
     #     pf.write(tree.pretty())
     tf = SctTransformer()
@@ -146,7 +139,6 @@ def parse(input: str) -> SctFile:
     return tf.transform(tree)
 
 
-if __name__ == "__main__":
-    with open(sys.argv[1], encoding="windows-1252") as f:
-        sct = parse(f.read())
-        print(TypeAdapter(SctFile).dump_json(sct).decode("utf-8"))
+def test():
+    sct = parse(Path(sys.argv[1]).read_text(encoding="windows-1252"))
+    print(TypeAdapter(SctFile).dump_json(sct).decode("utf-8"))

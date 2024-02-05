@@ -19,12 +19,10 @@ class RedisClient:
         }
 
         if redis_conf.REDIS_USERNAME and redis_conf.REDIS_PASSWORD:
-            redis_init_kwargs.update(
-                {
-                    "username": redis_conf.REDIS_USERNAME,
-                    "password": redis_conf.REDIS_PASSWORD,
-                }
-            )
+            redis_init_kwargs.update({
+                "username": redis_conf.REDIS_USERNAME,
+                "password": redis_conf.REDIS_PASSWORD,
+            })
 
         if redis_conf.REDIS_USE_SENTINEL:
             sentinel = aioredis.Sentinel(

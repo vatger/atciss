@@ -1,11 +1,11 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends
-from atciss.app.controllers.auth import get_admin
 
-from atciss.app.models import User
+import celery
+from fastapi import APIRouter, Depends
 
 import atciss.celery as ac
-import celery
+from atciss.app.controllers.auth import get_admin
+from atciss.app.models import User
 
 router = APIRouter()
 

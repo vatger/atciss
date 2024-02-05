@@ -1,18 +1,17 @@
-from typing import Optional
-
-from loguru import logger
-from sqlmodel import select
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from bs4 import BeautifulSoup
-from pynotam import Notam
+from loguru import logger
 from parsimonious import ParseError
+from pynotam import Notam
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlmodel import select
 
 from atciss.app.views.dfs_aixm import Aerodrome
-from ..utils import AiohttpClient, ClientConnectorError, RedisClient
+
 from ...config import settings
+from ..utils import AiohttpClient, ClientConnectorError, RedisClient
 
 
-def convert_notam(n: str) -> Optional[Notam]:
+def convert_notam(n: str) -> Notam | None:
     try:
         return Notam.from_str(f"({n.strip()})")
     except ParseError as e:
@@ -43,11 +42,11 @@ async def fetch_notam() -> None:
             try:
                 res = await aiohttp_client.get(
                     "https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do"
-                    + f"?reportType=Raw&retrieveLocId={'+'.join(notams_to_fetch)}"
-                    + "&actionType=notamRetrievalByICAOs&submit=View+NOTAMs"
+                    f"?reportType=Raw&retrieveLocId={'+'.join(notams_to_fetch)}"
+                    "&actionType=notamRetrievalByICAOs&submit=View+NOTAMs",
                 )
             except ClientConnectorError as e:
-                logger.error(f"Could not connect {str(e)}")
+                logger.error(f"Could not connect {e!s}")
                 return
 
             notam_html = BeautifulSoup(await res.text(), "html.parser")

@@ -2,16 +2,17 @@ from __future__ import annotations
 
 import logging
 import sys
+from typing import ClassVar
 
+import asgiref
 import loguru
 from loguru import logger
-import asgiref
 
 from .config import settings
 
 
 class InterceptHandler(logging.Handler):
-    loglevel_mapping = {
+    loglevel_mapping: ClassVar[dict[int, str]] = {
         50: "CRITICAL",
         40: "ERROR",
         30: "WARNING",
@@ -38,7 +39,7 @@ class InterceptHandler(logging.Handler):
 
 
 def formatter(record: loguru.Record) -> str:
-    corid = record["extra"]["id"] if "id" in record["extra"] else None
+    corid = record["extra"].get("id", None)
     corid_part = f"<i><blue>{corid}</blue></i> | " if corid is not None else ""
     exc_part = "{exception}\n" if record["exception"] is not None else ""
     return (
@@ -64,10 +65,10 @@ def setup_logging() -> None:
 
     # sqlalchemy prints queries on info level when we have DEBUG enabled
     logging.getLogger("sqlalchemy.engine").setLevel(
-        logging.INFO if settings.DEBUG else logging.WARN
+        logging.INFO if settings.DEBUG else logging.WARN,
     )
 
-    for name in logging.root.manager.loggerDict.keys():  # pylint: disable=no-member
+    for name in logging.root.manager.loggerDict:  # pylint: disable=no-member
         _logger = logging.getLogger(name)
         _logger.handlers = [InterceptHandler()]
         _logger.propagate = False
