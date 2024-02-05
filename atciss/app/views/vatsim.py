@@ -5,6 +5,7 @@ from typing import Optional
 from pydantic import BaseModel
 from vatsim.types import Pilot
 
+
 @dataclass
 class Traffic:
     callsign: str
