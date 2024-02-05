@@ -275,19 +275,15 @@
           };
         in {
           pylint = mkCIApp "pylint" [] ''
-            echo "[nix][lint] Run atciss pylint checks."
             pylint -f colorized -r y atciss
           '';
-          ruff = mkCIApp "ruff" [pkgs.ruff] ''
-            echo "[nix][lint] Run atciss ruff checks."
-            ruff check atciss
+          ruff = mkCIApp "ruff" [] ''
+            ruff check --output-format github atciss
           '';
-          format = mkCIApp "ruff" [pkgs.ruff] ''
-            echo "[nix][lint] Run atciss black checks."
-            ruff format --check --diff atciss
+          format = mkCIApp "ruff" [] ''
+            ruff format --check --diff
           '';
           eslint = mkCIApp "eslint" [nodejs pkgs.bash] ''
-            echo "[nix][lint] Run atciss eslint checks."
             (cd atciss-frontend && npm install && npm run lint)
           '';
         };
