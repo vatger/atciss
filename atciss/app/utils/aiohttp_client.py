@@ -1,9 +1,8 @@
-from typing import Optional
 from socket import AF_INET
-from loguru import logger
 
 import aiohttp
 from aiohttp.client_exceptions import ClientConnectorError
+from loguru import logger
 
 __all__ = ["AiohttpClient", "ClientConnectorError"]
 
@@ -13,7 +12,7 @@ SIZE_POOL_AIOHTTP = 100
 class AiohttpClient:
     """Aiohttp session client utility."""
 
-    aiohttp_client: Optional[aiohttp.ClientSession] = None
+    aiohttp_client: aiohttp.ClientSession | None = None
 
     @classmethod
     def get(cls) -> aiohttp.ClientSession:

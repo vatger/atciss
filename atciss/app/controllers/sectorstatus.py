@@ -1,17 +1,19 @@
 """Application controllers - metar."""
+
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
-from typing import Annotated, Dict, Sequence
-from fastapi import APIRouter, Query, Depends
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
 from atciss.app.utils.db import get_session
 
-from ..views.sectorstatus import SectorStatus, Status
-
 from ..controllers.auth import get_controller, get_user
 from ..models import User
+from ..views.sectorstatus import SectorStatus, Status
 
 router = APIRouter()
 
@@ -23,17 +25,20 @@ async def sectorstatus_get(
     sectors: Annotated[Sequence[str], Query(alias="id")],
     _: Annotated[User, Depends(get_user)],
     session: Annotated[AsyncSession, Depends(get_session)],
-) -> Dict[str, SectorStatus]:
+) -> dict[str, SectorStatus]:
     """Get status for multiple sectors."""
 
     stmt = select(SectorStatus).where(SectorStatus.id.in_(sectors))
     sector_rows = await session.scalars(stmt)
     found_sectors = {s.id: s for s in sector_rows}
     defaults = {
-        id: SectorStatus(
-            id=id, status=Status.green, changed_by_cid="unset", updated_at=datetime.now(UTC)
+        sector_id: SectorStatus(
+            id=sector_id,
+            status=Status.green,
+            changed_by_cid="unset",
+            updated_at=datetime.now(UTC),
         )
-        for id in sectors
+        for sector_id in sectors
     }
     return defaults | found_sectors
 

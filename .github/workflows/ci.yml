@@ -20,12 +20,12 @@ jobs:
         with:
           name: atciss
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - name: Run pylint
-        run: 'nix run .#pylint'
-      - name: Format code
+      - name: Check code formatting
         run: 'nix run .#format'
       - name: Run ruff
         run: 'nix run .#ruff'
+      - name: Run pylint
+        run: 'nix run .#pylint'
       - name: Run eslint
         run: 'nix run .#eslint'
 

@@ -1,13 +1,14 @@
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Any, Optional, Sequence
+from typing import Any
 
 
 @dataclass
 class AcdbManufacturer:
     id: str
-    country: Optional[str]
+    country: str | None
     name: str
-    nativeName: Optional[str]
+    nativeName: str | None
 
 
 @dataclass
@@ -23,8 +24,8 @@ class AcdbAcType:
     engineCount: int
     engineFamily: str
     engineModels: Sequence[str]
-    iataCode: Optional[str]
-    icaoCode: Optional[str]
+    iataCode: str | None
+    icaoCode: str | None
     manufacturer: str
     name: str
     propertyValues: Sequence[AcdbAcProperty]

@@ -1,13 +1,13 @@
 from dataclasses import dataclass, field
-from typing import Any, Optional, Tuple, cast
-from loguru import logger
+from typing import Any, cast
 
+from loguru import logger
 from pydantic import BaseModel, field_validator, model_validator
 
 from ..utils.geo import Coordinate, convert_degsecmin_coordinate
 
 
-def convert_point(point: Tuple[str, str] | Coordinate) -> Coordinate:
+def convert_point(point: tuple[str, str] | Coordinate) -> Coordinate:
     if isinstance(point[0], float):
         return cast(Coordinate, point)
 
@@ -22,22 +22,22 @@ class Runway:
 
 class Sector(BaseModel):
     points: list[Coordinate]
-    min: Optional[int] = None
-    max: Optional[int] = None
+    min: int | None = None
+    max: int | None = None
     runways: list[Runway] = field(default_factory=list)
 
     @field_validator("points", mode="before")
     @classmethod
-    def point_validator(cls, input: list[Tuple[str, str] | Coordinate]) -> list[Coordinate]:
-        return [convert_point(point) for point in input]
+    def point_validator(cls, inp: list[tuple[str, str] | Coordinate]) -> list[Coordinate]:
+        return [convert_point(point) for point in inp]
 
     @field_validator("min", "max", mode="before")
     @classmethod
-    def round_bounds_validator(cls, input: Optional[int]) -> Optional[int]:
-        if input is not None:
-            return 5 * round(input / 5)
+    def round_bounds_validator(cls, inp: int | None) -> int | None:
+        if inp is not None:
+            return 5 * round(inp / 5)
 
-        return input
+        return inp
 
 
 @dataclass
@@ -45,8 +45,8 @@ class Airspace:
     id: str
     group: str
     owner: list[str]
-    uid: Optional[str] = None
-    remark: Optional[str] = None
+    uid: str | None = None
+    remark: str | None = None
     sectors: list[Sector] = field(default_factory=list)
 
 
@@ -169,7 +169,8 @@ class SectorData(BaseModel):
             data["positions"] = reformat_position(data.get("positions", {}), data["region"])
         if isinstance(data, dict) and isinstance(data["airports"], dict):
             data["airports"] = reformat_filter_airports(
-                data.get("airports", {}), data.get("region")
+                data.get("airports", {}),
+                data.get("region"),
             )
 
         return data

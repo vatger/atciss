@@ -1,20 +1,20 @@
-from typing import Optional
 import uuid
+
 from geoalchemy2 import Geometry, WKBElement, WKTElement
 from pydantic import ConfigDict, field_serializer, field_validator
 from sqlalchemy import Column
 from sqlmodel import Field, Relationship, SQLModel
-from atciss.app.utils.geo import postgis_line_serialize, postgis_line_validate
 
+from atciss.app.utils.geo import postgis_line_serialize, postgis_line_validate
 from atciss.app.views.dfs_aixm import Navaid
 
 
 class Airway(SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, nullable=False)
-    designatorPrefix: Optional[str]
-    designatorSecondLetter: Optional[str]
-    designatorNumber: Optional[str]
-    locationDesignator: Optional[str]
+    designatorPrefix: str | None
+    designatorSecondLetter: str | None
+    designatorNumber: str | None
+    locationDesignator: str | None
 
     segments: list["AirwaySegment"] = Relationship(back_populates="airway")
 
@@ -24,8 +24,8 @@ class AirwaySegmentBase(SQLModel):
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, nullable=False)
     level: str
-    true_track: Optional[float]
-    reverse_true_track: Optional[float]
+    true_track: float | None
+    reverse_true_track: float | None
     length: float
     upper_limit: int
     upper_limit_uom: str
@@ -42,7 +42,7 @@ class AirwaySegmentBase(SQLModel):
 
 class AirwaySegment(AirwaySegmentBase, table=True):
     start: Navaid = Relationship(
-        sa_relationship_kwargs={"foreign_keys": "[AirwaySegment.start_id]"}
+        sa_relationship_kwargs={"foreign_keys": "[AirwaySegment.start_id]"},
     )
     end: Navaid = Relationship(sa_relationship_kwargs={"foreign_keys": "[AirwaySegment.end_id]"})
     airway: Airway = Relationship(back_populates="segments")

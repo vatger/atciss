@@ -137,3 +137,31 @@ reportUnusedCallResult = "error"
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+preview = true
+
+[tool.ruff.lint]
+select = [
+  "E",  # pycodestyle errors
+  "W",  # pycodestyle warnings
+  "F",  # pyflakes
+  "C90",  # mccabe
+  "I",  # isort
+  "ASYNC",  # flake8-async
+  "B",  # flake8-bugbear
+  "BLE",  # flake8-blind-except
+  "COM",  # flake8-commas
+  "C4",  # flake8-comprehensions
+  "DTZ",  # flake8-datetimez
+  "EM",  # flake8-errmsg
+  "ICN",  # flake8-import-conventions
+  "PYI",  # flake8-pyi
+  "Q",  # flake8-quotes
+  "SIM",  # flake8-simplify
+  "TCH",  # flake8-typechecking
+  "PTH",  # flake8-use-pathlib
+  "UP",  # pyupgrade
+  "RUF",  # ruff-specific
+  "TRY",  # tryceratops
+  "FURB", # refurb
+]
+ignore = ["COM812"]

@@ -1,11 +1,11 @@
 """Application implementation - ASGI."""
 
 from contextlib import asynccontextmanager
-
 from dataclasses import dataclass
 from uuid import uuid4
 
-from loguru import logger
+from asgi_correlation_id import CorrelationIdMiddleware, correlation_id
+from asgi_correlation_id.middleware import is_valid_uuid4
 from asgiref.typing import (
     ASGI3Application,
     ASGIReceiveCallable,
@@ -13,19 +13,17 @@ from asgiref.typing import (
     Scope,
 )
 from fastapi import FastAPI
+from loguru import logger
 from prometheus_fastapi_instrumentator import Instrumentator as PrometheusInstrumentator
-from asgi_correlation_id import CorrelationIdMiddleware, correlation_id
-from asgi_correlation_id.middleware import is_valid_uuid4
-
 from sqlalchemy.ext.asyncio import create_async_engine
 
 import alembic.command
 import alembic.config
 
 from ..config import settings
+from ..log import setup_logging
 from .router import root_api_router
 from .utils import RedisClient
-from ..log import setup_logging
 
 
 @dataclass
@@ -33,7 +31,10 @@ class CorrelationIdLogMiddleware:
     app: ASGI3Application
 
     async def __call__(
-        self, scope: Scope, receive: ASGIReceiveCallable, send: ASGISendCallable
+        self,
+        scope: Scope,
+        receive: ASGIReceiveCallable,
+        send: ASGISendCallable,
     ) -> None:
         with logger.contextualize(id=correlation_id.get()):
             return await self.app(scope, receive, send)

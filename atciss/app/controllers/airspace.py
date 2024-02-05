@@ -1,16 +1,16 @@
 """Application controllers - metar."""
+
 from typing import Annotated
 
-from loguru import logger
 from fastapi import APIRouter, Depends
+from loguru import logger
 from pydantic import TypeAdapter
 
 from atciss.app.tasks.sectors import Airport, Airspace, Position, SectorData
 
+from ...config import settings
 from ..controllers.auth import get_user
 from ..models import User
-from ...config import settings
-
 from ..utils.redis import RedisClient
 
 router = APIRouter()

@@ -1,12 +1,11 @@
 from collections import defaultdict
-from typing import List
 
 from loguru import logger
 from pydantic import TypeAdapter
 
-from ..views.loa import LoaItem
-from ..utils import AiohttpClient, ClientConnectorError, RedisClient
 from ...config import settings
+from ..utils import AiohttpClient, ClientConnectorError, RedisClient
+from ..views.loa import LoaItem
 
 
 async def fetch_loas() -> None:
@@ -20,7 +19,7 @@ async def fetch_loas() -> None:
             logger.exception(f"Could not connect {e!s}")
             return
 
-        loas = TypeAdapter(List[LoaItem]).validate_python(await res.json())
+        loas = TypeAdapter(list[LoaItem]).validate_python(await res.json())
 
     loas_per_fir_or_sector = defaultdict(list)
     for loa in loas:
@@ -35,5 +34,5 @@ async def fetch_loas() -> None:
 
     async with redis_client.pipeline() as pipe:
         for fir, loas in loas_per_fir_or_sector.items():
-            pipe.set(f"loa:{fir}", TypeAdapter(List[LoaItem]).dump_json(loas))
+            pipe.set(f"loa:{fir}", TypeAdapter(list[LoaItem]).dump_json(loas))
         await pipe.execute()

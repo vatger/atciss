@@ -1,9 +1,8 @@
 """Application configuration - root APIRouter."""
+
 from fastapi import APIRouter
 
 from .controllers import (
-    ready,
-    auth,
     ac_data,
     ad,
     admin,
@@ -13,19 +12,20 @@ from .controllers import (
     aliases,
     areas,
     atis,
+    auth,
     booking,
     ecfmp,
     loa,
     metar,
     navaid,
     notam,
+    ready,
     sectorstatus,
     sigmet,
     taf,
     traffic,
     vatsim,
 )
-
 
 root_api_router = APIRouter(prefix="/api")
 

@@ -1,6 +1,7 @@
-from io import BytesIO
-from typing import Any, BinaryIO, Union
 from collections.abc import Iterable
+from io import BytesIO
+from typing import Any, BinaryIO
+
 import xmltodict
 
 
@@ -62,7 +63,7 @@ class AIXMFeature:
 
 
 class AIXMData:
-    def __init__(self, sources: Iterable[Union[str, BinaryIO, BytesIO]]):
+    def __init__(self, sources: Iterable[str | BinaryIO | BytesIO]):
         super().__init__()
         # AIXM message members, by message type
         self.members: dict[str, list[AIXMFeature]] = {}

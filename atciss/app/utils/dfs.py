@@ -1,4 +1,4 @@
-from typing import Any, List, Optional
+from typing import Any
 
 from loguru import logger
 
@@ -15,7 +15,7 @@ async def get_dfs_aixm_datasets(amdt_id: int) -> dict[str, Any]:
         try:
             dataset = DFSDataset.model_validate(await res.json(content_type="text/html"))
             for amdt in dataset.amdts:
-                if not amdt.amdt == amdt_id:
+                if amdt.amdt != amdt_id:
                     continue
 
                 data = []
@@ -31,7 +31,7 @@ async def get_dfs_aixm_datasets(amdt_id: int) -> dict[str, Any]:
         return available_datasets
 
 
-def get_dfs_aixm_url(datasets: dict[str, Any], amdt_id: int, dataset_name: str) -> Optional[str]:
+def get_dfs_aixm_url(datasets: dict[str, Any], amdt_id: int, dataset_name: str) -> str | None:
     """Returns the proper AIXM URL for the given datsets, amendment and dataset name"""
     if not datasets[dataset_name]:
         return None
@@ -43,7 +43,7 @@ def get_dfs_aixm_url(datasets: dict[str, Any], amdt_id: int, dataset_name: str) 
     return None
 
 
-def get_leaf_datasets(item: Item) -> List[Item]:
+def get_leaf_datasets(item: Item) -> list[Item]:
     result = []
 
     if item.type == "group":

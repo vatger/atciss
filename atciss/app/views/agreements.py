@@ -1,5 +1,4 @@
 from pydantic import AwareDatetime
-
 from sqlmodel import Column, DateTime, Field, SQLModel
 
 

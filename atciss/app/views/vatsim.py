@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel
 from vatsim.types import Pilot
@@ -14,7 +13,7 @@ class Traffic:
     destination_icao: str
     destination: str
     ac_type: str
-    eta: Optional[datetime]
+    eta: datetime | None
     groundspeed: int
 
     def __lt__(self, other):
@@ -25,7 +24,11 @@ class Traffic:
 
     @classmethod
     def from_pilot(
-        cls, pilot: Pilot, eta: Optional[datetime], dep: Optional[str], arr: Optional[str]
+        cls,
+        pilot: Pilot,
+        eta: datetime | None,
+        dep: str | None,
+        arr: str | None,
     ) -> "Traffic":
         return Traffic(
             callsign=pilot.callsign,

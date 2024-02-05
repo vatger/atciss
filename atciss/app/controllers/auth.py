@@ -1,21 +1,22 @@
 """Application controllers - metar."""
+
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
-from typing import Annotated, Dict, List, Optional
+from typing import Annotated
 
-from loguru import logger
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2AuthorizationCodeBearer
 from jose import JWTError, jwt
+from loguru import logger
 from pydantic import TypeAdapter
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
 from atciss.app.utils.db import get_session
 
-from ..utils.aiohttp_client import AiohttpClient
 from ...config import settings
 from ..models import User
+from ..utils.aiohttp_client import AiohttpClient
 
 router = APIRouter()
 
@@ -24,11 +25,11 @@ ALGORITHM = "HS256"
 
 @dataclass
 class AuthResponse:
-    scopes: List[str]
+    scopes: list[str]
     token_type: str
     expires_in: int
     access_token: str
-    refresh_token: Optional[str]
+    refresh_token: str | None
 
 
 @dataclass
@@ -38,8 +39,8 @@ class OAuthData:
 
 @dataclass
 class UserIdNameData:
-    id: Optional[str]
-    name: Optional[str]
+    id: str | None
+    name: str | None
 
 
 @dataclass
@@ -96,8 +97,8 @@ class AuthRequest:
     code: str
 
 
-def create_jwt(cid: str, refresh_token: Optional[str]) -> str:
-    to_encode: Dict[str, str | Optional[str] | datetime | bool] = {
+def create_jwt(cid: str, refresh_token: str | None) -> str:
+    to_encode: dict[str, str | None | datetime | bool] = {
         "sub": cid,
         "refresh_token": refresh_token,
         "admin": cid in settings.ADMINS,
@@ -127,11 +128,11 @@ async def get_user(
     )
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
-        cid: Optional[str] = payload.get("sub")
+        cid: str | None = payload.get("sub")
         if cid is None:
             raise credentials_exception
 
-        user: Optional[User] = None
+        user: User | None = None
         stmt = select(User).where(User.cid == int(cid))
         user = await session.scalar(stmt)
 
@@ -152,7 +153,8 @@ async def get_controller(user: Annotated[User, Depends(get_user)]) -> User:
 
 
 async def get_admin(
-    token: Annotated[str, Depends(oauth2_scheme)], user: Annotated[User, Depends(get_user)]
+    token: Annotated[str, Depends(oauth2_scheme)],
+    user: Annotated[User, Depends(get_user)],
 ) -> User:
     payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
 

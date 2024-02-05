@@ -1,16 +1,17 @@
+import json
+import re
 from dataclasses import dataclass
 from datetime import UTC, datetime
-import json
 from typing import Any, cast
+
 from pydantic import (
     AwareDatetime,
-    NaiveDatetime,
     BaseModel,
+    NaiveDatetime,
     TypeAdapter,
     field_validator,
     model_validator,
 )
-import re
 
 from ..utils.geo import Coordinate, convert_degsecmin_coordinate
 
@@ -45,24 +46,24 @@ class AreaBooking(BaseModel):
 
     @field_validator("polygon", mode="before")
     @classmethod
-    def polygon_validator(cls, input: list[str | Coordinate]) -> list[Coordinate]:
-        return [convert_point(point) for point in input]
+    def polygon_validator(cls, inp: list[str | Coordinate]) -> list[Coordinate]:
+        return [convert_point(point) for point in inp]
 
     @field_validator("lower_limit", "upper_limit", mode="before")
     @classmethod
-    def limits_validator(cls, input: int | str) -> int:
-        if isinstance(input, int):
-            return input
+    def limits_validator(cls, inp: int | str) -> int:
+        if isinstance(inp, int):
+            return inp
 
-        if input in ("GND", "MSL"):
+        if inp in ("GND", "MSL"):
             return 0
 
-        return int(input[1:], 10)
+        return int(inp[1:], 10)
 
     @field_validator("start_datetime", "end_datetime", mode="before")
     @classmethod
-    def force_utc(cls, input: str) -> AwareDatetime:
-        return TypeAdapter(datetime).validate_python(input).replace(tzinfo=UTC)
+    def force_utc(cls, inp: str) -> AwareDatetime:
+        return TypeAdapter(datetime).validate_python(inp).replace(tzinfo=UTC)
 
 
 class EAUPAreas(BaseModel):
@@ -77,7 +78,6 @@ class EAUPAreas(BaseModel):
 
         return data | {
             "areas": [
-                json.loads(a)
-                for a in set(json.dumps(area, sort_keys=True) for area in data["areas"])
-            ]
+                json.loads(a) for a in {json.dumps(area, sort_keys=True) for area in data["areas"]}
+            ],
         }

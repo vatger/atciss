@@ -1,21 +1,22 @@
 import re
+from collections.abc import Sequence
 from datetime import UTC, datetime, timedelta
-from heapq import heappush, heappop
-from typing import Sequence, cast, Optional
+from heapq import heappop, heappush
+from typing import cast
 
-from haversine import haversine, Unit
-from loguru import logger
 from aiohttp import ClientConnectorError
+from haversine import Unit, haversine
+from loguru import logger
 from pydantic import TypeAdapter
 from redis.asyncio import Redis
-from vatsim.types import Controller, Pilot, VatsimData, Atis
+from vatsim.types import Atis, Controller, Pilot, VatsimData
 
 from ..utils import AiohttpClient, RedisClient
 from ..views.basic_ad import BasicAD
 from ..views.vatsim import AerodromeTraffic, Traffic
 
 
-async def get_ad_name(icao: str, redis_client: Optional[Redis] = None) -> Optional[str]:
+async def get_ad_name(icao: str, redis_client: Redis | None = None) -> str | None:
     if redis_client is None:
         redis_client = RedisClient.get()
 
@@ -29,7 +30,7 @@ async def get_ad_name(icao: str, redis_client: Optional[Redis] = None) -> Option
     return re.sub(r"\s+", " ", name).strip()
 
 
-async def fetch_vatsim_data(redis_client: Optional[Redis] = None) -> None:
+async def fetch_vatsim_data(redis_client: Redis | None = None) -> None:
     """Periodically fetch sector data."""
     if redis_client is None:
         redis_client = await RedisClient.get()
@@ -38,7 +39,7 @@ async def fetch_vatsim_data(redis_client: Optional[Redis] = None) -> None:
         try:
             res = await aiohttp_client.get("https://data.vatsim.net/v3/vatsim-data.json")
         except ClientConnectorError as e:
-            logger.error(f"Could not connect {str(e)}")
+            logger.error(f"Could not connect {e!s}")
             return
 
         data = TypeAdapter(VatsimData).validate_python(await res.json())
@@ -47,7 +48,7 @@ async def fetch_vatsim_data(redis_client: Optional[Redis] = None) -> None:
 
     logger.info(
         f"Vatsim data received: {len(controllers)} controllers, "
-        + f"{len(data.atis)} ATIS, {len(data.pilots)} pilots"
+        + f"{len(data.atis)} ATIS, {len(data.pilots)} pilots",
     )
 
     traffic = await calc_trafficboard_data(data.pilots, redis_client)
@@ -97,7 +98,7 @@ async def calc_trafficboard_data(pilots: Sequence[Pilot], redis_client: Redis) -
                     eta=None,
                     dep=await get_ad_name(pilot.flight_plan.departure, redis_client),
                     arr=await get_ad_name(pilot.flight_plan.arrival, redis_client),
-                )
+                ),
             )
 
         if pilot.flight_plan.arrival == "EDDM" and pilot.groundspeed > 50:
@@ -113,7 +114,9 @@ async def calc_trafficboard_data(pilots: Sequence[Pilot], redis_client: Redis) -
             )
 
     return AerodromeTraffic(
-        aerodrome="EDDM", arrivals=[heappop(arrs) for _ in range(len(arrs))], departures=deps
+        aerodrome="EDDM",
+        arrivals=[heappop(arrs) for _ in range(len(arrs))],
+        departures=deps,
     )
 
 

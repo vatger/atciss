@@ -1,18 +1,19 @@
-from typing import Optional
 import uuid
+from typing import TYPE_CHECKING
+
 from astral import Observer
 from astral.sun import sunrise, sunset
 from geoalchemy2 import WKBElement, WKTElement
-from geoalchemy2.types import Geometry
 from geoalchemy2.shape import to_shape
+from geoalchemy2.types import Geometry
 from pydantic import AwareDatetime, ConfigDict, computed_field, field_serializer, field_validator
-from shapely import Point
 from sqlalchemy.orm import registry
-
 from sqlmodel import Column, Field, Relationship, SQLModel
 
 from atciss.app.utils.geo import postgis_coordinate_serialize, postgis_coordinate_validate
 
+if TYPE_CHECKING:
+    from shapely import Point
 
 mapper_registry = registry()
 
@@ -21,16 +22,16 @@ class AerodromeBase(SQLModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, nullable=False)
-    name: Optional[str] = None
+    name: str | None = None
     type: str = Field(nullable=False)
-    local_designator: Optional[str] = None
-    icao_designator: Optional[str] = None
-    iata_designator: Optional[str] = None
-    elevation: Optional[float] = None
-    mag_variation: Optional[float] = None
+    local_designator: str | None = None
+    icao_designator: str | None = None
+    iata_designator: str | None = None
+    elevation: float | None = None
+    mag_variation: float | None = None
     arp_location: WKTElement | WKBElement = Field(sa_column=Column(Geometry("Point")))
-    arp_elevation: Optional[float] = None
-    ifr: Optional[bool] = None
+    arp_elevation: float | None = None
+    ifr: bool | None = None
     source: str
 
     location_validator = field_validator("arp_location", mode="before")(postgis_coordinate_validate)
@@ -56,7 +57,8 @@ class AerodromeBase(SQLModel):
 class Aerodrome(AerodromeBase, table=True):
     __allow_unmapped__ = True
     runways: list["Runway"] = Relationship(
-        back_populates="aerodrome", sa_relationship_kwargs={"lazy": "subquery"}
+        back_populates="aerodrome",
+        sa_relationship_kwargs={"lazy": "subquery"},
     )
 
 
@@ -68,15 +70,16 @@ class RunwayBase(SQLModel):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, nullable=False)
     aerodrome_id: uuid.UUID = Field(nullable=False, foreign_key="aerodrome.id")
     designator: str = Field(nullable=False)
-    length: Optional[float]
-    width: Optional[float]
-    surface: Optional[str]
+    length: float | None
+    width: float | None
+    surface: str | None
 
 
 class Runway(RunwayBase, table=True):
     aerodrome: Aerodrome = Relationship(back_populates="runways")
     directions: list["RunwayDirection"] = Relationship(
-        back_populates="runway", sa_relationship_kwargs={"lazy": "subquery"}
+        back_populates="runway",
+        sa_relationship_kwargs={"lazy": "subquery"},
     )
 
 
@@ -90,9 +93,9 @@ class RunwayDirectionBase(SQLModel):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, nullable=False)
     runway_id: uuid.UUID = Field(nullable=False, foreign_key="runway.id")
     designator: str = Field(nullable=False)
-    true_bearing: Optional[float]
-    magnetic_bearing: Optional[float]
-    guidance: Optional[str]
+    true_bearing: float | None
+    magnetic_bearing: float | None
+    guidance: str | None
 
 
 class RunwayDirection(RunwayDirectionBase, table=True):
@@ -106,17 +109,17 @@ class NavaidBase(SQLModel):
     designator: str = Field(nullable=False)
     type: str = Field(nullable=False)
     location: WKTElement | WKBElement = Field(sa_column=Column(Geometry("Point")))
-    channel: Optional[str] = None
-    frequency: Optional[float] = None
-    aerodrome_id: Optional[uuid.UUID] = Field(
-        nullable=True, default=None, foreign_key="aerodrome.id"
+    channel: str | None = None
+    frequency: float | None = None
+    aerodrome_id: uuid.UUID | None = Field(nullable=True, default=None, foreign_key="aerodrome.id")
+    runway_direction_id: uuid.UUID | None = Field(
+        nullable=True,
+        default=None,
+        foreign_key="runway_direction.id",
     )
-    runway_direction_id: Optional[uuid.UUID] = Field(
-        nullable=True, default=None, foreign_key="runway_direction.id"
-    )
-    remark: Optional[str] = None
-    operation_remark: Optional[str] = None
-    name: Optional[str] = None
+    remark: str | None = None
+    operation_remark: str | None = None
+    name: str | None = None
     source: str
 
     location_validator = field_validator("location", mode="before")(postgis_coordinate_validate)
@@ -124,8 +127,8 @@ class NavaidBase(SQLModel):
 
 
 class Navaid(NavaidBase, table=True):
-    aerodrome: Optional[Aerodrome] = Relationship()
-    runway_direction: Optional[RunwayDirection] = Relationship()
+    aerodrome: Aerodrome | None = Relationship()
+    runway_direction: RunwayDirection | None = Relationship()
 
 
 _ = AerodromeWithRunways.model_rebuild()

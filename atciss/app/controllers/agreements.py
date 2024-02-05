@@ -1,11 +1,13 @@
 """Application controllers - metar."""
+
 from datetime import UTC, datetime
 from typing import Annotated
+
 from fastapi import APIRouter, Body, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
-from atciss.app.utils.db import get_session
 
+from atciss.app.utils.db import get_session
 from atciss.app.views.agreements import Agreements
 
 from ..controllers.auth import get_controller, get_user

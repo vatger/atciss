@@ -1,9 +1,9 @@
 from datetime import UTC, datetime
+
 from pydantic import AwareDatetime, TypeAdapter, field_validator
 from pydantic_xml import BaseXmlModel, element
 from pydantic_xml.element.element import SearchMode
 from sqlalchemy import Column, DateTime
-
 from sqlmodel import Field, SQLModel
 
 
@@ -19,8 +19,8 @@ class Booking(SQLModel, table=True):
 
     @field_validator("start", "end", mode="before")
     @classmethod
-    def force_utc(cls, input: str) -> AwareDatetime:
-        return TypeAdapter(datetime).validate_python(input).replace(tzinfo=UTC)
+    def force_utc(cls, inp: str) -> AwareDatetime:
+        return TypeAdapter(datetime).validate_python(inp).replace(tzinfo=UTC)
 
 
 class VatbookBooking(BaseXmlModel, tag="booking", search_mode=SearchMode.UNORDERED):

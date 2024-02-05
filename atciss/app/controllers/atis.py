@@ -1,20 +1,19 @@
 """Application controllers - metar."""
 
-from typing import Annotated, Dict, Sequence, Optional, cast
+from collections.abc import Sequence
+from typing import Annotated, cast
+
 from fastapi import APIRouter, Query
 from fastapi.responses import PlainTextResponse
 from loguru import logger
-
 from pydantic import TypeAdapter
 from vatsim.types import Atis
 
-from ..controllers.metar import fetch_metar
-from ..views.sector import Airport
-
 from ...config import settings
+from ..controllers.metar import fetch_metar
 from ..utils.redis import RedisClient
 from ..views.metar import AirportIcao
-
+from ..views.sector import Airport
 
 router = APIRouter()
 
@@ -24,14 +23,14 @@ router = APIRouter()
 )
 async def atis_get(
     airports: Annotated[Sequence[AirportIcao], Query(alias="icao", default_factory=list)],
-) -> Dict[str, Atis]:
+) -> dict[str, Atis]:
     """Get Atis for airport."""
     redis_client = RedisClient.open()
 
     atis = {}
     for icao in airports:
         icao = icao.upper()
-        atis_json = cast(Optional[str], await redis_client.get(f"vatsim:atis:{icao}"))
+        atis_json = cast(str | None, await redis_client.get(f"vatsim:atis:{icao}"))
         if atis_json is None:
             continue
         atis[icao] = TypeAdapter(Atis).validate_json(atis_json)
@@ -50,9 +49,9 @@ async def atis_generate(
     airport: Annotated[str, Query(alias="airport")],
     approachType: Annotated[str, Query(alias="apptype")] = "ILS",
     lvp: Annotated[bool, Query(alias="lvp")] = False,
-    departureFrequency: Annotated[Optional[str], Query(alias="depfreq")] = None,
+    departureFrequency: Annotated[str | None, Query(alias="depfreq")] = None,
 ) -> str:
-    airports: Dict[str, Airport] = {}
+    airports: dict[str, Airport] = {}
     async with RedisClient.open() as redis_client:
         for region in settings.SECTOR_REGIONS:
             airports_json = await redis_client.get(f"sector:airports:{region}")
@@ -60,12 +59,10 @@ async def atis_generate(
                 logger.warning(f"No data for {region}")
                 continue
 
-            airports = airports | TypeAdapter(Dict[str, Airport]).validate_json(airports_json)
+            airports = airports | TypeAdapter(dict[str, Airport]).validate_json(airports_json)
     airport_name = "".join(
-        map(
-            lambda c: {"Ä": "AE", "Ü": "UE", "Ö": "OE", "ß": "ss"}.get(c, c),
-            airports[airport].callsign.upper() if airport in airports else airport,
-        )
+        {"Ä": "AE", "Ü": "UE", "Ö": "OE", "ß": "ss"}.get(c, c)
+        for c in (airports[airport].callsign.upper() if airport in airports else airport)
     )
 
     arrivalRunways = [rwy.upper() for rwy in arrivalRunwayStr.split(",")]
@@ -74,13 +71,11 @@ async def atis_generate(
     def concatSep(lst: Sequence[str | None], sep: str = " ") -> str:
         return sep.join(e for e in lst if e is not None)
 
-    expectApproach = concatSep(
-        [
-            "EXPECT VECTORS FOR",
-            ("INDEPENDENT PARALLEL" if len(arrivalRunways) >= 2 else None),
-            f"{approachType} APPROACH",
-        ]
-    )
+    expectApproach = concatSep([
+        "EXPECT VECTORS FOR",
+        ("INDEPENDENT PARALLEL" if len(arrivalRunways) >= 2 else None),
+        f"{approachType} APPROACH",
+    ])
     allActiveRunways = set(departureRunways + arrivalRunways)
     singleUseOfRunwayOps = not (
         set(departureRunways) == allActiveRunways and set(arrivalRunways) == allActiveRunways
@@ -99,7 +94,7 @@ async def atis_generate(
             ]
             if singleUseOfRunwayOps
             else []
-        )
+        ),
     )
 
     metar = await fetch_metar(airport)
@@ -128,35 +123,29 @@ async def atis_generate(
     wind = (
         "CALM"
         if metar.wind_speed is None or metar.wind_speed == 0
-        else concatSep(
-            [
-                f"{int(metar.wind_dir):03} DEGREES" if metar.wind_dir is not None else "VARIABLE",
-                f"{int(metar.wind_speed)} KNOT" + ("S" if int(metar.wind_speed) > 1 else ""),
-                f"GUSTING MAX {int(metar.wind_gust)} KNOTS"
-                if metar.wind_gust is not None
-                else None,
-                (
-                    f"VARIABLE BETWEEN {int(metar.wind_dir_from):03} "
-                    + f"AND {int(metar.wind_dir_to):03} DEGREES"
-                )
-                if metar.wind_dir_from is not None and metar.wind_dir_to is not None
-                else None,
-            ]
-        )
+        else concatSep([
+            f"{int(metar.wind_dir):03} DEGREES" if metar.wind_dir is not None else "VARIABLE",
+            f"{int(metar.wind_speed)} KNOT" + ("S" if int(metar.wind_speed) > 1 else ""),
+            f"GUSTING MAX {int(metar.wind_gust)} KNOTS" if metar.wind_gust is not None else None,
+            (
+                f"VARIABLE BETWEEN {int(metar.wind_dir_from):03} "
+                f"AND {int(metar.wind_dir_to):03} DEGREES"
+            )
+            if metar.wind_dir_from is not None and metar.wind_dir_to is not None
+            else None,
+        ])
     )
 
-    def formatvis(range: float):
-        return f"{int((range+1)/1000)} KILOMETERS" if range >= 5000 else f"{int(range)} METERS"
+    def formatvis(rng: float):
+        return f"{int((rng + 1) / 1000)} KILOMETERS" if rng >= 5000 else f"{int(rng)} METERS"
 
     visibility = (
         "UNAVAILABLE"
         if len(metar.vis) == 0
-        else concatSep(
-            [
-                formatvis(metar.vis[0]),
-                f"MINIMUM {formatvis(metar.vis[1])}" if len(metar.vis) > 1 else None,
-            ]
-        )
+        else concatSep([
+            formatvis(metar.vis[0]),
+            f"MINIMUM {formatvis(metar.vis[1])}" if len(metar.vis) > 1 else None,
+        ])
     )
 
     trends = {
@@ -195,22 +184,14 @@ async def atis_generate(
         if len(metar.clouds) == 1 and metar.clouds[0].cover == "NSC"
         else "CLOUDS "
         + (
-            concatSep(
-                [
-                    concatSep(
-                        [
-                            coverToStr(cloudlayer.cover),
-                            cloudlayer.type_text.upper()
-                            if cloudlayer.type_text is not None
-                            else None,
-                            f"{int(cloudlayer.height)} FEET"
-                            if cloudlayer.height is not None
-                            else None,
-                        ]
-                    )
-                    for cloudlayer in metar.clouds
-                ]
-            )
+            concatSep([
+                concatSep([
+                    coverToStr(cloudlayer.cover),
+                    cloudlayer.type_text.upper() if cloudlayer.type_text is not None else None,
+                    f"{int(cloudlayer.height)} FEET" if cloudlayer.height is not None else None,
+                ])
+                for cloudlayer in metar.clouds
+            ])
         )
     )
 

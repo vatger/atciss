@@ -1,14 +1,19 @@
 from math import copysign
-from typing import Tuple, TypedDict, cast
+from typing import TYPE_CHECKING, TypedDict, cast
 
 from geoalchemy2 import WKBElement, WKTElement
 from geoalchemy2.shape import to_shape
 from pydantic import SerializationInfo
-from shapely import LineString, Point, Polygon
+
+if TYPE_CHECKING:
+    from shapely import LineString, Point, Polygon
+
+Coordinate = tuple[float, float]
 
 
-Coordinate = Tuple[float, float]
-LatLonDict = TypedDict("LatLonDict", {"lat": float, "lon": float})
+class LatLonDict(TypedDict):
+    lat: float
+    lon: float
 
 
 def convert_degsecmin_coordinate(coordinate: str) -> float:
@@ -22,7 +27,7 @@ def convert_degsecmin_coordinate(coordinate: str) -> float:
 def postgis_coordinate_validate(
     data: Coordinate | tuple[str, str] | str | WKBElement | WKTElement,
 ) -> WKTElement | WKBElement:
-    if isinstance(data, (WKTElement, WKBElement)):
+    if isinstance(data, WKTElement | WKBElement):
         return data
 
     if isinstance(data, str):
@@ -32,7 +37,8 @@ def postgis_coordinate_validate(
 
 
 def postgis_coordinate_serialize(
-    loc: WKBElement | WKTElement, _info: SerializationInfo
+    loc: WKBElement | WKTElement,
+    _info: SerializationInfo,
 ) -> tuple[float, float]:
     point: Point = to_shape(loc)
 
@@ -42,12 +48,12 @@ def postgis_coordinate_serialize(
 def postgis_line_validate(
     data: list[tuple[str, str]] | str | WKBElement | WKTElement,
 ) -> WKTElement | WKBElement:
-    if isinstance(data, (WKTElement, WKBElement)):
+    if isinstance(data, WKTElement | WKBElement):
         return data
 
     if isinstance(data, str):
         it = iter(data.split(" "))
-        data = cast(list[tuple[str, str]], zip(it, it))
+        data = cast(list[tuple[str, str]], zip(it, it, strict=False))
 
     line = ",".join(f"{p[1]} {p[0]}" for p in data)
 
@@ -55,7 +61,8 @@ def postgis_line_validate(
 
 
 def postgis_line_serialize(
-    loc: WKBElement | WKTElement, _info: SerializationInfo
+    loc: WKBElement | WKTElement,
+    _info: SerializationInfo,
 ) -> list[tuple[float, float]]:
     line: LineString = to_shape(loc)
 
@@ -65,12 +72,12 @@ def postgis_line_serialize(
 def postgis_polygon_validate(
     data: list[tuple[str, str]] | list[LatLonDict] | str | WKBElement | WKTElement,
 ) -> WKTElement | WKBElement:
-    if isinstance(data, (WKTElement, WKBElement)):
+    if isinstance(data, WKTElement | WKBElement):
         return data
 
     if isinstance(data, str):
         it = iter(data.split(" "))
-        data = cast(list[tuple[str, str]], zip(it, it))
+        data = cast(list[tuple[str, str]], zip(it, it, strict=False))
 
     if len(data) and isinstance(data[0], dict):
         polygon = ",".join(f"{p['lon']} {p['lat']}" for p in cast(list[LatLonDict], data))
@@ -81,7 +88,8 @@ def postgis_polygon_validate(
 
 
 def postgis_polygon_serialize(
-    loc: WKBElement | WKTElement, _info: SerializationInfo
+    loc: WKBElement | WKTElement,
+    _info: SerializationInfo,
 ) -> list[tuple[float, float]]:
     polygon: Polygon = to_shape(loc)
 

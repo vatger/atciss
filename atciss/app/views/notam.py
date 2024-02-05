@@ -1,9 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, List, Optional, Set
-
 from pydantic import AwareDatetime, BaseModel
-
 from pynotam import Notam
 from sqlmodel import Column, DateTime, Field, SQLModel
 
@@ -18,24 +15,24 @@ class NotamModel(BaseModel):
     full_text: str
     notam_id: str
     notam_type: str
-    ref_notam_id: Optional[str]
+    ref_notam_id: str | None
     fir: str
     notam_code: str
-    traffic_type: Set[str]
-    purpose: Set[str]
-    scope: Set[str]
+    traffic_type: set[str]
+    purpose: set[str]
+    scope: set[str]
     fl_lower: int
     fl_upper: int
-    area: Dict[str, str | int]
-    location: List[str]
+    area: dict[str, str | int]
+    location: list[str]
     valid_from: AwareDatetime
     valid_till: AwareDatetime
-    schedule: Optional[str]
+    schedule: str | None
     body: str
-    limit_lower: Optional[str]
-    limit_upper: Optional[str]
-    source: Optional[str]
-    created: Optional[AwareDatetime]
+    limit_lower: str | None
+    limit_upper: str | None
+    source: str | None
+    created: AwareDatetime | None
 
     @classmethod
     def from_str(cls, raw: str) -> NotamModel:
