@@ -24,7 +24,7 @@
     };
 
     poetry2nix = {
-      url = "github:fpletz/poetry2nix/ruff-0.1.13";
+      url = "github:fpletz/poetry2nix/ruff-watchfiles-prevent-ifd";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
