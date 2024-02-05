@@ -231,7 +231,7 @@ async def atis_generate(
             clouds,
             f"TEMPERATURE {avail(metar.temp)} DEW POINT {avail(metar.dewpt)}",
             "QNH " + avail(metar.qnh, "{} HPA"),
-            metar.recent_weather_text if metar.recent_weather_text else None,
+            "RECENT " + metar.recent_weather_text if metar.recent_weather_text else None,
             metar.trend if metar.trend else None,
             f"INFORMATION {atisCode} OUT\n",
         ],
