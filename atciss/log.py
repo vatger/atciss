@@ -7,6 +7,7 @@ from typing import ClassVar
 import asgiref
 import loguru
 from loguru import logger
+from typing_extensions import override
 
 from .config import settings
 
@@ -21,7 +22,8 @@ class InterceptHandler(logging.Handler):
         0: "NOTSET",
     }
 
-    def emit(self, record: loguru.Record) -> None:
+    @override
+    def emit(self, record: logging.LogRecord) -> None:
         try:
             level = logger.level(record.levelname).name
         except ValueError:
@@ -59,6 +61,7 @@ def setup_logging() -> None:
         enqueue=True,
         level=settings.LOG_LEVEL,
         format=formatter,
+        colorize=True,
     )
 
     logging.basicConfig(handlers=[InterceptHandler()], level=0)

@@ -5,11 +5,13 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from ...config import settings
-from ..utils import AiohttpClient
-from ..views.booking import Booking, VatbookData
+from atciss.app.utils import AiohttpClient
+from atciss.app.views.booking import Booking, VatbookData
+from atciss.config import settings
+from atciss.tkq import broker
 
 
+@broker.task()
 async def fetch_booking() -> None:
     """Periodically fetch sector data."""
     async with AiohttpClient.get() as aiohttp_client:

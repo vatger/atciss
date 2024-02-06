@@ -13,7 +13,7 @@ htmlcov
 .cache
 nosetests.xml
 coverage.xml
-*,cover
+*.cover
 .hypothesis
 xunit-*.xml
 .idea
@@ -25,5 +25,7 @@ site
 .git
 .github
 result
-
 atciss-frontend/
+screenshots/
+nixos/
+docker-compose.*.yml

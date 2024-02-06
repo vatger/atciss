@@ -5,10 +5,10 @@ from pynotam import Notam
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlmodel import select
 
+from atciss.app.utils import AiohttpClient, ClientConnectorError, RedisClient
 from atciss.app.views.dfs_aixm import Aerodrome
-
-from ...config import settings
-from ..utils import AiohttpClient, ClientConnectorError, RedisClient
+from atciss.config import settings
+from atciss.tkq import broker
 
 
 def convert_notam(n: str) -> Notam | None:
@@ -20,6 +20,7 @@ def convert_notam(n: str) -> Notam | None:
     return None
 
 
+@broker.task(schedule=[{"cron": "*/30 * * * *"}])
 async def fetch_notam() -> None:
     """Periodically fetch relevant NOTAMs."""
     redis_client = await RedisClient.get()
@@ -42,8 +43,8 @@ async def fetch_notam() -> None:
             try:
                 res = await aiohttp_client.get(
                     "https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do"
-                    f"?reportType=Raw&retrieveLocId={'+'.join(notams_to_fetch)}"
-                    "&actionType=notamRetrievalByICAOs&submit=View+NOTAMs",
+                    + f"?reportType=Raw&retrieveLocId={'+'.join(notams_to_fetch)}"
+                    + "&actionType=notamRetrievalByICAOs&submit=View+NOTAMs",
                 )
             except ClientConnectorError as e:
                 logger.error(f"Could not connect {e!s}")

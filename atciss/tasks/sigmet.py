@@ -5,8 +5,10 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from atciss.app.utils.aiohttp_client import AiohttpClient
 from atciss.app.views.sigmet import Sigmet
 from atciss.config import settings
+from atciss.tkq import broker
 
 
+@broker.task(schedule=[{"cron": "*/10 * * * *"}])
 async def fetch_sigmet() -> None:
     async with AiohttpClient.get() as aiohttp_client:
         try:

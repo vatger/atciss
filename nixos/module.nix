@@ -79,7 +79,6 @@ in {
         };
 
         serviceConfig = {
-          ExecStartPre = "${pkgs.atciss}/bin/alembic upgrade head";
           ExecStart = "${pkgs.atciss}/bin/atciss serve";
           DynamicUser = true;
           User = "atciss";
@@ -100,7 +99,7 @@ in {
         };
 
         serviceConfig = {
-          ExecStart = "${pkgs.atciss}/bin/celery -A atciss worker --loglevel=INFO";
+          ExecStart = "${pkgs.atciss}/bin/atciss worker";
           DynamicUser = true;
           User = "atciss";
           Restart = "always";
@@ -114,7 +113,7 @@ in {
         wantedBy = ["multi-user.target"];
 
         serviceConfig = {
-          ExecStart = "${pkgs.atciss}/bin/celery -A atciss beat --loglevel=INFO";
+          ExecStart = "${pkgs.atciss}/bin/atciss scheduler";
           DynamicUser = true;
           Restart = "always";
           RestartSec = "1s";

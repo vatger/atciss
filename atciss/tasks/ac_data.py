@@ -9,11 +9,12 @@ from sqlalchemy.ext.asyncio import create_async_engine
 
 from atciss.app.models import AircraftPerformanceData
 from atciss.app.views.ac_data import AcdbAcType, AcdbManufacturer
+from atciss.config import settings
+from atciss.tasks.utils import create_or_update
+from atciss.tkq import broker
 
-from ...config import settings
-from .utils import create_or_update
 
-
+@broker.task()
 async def fetch_ac_data():
     logger.info("Processing AC data...")
     wtc_overrides = read_wtc_overrides()
@@ -239,5 +240,4 @@ def read_own_types() -> Sequence[AircraftPerformanceData]:
 def get_float(in_val: Any) -> float | None:
     if in_val is None:
         return None
-
     return float(in_val)

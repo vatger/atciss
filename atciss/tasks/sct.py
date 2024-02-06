@@ -7,10 +7,10 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlmodel import select
 
 from atciss.app.utils.aiohttp_client import AiohttpClient
+from atciss.app.views import sct_parser
 from atciss.app.views.dfs_aixm import Aerodrome, Navaid
-
-from ...config import settings
-from ..views import sct_parser
+from atciss.config import settings
+from atciss.tkq import broker
 
 
 async def find_airac_zip_url() -> str:
@@ -45,6 +45,7 @@ async def extract_sct_file(zipfile: ZipFile) -> str | None:
             return path.read_text(encoding="windows-1252")
 
 
+@broker.task()
 async def import_sct() -> None:
     airac_zip_url = await find_airac_zip_url()
     airac_zip = await fetch_airac_zip(airac_zip_url)

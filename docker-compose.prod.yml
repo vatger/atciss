@@ -7,13 +7,7 @@ services:
     env_file:
       - stack.env
 
-  beat:
-    env_file:
-      - stack.env
-
-  flower:
-    environment:
-      FLOWER_URL_PREFIX: admin/flower
+  scheduler:
     env_file:
       - stack.env
 

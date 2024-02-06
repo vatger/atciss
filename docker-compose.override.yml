@@ -3,11 +3,6 @@ services:
     build:
       context: .
       target: dev
-    entrypoint:
-      - python
-      - -m
-      - atciss.cli.cli
-      - serve
     ports:
       - "8000:8000"
     environment:
@@ -21,25 +16,18 @@ services:
     build:
       context: .
       target: dev
+    ports:
+      - "9000:9000"
     environment:
       ATCISS_DATABASE_DSN: "postgresql+asyncpg://postgres:fnord@db/atciss"
     volumes:
       - ./atciss:/code/atciss
       - ./contrib:/code/contrib
 
-  beat:
+  scheduler:
     build:
       context: .
       target: dev
-    volumes:
-      - ./atciss:/code/atciss
-
-  flower:
-    build:
-      context: .
-      target: dev
-    ports:
-      - "5555:5555"
     volumes:
       - ./atciss:/code/atciss
 

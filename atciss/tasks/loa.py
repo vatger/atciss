@@ -3,11 +3,13 @@ from collections import defaultdict
 from loguru import logger
 from pydantic import TypeAdapter
 
-from ...config import settings
-from ..utils import AiohttpClient, ClientConnectorError, RedisClient
-from ..views.loa import LoaItem
+from atciss.app.utils import AiohttpClient, ClientConnectorError, RedisClient
+from atciss.app.views.loa import LoaItem
+from atciss.config import settings
+from atciss.tkq import broker
 
 
+@broker.task(schedule=[{"cron": "*/60 * * * *"}])
 async def fetch_loas() -> None:
     """Periodically fetch loa data."""
     redis_client = await RedisClient.get()

@@ -1,11 +1,12 @@
 from loguru import logger
 
+from atciss.app.utils import AiohttpClient, ClientConnectorError
 from atciss.app.utils.redis import RedisClient
+from atciss.config import settings
+from atciss.tkq import broker
 
-from ...config import settings
-from ..utils import AiohttpClient, ClientConnectorError
 
-
+@broker.task(schedule=[{"cron": "*/60 * * * *"}])
 async def fetch_aliases() -> None:
     """Periodically fetch loa data."""
     redis_client = await RedisClient.get()

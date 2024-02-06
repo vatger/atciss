@@ -15,15 +15,18 @@ from asgiref.typing import (
 from fastapi import FastAPI
 from loguru import logger
 from prometheus_fastapi_instrumentator import Instrumentator as PrometheusInstrumentator
-from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 
 import alembic.command
 import alembic.config
 
-from ..config import settings
-from ..log import setup_logging
-from .router import root_api_router
-from .utils import RedisClient
+# for tasks discovery by broker
+import atciss.tasks  # pyright: ignore # noqa: F401
+from atciss.app.router import root_api_router
+from atciss.app.utils import RedisClient
+from atciss.config import settings
+from atciss.log import setup_logging
+from atciss.tkq import broker
 
 
 @dataclass
@@ -40,7 +43,7 @@ class CorrelationIdLogMiddleware:
             return await self.app(scope, receive, send)
 
 
-def run_migrations(connection, cfg):
+def run_migrations(connection: AsyncSession, cfg: alembic.config.Config):
     cfg.attributes["connection"] = connection
     alembic.command.upgrade(cfg, "head")
 
@@ -57,15 +60,19 @@ async def run_async_migrations():
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
-    await run_async_migrations()
+    if not broker.is_worker_process:
+        await run_async_migrations()
+        await broker.startup()
     yield
+    if not broker.is_worker_process:
+        await broker.shutdown()
     await RedisClient.close()
 
 
 def get_application() -> FastAPI:
     """Initialize FastAPI application."""
     setup_logging()
-    logger.debug("Initialize FastAPI application node.")
+    logger.debug("Initialize FastAPI application.")
 
     app = FastAPI(
         title=settings.PROJECT_NAME,
@@ -77,7 +84,7 @@ def get_application() -> FastAPI:
 
     _ = PrometheusInstrumentator().instrument(app).expose(app, tags=["monitoring"])
 
-    app.add_middleware(CorrelationIdLogMiddleware)
+    app.add_middleware(CorrelationIdLogMiddleware)  # pyright: ignore
     app.add_middleware(
         CorrelationIdMiddleware,
         generator=(lambda: uuid4().hex) if not settings.DEBUG else (lambda: uuid4().hex[:8]),

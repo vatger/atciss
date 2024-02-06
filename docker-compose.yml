@@ -1,54 +1,32 @@
 services:
   backend:
     image: ghcr.io/vatger/atciss/atciss-backend
-    entrypoint:
-      - "atciss"
-      - "serve"
+    command: serve
     environment:
       ATCISS_REDIS_HOST: redis
+      ATCISS_REDIS_URL: redis://redis
     depends_on:
       db:
         condition: service_healthy
 
   worker:
     image: ghcr.io/vatger/atciss/atciss-backend
-    entrypoint:
-      - "celery"
-      - "worker"
-      - "--loglevel=info"
+    command: worker
     environment:
-      CELERY_APP: atciss
       ATCISS_REDIS_HOST: redis
+      ATCISS_REDIS_URL: redis://redis
     depends_on:
       redis:
         condition: service_healthy
       db:
         condition: service_healthy
 
-  beat:
+  scheduler:
     image: ghcr.io/vatger/atciss/atciss-backend
-    entrypoint:
-      - "celery"
-      - "beat"
-      - "--schedule=/beat/celerybeat-schedule"
-      - "--loglevel=info"
+    command: scheduler
+    restart: always
     environment:
-      CELERY_APP: atciss
-      ATCISS_REDIS_HOST: redis
-    volumes:
-      - atciss-beat:/beat
-    depends_on:
-      redis:
-        condition: service_healthy
-
-  flower:
-    image: ghcr.io/vatger/atciss/atciss-backend
-    entrypoint:
-      - "celery"
-      - "flower"
-    environment:
-      CELERY_APP: atciss
-      ATCISS_REDIS_HOST: redis
+      ATCISS_REDIS_URL: redis://redis
     depends_on:
       redis:
         condition: service_healthy
@@ -60,7 +38,7 @@ services:
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
     healthcheck:
-      test: [CMD, pg_isready]
+      test: [CMD, su, postgres, -c, pg_isready]
       interval: 10s
       timeout: 3s
       retries: 3
@@ -79,4 +57,3 @@ services:
 volumes:
   atciss-db-data:
   atciss-redis-data:
-  atciss-beat:

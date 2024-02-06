@@ -137,7 +137,7 @@ async def get_user(
         user = await session.scalar(stmt)
 
         if user is None:
-            raise HTTPException(500, "User not not found in database")
+            raise HTTPException(500, "User not found in database")
 
     except JWTError as exc:
         raise credentials_exception from exc

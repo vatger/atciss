@@ -1,12 +1,13 @@
 from loguru import logger
 from pydantic import TypeAdapter
 
+from atciss.app.utils import AiohttpClient, ClientConnectorError
 from atciss.app.utils.redis import RedisClient
+from atciss.app.views.areas import AreaBooking, EAUPAreas
+from atciss.tkq import broker
 
-from ..utils import AiohttpClient, ClientConnectorError
-from ..views.areas import AreaBooking, EAUPAreas
 
-
+@broker.task(schedule=[{"cron": "*/10 * * * *"}])
 async def fetch_areas() -> None:
     """Periodically fetch active areas."""
     async with AiohttpClient.get() as aiohttp_client:

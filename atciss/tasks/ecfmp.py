@@ -1,14 +1,15 @@
-from collections import defaultdict
+from collections import defaultdict  # noqa: I001
 
 from loguru import logger
 from pydantic import TypeAdapter
 
+from atciss.tkq import broker
 from atciss.app.utils.redis import RedisClient
+from atciss.app.utils import AiohttpClient, ClientConnectorError
+from atciss.app.views.ecfmp import ECFMP, Event, FlowMeasure
 
-from ..utils import AiohttpClient, ClientConnectorError
-from ..views.ecfmp import ECFMP, Event, FlowMeasure
 
-
+@broker.task(schedule=[{"cron": "*/1 * * * *"}])
 async def fetch_ecfmp() -> None:
     """Periodically fetch ECFMP flow measures."""
     redis_client = await RedisClient.get()

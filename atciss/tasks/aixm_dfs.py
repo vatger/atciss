@@ -9,14 +9,15 @@ from sqlmodel import select
 
 from atciss.app.utils.aiohttp_client import AiohttpClient
 from atciss.app.utils.aixm_parser import AIXMData, AIXMFeature
+from atciss.app.utils.dfs import get_dfs_aixm_datasets, get_dfs_aixm_url
 from atciss.app.views.airway import Airway, AirwaySegment
 from atciss.app.views.dfs_aixm import Aerodrome, Navaid, Runway, RunwayDirection
+from atciss.config import settings
+from atciss.tasks.utils import create_or_update
+from atciss.tkq import broker
 
-from ...config import settings
-from ..utils.dfs import get_dfs_aixm_datasets, get_dfs_aixm_url
-from .utils import create_or_update
 
-
+@broker.task(schedule=[{"cron": "0 3 1 * *"}])
 async def fetch_dfs_aixm_data():
     datasets = await get_dfs_aixm_datasets(0)
 

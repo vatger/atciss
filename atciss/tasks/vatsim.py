@@ -5,15 +5,16 @@ from heapq import heappop, heappush
 from typing import cast
 
 from aiohttp import ClientConnectorError
-from haversine import Unit, haversine
+from haversine import Unit, haversine  # pyright: ignore
 from loguru import logger
 from pydantic import TypeAdapter
 from redis.asyncio import Redis
 from vatsim.types import Atis, Controller, Pilot, VatsimData
 
-from ..utils import AiohttpClient, RedisClient
-from ..views.basic_ad import BasicAD
-from ..views.vatsim import AerodromeTraffic, Traffic
+from atciss.app.utils import AiohttpClient, RedisClient
+from atciss.app.views.basic_ad import BasicAD
+from atciss.app.views.vatsim import AerodromeTraffic, Traffic
+from atciss.tkq import broker
 
 
 async def get_ad_name(icao: str, redis_client: Redis | None = None) -> str | None:
@@ -30,6 +31,7 @@ async def get_ad_name(icao: str, redis_client: Redis | None = None) -> str | Non
     return re.sub(r"\s+", " ", name).strip()
 
 
+@broker.task(schedule=[{"cron": "*/1 * * * *"}])
 async def fetch_vatsim_data(redis_client: Redis | None = None) -> None:
     """Periodically fetch sector data."""
     if redis_client is None:
@@ -120,7 +122,7 @@ async def calc_trafficboard_data(pilots: Sequence[Pilot], redis_client: Redis) -
     )
 
 
-def time_estimate(distance, gs) -> float:
+def time_estimate(distance: float, gs: float) -> float:
     time = 0
 
     # 15 miles final-ish

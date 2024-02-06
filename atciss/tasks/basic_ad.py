@@ -1,12 +1,13 @@
 from loguru import logger
 from pydantic import RootModel, TypeAdapter
 
+from atciss.app.utils import AiohttpClient, ClientConnectorError
 from atciss.app.utils.redis import RedisClient
+from atciss.app.views.basic_ad import BasicAD
+from atciss.tkq import broker
 
-from ..utils import AiohttpClient, ClientConnectorError
-from ..views.basic_ad import BasicAD
 
-
+@broker.task(schedule=[{"cron": "20 4 * * *"}])
 async def fetch_basic_ads() -> None:
     """Periodically fetch basic AD information."""
     async with AiohttpClient.get() as aiohttp_client:

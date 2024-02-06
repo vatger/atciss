@@ -2,11 +2,13 @@ from aiohttp import ClientConnectorError
 from loguru import logger
 from pydantic import TypeAdapter
 
-from ...config import settings
-from ..utils import AiohttpClient, RedisClient
-from ..views.sector import Airport, Airspace, Position, SectorData
+from atciss.app.utils import AiohttpClient, RedisClient
+from atciss.app.views.sector import Airport, Airspace, Position, SectorData
+from atciss.config import settings
+from atciss.tkq import broker
 
 
+@broker.task(schedule=[{"cron": "*/60 * * * *"}])
 async def fetch_sector_data() -> None:
     """Periodically fetch sector data."""
     redis_client = await RedisClient.get()

@@ -1,9 +1,11 @@
 """Application configuration - FastAPI."""
 
-from pydantic import PostgresDsn
+from typing import cast
+
+from pydantic import PostgresDsn, RedisDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from ..version import __version__
+from atciss.version import __version__
 
 
 class Application(BaseSettings):
@@ -26,7 +28,10 @@ class Application(BaseSettings):
     VATSIM_CLIENT_SECRET: str = "UR3n0xnjzP4KAbB3enMDCGVD4qbyLvIoSAQtzVm2"
     VATSIM_REDIRECT_URL: str = "http://localhost:5173/auth/callback"
 
-    DATABASE_DSN: PostgresDsn = "postgresql+asyncpg://atciss:fnord@localhost/atciss"
+    DATABASE_DSN: PostgresDsn = cast(
+        PostgresDsn, "postgresql+asyncpg://atciss:fnord@localhost/atciss"
+    )
+    REDIS_URL: RedisDsn = cast(RedisDsn, "redis://localhost:6379")
 
     ADMINS: list[str] = ["10000010", "1519114", "1586741", "1532450"]  # dev  # RG  # AL  # FP
 

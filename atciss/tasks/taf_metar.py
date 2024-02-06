@@ -3,9 +3,11 @@ import gzip
 
 from loguru import logger
 
-from ..utils import AiohttpClient, ClientConnectorError, RedisClient
+from atciss.app.utils import AiohttpClient, ClientConnectorError, RedisClient
+from atciss.tkq import broker
 
 
+@broker.task(schedule=[{"cron": "*/1 * * * *"}])
 async def fetch_taf_metar() -> None:
     """Periodically fetch TAFs and METARs."""
     redis_client = await RedisClient.get()

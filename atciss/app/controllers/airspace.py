@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends
 from loguru import logger
 from pydantic import TypeAdapter
 
-from atciss.app.tasks.sectors import Airport, Airspace, Position, SectorData
+from atciss.app.views.sector import Airport, Airspace, Position, SectorData
 
 from ...config import settings
 from ..controllers.auth import get_user
