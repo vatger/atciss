@@ -1,19 +1,20 @@
-from collections import defaultdict  # noqa: I001
+from collections import defaultdict
+from typing import Annotated
 
+from fastapi import Depends
 from loguru import logger
 from pydantic import TypeAdapter
 
-from atciss.tkq import broker
-from atciss.app.utils.redis import RedisClient
-from atciss.app.utils import AiohttpClient, ClientConnectorError
+from atciss.app.utils import AiohttpClient, ClientConnectorError, Redis, get_redis
 from atciss.app.views.ecfmp import ECFMP, Event, FlowMeasure
+from atciss.tkq import broker
 
 
 @broker.task(schedule=[{"cron": "*/1 * * * *"}])
-async def fetch_ecfmp() -> None:
+async def fetch_ecfmp(
+    redis: Annotated[Redis, Depends(get_redis)],
+) -> None:
     """Periodically fetch ECFMP flow measures."""
-    redis_client = await RedisClient.get()
-
     async with AiohttpClient.get() as aiohttp_client:
         try:
             res = await aiohttp_client.get(
@@ -32,7 +33,7 @@ async def fetch_ecfmp() -> None:
     logger.info(f"ECFMP: {len(ecfmp.flow_measures)} flow measures received")
     logger.info(f"ECFMP: {len(ecfmp.events)} events received")
 
-    async with redis_client.pipeline() as pipe:
+    async with await redis.pipeline() as pipe:
         flow_measures_by_fir = defaultdict(list)
         for flow_measure in ecfmp.flow_measures:
             for fir in flow_measure.notified_firs:

@@ -119,6 +119,7 @@ reportIncompatibleVariableOverride = false
 reportMissingTypeArgument = false
 reportUnknownArgumentType = false
 reportUnknownMemberType = false
+reportUnknownParameterType = false
 reportUnknownVariableType = false
 reportUnusedImport = false
 

@@ -1,11 +1,14 @@
+from typing import Annotated
+
 from bs4 import BeautifulSoup
+from fastapi import Depends
 from loguru import logger
 from parsimonious import ParseError
 from pynotam import Notam
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlmodel import select
 
-from atciss.app.utils import AiohttpClient, ClientConnectorError, RedisClient
+from atciss.app.utils import AiohttpClient, ClientConnectorError, Redis, get_redis
 from atciss.app.views.dfs_aixm import Aerodrome
 from atciss.config import settings
 from atciss.tkq import broker
@@ -21,9 +24,10 @@ def convert_notam(n: str) -> Notam | None:
 
 
 @broker.task(schedule=[{"cron": "*/30 * * * *"}])
-async def fetch_notam() -> None:
+async def fetch_notam(
+    redis: Annotated[Redis, Depends(get_redis)],
+) -> None:
     """Periodically fetch relevant NOTAMs."""
-    redis_client = await RedisClient.get()
     engine = create_async_engine(
         url=str(settings.DATABASE_DSN),
     )
@@ -56,7 +60,7 @@ async def fetch_notam() -> None:
                 if notam is not None and len(notam.location) > 0:
                     notams.append(notam)
 
-    async with redis_client.pipeline() as pipe:
+    async with redis.pipeline() as pipe:
         for notam in notams:
             for location in notam.location:
                 pipe.set(f"notam:{location}:{notam.notam_id}", notam.full_text)

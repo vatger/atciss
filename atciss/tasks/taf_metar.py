@@ -1,17 +1,19 @@
 import csv
 import gzip
+from typing import Annotated
 
+from fastapi import Depends
 from loguru import logger
 
-from atciss.app.utils import AiohttpClient, ClientConnectorError, RedisClient
+from atciss.app.utils import AiohttpClient, ClientConnectorError, Redis, get_redis
 from atciss.tkq import broker
 
 
 @broker.task(schedule=[{"cron": "*/1 * * * *"}])
-async def fetch_taf_metar() -> None:
+async def fetch_taf_metar(
+    redis: Annotated[Redis, Depends(get_redis)],
+) -> None:
     """Periodically fetch TAFs and METARs."""
-    redis_client = await RedisClient.get()
-
     async with AiohttpClient.get() as aiohttp_client:
         for taf_metar in ["taf", "metar"]:
             try:
@@ -27,7 +29,7 @@ async def fetch_taf_metar() -> None:
 
             logger.info(f"{taf_metar.upper()}s received")
 
-            async with redis_client.pipeline() as pipe:
+            async with redis.pipeline() as pipe:
                 for c in csv_data:
                     if len(c) >= 2:
                         pipe.set(f"{taf_metar}:{c[1]}", c[0])

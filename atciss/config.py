@@ -1,5 +1,3 @@
-"""Application configuration - FastAPI."""
-
 from typing import cast
 
 from pydantic import PostgresDsn, RedisDsn
@@ -9,8 +7,6 @@ from atciss.version import __version__
 
 
 class Application(BaseSettings):
-    """Define application configuration model."""
-
     model_config = SettingsConfigDict(env_prefix="ATCISS_", case_sensitive=False)
 
     DEBUG: bool = True

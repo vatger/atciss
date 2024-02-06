@@ -1,15 +1,18 @@
+from typing import Annotated
+
+from fastapi import Depends
 from loguru import logger
 
-from atciss.app.utils import AiohttpClient, ClientConnectorError
-from atciss.app.utils.redis import RedisClient
+from atciss.app.utils import AiohttpClient, ClientConnectorError, Redis, get_redis
 from atciss.config import settings
 from atciss.tkq import broker
 
 
 @broker.task(schedule=[{"cron": "*/60 * * * *"}])
-async def fetch_aliases() -> None:
+async def fetch_aliases(
+    redis: Annotated[Redis, Depends(get_redis)],
+) -> None:
     """Periodically fetch loa data."""
-    redis_client = await RedisClient.get()
 
     async with AiohttpClient.get() as aiohttp_client:
         for fir in settings.FIRS:
@@ -31,7 +34,7 @@ async def fetch_aliases() -> None:
                 logger.exception(f"Could not connect {e!s}")
                 return
 
-            async with redis_client.pipeline() as pipe:
+            async with redis.pipeline() as pipe:
                 pipe.set(f"aliases:{fir}", "\n".join([fir_aliases, aliases]))
 
                 await pipe.execute()

@@ -6,9 +6,9 @@ from fastapi import APIRouter, Depends
 from pydantic import TypeAdapter
 from vatsim.types import Controller
 
-from ..controllers.auth import get_user
-from ..models import User
-from ..utils.redis import RedisClient
+from atciss.app.controllers.auth import get_user
+from atciss.app.models import User
+from atciss.app.utils import Redis, get_redis
 
 router = APIRouter()
 
@@ -17,15 +17,14 @@ router = APIRouter()
     "/vatsim/controllers",
 )
 async def controllers_get(
-    user: Annotated[User, Depends(get_user)],
+    _: Annotated[User, Depends(get_user)],
+    redis: Annotated[Redis, Depends(get_redis)],
 ) -> list[Controller]:
     """Get online Vatsim controllers."""
-    redis_client = RedisClient.open()
-
     controllers = []
-    controller_keys = await redis_client.keys("vatsim:controller:*")
+    controller_keys = await redis.keys("vatsim:controller:*")
     for c in controller_keys:
-        controller_json = cast(str | None, await redis_client.get(c))
+        controller_json = cast(str | None, await redis.get(c))
         if controller_json is None:
             continue
         controllers.append(TypeAdapter(Controller).validate_json(controller_json))

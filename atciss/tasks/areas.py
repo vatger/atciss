@@ -1,14 +1,18 @@
+from typing import Annotated
+
 from loguru import logger
 from pydantic import TypeAdapter
+from taskiq_dependencies import Depends
 
-from atciss.app.utils import AiohttpClient, ClientConnectorError
-from atciss.app.utils.redis import RedisClient
+from atciss.app.utils import AiohttpClient, ClientConnectorError, Redis, get_redis
 from atciss.app.views.areas import AreaBooking, EAUPAreas
 from atciss.tkq import broker
 
 
 @broker.task(schedule=[{"cron": "*/10 * * * *"}])
-async def fetch_areas() -> None:
+async def fetch_areas(
+    redis: Annotated[Redis, Depends(get_redis)],
+    ) -> None:
     """Periodically fetch active areas."""
     async with AiohttpClient.get() as aiohttp_client:
         try:
@@ -23,7 +27,7 @@ async def fetch_areas() -> None:
 
     logger.info(f"EAUP Areas: {len(eaup_areas.areas)} areas received")
 
-    async with await RedisClient.get().pipeline() as pipe:
+    async with redis.pipeline() as pipe:
         pipe.set(
             "areas:bookings",
             TypeAdapter(list[AreaBooking]).dump_json(eaup_areas.areas),

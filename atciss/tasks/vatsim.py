@@ -2,25 +2,22 @@ import re
 from collections.abc import Sequence
 from datetime import UTC, datetime, timedelta
 from heapq import heappop, heappush
-from typing import cast
+from typing import Annotated, cast
 
 from aiohttp import ClientConnectorError
+from fastapi import Depends
 from haversine import Unit, haversine  # pyright: ignore
 from loguru import logger
 from pydantic import TypeAdapter
-from redis.asyncio import Redis
 from vatsim.types import Atis, Controller, Pilot, VatsimData
 
-from atciss.app.utils import AiohttpClient, RedisClient
+from atciss.app.utils import AiohttpClient, Redis, get_redis
 from atciss.app.views.basic_ad import BasicAD
 from atciss.app.views.vatsim import AerodromeTraffic, Traffic
 from atciss.tkq import broker
 
 
-async def get_ad_name(icao: str, redis_client: Redis | None = None) -> str | None:
-    if redis_client is None:
-        redis_client = RedisClient.get()
-
+async def get_ad_name(icao: str, redis_client: Redis) -> str | None:
     ad_json = cast(str | None, await redis_client.get(f"basic:ad:{icao}"))
     if ad_json is None:
         return None
@@ -32,10 +29,10 @@ async def get_ad_name(icao: str, redis_client: Redis | None = None) -> str | Non
 
 
 @broker.task(schedule=[{"cron": "*/1 * * * *"}])
-async def fetch_vatsim_data(redis_client: Redis | None = None) -> None:
+async def fetch_vatsim_data(
+    redis: Annotated[Redis, Depends(get_redis)],
+) -> None:
     """Periodically fetch sector data."""
-    if redis_client is None:
-        redis_client = await RedisClient.get()
 
     async with AiohttpClient.get() as aiohttp_client:
         try:
@@ -53,13 +50,13 @@ async def fetch_vatsim_data(redis_client: Redis | None = None) -> None:
         + f"{len(data.atis)} ATIS, {len(data.pilots)} pilots",
     )
 
-    traffic = await calc_trafficboard_data(data.pilots, redis_client)
+    traffic = await calc_trafficboard_data(data.pilots, redis)
 
-    async with redis_client.pipeline() as pipe:
-        keys = await redis_client.keys("vatsim:atis:*")
-        keys.extend(await redis_client.keys("vatsim:controller:*"))
-        keys.extend(await redis_client.keys("vatsim:pilot:*"))
-        keys.extend(await redis_client.keys("vatsim:traffic:*"))
+    async with redis.pipeline() as pipe:
+        keys = await redis.keys("vatsim:atis:*")
+        keys.extend(await redis.keys("vatsim:controller:*"))
+        keys.extend(await redis.keys("vatsim:pilot:*"))
+        keys.extend(await redis.keys("vatsim:traffic:*"))
 
         if len(keys):
             _ = pipe.delete(*keys)

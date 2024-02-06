@@ -1,18 +1,21 @@
+from typing import Annotated
+
 from aiohttp import ClientConnectorError
+from fastapi import Depends
 from loguru import logger
 from pydantic import TypeAdapter
 
-from atciss.app.utils import AiohttpClient, RedisClient
+from atciss.app.utils import AiohttpClient, Redis, get_redis
 from atciss.app.views.sector import Airport, Airspace, Position, SectorData
 from atciss.config import settings
 from atciss.tkq import broker
 
 
 @broker.task(schedule=[{"cron": "*/60 * * * *"}])
-async def fetch_sector_data() -> None:
+async def fetch_sector_data(
+    redis: Annotated[Redis, Depends(get_redis)],
+) -> None:
     """Periodically fetch sector data."""
-    redis_client = await RedisClient.get()
-
     async with AiohttpClient.get() as aiohttp_client:
         data: dict[str, SectorData] = {}
         for region in settings.SECTOR_REGIONS:
@@ -34,7 +37,7 @@ async def fetch_sector_data() -> None:
 
     logger.info("Sector data received")
 
-    async with redis_client.pipeline() as pipe:
+    async with redis.pipeline() as pipe:
         for region, region_data in data.items():
             pipe.set(
                 f"sector:airports:{region}",

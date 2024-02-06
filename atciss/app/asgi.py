@@ -23,7 +23,7 @@ import alembic.config
 # for tasks discovery by broker
 import atciss.tasks  # pyright: ignore # noqa: F401
 from atciss.app.router import root_api_router
-from atciss.app.utils import RedisClient
+from atciss.app.utils import redis_pool
 from atciss.config import settings
 from atciss.log import setup_logging
 from atciss.tkq import broker
@@ -59,14 +59,14 @@ async def run_async_migrations():
 
 
 @asynccontextmanager
-async def lifespan(_app: FastAPI):
+async def lifespan(_: FastAPI):
     if not broker.is_worker_process:
         await run_async_migrations()
         await broker.startup()
     yield
     if not broker.is_worker_process:
         await broker.shutdown()
-    await RedisClient.close()
+        await redis_pool.disconnect()
 
 
 def get_application() -> FastAPI:
