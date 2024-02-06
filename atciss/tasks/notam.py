@@ -1,5 +1,6 @@
 from typing import Annotated
 
+from aiohttp import ClientSession
 from bs4 import BeautifulSoup
 from fastapi import Depends
 from loguru import logger
@@ -8,7 +9,7 @@ from pynotam import Notam
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlmodel import select
 
-from atciss.app.utils import AiohttpClient, ClientConnectorError, Redis, get_redis
+from atciss.app.utils import Redis, get_aiohttp_client, get_redis
 from atciss.app.views.dfs_aixm import Aerodrome
 from atciss.config import settings
 from atciss.tkq import broker
@@ -25,6 +26,7 @@ def convert_notam(n: str) -> Notam | None:
 
 @broker.task(schedule=[{"cron": "*/30 * * * *"}])
 async def fetch_notam(
+    http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
     redis: Annotated[Redis, Depends(get_redis)],
 ) -> None:
     """Periodically fetch relevant NOTAMs."""
@@ -40,25 +42,20 @@ async def fetch_notam(
             all_icao.append(ad.icao_designator)
 
     notams = []
-    async with AiohttpClient.get() as aiohttp_client:
-        for notams_to_fetch in (
-            all_icao[i * 50 : i * 50 + 50] for i in range(int(len(all_icao) / 50) + 1)
-        ):
-            try:
-                res = await aiohttp_client.get(
-                    "https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do"
-                    + f"?reportType=Raw&retrieveLocId={'+'.join(notams_to_fetch)}"
-                    + "&actionType=notamRetrievalByICAOs&submit=View+NOTAMs",
-                )
-            except ClientConnectorError as e:
-                logger.error(f"Could not connect {e!s}")
-                return
-
+    for notams_to_fetch in (
+        all_icao[i * 50 : i * 50 + 50] for i in range(int(len(all_icao) / 50) + 1)
+    ):
+        async with http_client.get(
+            "https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do"
+            + f"?reportType=Raw&retrieveLocId={'+'.join(notams_to_fetch)}"
+            + "&actionType=notamRetrievalByICAOs&submit=View+NOTAMs",
+        ) as res:
             notam_html = BeautifulSoup(await res.text(), "html.parser")
-            for notam_elem in notam_html.find_all("pre"):
-                notam = convert_notam(notam_elem.string)
-                if notam is not None and len(notam.location) > 0:
-                    notams.append(notam)
+
+        for notam_elem in notam_html.find_all("pre"):
+            notam = convert_notam(notam_elem.string)
+            if notam is not None and len(notam.location) > 0:
+                notams.append(notam)
 
     async with redis.pipeline() as pipe:
         for notam in notams:

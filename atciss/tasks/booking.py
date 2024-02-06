@@ -1,34 +1,28 @@
-from aiohttp import ClientConnectorError
+from typing import Annotated
+
+from aiohttp import ClientSession
 from loguru import logger
 from pydantic import TypeAdapter
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
+from taskiq_dependencies import Depends
 
-from atciss.app.utils import AiohttpClient
+from atciss.app.utils import get_aiohttp_client
 from atciss.app.views.booking import Booking, VatbookData
 from atciss.config import settings
 from atciss.tkq import broker
 
 
 @broker.task()
-async def fetch_booking() -> None:
+async def fetch_booking(
+    http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
+) -> None:
     """Periodically fetch sector data."""
-    async with AiohttpClient.get() as aiohttp_client:
-        try:
-            res = await aiohttp_client.get("https://atc-bookings.vatsim.net/api/booking")
-        except ClientConnectorError as e:
-            logger.error(f"Could not connect {e!s}")
-            return
-
+    async with http_client.get("https://atc-bookings.vatsim.net/api/booking") as res:
         data = TypeAdapter(list[Booking]).validate_python(await res.json())
 
-        try:
-            res = await aiohttp_client.get("http://vatbook.euroutepro.com/xml2.php")
-        except ClientConnectorError as e:
-            logger.error(f"Could not connect {e!s}")
-            return
-
+    async with http_client.get("http://vatbook.euroutepro.com/xml2.php") as res:
         try:
             vatbook_data = VatbookData.from_xml(await res.read())
         except Exception as e:

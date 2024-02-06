@@ -1,13 +1,15 @@
 import io
 from collections import defaultdict
-from typing import Any
+from typing import Annotated, Any
 from uuid import UUID
 
+from aiohttp import ClientSession
 from loguru import logger
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlmodel import select
+from taskiq_dependencies import Depends
 
-from atciss.app.utils.aiohttp_client import AiohttpClient
+from atciss.app.utils import get_aiohttp_client
 from atciss.app.utils.aixm_parser import AIXMData, AIXMFeature
 from atciss.app.utils.dfs import get_dfs_aixm_datasets, get_dfs_aixm_url
 from atciss.app.views.airway import Airway, AirwaySegment
@@ -18,8 +20,10 @@ from atciss.tkq import broker
 
 
 @broker.task(schedule=[{"cron": "0 3 1 * *"}])
-async def fetch_dfs_aixm_data():
-    datasets = await get_dfs_aixm_datasets(0)
+async def fetch_dfs_aixm_data(
+    http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
+):
+    datasets = await get_dfs_aixm_datasets(0, http_client)
 
     ad_url = get_dfs_aixm_url(datasets, 0, "ED AirportHeliport")
     runway_url = get_dfs_aixm_url(datasets, 0, "ED Runway")
@@ -47,19 +51,19 @@ async def fetch_dfs_aixm_data():
         logger.error("Could not retrieve Routes URL, aborting.")
         return
 
-    async with AiohttpClient.get() as aiohttp_client:
-        ad_res = await aiohttp_client.get(ad_url)
-        ad_bytes = io.BytesIO(await ad_res.read())
-        runway_res = await aiohttp_client.get(runway_url)
-        runway_bytes = io.BytesIO(await runway_res.read())
-        navaid_res = await aiohttp_client.get(navaid_url)
-        navaid_bytes = io.BytesIO(await navaid_res.read())
-        waypoint_res = await aiohttp_client.get(waypoint_url)
-        waypoint_bytes = io.BytesIO(await waypoint_res.read())
-        route_res = await aiohttp_client.get(route_url)
-        route_bytes = io.BytesIO(await route_res.read())
+    # FIXME 🚨
+    ad_res = await http_client.get(ad_url)
+    ad_bytes = io.BytesIO(await ad_res.read())
+    runway_res = await http_client.get(runway_url)
+    runway_bytes = io.BytesIO(await runway_res.read())
+    navaid_res = await http_client.get(navaid_url)
+    navaid_bytes = io.BytesIO(await navaid_res.read())
+    waypoint_res = await http_client.get(waypoint_url)
+    waypoint_bytes = io.BytesIO(await waypoint_res.read())
+    route_res = await http_client.get(route_url)
+    route_bytes = io.BytesIO(await route_res.read())
 
-        aixm_data = [ad_bytes, runway_bytes, navaid_bytes, waypoint_bytes, route_bytes]
+    aixm_data = [ad_bytes, runway_bytes, navaid_bytes, waypoint_bytes, route_bytes]
 
     aixm = AIXMData(aixm_data)
 

@@ -1,23 +1,31 @@
 """Application implementation - utilities."""
 
-import redis.asyncio as redis
+import aiohttp
+from aiohttp import ClientSession
+from redis.asyncio import ConnectionPool, Redis
 
 from atciss.config import settings
 
-from .aiohttp_client import AiohttpClient, ClientConnectorError
-
-redis_pool = redis.ConnectionPool.from_url(str(settings.REDIS_URL), decode_responses=True)
+redis_pool = ConnectionPool.from_url(str(settings.REDIS_URL), decode_responses=True)
 
 
 async def get_redis():
-    client = redis.Redis(connection_pool=redis_pool)
-    try:
+    async with Redis(connection_pool=redis_pool) as client:
         yield client
-    finally:
-        await client.close()
 
 
-Redis = redis.Redis
+def aiohttp_client_session():
+    return ClientSession(
+        timeout=aiohttp.ClientTimeout(total=60),
+        connector=aiohttp.TCPConnector(
+            limit_per_host=100,
+        ),
+    )
 
 
-__all__ = ("AiohttpClient", "ClientConnectorError", "Redis", "get_redis", "redis_pool")
+async def get_aiohttp_client():
+    async with aiohttp_client_session() as client:
+        yield client
+
+
+__all__ = ("Redis", "get_aiohttp_client", "get_redis")

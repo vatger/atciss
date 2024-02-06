@@ -1,28 +1,24 @@
 from typing import Annotated
 
+from aiohttp import ClientSession
 from fastapi import Depends
 from loguru import logger
 from pydantic import RootModel, TypeAdapter
 
-from atciss.app.utils import AiohttpClient, ClientConnectorError, Redis, get_redis
+from atciss.app.utils import Redis, get_aiohttp_client, get_redis
 from atciss.app.views.basic_ad import BasicAD
 from atciss.tkq import broker
 
 
 @broker.task(schedule=[{"cron": "20 4 * * *"}])
 async def fetch_basic_ads(
+    http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
     redis: Annotated[Redis, Depends(get_redis)],
 ) -> None:
     """Periodically fetch basic AD information."""
-    async with AiohttpClient.get() as aiohttp_client:
-        try:
-            res = await aiohttp_client.get(
-                "https://raw.githubusercontent.com/mwgg/Airports/master/airports.json",
-            )
-        except ClientConnectorError as e:
-            logger.exception(f"Could not connect {e!s}")
-            return
-
+    async with http_client.get(
+        "https://raw.githubusercontent.com/mwgg/Airports/master/airports.json",
+    ) as res:
         basic_ads = RootModel[dict[str, BasicAD]].model_validate(
             await res.json(content_type="text/plain"),
         )

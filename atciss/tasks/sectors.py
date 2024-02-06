@@ -1,11 +1,11 @@
 from typing import Annotated
 
-from aiohttp import ClientConnectorError
+from aiohttp import ClientSession
 from fastapi import Depends
 from loguru import logger
 from pydantic import TypeAdapter
 
-from atciss.app.utils import AiohttpClient, Redis, get_redis
+from atciss.app.utils import Redis, get_aiohttp_client, get_redis
 from atciss.app.views.sector import Airport, Airspace, Position, SectorData
 from atciss.config import settings
 from atciss.tkq import broker
@@ -13,21 +13,17 @@ from atciss.tkq import broker
 
 @broker.task(schedule=[{"cron": "*/60 * * * *"}])
 async def fetch_sector_data(
+    http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
     redis: Annotated[Redis, Depends(get_redis)],
 ) -> None:
     """Periodically fetch sector data."""
-    async with AiohttpClient.get() as aiohttp_client:
-        data: dict[str, SectorData] = {}
-        for region in settings.SECTOR_REGIONS:
-            try:
-                res = await aiohttp_client.get(
-                    "https://raw.githubusercontent.com/VATGER-Nav/vatglasses-data/"
-                    + f"atciss/data/{region}.json",
-                )
-            except ClientConnectorError as e:
-                logger.error(f"Could not connect {e!s}")
-                return
+    data: dict[str, SectorData] = {}
 
+    for region in settings.SECTOR_REGIONS:
+        async with http_client.get(
+            "https://raw.githubusercontent.com/VATGER-Nav/vatglasses-data/"
+            + f"atciss/data/{region}.json",
+        ) as res:
             try:
                 data[region] = TypeAdapter(SectorData).validate_python(
                     {"region": region} | await res.json(content_type="text/plain"),

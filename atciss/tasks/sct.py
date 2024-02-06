@@ -1,38 +1,37 @@
 from io import BytesIO
+from typing import Annotated
 from zipfile import Path, ZipFile
 
+from aiohttp import ClientSession
 from bs4 import BeautifulSoup
 from loguru import logger
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlmodel import select
+from taskiq_dependencies import Depends
 
-from atciss.app.utils.aiohttp_client import AiohttpClient
+from atciss.app.utils import get_aiohttp_client
 from atciss.app.views import sct_parser
 from atciss.app.views.dfs_aixm import Aerodrome, Navaid
 from atciss.config import settings
 from atciss.tkq import broker
 
 
-async def find_airac_zip_url() -> str:
-    async with AiohttpClient.get() as aiohttp_client:
-        res = await aiohttp_client.get("http://files.aero-nav.com/EDXX")
-
+async def find_airac_zip_url(http_client: ClientSession) -> str:
+    async with http_client.get("http://files.aero-nav.com/EDXX") as res:
         aeronav_html = BeautifulSoup(await res.text(), "html.parser")
-        for link in aeronav_html.find_all("a"):
-            url = link["href"]
-            if "EDMM" in url and "AIRAC" in url and ".zip" in url:
-                logger.info(f"AIRAC URL: {url}")
-                return url
+
+    for link in aeronav_html.find_all("a"):
+        url = link["href"]
+        if "EDMM" in url and "AIRAC" in url and ".zip" in url:
+            logger.info(f"AIRAC URL: {url}")
+            return url
 
     msg = "No EDMM AIRAC update found"
     raise RuntimeError(msg)
 
 
-async def fetch_airac_zip(url: str) -> ZipFile:
-    async with (
-        AiohttpClient.get() as aiohttp_client,
-        aiohttp_client.get(url, headers={"referer": "https://files.aero-nav.com/EDXX/"}) as res,
-    ):
+async def fetch_airac_zip(http_client: ClientSession, url: str) -> ZipFile:
+    async with http_client.get(url, headers={"referer": "https://files.aero-nav.com/EDXX/"}) as res:
         zipbytes = await res.read()
 
     return ZipFile(BytesIO(zipbytes))
@@ -46,9 +45,11 @@ async def extract_sct_file(zipfile: ZipFile) -> str | None:
 
 
 @broker.task()
-async def import_sct() -> None:
-    airac_zip_url = await find_airac_zip_url()
-    airac_zip = await fetch_airac_zip(airac_zip_url)
+async def import_sct(
+    http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
+) -> None:
+    airac_zip_url = await find_airac_zip_url(http_client)
+    airac_zip = await fetch_airac_zip(http_client, airac_zip_url)
     airac_sct_file = await extract_sct_file(airac_zip)
 
     if airac_sct_file:

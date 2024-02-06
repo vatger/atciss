@@ -1,17 +1,20 @@
-from typing import Any
+from typing import Annotated, Any
 
+from aiohttp import ClientSession
 from loguru import logger
+from taskiq_dependencies import Depends
 
-from atciss.app.utils.aiohttp_client import AiohttpClient
+from atciss.app.utils import get_aiohttp_client
 from atciss.app.views.dfs_rest import DFSDataset, Item
 
 
-async def get_dfs_aixm_datasets(amdt_id: int) -> dict[str, Any]:
+async def get_dfs_aixm_datasets(
+    amdt_id: int,
+    http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
+) -> dict[str, Any]:
     """Retrieves the available DFS AIXM datasets"""
-    async with AiohttpClient.get() as aiohttp_client:
-        res = await aiohttp_client.get("https://aip.dfs.de/datasets/rest/")
+    async with http_client.get("https://aip.dfs.de/datasets/rest/") as res:
         available_datasets = {}
-
         try:
             dataset = DFSDataset.model_validate(await res.json(content_type="text/html"))
             for amdt in dataset.amdts:
@@ -28,7 +31,7 @@ async def get_dfs_aixm_datasets(amdt_id: int) -> dict[str, Any]:
         except ValueError as err:
             logger.error(err)
 
-        return available_datasets
+    return available_datasets
 
 
 def get_dfs_aixm_url(datasets: dict[str, Any], amdt_id: int, dataset_name: str) -> str | None:

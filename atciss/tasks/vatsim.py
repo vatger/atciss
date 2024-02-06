@@ -4,14 +4,14 @@ from datetime import UTC, datetime, timedelta
 from heapq import heappop, heappush
 from typing import Annotated, cast
 
-from aiohttp import ClientConnectorError
+from aiohttp import ClientSession
 from fastapi import Depends
 from haversine import Unit, haversine  # pyright: ignore
 from loguru import logger
 from pydantic import TypeAdapter
 from vatsim.types import Atis, Controller, Pilot, VatsimData
 
-from atciss.app.utils import AiohttpClient, Redis, get_redis
+from atciss.app.utils import Redis, get_aiohttp_client, get_redis
 from atciss.app.views.basic_ad import BasicAD
 from atciss.app.views.vatsim import AerodromeTraffic, Traffic
 from atciss.tkq import broker
@@ -30,17 +30,11 @@ async def get_ad_name(icao: str, redis_client: Redis) -> str | None:
 
 @broker.task(schedule=[{"cron": "*/1 * * * *"}])
 async def fetch_vatsim_data(
+    http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
     redis: Annotated[Redis, Depends(get_redis)],
 ) -> None:
     """Periodically fetch sector data."""
-
-    async with AiohttpClient.get() as aiohttp_client:
-        try:
-            res = await aiohttp_client.get("https://data.vatsim.net/v3/vatsim-data.json")
-        except ClientConnectorError as e:
-            logger.error(f"Could not connect {e!s}")
-            return
-
+    async with http_client.get("https://data.vatsim.net/v3/vatsim-data.json") as res:
         data = TypeAdapter(VatsimData).validate_python(await res.json())
 
     controllers = [c for c in data.controllers if c.facility > 0]
