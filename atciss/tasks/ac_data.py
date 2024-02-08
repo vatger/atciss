@@ -1,13 +1,15 @@
 from collections.abc import Sequence
 from pathlib import Path
-from typing import Any
+from typing import Annotated, Any
 from uuid import UUID
 
 from loguru import logger
 from pydantic import TypeAdapter
-from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession
+from taskiq_dependencies import Depends
 
 from atciss.app.models import AircraftPerformanceData
+from atciss.app.utils.db import get_session
 from atciss.app.views.ac_data import AcdbAcType, AcdbManufacturer
 from atciss.config import settings
 from atciss.tasks.utils import create_or_update
@@ -15,23 +17,21 @@ from atciss.tkq import broker
 
 
 @broker.task()
-async def fetch_ac_data():
+async def fetch_ac_data(
+    db_session: Annotated[AsyncSession, Depends(get_session)],
+):
     logger.info("Processing AC data...")
     wtc_overrides = read_wtc_overrides()
     mf_data = {mf.id: mf for mf in read_manufacturers()}
     ac_types = read_ac_types()
     own_ac_types = read_own_types()
 
-    engine = create_async_engine(
-        url=str(settings.DATABASE_DSN),
-    )
-
-    await process(engine, mf_data, ac_types, wtc_overrides)
-    await process_own_data(engine, own_ac_types)
+    await process(db_session, mf_data, ac_types, wtc_overrides)
+    await process_own_data(db_session, own_ac_types)
 
 
 async def process(
-    engine: Any,
+    session: AsyncSession,
     mfs: dict[str, AcdbManufacturer],
     acts: Sequence[AcdbAcType],
     wtc_data: dict[str, Sequence[str]],
@@ -80,10 +80,10 @@ async def process(
         ac_data["cat_arc"] = get_arc(get_float(ac_data["wingspan"]))
         ac_data["cat_app"] = get_app_code(get_float(ac_data["v_at"]))
 
-        await create_or_update(engine, AircraftPerformanceData, ac_data)
+        await create_or_update(session, AircraftPerformanceData, ac_data)
 
 
-async def process_own_data(engine: Any, data: Sequence[AircraftPerformanceData]):
+async def process_own_data(session: AsyncSession, data: Sequence[AircraftPerformanceData]):
     for ac in data:
         ac_data = {
             "id": ac.id,
@@ -113,7 +113,7 @@ async def process_own_data(engine: Any, data: Sequence[AircraftPerformanceData])
             "cat_app": get_app_code(get_float(ac.v_at)),
         }
 
-        await create_or_update(engine, AircraftPerformanceData, ac_data)
+        await create_or_update(session, AircraftPerformanceData, ac_data)
 
 
 def get_wtc(wtc_data: dict[str, Sequence[str]], icao: str | None, mtow: float | None) -> str | None:

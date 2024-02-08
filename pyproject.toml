@@ -105,7 +105,7 @@ disable = [
   "C0103", # invalid-name
 ]
 output-format = "colorized"
-max-line-length = "101"
+max-line-length = 100
 max-locals = 20
 
 [tool.pyright]

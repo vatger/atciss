@@ -2,7 +2,7 @@ import csv
 import gzip
 from typing import Annotated
 
-from aiohttp import ClientConnectorError, ClientSession
+from aiohttp import ClientSession
 from fastapi import Depends
 from loguru import logger
 
@@ -18,14 +18,10 @@ async def fetch_taf_metar(
 ) -> None:
     """Periodically fetch TAFs and METARs."""
     for taf_metar in ["taf", "metar"]:
-        try:
-            async with http_client.get(
-                f"https://aviationweather.gov/data/cache/{taf_metar}s.cache.csv.gz",
-            ) as res:
-                decompressed = gzip.decompress(await res.read())
-        except ClientConnectorError as e:
-            logger.error(f"Could not connect {e!s}")
-            return
+        async with http_client.get(
+            f"https://aviationweather.gov/data/cache/{taf_metar}s.cache.csv.gz",
+        ) as res:
+            decompressed = gzip.decompress(await res.read())
 
         csv_data = csv.reader(decompressed.decode("latin1").split("\n"), delimiter=",")
 

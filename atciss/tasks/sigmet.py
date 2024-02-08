@@ -2,18 +2,19 @@ from typing import Annotated
 
 from aiohttp import ClientSession
 from loguru import logger
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession
 from taskiq_dependencies import Depends
 
 from atciss.app.utils import get_aiohttp_client
+from atciss.app.utils.db import get_session
 from atciss.app.views.sigmet import Sigmet
-from atciss.config import settings
 from atciss.tkq import broker
 
 
 @broker.task(schedule=[{"cron": "*/10 * * * *"}])
 async def fetch_sigmet(
     http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
+    db_session: Annotated[AsyncSession, Depends(get_session)],
 ) -> None:
     async with http_client.get(
         "https://aviationweather.gov/api/data/isigmet?format=json&loc=eur",
@@ -25,14 +26,8 @@ async def fetch_sigmet(
             return
 
     if sigmets:
-        engine = create_async_engine(
-            url=str(settings.DATABASE_DSN),
-        )
-
-        async with AsyncSession(engine) as session:
-            for sigmet in sigmets:
-                _ = await session.merge(sigmet)
-
-            await session.commit()
+        for sigmet in sigmets:
+            async with db_session.begin_nested():
+                _ = await db_session.merge(sigmet)
 
         logger.info(f"Sigmet: Updated {len(sigmets)} SIGMETs")

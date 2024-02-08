@@ -15,14 +15,11 @@ from asgiref.typing import (
 from fastapi import FastAPI
 from loguru import logger
 from prometheus_fastapi_instrumentator import Instrumentator as PrometheusInstrumentator
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-
-import alembic.command
-import alembic.config
 
 # for tasks discovery by broker
 import atciss.tasks  # pyright: ignore # noqa: F401
 from atciss.app.router import root_api_router
+from atciss.app.utils.db import run_async_migrations
 from atciss.app.utils.redis import redis_pool
 from atciss.config import settings
 from atciss.log import setup_logging
@@ -41,21 +38,6 @@ class CorrelationIdLogMiddleware:
     ) -> None:
         with logger.contextualize(id=correlation_id.get()):
             return await self.app(scope, receive, send)
-
-
-def run_migrations(connection: AsyncSession, cfg: alembic.config.Config):
-    cfg.attributes["connection"] = connection
-    alembic.command.upgrade(cfg, "head")
-
-
-async def run_async_migrations():
-    alembic_cfg = alembic.config.Config(settings.ALEMBIC_CFG_PATH)
-    engine = create_async_engine(
-        url=str(settings.DATABASE_DSN),
-    )
-
-    async with engine.begin() as conn:
-        await conn.run_sync(run_migrations, alembic_cfg)
 
 
 @asynccontextmanager

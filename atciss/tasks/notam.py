@@ -6,10 +6,11 @@ from fastapi import Depends
 from loguru import logger
 from parsimonious import ParseError
 from pynotam import Notam
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
 from atciss.app.utils import get_aiohttp_client
+from atciss.app.utils.db import get_session
 from atciss.app.utils.redis import Redis, get_redis
 from atciss.app.views.dfs_aixm import Aerodrome
 from atciss.config import settings
@@ -29,18 +30,13 @@ def convert_notam(n: str) -> Notam | None:
 async def fetch_notam(
     http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
     redis: Annotated[Redis, Depends(get_redis)],
+    db_session: Annotated[AsyncSession, Depends(get_session)],
 ) -> None:
     """Periodically fetch relevant NOTAMs."""
-    engine = create_async_engine(
-        url=str(settings.DATABASE_DSN),
-    )
-
     all_icao = settings.FIRS
-    async with AsyncSession(engine) as session:
-        statement = select(Aerodrome)
-        ads = await session.execute(statement)
-        for (ad,) in ads.fetchall():
-            all_icao.append(ad.icao_designator)
+    ads = await db_session.execute(select(Aerodrome))
+    for (ad,) in ads.fetchall():
+        all_icao.append(ad.icao_designator)
 
     notams = []
     for notams_to_fetch in (

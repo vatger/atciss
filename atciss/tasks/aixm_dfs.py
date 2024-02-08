@@ -6,16 +6,16 @@ from uuid import UUID
 
 from aiohttp import ClientSession
 from loguru import logger
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 from taskiq_dependencies import Depends
 
 from atciss.app.utils import get_aiohttp_client
 from atciss.app.utils.aixm_parser import AIXMData, AIXMFeature
+from atciss.app.utils.db import get_session
 from atciss.app.utils.dfs import get_dfs_aixm_datasets, get_dfs_aixm_url
 from atciss.app.views.airway import Airway, AirwaySegment
 from atciss.app.views.dfs_aixm import Aerodrome, Navaid, Runway, RunwayDirection
-from atciss.config import settings
 from atciss.tasks.utils import create_or_update
 from atciss.tkq import broker
 
@@ -23,6 +23,7 @@ from atciss.tkq import broker
 @broker.task(schedule=[{"cron": "0 3 1 * *"}])
 async def fetch_dfs_aixm_data(
     http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
+    db_session: Annotated[AsyncSession, Depends(get_session)],
 ):
     datasets = await get_dfs_aixm_datasets(0, http_client)
 
@@ -61,15 +62,11 @@ async def fetch_dfs_aixm_data(
 
     aixm = AIXMData(aixm_data)
 
-    engine = create_async_engine(
-        url=str(settings.DATABASE_DSN),
-    )
-
-    await process_aerodromes(aixm, engine)
-    await process_runways(aixm, engine)
-    await process_waypoints(aixm, engine)
-    await process_navaids(aixm, engine)
-    await process_routes(aixm, engine)
+    await process_aerodromes(aixm, db_session)
+    await process_runways(aixm, db_session)
+    await process_waypoints(aixm, db_session)
+    await process_navaids(aixm, db_session)
+    await process_routes(aixm, db_session)
 
 
 async def http_get_bytesio(url: str, http_client: ClientSession):
@@ -77,7 +74,7 @@ async def http_get_bytesio(url: str, http_client: ClientSession):
         return io.BytesIO(await res.read())
 
 
-async def process_aerodromes(aixm: AIXMData, engine: Any):
+async def process_aerodromes(aixm: AIXMData, session: AsyncSession):
     logger.info("Processing DFS ADHP data")
 
     for ad in aixm.type("AirportHeliport"):
@@ -112,10 +109,10 @@ async def process_aerodromes(aixm: AIXMData, engine: Any):
             "source": "DFS",
         }
         logger.trace(f"Processing AD: {ad_data}")
-        await create_or_update(engine, Aerodrome, ad_data)
+        await create_or_update(session, Aerodrome, ad_data)
 
 
-async def process_runways(aixm: AIXMData, engine: Any):
+async def process_runways(aixm: AIXMData, session: AsyncSession):
     logger.info("Processing DFS RWY data")
 
     rwy_map = defaultdict(list)
@@ -151,12 +148,12 @@ async def process_runways(aixm: AIXMData, engine: Any):
             ].get(),
         }
 
-        await create_or_update(engine, Runway, rwy_data)
+        await create_or_update(session, Runway, rwy_data)
         for rwy_direction in rwy_directions:
-            await create_or_update(engine, RunwayDirection, rwy_direction)
+            await create_or_update(session, RunwayDirection, rwy_direction)
 
 
-async def process_waypoints(aixm: AIXMData, engine: Any):
+async def process_waypoints(aixm: AIXMData, session: AsyncSession):
     logger.info("Processing DFS waypoint data")
 
     for wpt in aixm.type("DesignatedPoint"):
@@ -195,10 +192,10 @@ async def process_waypoints(aixm: AIXMData, engine: Any):
         if remark is str:  # TODO: VRP/Multiple remarks
             wpt_data["remark"] = remark
 
-        await create_or_update(engine, Navaid, wpt_data)
+        await create_or_update(session, Navaid, wpt_data)
 
 
-async def process_navaids(aixm: AIXMData, engine: Any):
+async def process_navaids(aixm: AIXMData, session: AsyncSession):
     logger.info("Processing DFS Navaid data")
 
     for aid in aixm.type("Navaid"):
@@ -208,14 +205,14 @@ async def process_navaids(aixm: AIXMData, engine: Any):
             continue
 
         if aid_type == "DME":
-            await process_navaid(aixm, aid, engine)
+            await process_navaid(aixm, aid, session)
         elif aid_type.startswith("ILS"):
             continue
         else:
-            await process_navaid(aixm, aid, engine)
+            await process_navaid(aixm, aid, session)
 
 
-async def process_navaid(aixm: AIXMData, feature: AIXMFeature, engine: Any):
+async def process_navaid(aixm: AIXMData, feature: AIXMFeature, session: AsyncSession):
     data = {
         "id": UUID(feature.id),
         "designator": feature["aixm:designator"].get(),
@@ -240,10 +237,10 @@ async def process_navaid(aixm: AIXMData, feature: AIXMFeature, engine: Any):
         if eq["aixm:channel", "#text"].get() is not None:
             data["channel"] = eq["aixm:channel", "#text"].get()
 
-    await create_or_update(engine, Navaid, data)
+    await create_or_update(session, Navaid, data)
 
 
-async def process_routes(aixm: AIXMData, engine: Any):
+async def process_routes(aixm: AIXMData, session: AsyncSession):
     logger.info("Processing DFS route data")
 
     routes = []
@@ -259,65 +256,64 @@ async def process_routes(aixm: AIXMData, engine: Any):
 
     route_segments = []
 
-    for route_segment in aixm.type("RouteSegment"):
-        upper_limit = route_segment["aixm:upperLimit", "#text"].int()
-        upper_limit_uom = route_segment["aixm:upperLimit", "@uom"].get()
-        lower_limit = route_segment["aixm:lowerLimit", "#text"].int()
-        lower_limit_uom = route_segment["aixm:lowerLimit", "@uom"].get()
-        start_dict = route_segment["aixm:start", "aixm:EnRouteSegmentPoint"].get()
-        start = start_dict.get(
-            "aixm:pointChoice_fixDesignatedPoint",
-            start_dict.get("aixm:pointChoice_navaidSystem"),
-        )
-        try:
-            start_id = UUID(start["@xlink:href"][9:])
-        except ValueError:
-            # non-ED: gml urn, not uuid
-            stmt = select(Navaid).where(Navaid.designator == start["@xlink:title"])
-            async with AsyncSession(engine) as session:
-                wpt = await session.scalar(stmt)
+    async with session as trans:
+        for route_segment in aixm.type("RouteSegment"):
+            upper_limit = route_segment["aixm:upperLimit", "#text"].int()
+            upper_limit_uom = route_segment["aixm:upperLimit", "@uom"].get()
+            lower_limit = route_segment["aixm:lowerLimit", "#text"].int()
+            lower_limit_uom = route_segment["aixm:lowerLimit", "@uom"].get()
+            start_dict = route_segment["aixm:start", "aixm:EnRouteSegmentPoint"].get()
+            start = start_dict.get(
+                "aixm:pointChoice_fixDesignatedPoint",
+                start_dict.get("aixm:pointChoice_navaidSystem"),
+            )
+            try:
+                start_id = UUID(start["@xlink:href"][9:])
+            except ValueError:
+                # non-ED: gml urn, not uuid
+                stmt = select(Navaid).where(Navaid.designator == start["@xlink:title"])
+                wpt = await trans.scalar(stmt)
                 start_id = wpt.id
-        end_dict = route_segment["aixm:end", "aixm:EnRouteSegmentPoint"].get()
-        end = end_dict.get(
-            "aixm:pointChoice_fixDesignatedPoint",
-            end_dict.get("aixm:pointChoice_navaidSystem"),
-        )
-        try:
-            end_id = UUID(end["@xlink:href"][9:])
-        except ValueError:
-            # non-ED: gml urn, not uuid
-            stmt = select(Navaid).where(Navaid.designator == end["@xlink:title"])
-            async with AsyncSession(engine) as session:
-                wpt = await session.scalar(stmt)
+            end_dict = route_segment["aixm:end", "aixm:EnRouteSegmentPoint"].get()
+            end = end_dict.get(
+                "aixm:pointChoice_fixDesignatedPoint",
+                end_dict.get("aixm:pointChoice_navaidSystem"),
+            )
+            try:
+                end_id = UUID(end["@xlink:href"][9:])
+            except ValueError:
+                # non-ED: gml urn, not uuid
+                stmt = select(Navaid).where(Navaid.designator == end["@xlink:title"])
+                wpt = await trans.scalar(stmt)
                 end_id = wpt.id
 
-        route_segments.append({
-            "id": UUID(route_segment.id),
-            "level": route_segment["aixm:level"].get(),
-            "true_track": route_segment["aixm:trueTrack"].float(),
-            "reverse_true_track": route_segment["aixm:reverseTrueTrack"].float(),
-            "length": route_segment["aixm:length", "#text"].float(),
-            "upper_limit": upper_limit,
-            "upper_limit_uom": upper_limit_uom,
-            "lower_limit": lower_limit,
-            "lower_limit_uom": lower_limit_uom,
-            "start_id": start_id,
-            "end_id": end_id,
-            "airway_id": UUID(route_segment["aixm:routeFormed", "@xlink:href"].get()[9:]),
-            "curve_extent": route_segment[
-                "aixm:curveExtent",
-                "aixm:Curve",
-                "gml:segments",
-                "gml:LineStringSegment",
-                "gml:posList",
-            ].get(),
-        })
+            route_segments.append({
+                "id": UUID(route_segment.id),
+                "level": route_segment["aixm:level"].get(),
+                "true_track": route_segment["aixm:trueTrack"].float(),
+                "reverse_true_track": route_segment["aixm:reverseTrueTrack"].float(),
+                "length": route_segment["aixm:length", "#text"].float(),
+                "upper_limit": upper_limit,
+                "upper_limit_uom": upper_limit_uom,
+                "lower_limit": lower_limit,
+                "lower_limit_uom": lower_limit_uom,
+                "start_id": start_id,
+                "end_id": end_id,
+                "airway_id": UUID(route_segment["aixm:routeFormed", "@xlink:href"].get()[9:]),
+                "curve_extent": route_segment[
+                    "aixm:curveExtent",
+                    "aixm:Curve",
+                    "gml:segments",
+                    "gml:LineStringSegment",
+                    "gml:posList",
+                ].get(),
+            })
 
     for route in routes:
-        await create_or_update(engine, Airway, route)
+        await create_or_update(session, Airway, route)
 
     for route_segment in route_segments:
-        await create_or_update(engine, AirwaySegment, route_segment)
+        await create_or_update(session, AirwaySegment, route_segment)
 
 
 def ensure_list(thing: Any | list[Any]) -> list[Any]:

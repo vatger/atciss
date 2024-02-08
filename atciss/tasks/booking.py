@@ -3,20 +3,20 @@ from typing import Annotated
 from aiohttp import ClientSession
 from loguru import logger
 from pydantic import TypeAdapter
-from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from taskiq_dependencies import Depends
 
 from atciss.app.utils import get_aiohttp_client
+from atciss.app.utils.db import get_session
 from atciss.app.views.booking import Booking, VatbookData
-from atciss.config import settings
 from atciss.tkq import broker
 
 
 @broker.task()
 async def fetch_booking(
     http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
+    db_session: Annotated[AsyncSession, Depends(get_session)],
 ) -> None:
     """Periodically fetch sector data."""
     async with http_client.get("https://atc-bookings.vatsim.net/api/booking") as res:
@@ -32,19 +32,12 @@ async def fetch_booking(
     logger.info(f"Vatsim bookings received: {len(data)} bookings")
     logger.info(f"Vatbook bookings received: {len(vatbook_data.atcs.bookings)} bookings")
 
-    engine = create_async_engine(
-        url=str(settings.DATABASE_DSN),
+    callsigns = await db_session.exec(select(Booking.callsign).distinct())
+    data.extend(
+        Booking.model_validate(b)
+        for b in vatbook_data.atcs.bookings
+        if b.callsign not in callsigns.all()
     )
 
-    async with AsyncSession(engine) as session:
-        callsigns = await session.execute(select(Booking.callsign).distinct())
-        data.extend(
-            Booking.model_validate(b)
-            for b in vatbook_data.atcs.bookings
-            if b.callsign not in callsigns.all()
-        )
-
-        for booking in data:
-            _ = await session.merge(booking)
-
-        await session.commit()
+    for booking in data:
+        _ = await db_session.merge(booking)
