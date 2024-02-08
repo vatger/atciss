@@ -10,7 +10,7 @@ from ...config import settings
 
 engine = create_async_engine(
     str(settings.DATABASE_DSN),
-    echo=True,
+    echo=settings.DEBUG_SQL,
     echo_pool=settings.DEBUG_SQL,
     pool_size=10,
 )
