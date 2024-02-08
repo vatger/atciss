@@ -43,6 +43,7 @@ taskiq-fastapi = "^0"
 uvicorn = {extras = ["standard"], version = "^0.27"}
 xmltodict = "^0.13.0"
 vatsim = "^0.1"
+mypy = "^1.8.0"
 
 [tool.poetry.group.dev.dependencies]
 pylint = "^3.0"
