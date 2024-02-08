@@ -1,3 +1,4 @@
+import asyncio
 import io
 from collections import defaultdict
 from typing import Annotated, Any
@@ -51,19 +52,12 @@ async def fetch_dfs_aixm_data(
         logger.error("Could not retrieve Routes URL, aborting.")
         return
 
-    # FIXME 🚨
-    ad_res = await http_client.get(ad_url)
-    ad_bytes = io.BytesIO(await ad_res.read())
-    runway_res = await http_client.get(runway_url)
-    runway_bytes = io.BytesIO(await runway_res.read())
-    navaid_res = await http_client.get(navaid_url)
-    navaid_bytes = io.BytesIO(await navaid_res.read())
-    waypoint_res = await http_client.get(waypoint_url)
-    waypoint_bytes = io.BytesIO(await waypoint_res.read())
-    route_res = await http_client.get(route_url)
-    route_bytes = io.BytesIO(await route_res.read())
-
-    aixm_data = [ad_bytes, runway_bytes, navaid_bytes, waypoint_bytes, route_bytes]
+    aixm_data = await asyncio.gather(
+        *(
+            http_get_bytesio(url, http_client)
+            for url in [ad_url, runway_url, navaid_url, waypoint_url, route_url]
+        )
+    )
 
     aixm = AIXMData(aixm_data)
 
@@ -76,6 +70,11 @@ async def fetch_dfs_aixm_data(
     await process_waypoints(aixm, engine)
     await process_navaids(aixm, engine)
     await process_routes(aixm, engine)
+
+
+async def http_get_bytesio(url: str, http_client: ClientSession):
+    async with http_client.get(url) as res:
+        return io.BytesIO(await res.read())
 
 
 async def process_aerodromes(aixm: AIXMData, engine: Any):
