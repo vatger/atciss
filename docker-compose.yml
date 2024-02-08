@@ -3,7 +3,6 @@ services:
     image: ghcr.io/vatger/atciss/atciss-backend
     command: serve
     environment:
-      ATCISS_REDIS_HOST: redis
       ATCISS_REDIS_URL: redis://redis
     depends_on:
       db:
@@ -13,7 +12,6 @@ services:
     image: ghcr.io/vatger/atciss/atciss-backend
     command: worker
     environment:
-      ATCISS_REDIS_HOST: redis
       ATCISS_REDIS_URL: redis://redis
     depends_on:
       redis:

@@ -178,6 +178,7 @@
                 "ATCISS_CONTRIB_PATH=${pkgs.atciss-contrib}"
               ];
               WorkingDir = "/share/atciss";
+              Entrypoint = ["python3" "-m" "atciss.cli"];
             };
           };
 
