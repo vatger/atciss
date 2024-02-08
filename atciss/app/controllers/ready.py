@@ -7,7 +7,7 @@ from fastapi.exceptions import HTTPException
 from loguru import logger
 from redis.exceptions import RedisError
 
-from atciss.app.utils import Redis, get_redis
+from atciss.app.utils.redis import Redis, get_redis
 from atciss.app.views.ready import ReadyResponse
 
 router = APIRouter()

@@ -11,7 +11,8 @@ from loguru import logger
 from pydantic import TypeAdapter
 from vatsim.types import Atis, Controller, Pilot, VatsimData
 
-from atciss.app.utils import Redis, get_aiohttp_client, get_redis
+from atciss.app.utils import get_aiohttp_client
+from atciss.app.utils.redis import Redis, get_redis
 from atciss.app.views.basic_ad import BasicAD
 from atciss.app.views.vatsim import AerodromeTraffic, Traffic
 from atciss.tkq import broker

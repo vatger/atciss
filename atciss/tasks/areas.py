@@ -5,7 +5,8 @@ from loguru import logger
 from pydantic import TypeAdapter
 from taskiq_dependencies import Depends
 
-from atciss.app.utils import Redis, get_aiohttp_client, get_redis
+from atciss.app.utils import get_aiohttp_client
+from atciss.app.utils.redis import Redis, get_redis
 from atciss.app.views.areas import AreaBooking, EAUPAreas
 from atciss.tkq import broker
 

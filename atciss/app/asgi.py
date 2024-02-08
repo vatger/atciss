@@ -23,7 +23,7 @@ import alembic.config
 # for tasks discovery by broker
 import atciss.tasks  # pyright: ignore # noqa: F401
 from atciss.app.router import root_api_router
-from atciss.app.utils import redis_pool
+from atciss.app.utils.redis import redis_pool
 from atciss.config import settings
 from atciss.log import setup_logging
 from atciss.tkq import broker

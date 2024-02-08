@@ -7,7 +7,7 @@ from pydantic import TypeAdapter
 
 from atciss.app.controllers.auth import get_user
 from atciss.app.models import User
-from atciss.app.utils import Redis, get_redis
+from atciss.app.utils.redis import Redis, get_redis
 from atciss.app.views.areas import AreaBooking
 
 router = APIRouter()
@@ -18,7 +18,7 @@ router = APIRouter()
     responses={404: {}},
 )
 async def get_areas(
-    user: Annotated[User, Depends(get_user)],
+    _: Annotated[User, Depends(get_user)],
     redis: Annotated[Redis, Depends(get_redis)],
 ) -> list[AreaBooking]:
     """Get all area bookings from EAUP for today."""

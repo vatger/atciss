@@ -10,7 +10,7 @@ from pydantic import TypeAdapter
 from vatsim.types import Atis
 
 from atciss.app.controllers.metar import fetch_metar
-from atciss.app.utils import Redis, get_redis
+from atciss.app.utils.redis import Redis, get_redis
 from atciss.app.views.metar import AirportIcao
 from atciss.app.views.sector import Airport
 from atciss.config import settings

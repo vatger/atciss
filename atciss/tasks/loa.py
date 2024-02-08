@@ -6,7 +6,8 @@ from fastapi import Depends
 from loguru import logger
 from pydantic import TypeAdapter
 
-from atciss.app.utils import Redis, get_aiohttp_client, get_redis
+from atciss.app.utils import get_aiohttp_client
+from atciss.app.utils.redis import Redis, get_redis
 from atciss.app.views.loa import LoaItem
 from atciss.config import settings
 from atciss.tkq import broker

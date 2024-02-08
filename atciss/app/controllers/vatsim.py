@@ -8,7 +8,7 @@ from vatsim.types import Controller
 
 from atciss.app.controllers.auth import get_user
 from atciss.app.models import User
-from atciss.app.utils import Redis, get_redis
+from atciss.app.utils.redis import Redis, get_redis
 
 router = APIRouter()
 

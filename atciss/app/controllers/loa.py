@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, Query
 from pydantic import TypeAdapter
 
 from atciss.app.controllers.auth import get_user
-from atciss.app.utils import Redis, get_redis
+from atciss.app.utils.redis import Redis, get_redis
 from atciss.app.views.loa import LoaItem
 
 router = APIRouter()

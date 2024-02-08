@@ -9,7 +9,8 @@ from pynotam import Notam
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlmodel import select
 
-from atciss.app.utils import Redis, get_aiohttp_client, get_redis
+from atciss.app.utils import get_aiohttp_client
+from atciss.app.utils.redis import Redis, get_redis
 from atciss.app.views.dfs_aixm import Aerodrome
 from atciss.config import settings
 from atciss.tkq import broker
