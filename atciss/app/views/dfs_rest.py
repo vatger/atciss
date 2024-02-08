@@ -20,28 +20,34 @@ class Release(BaseModel):
     checksum: Checksum
 
 
-class Item(BaseModel):
+class BaseItem(BaseModel):
     type: str
     name: str
     name_de: str
-    description: str | None = None
-    description_de: str | None = None
-    releases: list[Release] | None = None
-    items: list["Item"] | None = None
+
+
+class GroupItem(BaseItem):
+    items: list["LeafItem"]
+
+
+class LeafItem(BaseItem):
+    description: str | None
+    description_de: str | None
+    releases: list[Release]
 
 
 class Metadata(BaseModel):
     dataset_published: str
     airac: str | None = None
     dataset_type: str | None = None
-    datasets: list[Item]
+    datasets: list[GroupItem]
 
 
 class Amdt(BaseModel):
     amdt: int = Field(alias="Amdt")
     amdt_date: str = Field(alias="AmdtDate")
     amdt_numeric: str = Field(alias="AmdtNumeric")
-    metadata: Metadata | None = Field(alias="Metadata")
+    metadata: Metadata = Field(alias="Metadata")
 
 
 class DFSDataset(BaseModel):

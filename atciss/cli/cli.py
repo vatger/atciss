@@ -4,7 +4,9 @@ from typing import Any
 
 import click
 
+from .scheduler import scheduler
 from .serve import serve
+from .worker import worker
 
 CMD_HELP = "ATCISS CLI root."
 
@@ -15,6 +17,5 @@ def cli(**_: dict[str, Any]) -> None:
 
 
 cli.add_command(serve)
-
-if __name__ == "__main__":
-    cli()
+cli.add_command(worker)
+cli.add_command(scheduler)

@@ -16,7 +16,6 @@ asgiref = "^3.7.2"
 astral = "^3.2"
 asyncpg = "^0.29.0"
 beautifulsoup4 = "^4.12.3"
-celery = {version = "^5.3.5", extras = ["redis,gevent"]}
 click = "^8.1"
 fastapi = "^0.109"
 geoalchemy2 = "^0.14.3"
@@ -33,16 +32,18 @@ pydantic-xml = {extras = ["lxml"], version = "^2.9"}
 pynotam = { git = "https://github.com/globin/PyNotam", rev = "84b741863d09aaa616e6f378a2e6e5eab8df706f" }
 python-dateutil = "^2.8.2"
 python-jose = "^3.3.0"
-redis = "^4"
+redis = "^5"
+regex = "^2023.12.25"
 shapely = "^2.0.2"
 sqlalchemy = { version = "^2.0.25", extras = [ "asyncio" ] }
 sqlmodel = "0.0.14"
+taskiq = "^0"
+taskiq-redis = "^0"
+taskiq-fastapi = "^0"
 uvicorn = {extras = ["standard"], version = "^0.27"}
-watchfiles = "~0.21.0"
 xmltodict = "^0.13.0"
-regex = "^2023.12.25"
-flower = "^2.0.1"
 vatsim = "^0.1"
+mypy = "^1.8.0"
 
 [tool.poetry.group.dev.dependencies]
 pylint = "^3.0"
@@ -51,15 +52,13 @@ types-python-jose = "^3.3.4.20240106"
 mypy = "^1.8.0"
 pyright = "1.1.349"
 ruff = "0.2.0"
-celery-types = "^0.22.0"
-flower = "^2.0.1"
 types-xmltodict = "^0.13.0.3"
 pyrasite = "^2.0"
+taskiq = { version = "^0", extras = ["reload"] }
+watchfiles = "~0.21.0"
 
 [tool.poetry.scripts]
 atciss = 'atciss.cli:cli'
-celery = 'celery.__main__:main'
-alembic = 'alembic.config:main'
 
 [build-system]
 requires = ["poetry-core"]
@@ -96,7 +95,7 @@ ignore_missing_imports = true
 [tool.pylint.format]
 jobs = 0
 disable = [
-  "W1203", # logging-fstring-interpolation
+  "W0611", # unused-import
   "R0902", # too-many-instance-attributes
   "R0903", # too-few-public-methods
   "C0114", # missing-module-docstring
@@ -106,7 +105,7 @@ disable = [
   "C0103", # invalid-name
 ]
 output-format = "colorized"
-max-line-length = "101"
+max-line-length = 100
 max-locals = 20
 
 [tool.pyright]
@@ -121,7 +120,9 @@ reportIncompatibleVariableOverride = false
 reportMissingTypeArgument = false
 reportUnknownArgumentType = false
 reportUnknownMemberType = false
+reportUnknownParameterType = false
 reportUnknownVariableType = false
+reportUnusedImport = false
 
 reportCallInDefaultInitializer = "error"
 reportImplicitOverride = "error"

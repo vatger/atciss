@@ -31,15 +31,14 @@ using [Nix Flakes](https://nixos.wiki/wiki/Flakes) and
 atciss serve
 ```
 
-### Run the worker
+### Run the worker & task scheduler
 
 ```
-celery -A atciss worker
+atciss worker
 ```
 
-Automatic scheduling of tasks:
 ```
-celery -A atciss beat
+atciss scheduler
 ```
 
 ### Run the frontend

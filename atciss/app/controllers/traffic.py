@@ -2,10 +2,10 @@ from typing import Annotated, cast
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from ..controllers.auth import get_user
-from ..models import User
-from ..utils.redis import RedisClient
-from ..views.vatsim import AerodromeTraffic
+from atciss.app.controllers.auth import get_user
+from atciss.app.models import User
+from atciss.app.utils.redis import Redis, get_redis
+from atciss.app.views.vatsim import AerodromeTraffic
 
 router = APIRouter()
 
@@ -16,11 +16,10 @@ router = APIRouter()
 async def ad_get(
     icao: str,
     _: Annotated[User, Depends(get_user)],
+    redis: Annotated[Redis, Depends(get_redis)],
 ) -> AerodromeTraffic:
-    redis_client = RedisClient.open()
-
     icao = icao.upper()
-    traffic_json = cast(str | None, await redis_client.get(f"vatsim:traffic:{icao}"))
+    traffic_json = cast(str | None, await redis.get(f"vatsim:traffic:{icao}"))
     if traffic_json is None:
         raise HTTPException(status_code=404, detail="No aerodrome traffic information found.")
 

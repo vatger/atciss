@@ -2,24 +2,23 @@ import re
 from collections.abc import Sequence
 from datetime import UTC, datetime, timedelta
 from heapq import heappop, heappush
-from typing import cast
+from typing import Annotated, cast
 
-from aiohttp import ClientConnectorError
-from haversine import Unit, haversine
+from aiohttp import ClientSession
+from fastapi import Depends
+from haversine import Unit, haversine  # pyright: ignore
 from loguru import logger
 from pydantic import TypeAdapter
-from redis.asyncio import Redis
 from vatsim.types import Atis, Controller, Pilot, VatsimData
 
-from ..utils import AiohttpClient, RedisClient
-from ..views.basic_ad import BasicAD
-from ..views.vatsim import AerodromeTraffic, Traffic
+from atciss.app.utils import get_aiohttp_client
+from atciss.app.utils.redis import Redis, get_redis
+from atciss.app.views.basic_ad import BasicAD
+from atciss.app.views.vatsim import AerodromeTraffic, Traffic
+from atciss.tkq import broker
 
 
-async def get_ad_name(icao: str, redis_client: Redis | None = None) -> str | None:
-    if redis_client is None:
-        redis_client = RedisClient.get()
-
+async def get_ad_name(icao: str, redis_client: Redis) -> str | None:
     ad_json = cast(str | None, await redis_client.get(f"basic:ad:{icao}"))
     if ad_json is None:
         return None
@@ -30,18 +29,13 @@ async def get_ad_name(icao: str, redis_client: Redis | None = None) -> str | Non
     return re.sub(r"\s+", " ", name).strip()
 
 
-async def fetch_vatsim_data(redis_client: Redis | None = None) -> None:
+@broker.task(schedule=[{"cron": "*/1 * * * *"}])
+async def fetch_vatsim_data(
+    http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
+    redis: Annotated[Redis, Depends(get_redis)],
+) -> None:
     """Periodically fetch sector data."""
-    if redis_client is None:
-        redis_client = await RedisClient.get()
-
-    async with AiohttpClient.get() as aiohttp_client:
-        try:
-            res = await aiohttp_client.get("https://data.vatsim.net/v3/vatsim-data.json")
-        except ClientConnectorError as e:
-            logger.error(f"Could not connect {e!s}")
-            return
-
+    async with http_client.get("https://data.vatsim.net/v3/vatsim-data.json") as res:
         data = TypeAdapter(VatsimData).validate_python(await res.json())
 
     controllers = [c for c in data.controllers if c.facility > 0]
@@ -51,13 +45,13 @@ async def fetch_vatsim_data(redis_client: Redis | None = None) -> None:
         + f"{len(data.atis)} ATIS, {len(data.pilots)} pilots",
     )
 
-    traffic = await calc_trafficboard_data(data.pilots, redis_client)
+    traffic = await calc_trafficboard_data(data.pilots, redis)
 
-    async with redis_client.pipeline() as pipe:
-        keys = await redis_client.keys("vatsim:atis:*")
-        keys.extend(await redis_client.keys("vatsim:controller:*"))
-        keys.extend(await redis_client.keys("vatsim:pilot:*"))
-        keys.extend(await redis_client.keys("vatsim:traffic:*"))
+    async with redis.pipeline() as pipe:
+        keys = await redis.keys("vatsim:atis:*")
+        keys.extend(await redis.keys("vatsim:controller:*"))
+        keys.extend(await redis.keys("vatsim:pilot:*"))
+        keys.extend(await redis.keys("vatsim:traffic:*"))
 
         if len(keys):
             _ = pipe.delete(*keys)
@@ -120,7 +114,7 @@ async def calc_trafficboard_data(pilots: Sequence[Pilot], redis_client: Redis) -
     )
 
 
-def time_estimate(distance, gs) -> float:
+def time_estimate(distance: float, gs: float) -> float:
     time = 0
 
     # 15 miles final-ish

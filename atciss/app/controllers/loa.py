@@ -5,9 +5,9 @@ from typing import Annotated, cast
 from fastapi import APIRouter, Depends, Query
 from pydantic import TypeAdapter
 
-from ..utils.redis import RedisClient
-from ..views.loa import LoaItem
-from .auth import get_user
+from atciss.app.controllers.auth import get_user
+from atciss.app.utils.redis import Redis, get_redis
+from atciss.app.views.loa import LoaItem
 
 router = APIRouter()
 
@@ -19,14 +19,13 @@ router = APIRouter()
 async def metar_get(
     sector: Annotated[list[str], Query(...)],
     cid: Annotated[str, Depends(get_user)],
+    redis: Annotated[Redis, Depends(get_redis)],
 ) -> list[LoaItem]:
     """Get LOA for sector."""
-    redis_client = RedisClient.open()
-
     loaitems = []
     for s in sector:
         s = s.upper()
-        loaitems_json = cast(str | None, await redis_client.get(f"loa:{s}"))
+        loaitems_json = cast(str | None, await redis.get(f"loa:{s}"))
         if loaitems_json is None:
             continue
         loaitems.extend(TypeAdapter(list[LoaItem]).validate_json(loaitems_json))

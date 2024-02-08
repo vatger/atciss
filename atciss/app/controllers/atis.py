@@ -3,17 +3,17 @@
 from collections.abc import Sequence
 from typing import Annotated, cast
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Depends, Query
 from fastapi.responses import PlainTextResponse
 from loguru import logger
 from pydantic import TypeAdapter
 from vatsim.types import Atis
 
-from ...config import settings
-from ..controllers.metar import fetch_metar
-from ..utils.redis import RedisClient
-from ..views.metar import AirportIcao
-from ..views.sector import Airport
+from atciss.app.controllers.metar import fetch_metar
+from atciss.app.utils.redis import Redis, get_redis
+from atciss.app.views.metar import AirportIcao
+from atciss.app.views.sector import Airport
+from atciss.config import settings
 
 router = APIRouter()
 
@@ -23,14 +23,14 @@ router = APIRouter()
 )
 async def atis_get(
     airports: Annotated[Sequence[AirportIcao], Query(alias="icao", default_factory=list)],
+    redis: Annotated[Redis, Depends(get_redis)],
 ) -> dict[str, Atis]:
     """Get Atis for airport."""
-    redis_client = RedisClient.open()
 
     atis = {}
     for icao in airports:
         icao = icao.upper()
-        atis_json = cast(str | None, await redis_client.get(f"vatsim:atis:{icao}"))
+        atis_json = cast(str | None, await redis.get(f"vatsim:atis:{icao}"))
         if atis_json is None:
             continue
         atis[icao] = TypeAdapter(Atis).validate_json(atis_json)
@@ -43,6 +43,7 @@ async def atis_get(
     response_class=PlainTextResponse,
 )
 async def atis_generate(
+    redis: Annotated[Redis, Depends(get_redis)],
     arrivalRunwayStr: Annotated[str, Query(alias="arr")],
     departureRunwayStr: Annotated[str, Query(alias="dep")],
     atisCode: Annotated[str, Query(alias="info")],
@@ -52,14 +53,13 @@ async def atis_generate(
     departureFrequency: Annotated[str | None, Query(alias="depfreq")] = None,
 ) -> str:
     airports: dict[str, Airport] = {}
-    async with RedisClient.open() as redis_client:
-        for region in settings.SECTOR_REGIONS:
-            airports_json = await redis_client.get(f"sector:airports:{region}")
-            if airports_json is None:
-                logger.warning(f"No data for {region}")
-                continue
+    for region in settings.SECTOR_REGIONS:
+        airports_json = await redis.get(f"sector:airports:{region}")
+        if airports_json is None:
+            logger.warning(f"No data for {region}")
+            continue
 
-            airports = airports | TypeAdapter(dict[str, Airport]).validate_json(airports_json)
+        airports = airports | TypeAdapter(dict[str, Airport]).validate_json(airports_json)
     airport_name = "".join(
         {"Ä": "AE", "Ü": "UE", "Ö": "OE", "ß": "ss"}.get(c, c)
         for c in (airports[airport].callsign.upper() if airport in airports else airport)
@@ -97,7 +97,7 @@ async def atis_generate(
         ),
     )
 
-    metar = await fetch_metar(airport)
+    metar = await fetch_metar(airport, redis)
     if metar is None:
         return concatSep(
             [

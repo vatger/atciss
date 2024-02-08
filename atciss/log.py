@@ -7,6 +7,7 @@ from typing import ClassVar
 import asgiref
 import loguru
 from loguru import logger
+from typing_extensions import override
 
 from .config import settings
 
@@ -21,7 +22,8 @@ class InterceptHandler(logging.Handler):
         0: "NOTSET",
     }
 
-    def emit(self, record: loguru.Record) -> None:
+    @override
+    def emit(self, record: logging.LogRecord) -> None:
         try:
             level = logger.level(record.levelname).name
         except ValueError:
@@ -44,7 +46,7 @@ def formatter(record: loguru.Record) -> str:
     exc_part = "{exception}\n" if record["exception"] is not None else ""
     return (
         "<green>{elapsed}</green> | "
-        "<level>{level: <8}</level> | "
+        "<level>{level.icon}</level> | "
         "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> | "
         f"{corid_part}"
         "<level>{message}</level>\n"
@@ -59,14 +61,16 @@ def setup_logging() -> None:
         enqueue=True,
         level=settings.LOG_LEVEL,
         format=formatter,
+        colorize=True,
     )
+
+    _ = logger.level("CRITICAL", icon="🚨")
+    _ = logger.level("ERROR", icon="❎")
+    _ = logger.level("WARNING", icon="⚠️")
+    _ = logger.level("INFO", icon="📢")
+    _ = logger.level("DEBUG", icon="🐾")
 
     logging.basicConfig(handlers=[InterceptHandler()], level=0)
-
-    # sqlalchemy prints queries on info level when we have DEBUG enabled
-    logging.getLogger("sqlalchemy.engine").setLevel(
-        logging.INFO if settings.DEBUG else logging.WARN,
-    )
 
     for name in logging.root.manager.loggerDict:  # pylint: disable=no-member
         _logger = logging.getLogger(name)

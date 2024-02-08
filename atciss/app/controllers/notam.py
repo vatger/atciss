@@ -8,12 +8,11 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import delete, select
 
+from atciss.app.controllers.auth import get_user
+from atciss.app.models import User
 from atciss.app.utils.db import get_session
-
-from ..controllers.auth import get_user
-from ..models import User
-from ..utils.redis import RedisClient
-from ..views.notam import NotamModel, NotamSeen
+from atciss.app.utils.redis import Redis, get_redis
+from atciss.app.views.notam import NotamModel, NotamSeen
 
 router = APIRouter()
 
@@ -24,15 +23,15 @@ router = APIRouter()
 async def notam_get(
     icao: Annotated[list[str], Query(...)],
     _: Annotated[User, Depends(get_user)],
+    redis: Annotated[Redis, Depends(get_redis)],
 ) -> dict[str, list[NotamModel]]:
     """Get METAR for airport."""
-    redis_client = RedisClient.open()
     notams: dict[str, list[NotamModel]] = {}
 
     for i in icao:
         i = i.upper()
-        notam_keys = await redis_client.keys(f"notam:{i}:*")
-        notam_text = cast(list[str], await redis_client.mget(notam_keys))
+        notam_keys = await redis.keys(f"notam:{i}:*")
+        notam_text = cast(list[str], await redis.mget(notam_keys))
         icao_notams = [NotamModel.from_str(n) for n in notam_text]
         notams[i] = icao_notams
 

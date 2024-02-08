@@ -15,15 +15,15 @@ from asgiref.typing import (
 from fastapi import FastAPI
 from loguru import logger
 from prometheus_fastapi_instrumentator import Instrumentator as PrometheusInstrumentator
-from sqlalchemy.ext.asyncio import create_async_engine
 
-import alembic.command
-import alembic.config
-
-from ..config import settings
-from ..log import setup_logging
-from .router import root_api_router
-from .utils import RedisClient
+# for tasks discovery by broker
+import atciss.tasks  # pyright: ignore # noqa: F401
+from atciss.app.router import root_api_router
+from atciss.app.utils.db import run_async_migrations
+from atciss.app.utils.redis import redis_pool
+from atciss.config import settings
+from atciss.log import setup_logging
+from atciss.tkq import broker
 
 
 @dataclass
@@ -40,32 +40,21 @@ class CorrelationIdLogMiddleware:
             return await self.app(scope, receive, send)
 
 
-def run_migrations(connection, cfg):
-    cfg.attributes["connection"] = connection
-    alembic.command.upgrade(cfg, "head")
-
-
-async def run_async_migrations():
-    alembic_cfg = alembic.config.Config(settings.ALEMBIC_CFG_PATH)
-    engine = create_async_engine(
-        url=str(settings.DATABASE_DSN),
-    )
-
-    async with engine.begin() as conn:
-        await conn.run_sync(run_migrations, alembic_cfg)
-
-
 @asynccontextmanager
-async def lifespan(_app: FastAPI):
-    await run_async_migrations()
+async def lifespan(_: FastAPI):
+    if not broker.is_worker_process:
+        await run_async_migrations()
+        await broker.startup()
     yield
-    await RedisClient.close()
+    if not broker.is_worker_process:
+        await broker.shutdown()
+        await redis_pool.disconnect()
 
 
 def get_application() -> FastAPI:
     """Initialize FastAPI application."""
     setup_logging()
-    logger.debug("Initialize FastAPI application node.")
+    logger.debug("Initialize FastAPI application.")
 
     app = FastAPI(
         title=settings.PROJECT_NAME,
@@ -77,7 +66,7 @@ def get_application() -> FastAPI:
 
     _ = PrometheusInstrumentator().instrument(app).expose(app, tags=["monitoring"])
 
-    app.add_middleware(CorrelationIdLogMiddleware)
+    app.add_middleware(CorrelationIdLogMiddleware)  # pyright: ignore
     app.add_middleware(
         CorrelationIdMiddleware,
         generator=(lambda: uuid4().hex) if not settings.DEBUG else (lambda: uuid4().hex[:8]),

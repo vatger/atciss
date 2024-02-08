@@ -1,37 +1,39 @@
 from collections import defaultdict
+from typing import Annotated
 
+from aiohttp import ClientConnectorError, ClientSession
+from fastapi import Depends
 from loguru import logger
 from pydantic import TypeAdapter
 
-from atciss.app.utils.redis import RedisClient
+from atciss.app.utils import get_aiohttp_client
+from atciss.app.utils.redis import Redis, get_redis
+from atciss.app.views.ecfmp import ECFMP, Event, FlowMeasure
+from atciss.tkq import broker
 
-from ..utils import AiohttpClient, ClientConnectorError
-from ..views.ecfmp import ECFMP, Event, FlowMeasure
 
-
-async def fetch_ecfmp() -> None:
+@broker.task(schedule=[{"cron": "*/1 * * * *"}])
+async def fetch_ecfmp(
+    http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
+    redis: Annotated[Redis, Depends(get_redis)],
+) -> None:
     """Periodically fetch ECFMP flow measures."""
-    redis_client = await RedisClient.get()
-
-    async with AiohttpClient.get() as aiohttp_client:
-        try:
-            res = await aiohttp_client.get(
-                "https://ecfmp.vatsim.net/api/v1/plugin",
-            )
-        except ClientConnectorError as e:
-            logger.exception(f"Could not connect {e!s}")
-            return
-
-        try:
+    try:
+        async with http_client.get(
+            "https://ecfmp.vatsim.net/api/v1/plugin",
+        ) as res:
             ecfmp = ECFMP.model_validate(await res.json())
-        except ValueError as e:
-            logger.exception(f"Could not parse {e!s}")
-            return
+    except ClientConnectorError as e:
+        logger.exception(f"Could not connect {e!s}")
+        return
+    except ValueError as e:
+        logger.exception(f"Could not parse {e!s}")
+        return
 
     logger.info(f"ECFMP: {len(ecfmp.flow_measures)} flow measures received")
     logger.info(f"ECFMP: {len(ecfmp.events)} events received")
 
-    async with redis_client.pipeline() as pipe:
+    async with await redis.pipeline() as pipe:
         flow_measures_by_fir = defaultdict(list)
         for flow_measure in ecfmp.flow_measures:
             for fir in flow_measure.notified_firs:

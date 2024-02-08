@@ -1,28 +1,30 @@
-from aiohttp import ClientConnectorError
+from typing import Annotated
+
+from aiohttp import ClientSession
+from fastapi import Depends
 from loguru import logger
 from pydantic import TypeAdapter
 
-from ...config import settings
-from ..utils import AiohttpClient, RedisClient
-from ..views.sector import Airport, Airspace, Position, SectorData
+from atciss.app.utils import get_aiohttp_client
+from atciss.app.utils.redis import Redis, get_redis
+from atciss.app.views.sector import Airport, Airspace, Position, SectorData
+from atciss.config import settings
+from atciss.tkq import broker
 
 
-async def fetch_sector_data() -> None:
+@broker.task(schedule=[{"cron": "*/60 * * * *"}])
+async def fetch_sector_data(
+    http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
+    redis: Annotated[Redis, Depends(get_redis)],
+) -> None:
     """Periodically fetch sector data."""
-    redis_client = await RedisClient.get()
+    data: dict[str, SectorData] = {}
 
-    async with AiohttpClient.get() as aiohttp_client:
-        data: dict[str, SectorData] = {}
-        for region in settings.SECTOR_REGIONS:
-            try:
-                res = await aiohttp_client.get(
-                    "https://raw.githubusercontent.com/VATGER-Nav/vatglasses-data/"
-                    + f"atciss/data/{region}.json",
-                )
-            except ClientConnectorError as e:
-                logger.error(f"Could not connect {e!s}")
-                return
-
+    for region in settings.SECTOR_REGIONS:
+        async with http_client.get(
+            "https://raw.githubusercontent.com/VATGER-Nav/vatglasses-data/"
+            + f"atciss/data/{region}.json",
+        ) as res:
             try:
                 data[region] = TypeAdapter(SectorData).validate_python(
                     {"region": region} | await res.json(content_type="text/plain"),
@@ -32,7 +34,7 @@ async def fetch_sector_data() -> None:
 
     logger.info("Sector data received")
 
-    async with redis_client.pipeline() as pipe:
+    async with redis.pipeline() as pipe:
         for region, region_data in data.items():
             pipe.set(
                 f"sector:airports:{region}",

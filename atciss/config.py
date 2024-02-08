@@ -1,18 +1,17 @@
-"""Application configuration - FastAPI."""
+from typing import cast
 
-from pydantic import PostgresDsn
+from pydantic import PostgresDsn, RedisDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from ..version import __version__
+from atciss.version import __version__
 
 
 class Application(BaseSettings):
-    """Define application configuration model."""
-
     model_config = SettingsConfigDict(env_prefix="ATCISS_", case_sensitive=False)
 
     DEBUG: bool = True
-    LOG_LEVEL: str = "INFO"
+    DEBUG_SQL: bool = False
+    LOG_LEVEL: str = "DEBUG"
     PROJECT_NAME: str = "atciss"
     VERSION: str = __version__
     CONTRIB_PATH: str = "./contrib"
@@ -26,7 +25,10 @@ class Application(BaseSettings):
     VATSIM_CLIENT_SECRET: str = "UR3n0xnjzP4KAbB3enMDCGVD4qbyLvIoSAQtzVm2"
     VATSIM_REDIRECT_URL: str = "http://localhost:5173/auth/callback"
 
-    DATABASE_DSN: PostgresDsn = "postgresql+asyncpg://atciss:fnord@localhost/atciss"
+    DATABASE_DSN: PostgresDsn = cast(
+        PostgresDsn, "postgresql+asyncpg://atciss:fnord@localhost/atciss"
+    )
+    REDIS_URL: RedisDsn = cast(RedisDsn, "redis://localhost:6379")
 
     ADMINS: list[str] = ["10000010", "1519114", "1586741", "1532450"]  # dev  # RG  # AL  # FP
 

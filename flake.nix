@@ -77,18 +77,27 @@
             pyrasite = pyprev.pyrasite.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
             });
-            alembic = pyprev.alembic.overridePythonAttrs (old: {
-              meta = old.meta // {priority = -1;};
-            });
-            celery = pyprev.celery.overridePythonAttrs (old: {
-              meta = old.meta // {priority = -1;};
-            });
             asgi-correlation-id = pyprev.asgi-correlation-id.overridePythonAttrs (old: {
               nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
               postPatch = ''
                 substituteInPlace pyproject.toml \
                   --replace 'poetry.masonry.api' 'poetry.core.masonry.api'
               '';
+            });
+            taskiq = pyprev.taskiq.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
+            });
+            taskiq-dependencies = pyprev.taskiq-dependencies.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
+            });
+            taskiq-fastapi = pyprev.taskiq-fastapi.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
+            });
+            taskiq-redis = pyprev.taskiq-redis.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
+            });
+            gitignore-parser = pyprev.gitignore-parser.overridePythonAttrs (old: {
+              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
             });
           });
         in {
@@ -197,7 +206,7 @@
                       include ${pkgs.mailcap}/etc/nginx/mime.types;
 
                       set $backend_target "http://backend:8000";
-                      set $flower_target "http://flower:5555";
+                      set $worker_target "http://worker:9000";
 
                       location / {
                         try_files $uri /index.html;
@@ -207,12 +216,8 @@
                         proxy_pass $backend_target;
                       }
 
-                      location /admin/flower {
-                        proxy_pass $flower_target;
-                      }
-
                       location /metrics {
-                        proxy_pass $backend_target;
+                        proxy_pass $worker_target;
                       }
                     }
                   }

@@ -1,72 +1,50 @@
 services:
   backend:
     image: ghcr.io/vatger/atciss/atciss-backend
-    entrypoint:
-      - "atciss"
-      - "serve"
+    command: serve
     environment:
       ATCISS_REDIS_HOST: redis
+      ATCISS_REDIS_URL: redis://redis
     depends_on:
       db:
         condition: service_healthy
 
   worker:
     image: ghcr.io/vatger/atciss/atciss-backend
-    entrypoint:
-      - "celery"
-      - "worker"
-      - "--loglevel=info"
+    command: worker
     environment:
-      CELERY_APP: atciss
       ATCISS_REDIS_HOST: redis
+      ATCISS_REDIS_URL: redis://redis
     depends_on:
       redis:
         condition: service_healthy
       db:
         condition: service_healthy
 
-  beat:
+  scheduler:
     image: ghcr.io/vatger/atciss/atciss-backend
-    entrypoint:
-      - "celery"
-      - "beat"
-      - "--schedule=/beat/celerybeat-schedule"
-      - "--loglevel=info"
+    command: scheduler
+    restart: always
     environment:
-      CELERY_APP: atciss
-      ATCISS_REDIS_HOST: redis
-    volumes:
-      - atciss-beat:/beat
-    depends_on:
-      redis:
-        condition: service_healthy
-
-  flower:
-    image: ghcr.io/vatger/atciss/atciss-backend
-    entrypoint:
-      - "celery"
-      - "flower"
-    environment:
-      CELERY_APP: atciss
-      ATCISS_REDIS_HOST: redis
+      ATCISS_REDIS_URL: redis://redis
     depends_on:
       redis:
         condition: service_healthy
 
   db:
-    image: postgis/postgis:16-3.4-alpine@sha256:99eabe2897da389266cf7ba288153195120ec03367f21c876024a785e3734d6b
+    image: postgis/postgis:16-3.4-alpine@sha256:952365b0fcdca41bb82434b700bd40ade0e1473c73e2148f3cf7b74da8c76f33
     volumes:
       - atciss-db-data:/var/lib/postgresql/data/pgdata
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
     healthcheck:
-      test: [CMD, pg_isready]
+      test: [CMD, su, postgres, -c, pg_isready]
       interval: 10s
       timeout: 3s
       retries: 3
 
   redis:
-    image: redis:alpine@sha256:090276da2603db19b154602c374f505d94c10ea57e9749fc3e68e955284bf0fd
+    image: redis:alpine@sha256:1b503bb77079ba644371969e06e1a6a1670bb34c2251107c0fc3a21ef9fdaeca
     volumes:
       - atciss-redis-data:/data
 
@@ -79,4 +57,3 @@ services:
 volumes:
   atciss-db-data:
   atciss-redis-data:
-  atciss-beat:

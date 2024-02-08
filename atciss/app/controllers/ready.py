@@ -1,12 +1,14 @@
 """Application controllers - ready."""
 
-from fastapi import APIRouter
+from typing import Annotated
+
+from fastapi import APIRouter, Depends
 from fastapi.exceptions import HTTPException
 from loguru import logger
 from redis.exceptions import RedisError
 
-from ..utils import RedisClient
-from ..views.ready import ReadyResponse
+from atciss.app.utils.redis import Redis, get_redis
+from atciss.app.views.ready import ReadyResponse
 
 router = APIRouter()
 
@@ -18,12 +20,14 @@ router = APIRouter()
     status_code=200,
     responses={503: {}},
 )
-async def readiness_check() -> ReadyResponse:
+async def readiness_check(
+    redis: Annotated[Redis, Depends(get_redis)],
+) -> ReadyResponse:
     """Check if application is ready."""
     logger.info("Started GET /ready")
 
     try:
-        if not await RedisClient.open().ping():
+        if not await redis.ping():
             logger.error("Redis ping failed")
             raise HTTPException(status_code=503, detail="Redis ping failed")
     except RedisError as e:

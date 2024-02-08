@@ -6,12 +6,11 @@ from fastapi import APIRouter, Depends
 from loguru import logger
 from pydantic import TypeAdapter
 
-from atciss.app.tasks.sectors import Airport, Airspace, Position, SectorData
-
-from ...config import settings
-from ..controllers.auth import get_user
-from ..models import User
-from ..utils.redis import RedisClient
+from atciss.app.controllers.auth import get_user
+from atciss.app.models import User
+from atciss.app.utils.redis import Redis, get_redis
+from atciss.app.views.sector import Airport, Airspace, Position, SectorData
+from atciss.config import settings
 
 router = APIRouter()
 
@@ -22,17 +21,18 @@ router = APIRouter()
 )
 async def airspace_get(
     user: Annotated[User, Depends(get_user)],
+    redis: Annotated[Redis, Depends(get_redis)],
 ) -> SectorData:
     """Get METAR for airport."""
-    redis_client = RedisClient.open()
 
     airspaces = {}
     airports = {}
     positions = {}
+
     for region in settings.SECTOR_REGIONS:
-        airports_json = await redis_client.get(f"sector:airports:{region}")
-        positions_json = await redis_client.get(f"sector:positions:{region}")
-        airspaces_json = await redis_client.get(f"sector:airspaces:{region}")
+        airports_json = await redis.get(f"sector:airports:{region}")
+        positions_json = await redis.get(f"sector:positions:{region}")
+        airspaces_json = await redis.get(f"sector:airspaces:{region}")
         if airports_json is None or positions_json is None or airspaces_json is None:
             logger.warning(f"No data for {region}")
             continue
