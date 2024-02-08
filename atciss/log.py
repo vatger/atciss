@@ -46,7 +46,7 @@ def formatter(record: loguru.Record) -> str:
     exc_part = "{exception}\n" if record["exception"] is not None else ""
     return (
         "<green>{elapsed}</green> | "
-        "<level>{level: <8}</level> | "
+        "<level>{level.icon}</level> | "
         "<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> | "
         f"{corid_part}"
         "<level>{message}</level>\n"
@@ -64,12 +64,13 @@ def setup_logging() -> None:
         colorize=True,
     )
 
-    logging.basicConfig(handlers=[InterceptHandler()], level=0)
+    _ = logger.level("CRITICAL", icon="🚨")
+    _ = logger.level("ERROR", icon="❎")
+    _ = logger.level("WARNING", icon="⚠️")
+    _ = logger.level("INFO", icon="📢")
+    _ = logger.level("DEBUG", icon="🐾")
 
-    # sqlalchemy prints queries on info level when we have DEBUG enabled
-    logging.getLogger("sqlalchemy.engine").setLevel(
-        logging.INFO if settings.DEBUG else logging.WARN,
-    )
+    logging.basicConfig(handlers=[InterceptHandler()], level=0)
 
     for name in logging.root.manager.loggerDict:  # pylint: disable=no-member
         _logger = logging.getLogger(name)

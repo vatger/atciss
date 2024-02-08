@@ -7,6 +7,7 @@ services:
       - "8000:8000"
     environment:
       ATCISS_DATABASE_DSN: "postgresql+asyncpg://postgres:fnord@db/atciss"
+      DEBUG_SQL: 0
     volumes:
       - ./atciss:/code/atciss
       - ./alembic:/code/alembic
@@ -20,6 +21,7 @@ services:
       - "9000:9000"
     environment:
       ATCISS_DATABASE_DSN: "postgresql+asyncpg://postgres:fnord@db/atciss"
+      DEBUG_SQL: 0
     volumes:
       - ./atciss:/code/atciss
       - ./contrib:/code/contrib

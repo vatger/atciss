@@ -10,7 +10,8 @@ class Application(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="ATCISS_", case_sensitive=False)
 
     DEBUG: bool = True
-    LOG_LEVEL: str = "INFO"
+    DEBUG_SQL: bool = False
+    LOG_LEVEL: str = "DEBUG"
     PROJECT_NAME: str = "atciss"
     VERSION: str = __version__
     CONTRIB_PATH: str = "./contrib"
