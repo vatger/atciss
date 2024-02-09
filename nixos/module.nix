@@ -60,24 +60,37 @@ in {
       ensureUsers = [
         {
           name = "atciss";
-          ensurePermissions = {
-            "DATABASE atciss" = "ALL PRIVILEGES";
-          };
+          ensureDBOwnership = true;
         }
       ];
     };
 
     systemd.services = {
+      postgresql-create-postgis = {
+        requiredBy = ["atciss.service"];
+        before = ["atciss.service"];
+        after = ["postgresql.service"];
+        serviceConfig = {
+          Type = "oneshot";
+          User = "postgres";
+        };
+        environment.PSQL = "psql --port=${toString config.services.postgresql.port}";
+        path = [config.services.postgresql.package];
+        script = ''
+          $PSQL atciss -c 'CREATE EXTENSION IF NOT EXISTS postgis'
+        '';
+      };
+
       atciss = {
         wantedBy = ["multi-user.target"];
-
+        requires = ["postgresql.service" "redis.service"];
+        after = ["postgresql-create-postgis.service"];
         environment = {
           inherit ATCISS_DEBUG;
           ATCISS_BASE_URL = "https://${cfg.host} ";
           ATCISS_DATABASE_DSN = "postgresql+asyncpg://localhost/atciss?host=/run/postgresql";
           ATCISS_CONTRIB_PATH = pkgs.atciss-contrib;
         };
-
         serviceConfig = {
           ExecStart = "${pkgs.atciss}/bin/atciss serve";
           DynamicUser = true;
@@ -91,13 +104,12 @@ in {
 
       atciss-worker = {
         wantedBy = ["multi-user.target"];
-
+        requires = ["postgresql.service" "redis.service"];
         environment = {
           inherit ATCISS_DEBUG;
           ATCISS_DATABASE_DSN = "postgresql+asyncpg://localhost/atciss?host=/run/postgresql";
           ATCISS_CONTRIB_PATH = pkgs.atciss-contrib;
         };
-
         serviceConfig = {
           ExecStart = "${pkgs.atciss}/bin/atciss worker";
           DynamicUser = true;
@@ -109,16 +121,14 @@ in {
         };
       };
 
-      atciss-beat = {
+      atciss-scheduler = {
         wantedBy = ["multi-user.target"];
-
+        requires = ["redis.service"];
         serviceConfig = {
           ExecStart = "${pkgs.atciss}/bin/atciss scheduler";
           DynamicUser = true;
           Restart = "always";
           RestartSec = "1s";
-          StateDirectory = "atciss-beat";
-          WorkingDirectory = "/var/lib/atciss-beat";
         };
       };
     };

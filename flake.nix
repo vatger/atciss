@@ -300,8 +300,7 @@
 
         formatter = pkgs.alejandra;
 
-        failingChecks = {
-          # FIXME: needs kvm on builder
+        checks = {
           nixosTest = import ./nixos/test.nix {inherit inputs pkgs;};
         };
       }
