@@ -1,4 +1,6 @@
 import { useAppSelector } from "app/hooks"
+import { DateTime } from "luxon"
+import { useEffect, useState } from "react"
 import { TileLayer, WMSTileLayer } from "react-leaflet"
 import {
   selectDFSOnMap,
@@ -16,6 +18,15 @@ export const BackgroundTiles = () => {
   const lightning = useAppSelector(selectLightning)
   const satellite = useAppSelector(selectSatelliteOnMap)
   const [colorMode] = useColorMode()
+  const [cachebust, setCachebust] = useState(DateTime.now())
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCachebust(DateTime.now())
+    }, 300000)
+
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <>
@@ -29,12 +40,6 @@ export const BackgroundTiles = () => {
         <TileLayer
           attribution="Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community"
           url="https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-        />
-      )}
-      {lightning && (
-        <TileLayer
-          attribution="Lightning data © Lightningmaps.org and Blitzortung.org contributors CC-BY-SA 4.0"
-          url="https://tiles.lightningmaps.org/?x={x}&y={y}&z={z}&s=256"
         />
       )}
       {ofm && (
@@ -63,9 +68,18 @@ export const BackgroundTiles = () => {
             layers: "dwd:Niederschlagsradar",
             transparent: true,
             format: "image/png",
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            cachebust: cachebust.toUTC().toISO(),
           }}
           opacity={1}
           pane="shadowPane"
+        />
+      )}
+      {lightning && (
+        <TileLayer
+          attribution="Lightning data © Lightningmaps.org and Blitzortung.org contributors CC-BY-SA 4.0"
+          url={`https://tiles.lightningmaps.org/?x={x}&y={y}&z={z}&s=256&cachebust=${cachebust.toUnixInteger()}`}
         />
       )}
     </>
