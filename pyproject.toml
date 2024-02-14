@@ -35,7 +35,7 @@ python-jose = "^3.3.0"
 redis = "^5"
 regex = "^2023.12.25"
 shapely = "^2.0.2"
-sqlalchemy = { version = "^2.0.26", extras = [ "asyncio" ] }
+sqlalchemy = { version = "^2.0.27", extras = [ "asyncio" ] }
 sqlmodel = "0.0.14"
 taskiq = "^0"
 taskiq-redis = "^0"
