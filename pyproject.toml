@@ -34,7 +34,7 @@ python-dateutil = "^2.8.2"
 python-jose = "^3.3.0"
 redis = "^5"
 regex = "^2023.12.25"
-shapely = "^2.0.2"
+shapely = "^2.0.3"
 sqlalchemy = { version = "^2.0.27", extras = [ "asyncio" ] }
 sqlmodel = "0.0.14"
 taskiq = "^0"
