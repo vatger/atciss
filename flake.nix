@@ -40,118 +40,121 @@
     };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    flake-utils,
-    poetry2nix,
-    napalm,
-    pre-commit-hooks,
-    ...
-  } @ inputs:
+  outputs =
+    { self
+    , nixpkgs
+    , flake-utils
+    , poetry2nix
+    , napalm
+    , pre-commit-hooks
+    , ...
+    } @ inputs:
     {
       overlays.default = nixpkgs.lib.composeManyExtensions [
         poetry2nix.overlays.default
         napalm.overlays.default
-        (final: prev: let
-          python = final.python311;
-          overrides = final.poetry2nix.overrides.withDefaults (pyfinal: pyprev: {
-            vatsim = pyprev.vatsim.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
+        (final: prev:
+          let
+            python = final.python311;
+            overrides = final.poetry2nix.overrides.withDefaults (pyfinal: pyprev: {
+              vatsim = pyprev.vatsim.overridePythonAttrs (old: {
+                nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
+              });
+              pynotam = pyprev.pynotam.overridePythonAttrs (old: {
+                nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
+              });
+              pydantic-xml = pyprev.pydantic-xml.overridePythonAttrs (old: {
+                nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
+              });
+              types-xmltodict = pyprev.types-xmltodict.overridePythonAttrs (old: {
+                nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.setuptools ];
+              });
+              fastapi-async-sqlalchemy = pyprev.fastapi-async-sqlalchemy.overridePythonAttrs (old: {
+                nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.setuptools ];
+              });
+              frozenlist = pyprev.frozenlist.overridePythonAttrs (old: {
+                nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.expandvars ];
+              });
+              pyrasite = pyprev.pyrasite.overridePythonAttrs (old: {
+                nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.setuptools ];
+              });
+              asgi-correlation-id = pyprev.asgi-correlation-id.overridePythonAttrs (old: {
+                nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
+                postPatch = ''
+                  substituteInPlace pyproject.toml \
+                    --replace 'poetry.masonry.api' 'poetry.core.masonry.api'
+                '';
+              });
+              taskiq = pyprev.taskiq.overridePythonAttrs (old: {
+                nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
+              });
+              taskiq-dependencies = pyprev.taskiq-dependencies.overridePythonAttrs (old: {
+                nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
+              });
+              taskiq-fastapi = pyprev.taskiq-fastapi.overridePythonAttrs (old: {
+                nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
+              });
+              taskiq-redis = pyprev.taskiq-redis.overridePythonAttrs (old: {
+                nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
+              });
+              gitignore-parser = pyprev.gitignore-parser.overridePythonAttrs (old: {
+                nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.setuptools ];
+              });
             });
-            pynotam = pyprev.pynotam.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
-            });
-            pydantic-xml = pyprev.pydantic-xml.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
-            });
-            types-xmltodict = pyprev.types-xmltodict.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
-            });
-            fastapi-async-sqlalchemy = pyprev.fastapi-async-sqlalchemy.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
-            });
-            frozenlist = pyprev.frozenlist.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.expandvars];
-            });
-            pyrasite = pyprev.pyrasite.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
-            });
-            asgi-correlation-id = pyprev.asgi-correlation-id.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
-              postPatch = ''
-                substituteInPlace pyproject.toml \
-                  --replace 'poetry.masonry.api' 'poetry.core.masonry.api'
-              '';
-            });
-            taskiq = pyprev.taskiq.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
-            });
-            taskiq-dependencies = pyprev.taskiq-dependencies.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
-            });
-            taskiq-fastapi = pyprev.taskiq-fastapi.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
-            });
-            taskiq-redis = pyprev.taskiq-redis.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.poetry-core];
-            });
-            gitignore-parser = pyprev.gitignore-parser.overridePythonAttrs (old: {
-              nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pyfinal.setuptools];
-            });
-          });
-        in {
-          atciss =
-            (final.poetry2nix.mkPoetryApplication {
+          in
+          {
+            atciss =
+              (final.poetry2nix.mkPoetryApplication {
+                inherit python overrides;
+                projectDir = final.poetry2nix.cleanPythonSources { src = ./.; };
+                pythonImportCheck = [ "atciss" ];
+                groups = [ ];
+                checkgroups = [ ];
+              }).overrideAttrs (attrs: {
+                postInstall = ''
+                  install -Dt $out/share/atciss alembic.ini
+                  cp -r alembic $out/share/atciss
+                '';
+              });
+
+            atciss-dev = final.poetry2nix.mkPoetryEnv {
               inherit python overrides;
-              projectDir = final.poetry2nix.cleanPythonSources {src = ./.;};
-              pythonImportCheck = ["atciss"];
-              groups = [];
-              checkgroups = [];
-            })
-            .overrideAttrs (attrs: {
-              postInstall = ''
-                install -Dt $out/share/atciss alembic.ini
-                cp -r alembic $out/share/atciss
+              pyproject = ./pyproject.toml;
+              poetrylock = ./poetry.lock;
+              extraPackages = ps: [ ps.ipython ];
+            };
+
+            atciss-frontend = final.napalm.buildPackage ./atciss-frontend {
+              NODE_ENV = "production";
+              nodejs = final.nodejs_20;
+              npmCommands = [
+                "npm install --include=dev --nodedir=${final.nodejs_20}/include/node --loglevel verbose --ignore-scripts"
+                "npm run build"
+              ];
+              installPhase = ''
+                mv build $out
               '';
-            });
+            };
 
-          atciss-dev = final.poetry2nix.mkPoetryEnv {
-            inherit python overrides;
-            pyproject = ./pyproject.toml;
-            poetrylock = ./poetry.lock;
-            extraPackages = ps: [ps.ipython];
-          };
-
-          atciss-frontend = final.napalm.buildPackage ./atciss-frontend {
-            NODE_ENV = "production";
-            nodejs = final.nodejs_20;
-            npmCommands = [
-              "npm install --include=dev --nodedir=${final.nodejs_20}/include/node --loglevel verbose --ignore-scripts"
-              "npm run build"
-            ];
-            installPhase = ''
-              mv build $out
+            atciss-contrib = final.runCommand "atciss-contrib" { } ''
+              cp -r ${self}/contrib $out
             '';
-          };
-
-          atciss-contrib = final.runCommand "atciss-contrib" {} ''
-            cp -r ${self}/contrib $out
-          '';
-        })
+          })
       ];
 
       nixosModules.default = import ./nixos/module.nix;
     }
     // (flake-utils.lib.eachDefaultSystem (
-      system: let
+      system:
+      let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [self.overlays.default];
+          overlays = [ self.overlays.default ];
         };
         inherit (pkgs) lib;
         nodejs = pkgs.nodejs_20;
-      in {
+      in
+      {
         legacyPackages = pkgs;
 
         packages = {
@@ -178,14 +181,14 @@
                 "ATCISS_CONTRIB_PATH=${pkgs.atciss-contrib}"
               ];
               WorkingDir = "/share/atciss";
-              Entrypoint = ["atciss"];
+              Entrypoint = [ "atciss" ];
             };
           };
 
           frontend-image = pkgs.dockerTools.buildLayeredImage {
             name = "ghcr.io/vatger/atciss/atciss-frontend";
             tag = "latest";
-            contents = with pkgs; [nginx fakeNss];
+            contents = with pkgs; [ nginx fakeNss ];
             extraCommands = "mkdir -p var/log/nginx tmp/nginx/client_body";
             config = {
               Entrypoint = [
@@ -231,7 +234,7 @@
         devShells.default = pkgs.atciss-dev.env.overrideAttrs (oldAttrs: {
           nativeBuildInputs =
             oldAttrs.nativeBuildInputs
-            ++ [nodejs]
+            ++ [ nodejs ]
             ++ (with pkgs; [
               nil
               pyright
@@ -258,7 +261,7 @@
                 };
               };
               hooks = {
-                alejandra.enable = true;
+                nixpkgs-fmt.enable = true;
                 statix.enable = true;
                 nil.enable = true;
                 eslint.enable = true;
@@ -269,39 +272,40 @@
                   entry = lib.mkForce "${pkgs.atciss-dev}/bin/ruff --fix";
                 };
               };
-            })
-            .shellHook;
+            }).shellHook;
         });
 
-        apps = let
-          mkCIApp = name: packages: script: {
-            type = "app";
-            program = toString (pkgs.writeScript name ''
-              export PATH="${lib.makeBinPath (
-                [pkgs.atciss-dev] ++ packages
-              )}"
-              ${script}
-            '');
+        apps =
+          let
+            mkCIApp = name: packages: script: {
+              type = "app";
+              program = toString (pkgs.writeScript name ''
+                export PATH="${lib.makeBinPath (
+                  [pkgs.atciss-dev] ++ packages
+                )}"
+                ${script}
+              '');
+            };
+          in
+          {
+            pylint = mkCIApp "pylint" [ ] ''
+              pylint -f colorized -r y atciss
+            '';
+            ruff = mkCIApp "ruff" [ ] ''
+              ruff check --output-format github atciss
+            '';
+            format = mkCIApp "ruff" [ ] ''
+              ruff format --check --diff
+            '';
+            eslint = mkCIApp "eslint" [ nodejs pkgs.bash ] ''
+              (cd atciss-frontend && npm install && npm run lint)
+            '';
           };
-        in {
-          pylint = mkCIApp "pylint" [] ''
-            pylint -f colorized -r y atciss
-          '';
-          ruff = mkCIApp "ruff" [] ''
-            ruff check --output-format github atciss
-          '';
-          format = mkCIApp "ruff" [] ''
-            ruff format --check --diff
-          '';
-          eslint = mkCIApp "eslint" [nodejs pkgs.bash] ''
-            (cd atciss-frontend && npm install && npm run lint)
-          '';
-        };
 
-        formatter = pkgs.alejandra;
+        formatter = pkgs.nixpkgs-fmt;
 
         checks = {
-          nixosTest = import ./nixos/test.nix {inherit inputs pkgs;};
+          nixosTest = import ./nixos/test.nix { inherit inputs pkgs; };
         };
       }
     ));

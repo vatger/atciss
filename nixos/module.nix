@@ -1,15 +1,16 @@
-{
-  lib,
-  config,
-  pkgs,
-  ...
-}: let
+{ lib
+, config
+, pkgs
+, ...
+}:
+let
   cfg = config.services.atciss;
   ATCISS_DEBUG =
     if cfg.debug
     then "1"
     else "0";
-in {
+in
+{
   options = {
     services.atciss = {
       enable = lib.mkEnableOption "ATCISS";
@@ -55,8 +56,8 @@ in {
 
     services.postgresql = {
       enable = true;
-      ensureDatabases = ["atciss"];
-      extraPlugins = with config.services.postgresql.package.pkgs; [postgis];
+      ensureDatabases = [ "atciss" ];
+      extraPlugins = with config.services.postgresql.package.pkgs; [ postgis ];
       ensureUsers = [
         {
           name = "atciss";
@@ -67,24 +68,24 @@ in {
 
     systemd.services = {
       postgresql-create-postgis = {
-        requiredBy = ["atciss.service"];
-        before = ["atciss.service"];
-        after = ["postgresql.service"];
+        requiredBy = [ "atciss.service" ];
+        before = [ "atciss.service" ];
+        after = [ "postgresql.service" ];
         serviceConfig = {
           Type = "oneshot";
           User = "postgres";
         };
         environment.PSQL = "psql --port=${toString config.services.postgresql.port}";
-        path = [config.services.postgresql.package];
+        path = [ config.services.postgresql.package ];
         script = ''
           $PSQL atciss -c 'CREATE EXTENSION IF NOT EXISTS postgis'
         '';
       };
 
       atciss = {
-        wantedBy = ["multi-user.target"];
-        requires = ["postgresql.service" "redis.service"];
-        after = ["postgresql-create-postgis.service"];
+        wantedBy = [ "multi-user.target" ];
+        requires = [ "postgresql.service" "redis.service" ];
+        after = [ "postgresql-create-postgis.service" ];
         environment = {
           inherit ATCISS_DEBUG;
           ATCISS_BASE_URL = "https://${cfg.host} ";
@@ -103,8 +104,8 @@ in {
       };
 
       atciss-worker = {
-        wantedBy = ["multi-user.target"];
-        requires = ["postgresql.service" "redis.service"];
+        wantedBy = [ "multi-user.target" ];
+        requires = [ "postgresql.service" "redis.service" ];
         environment = {
           inherit ATCISS_DEBUG;
           ATCISS_DATABASE_DSN = "postgresql+asyncpg://localhost/atciss?host=/run/postgresql";
@@ -122,8 +123,8 @@ in {
       };
 
       atciss-scheduler = {
-        wantedBy = ["multi-user.target"];
-        requires = ["redis.service"];
+        wantedBy = [ "multi-user.target" ];
+        requires = [ "redis.service" ];
         serviceConfig = {
           ExecStart = "${pkgs.atciss}/bin/atciss scheduler";
           DynamicUser = true;
