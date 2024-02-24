@@ -42,11 +42,13 @@ async def fetch_notam(
     for notams_to_fetch in (
         all_icao[i * 50 : i * 50 + 50] for i in range(int(len(all_icao) / 50) + 1)
     ):
+        logger.info(f"NOTAMs: fetching '{'+'.join(notams_to_fetch)}'")
         async with http_client.get(
             "https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do"
             + f"?reportType=Raw&retrieveLocId={'+'.join(notams_to_fetch)}"
             + "&actionType=notamRetrievalByICAOs&submit=View+NOTAMs",
         ) as res:
+            logger.info(f"NOTAMs: response '{res.status} {res.reason}'")
             notam_html = BeautifulSoup(await res.text(), "html.parser")
 
         for notam_elem in notam_html.find_all("pre"):
