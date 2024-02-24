@@ -34,7 +34,11 @@ async def fetch_notam(
 ) -> None:
     """Periodically fetch relevant NOTAMs."""
     all_icao = settings.FIRS
-    ads = await db_session.execute(select(Aerodrome))
+    ads = await db_session.execute(
+        select(Aerodrome).where(
+            Aerodrome.icao_designator.startswith("ED") | Aerodrome.icao_designator.startswith("ET")
+        )
+    )
     for (ad,) in ads.fetchall():
         all_icao.append(ad.icao_designator)
 
