@@ -9,7 +9,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v9
+        uses: cachix/install-nix-action@v25
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@v20
         with:
