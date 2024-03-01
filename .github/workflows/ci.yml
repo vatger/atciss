@@ -21,13 +21,13 @@ jobs:
           name: atciss
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Check code formatting
-        run: 'nix run .#format'
+        run: nix run .#format
       - name: Run ruff
-        run: 'nix run .#ruff'
+        run: nix run .#ruff
       - name: Run pylint
-        run: 'nix run .#pylint'
+        run: nix run .#pylint
       - name: Run eslint
-        run: 'nix run .#eslint'
+        run: nix run .#eslint
 
   flake-check:
     name: Flake Check
@@ -41,8 +41,8 @@ jobs:
         with:
           name: atciss
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - name: Run flake check
-        run: nix flake check --no-update-lock-file
+      - name: Build flake outputs
+        run: nix run .#build
 
   docker-images:
     name: Docker Images
@@ -70,7 +70,7 @@ jobs:
       - name: Build Docker images
         run: |
           for target in backend frontend; do
-            nix build -L .#$target-image --extra-experimental-features 'nix-command flakes'
+            nix build -L .#$target-image
             if [ "$GITHUB_EVENT_NAME" != "pull_request" ]; then
               skopeo copy --insecure-policy docker-archive://$(readlink -f ./result) docker://ghcr.io/$CI_PROJECT_PATH/atciss-$target:$GITHUB_SHA
             fi

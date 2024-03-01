@@ -38,6 +38,13 @@
         flake-utils.follows = "flake-utils";
       };
     };
+
+    nix-fast-build = {
+      url = "github:Mic92/nix-fast-build";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
   };
 
   outputs =
@@ -47,13 +54,14 @@
     , poetry2nix
     , napalm
     , pre-commit-hooks
+    , nix-fast-build
     , ...
     } @ inputs:
     {
       overlays.default = nixpkgs.lib.composeManyExtensions [
         poetry2nix.overlays.default
         napalm.overlays.default
-        (final: prev:
+        (final: _prev:
           let
             python = final.python311;
             overrides = final.poetry2nix.overrides.withDefaults (pyfinal: pyprev: {
@@ -110,7 +118,7 @@
                 pythonImportCheck = [ "atciss" ];
                 groups = [ ];
                 checkgroups = [ ];
-              }).overrideAttrs (attrs: {
+              }).overrideAttrs (_: {
                 postInstall = ''
                   install -Dt $out/share/atciss alembic.ini
                   cp -r alembic $out/share/atciss
@@ -155,8 +163,6 @@
         nodejs = pkgs.nodejs_20;
       in
       {
-        legacyPackages = pkgs;
-
         packages = {
           default = pkgs.atciss;
           backend = pkgs.atciss;
@@ -300,11 +306,14 @@
             eslint = mkCIApp "eslint" [ nodejs pkgs.bash ] ''
               (cd atciss-frontend && npm install && npm run lint)
             '';
+            build = mkCIApp "nix-fast-build" [ nix-fast-build.packages.${system}.nix-fast-build pkgs.git ] ''
+              nix-fast-build --no-nom --skip-cached
+            '';
           };
 
         formatter = pkgs.nixpkgs-fmt;
 
-        checks = {
+        checks = lib.optionalAttrs pkgs.stdenv.isLinux {
           nixosTest = import ./nixos/test.nix { inherit inputs pkgs; };
         };
       }
