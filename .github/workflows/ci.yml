@@ -16,6 +16,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install Nix
         uses: cachix/install-nix-action@v25
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
       - uses: cachix/cachix-action@v14
         with:
           name: atciss
@@ -37,6 +39,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Install Nix
         uses: cachix/install-nix-action@v25
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
       - uses: cachix/cachix-action@v14
         with:
           name: atciss
@@ -57,6 +61,8 @@ jobs:
           fetch-depth: 0
       - name: Install Nix
         uses: cachix/install-nix-action@v25
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
       - uses: cachix/cachix-action@v14
         with:
           name: atciss
