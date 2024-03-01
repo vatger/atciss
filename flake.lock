@@ -186,16 +186,16 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1708422887,
-        "narHash": "sha256-IqFWacyDT7qQ5pPEDoK46I6O96j8n6GtrLXvLzZrVMM=",
+        "lastModified": 1709316585,
+        "narHash": "sha256-qxAL9KYz/06ih7OFrzkI1DCBi5um5TR8UvASGy9eJSE=",
         "owner": "fpletz",
         "repo": "poetry2nix",
-        "rev": "df057ea55d8c81549c681a5d72e321a71a295a7f",
+        "rev": "d0c1c498294d129e66e58f5b69453607d7669e30",
         "type": "github"
       },
       "original": {
         "owner": "fpletz",
-        "ref": "ruff-0.2.2",
+        "ref": "ruff-0.3.0",
         "repo": "poetry2nix",
         "type": "github"
       }
