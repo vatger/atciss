@@ -208,7 +208,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
           ["ed/ZUG", "ed/TEG", "ed/ILR", "ed/SWA", "ed/DMSH", "ed/DMSL"],
         ],
         majorAerodromes: ["EDDM"],
-        aerodromes: ["EDMA", "ETSL", "ETHL", "EDJA", "EDMO"],
+        aerodromes: ["EDMA", "ETSL", "ETHL", "EDJA", "EDMO", "EDNY"],
         relevantAerodromes: ["EDDS", "EDDF"],
         areas: {
           "ED-R107-407 Allgäu": [
