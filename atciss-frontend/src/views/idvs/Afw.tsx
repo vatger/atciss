@@ -1,6 +1,7 @@
 import { BaroClock } from "components/idvs/BaroClock"
+import { Runways } from "components/idvs/Runways"
 import { Wind } from "components/idvs/Wind"
-import { Box, Flex } from "theme-ui"
+import { Flex } from "theme-ui"
 
 export const Afw = () => {
   return (
@@ -13,9 +14,9 @@ export const Afw = () => {
       }}
     >
       <Wind />
-      <Box>Rwy</Box>
+      <Runways />
       <BaroClock />
-      <Box>remark</Box>
+      {/*<Box>remark</Box> */}
     </Flex>
   )
 }
