@@ -256,58 +256,57 @@ async def process_routes(aixm: AIXMData, session: AsyncSession):
 
     route_segments = []
 
-    async with session as trans:
-        for route_segment in aixm.type("RouteSegment"):
-            upper_limit = route_segment["aixm:upperLimit", "#text"].int()
-            upper_limit_uom = route_segment["aixm:upperLimit", "@uom"].get()
-            lower_limit = route_segment["aixm:lowerLimit", "#text"].int()
-            lower_limit_uom = route_segment["aixm:lowerLimit", "@uom"].get()
-            start_dict = route_segment["aixm:start", "aixm:EnRouteSegmentPoint"].get()
-            start = start_dict.get(
-                "aixm:pointChoice_fixDesignatedPoint",
-                start_dict.get("aixm:pointChoice_navaidSystem"),
-            )
-            try:
-                start_id = UUID(start["@xlink:href"][9:])
-            except ValueError:
-                # non-ED: gml urn, not uuid
-                stmt = select(Navaid).where(Navaid.designator == start["@xlink:title"])
-                wpt = await trans.scalar(stmt)
-                start_id = wpt.id
-            end_dict = route_segment["aixm:end", "aixm:EnRouteSegmentPoint"].get()
-            end = end_dict.get(
-                "aixm:pointChoice_fixDesignatedPoint",
-                end_dict.get("aixm:pointChoice_navaidSystem"),
-            )
-            try:
-                end_id = UUID(end["@xlink:href"][9:])
-            except ValueError:
-                # non-ED: gml urn, not uuid
-                stmt = select(Navaid).where(Navaid.designator == end["@xlink:title"])
-                wpt = await trans.scalar(stmt)
-                end_id = wpt.id
+    for route_segment in aixm.type("RouteSegment"):
+        upper_limit = route_segment["aixm:upperLimit", "#text"].int()
+        upper_limit_uom = route_segment["aixm:upperLimit", "@uom"].get()
+        lower_limit = route_segment["aixm:lowerLimit", "#text"].int()
+        lower_limit_uom = route_segment["aixm:lowerLimit", "@uom"].get()
+        start_dict = route_segment["aixm:start", "aixm:EnRouteSegmentPoint"].get()
+        start = start_dict.get(
+            "aixm:pointChoice_fixDesignatedPoint",
+            start_dict.get("aixm:pointChoice_navaidSystem"),
+        )
+        try:
+            start_id = UUID(start["@xlink:href"][9:])
+        except ValueError:
+            # non-ED: gml urn, not uuid
+            stmt = select(Navaid).where(Navaid.designator == start["@xlink:title"])
+            wpt = await session.scalar(stmt)
+            start_id = wpt.id
+        end_dict = route_segment["aixm:end", "aixm:EnRouteSegmentPoint"].get()
+        end = end_dict.get(
+            "aixm:pointChoice_fixDesignatedPoint",
+            end_dict.get("aixm:pointChoice_navaidSystem"),
+        )
+        try:
+            end_id = UUID(end["@xlink:href"][9:])
+        except ValueError:
+            # non-ED: gml urn, not uuid
+            stmt = select(Navaid).where(Navaid.designator == end["@xlink:title"])
+            wpt = await session.scalar(stmt)
+            end_id = wpt.id
 
-            route_segments.append({
-                "id": UUID(route_segment.id),
-                "level": route_segment["aixm:level"].get(),
-                "true_track": route_segment["aixm:trueTrack"].float(),
-                "reverse_true_track": route_segment["aixm:reverseTrueTrack"].float(),
-                "length": route_segment["aixm:length", "#text"].float(),
-                "upper_limit": upper_limit,
-                "upper_limit_uom": upper_limit_uom,
-                "lower_limit": lower_limit,
-                "lower_limit_uom": lower_limit_uom,
-                "start_id": start_id,
-                "end_id": end_id,
-                "airway_id": UUID(route_segment["aixm:routeFormed", "@xlink:href"].get()[9:]),
-                "curve_extent": route_segment[
-                    "aixm:curveExtent",
-                    "aixm:Curve",
-                    "gml:segments",
-                    "gml:LineStringSegment",
-                    "gml:posList",
-                ].get(),
-            })
+        route_segments.append({
+            "id": UUID(route_segment.id),
+            "level": route_segment["aixm:level"].get(),
+            "true_track": route_segment["aixm:trueTrack"].float(),
+            "reverse_true_track": route_segment["aixm:reverseTrueTrack"].float(),
+            "length": route_segment["aixm:length", "#text"].float(),
+            "upper_limit": upper_limit,
+            "upper_limit_uom": upper_limit_uom,
+            "lower_limit": lower_limit,
+            "lower_limit_uom": lower_limit_uom,
+            "start_id": start_id,
+            "end_id": end_id,
+            "airway_id": UUID(route_segment["aixm:routeFormed", "@xlink:href"].get()[9:]),
+            "curve_extent": route_segment[
+                "aixm:curveExtent",
+                "aixm:Curve",
+                "gml:segments",
+                "gml:LineStringSegment",
+                "gml:posList",
+            ].get(),
+        })
 
     for route in routes:
         await create_or_update(session, Airway, route)
