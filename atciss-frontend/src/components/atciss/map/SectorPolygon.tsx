@@ -99,7 +99,7 @@ export const SectorPolygon = ({
             <Text variant="label">{sector.id}</Text>
             {(sector.remark || sector.uid) &&
               ` (${sector.uid ?? sector.remark})`}{" "}
-            by {owner?.name}
+            by {owner?.name} ({owner.frequency})
           </Box>
           {controller && (
             <Box sx={{ fontSize: "1" }}>
