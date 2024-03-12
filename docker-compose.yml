@@ -30,7 +30,7 @@ services:
         condition: service_healthy
 
   db:
-    image: postgis/postgis:16-3.4-alpine@sha256:952365b0fcdca41bb82434b700bd40ade0e1473c73e2148f3cf7b74da8c76f33
+    image: postgis/postgis:16-3.4-alpine@sha256:ff3cb1040a395f2bc4fd3a288b8bf6f54033957a2728edfb46d67f144a1af687
     volumes:
       - atciss-db-data:/var/lib/postgresql/data/pgdata
     environment:
