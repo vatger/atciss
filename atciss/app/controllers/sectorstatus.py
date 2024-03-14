@@ -1,4 +1,4 @@
-"""Application controllers - metar."""
+"""Application controllers - sector status."""
 
 from collections.abc import Sequence
 from dataclasses import dataclass

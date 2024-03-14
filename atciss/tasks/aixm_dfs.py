@@ -284,6 +284,9 @@ async def process_routes(aixm: AIXMData, session: AsyncSession):
             # non-ED: gml urn, not uuid
             stmt = select(Navaid).where(Navaid.designator == end["@xlink:title"])
             wpt = await session.scalar(stmt)
+            if wpt is None:
+                logger.error(f"No waypoint found in database: {end['@xlink:title']}")
+                continue
             end_id = wpt.id
 
         route_segments.append({

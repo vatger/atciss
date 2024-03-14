@@ -275,7 +275,7 @@
                 # pyright.enable = true;
                 ruff = {
                   enable = true;
-                  entry = lib.mkForce "${pkgs.atciss-dev}/bin/ruff --fix";
+                  entry = lib.mkForce "${pkgs.atciss-dev}/bin/ruff check --fix";
                 };
               };
             }).shellHook;

@@ -15,6 +15,7 @@ class UserBase(SQLModel):
     cid: int = Field(default=None, nullable=False, primary_key=True)
     name: str
     rating: str
+    rostered: bool = Field(default=False)
 
 
 class User(UserBase, table=True):
