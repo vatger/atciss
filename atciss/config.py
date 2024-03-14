@@ -24,6 +24,7 @@ class Application(BaseSettings):
     VATSIM_CLIENT_ID: str = "592"
     VATSIM_CLIENT_SECRET: str = "UR3n0xnjzP4KAbB3enMDCGVD4qbyLvIoSAQtzVm2"
     VATSIM_REDIRECT_URL: str = "http://localhost:5173/auth/callback"
+    ROSTER_API_TOKEN: str = "invalid"
 
     DATABASE_DSN: PostgresDsn = cast(
         PostgresDsn, "postgresql+asyncpg://postgres:fnord@localhost/atciss"

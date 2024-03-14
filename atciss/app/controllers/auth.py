@@ -146,6 +146,9 @@ async def get_user(
 
 
 async def get_controller(user: Annotated[User, Depends(get_user)]) -> User:
+    if not user.rostered:
+        raise HTTPException(status.HTTP_403_FORBIDDEN, "controller is not in the roster")
+
     if user.rating not in ["S2", "S3", "C1", "C3", "I1", "I3", "SUP", "ADM"]:
         raise HTTPException(status.HTTP_403_FORBIDDEN, f"not allowed with rating {user.rating}")
 
