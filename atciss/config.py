@@ -26,7 +26,7 @@ class Application(BaseSettings):
     VATSIM_REDIRECT_URL: str = "http://localhost:5173/auth/callback"
 
     DATABASE_DSN: PostgresDsn = cast(
-        PostgresDsn, "postgresql+asyncpg://atciss:fnord@localhost/atciss"
+        PostgresDsn, "postgresql+asyncpg://postgres:fnord@localhost/atciss"
     )
     REDIS_URL: RedisDsn = cast(RedisDsn, "redis://localhost:6379")
 
