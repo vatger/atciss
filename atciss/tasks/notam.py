@@ -26,7 +26,7 @@ def convert_notam(n: str) -> Notam | None:
     return None
 
 
-@broker.task(schedule=[{"cron": "*/30 * * * *"}])
+@broker.task(schedule=[{"cron": "20 4 * * *"}])
 async def fetch_notam(
     http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
     redis: Annotated[Redis, Depends(get_redis)],
@@ -48,7 +48,7 @@ async def fetch_notam(
     ):
         logger.info(f"NOTAMs: fetching '{'+'.join(notams_to_fetch)}'")
         async with http_client.get(
-            "https://www.notams.faa.gov/dinsQueryWeb/queryRetrievalMapAction.do"
+            "https://notams.geht.jetzt/dinsQueryWeb/queryRetrievalMapAction.do"
             + f"?reportType=Raw&retrieveLocId={'+'.join(notams_to_fetch)}"
             + "&actionType=notamRetrievalByICAOs&submit=View+NOTAMs",
         ) as res:
