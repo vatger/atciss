@@ -12,7 +12,7 @@ from atciss.app.utils.db import get_session
 from atciss.config import settings
 from atciss.tkq import broker
 
-ROSTER_API_URL = "https://vatsim-germany.org/api/vateud/roster"
+ROSTER_API_URL = "http://vatsim-germany.org/api/vateud/roster"
 
 
 @broker.task(schedule=[{"cron": "*/30 * * * *"}])
