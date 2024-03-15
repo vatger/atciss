@@ -12,8 +12,6 @@ from atciss.app.utils.db import get_session
 from atciss.config import settings
 from atciss.tkq import broker
 
-ROSTER_API_URL = "http://vatsim-germany.org/api/vateud/roster"
-
 
 @broker.task(schedule=[{"cron": "*/30 * * * *"}])
 async def fetch_roster(
@@ -23,7 +21,7 @@ async def fetch_roster(
     """Periodically fetch controller roster."""
 
     req = await http_client.get(
-        ROSTER_API_URL, headers={"Authorization": f"Token {settings.ROSTER_API_TOKEN}"}
+        settings.ROSTER_API_URL, headers={"Authorization": f"Token {settings.ROSTER_API_TOKEN}"}
     )
 
     if req.status == 401:
@@ -35,7 +33,7 @@ async def fetch_roster(
         rostered_cids = await req.json()
         assert isinstance(rostered_cids, list)
 
-    logger.info("Fetched {len(rostered_cids)} rostered controllers")
+    logger.info(f"Fetched {len(rostered_cids)} rostered controllers")
 
     for cid in rostered_cids:
         user = await db_session.scalar(select(User).where(User.cid == cid))
