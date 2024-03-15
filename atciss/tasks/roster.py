@@ -35,6 +35,8 @@ async def fetch_roster(
         rostered_cids = await req.json()
         assert isinstance(rostered_cids, list)
 
+    logger.info("Fetched {len(rostered_cids)} rostered controllers")
+
     for cid in rostered_cids:
         user = await db_session.scalar(select(User).where(User.cid == cid))
 
