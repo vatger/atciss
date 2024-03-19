@@ -259,19 +259,20 @@
             ''
             + (pre-commit-hooks.lib.${system}.run {
               src = ./.;
-              settings = {
-                pylint.binPath = "${pkgs.atciss-dev}/bin/pylint";
-                eslint = {
-                  binPath = pkgs.writeShellScript "eslint" ''./atciss-frontend/node_modules/.bin/eslint "$@"'';
-                  extensions = "\\.(j|t)sx?";
-                };
-              };
+              hooks = { };
               hooks = {
                 nixpkgs-fmt.enable = true;
                 statix.enable = true;
                 nil.enable = true;
-                eslint.enable = true;
+                eslint = {
+                  enable = true;
+                  settings = {
+                    binPath = pkgs.writeShellScript "eslint" ''./atciss-frontend/node_modules/.bin/eslint "$@"'';
+                    extensions = "\\.(j|t)sx?";
+                  };
+                };
                 # pylint.enable = true;
+                pylint.settings.binPath = "${pkgs.atciss-dev}/bin/pylint";
                 # pyright.enable = true;
                 ruff = {
                   enable = true;
