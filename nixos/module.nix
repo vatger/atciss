@@ -1,29 +1,23 @@
-{ lib
-, config
-, pkgs
-, ...
+{
+  lib,
+  config,
+  pkgs,
+  ...
 }:
 let
   cfg = config.services.atciss;
-  ATCISS_DEBUG =
-    if cfg.debug
-    then "1"
-    else "0";
+  ATCISS_DEBUG = if cfg.debug then "1" else "0";
 in
 {
   options = {
     services.atciss = {
       enable = lib.mkEnableOption "ATCISS";
-      host = lib.mkOption {
-        type = lib.types.str;
-      };
+      host = lib.mkOption { type = lib.types.str; };
       tls = lib.mkOption {
         type = lib.types.bool;
         default = true;
       };
-      environmentFile = lib.mkOption {
-        type = lib.types.path;
-      };
+      environmentFile = lib.mkOption { type = lib.types.path; };
       debug = lib.mkOption {
         type = lib.types.bool;
         default = true;
@@ -84,7 +78,10 @@ in
 
       atciss = {
         wantedBy = [ "multi-user.target" ];
-        requires = [ "postgresql.service" "redis.service" ];
+        requires = [
+          "postgresql.service"
+          "redis.service"
+        ];
         after = [ "postgresql-create-postgis.service" ];
         environment = {
           inherit ATCISS_DEBUG;
@@ -105,7 +102,10 @@ in
 
       atciss-worker = {
         wantedBy = [ "multi-user.target" ];
-        requires = [ "postgresql.service" "redis.service" ];
+        requires = [
+          "postgresql.service"
+          "redis.service"
+        ];
         environment = {
           inherit ATCISS_DEBUG;
           ATCISS_DATABASE_DSN = "postgresql+asyncpg://localhost/atciss?host=/run/postgresql";

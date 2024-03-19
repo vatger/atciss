@@ -1,7 +1,4 @@
-{ inputs
-, pkgs
-,
-}:
+{ inputs, pkgs }:
 let
   testing = import "${inputs.nixpkgs}/nixos/lib/testing-python.nix" {
     inherit pkgs;
@@ -12,21 +9,23 @@ testing.makeTest {
   name = "atciss";
 
   nodes = {
-    machine = { pkgs, ... }: {
-      imports = [ inputs.self.nixosModules.default ];
-      nixpkgs.overlays = [ inputs.self.overlays.default ];
+    machine =
+      { pkgs, ... }:
+      {
+        imports = [ inputs.self.nixosModules.default ];
+        nixpkgs.overlays = [ inputs.self.overlays.default ];
 
-      environment.systemPackages = with pkgs; [ jq ];
+        environment.systemPackages = with pkgs; [ jq ];
 
-      services.redis.servers."".enable = true;
+        services.redis.servers."".enable = true;
 
-      services.atciss = {
-        enable = true;
-        host = "localhost";
-        environmentFile = "/dev/null";
-        tls = false;
+        services.atciss = {
+          enable = true;
+          host = "localhost";
+          environmentFile = "/dev/null";
+          tls = false;
+        };
       };
-    };
   };
 
   testScript = ''
