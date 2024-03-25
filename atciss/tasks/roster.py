@@ -1,8 +1,10 @@
+from datetime import datetime
 from typing import Annotated
 
 from aiohttp import ClientSession
 from fastapi import Depends
 from loguru import logger
+from pydantic import BaseModel, TypeAdapter, ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
@@ -11,6 +13,21 @@ from atciss.app.utils import get_aiohttp_client
 from atciss.app.utils.db import get_session
 from atciss.config import settings
 from atciss.tkq import broker
+
+
+class RosterController(BaseModel):
+    id: int
+    firstname: str
+    lastname: str
+    email: str
+    setup_completed: int
+    created_at: datetime
+    updated_at: datetime
+
+
+class RosterControllerPermit(BaseModel):
+    user_cid: int
+    permitted_upto: str
 
 
 @broker.task(schedule=[{"cron": "*/30 * * * *"}])
@@ -30,8 +47,15 @@ async def fetch_roster(
             return
         rostered_cids = [10000009, 10000010]
     else:
-        rostered_cids = await req.json()
-        assert isinstance(rostered_cids, list)
+        rostered_controllers_json = await req.json()
+        try:
+            data = TypeAdapter(list[RosterController]).validate_python(rostered_controllers_json)
+            rostered_cids = [o.id for o in data]
+        except ValidationError:
+            data = TypeAdapter(list[RosterControllerPermit]).validate_python(
+                rostered_controllers_json
+            )
+            rostered_cids = [o.user_cid for o in data]
 
     logger.info(f"Fetched {len(rostered_cids)} rostered controllers")
 
