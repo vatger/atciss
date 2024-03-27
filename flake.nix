@@ -221,7 +221,7 @@
                       include ${pkgs.mailcap}/etc/nginx/mime.types;
 
                       set $backend_target "http://backend:8000";
-                      set $worker_target "http://worker:9000";
+                      set $worker_metrics_target "http://worker:9000/metrics/";
 
                       location / {
                         try_files $uri /index.html;
@@ -232,7 +232,11 @@
                       }
 
                       location /metrics {
-                        proxy_pass $worker_target;
+                        proxy_pass $backend_target;
+                      }
+
+                      location /worker/metrics {
+                        proxy_pass $worker_metrics_target;
                       }
                     }
                   }
