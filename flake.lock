@@ -186,11 +186,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1712889877,
-        "narHash": "sha256-vwCzvIact3dRRqQ/z2F37VSr7LeED9WFvXBP+JMRaKo=",
+        "lastModified": 1712973583,
+        "narHash": "sha256-kDCo8LPMkQoVOmoR3d4CwaKW130g3DMtmSxSA0I0Tqg=",
         "owner": "fpletz",
         "repo": "poetry2nix",
-        "rev": "7ff583b0384087c7ec669eb12e1a39809fcda97b",
+        "rev": "2dc04afd53e742a9e4a97cf4c9de8a1de3683e7c",
         "type": "github"
       },
       "original": {
@@ -215,11 +215,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1712579741,
-        "narHash": "sha256-igpsH+pa6yFwYOdah3cFciCk8gw+ytniG9quf5f/q84=",
+        "lastModified": 1712897695,
+        "narHash": "sha256-nMirxrGteNAl9sWiOhoN5tIHyjBbVi5e2tgZUgZlK3Y=",
         "owner": "cachix",
         "repo": "pre-commit-hooks.nix",
-        "rev": "70f504012f0a132ac33e56988e1028d88a48855c",
+        "rev": "40e6053ecb65fcbf12863338a6dcefb3f55f1bf8",
         "type": "github"
       },
       "original": {
