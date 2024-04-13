@@ -25,9 +25,7 @@ const StatusButton = ({
       onClick={() =>
         edit({
           id,
-          status: { 0: "1", 1: "2", 2: "0", 3: "0" }[
-            sectorStatus.status
-          ] as StatusEnum,
+          status: { 0: 1, 1: 2, 2: 0, 3: 0 }[sectorStatus.status] as StatusEnum,
         })
       }
       sx={{

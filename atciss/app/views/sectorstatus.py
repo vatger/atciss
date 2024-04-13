@@ -4,7 +4,7 @@ from pydantic import AwareDatetime
 from sqlmodel import Column, DateTime, Enum, Field, SQLModel
 
 
-class Status(str, enum.Enum):
+class Status(enum.Enum):
     green = 0
     orange = 1
     red = 2
