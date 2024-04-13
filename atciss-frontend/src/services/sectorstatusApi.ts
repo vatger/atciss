@@ -3,7 +3,7 @@ import { api } from "services/api"
 import { RootState } from "../app/store"
 import { selectStatusSectors } from "./atisAfwSlice"
 
-export type StatusEnum = "0" | "1" | "2" | "3"
+export type StatusEnum = 0 | 1 | 2 | 3
 
 export interface SectorStatus {
   id: string
