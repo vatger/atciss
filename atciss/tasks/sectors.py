@@ -22,8 +22,8 @@ async def fetch_sector_data(
 
     for region in settings.SECTOR_REGIONS:
         async with http_client.get(
-            "https://raw.githubusercontent.com/VATGER-Nav/vatglasses-data/"
-            + f"atciss/data/{region}.json",
+            "https://raw.githubusercontent.com/lennycolton/vatglasses-data/"
+            + f"main/data/{region}.json",
         ) as res:
             try:
                 data[region] = TypeAdapter(SectorData).validate_python(
