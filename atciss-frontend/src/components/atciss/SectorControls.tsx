@@ -117,6 +117,7 @@ export const SectorControls = () => {
               </Text>
               {Object.entries(presets).map(([name, preset]) => (
                 <Button
+                  sx={{ fontSize: 1 }}
                   key={name}
                   onClick={() => {
                     dispatch(enableOnlyPositions(preset.positions))

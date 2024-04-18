@@ -34,11 +34,17 @@ export const SPLIT_PRESETS: {
     "TRU-NDG-ALB": {
       positions: ["ed/TRU", "ed/NDG", "ed/ALB", "ed/DMNH"],
     },
+    "ZUG-WLD-ALB": {
+      positions: ["ed/ZUG", "ed/WLD", "ed/ALB", "ed/DMNH"],
+    },
     "ZUG-WLD-EGG": {
       positions: ["ed/ZUG", "ed/WLD", "ed/EGG", "ed/DMNH"],
     },
     "TRU-WLD-EGG": {
       positions: ["ed/TRU", "ed/WLD", "ed/EGG", "ed/DMNH"],
+    },
+    "ZUG-TEG-WLD-ALB": {
+      positions: ["ed/ZUG", "ed/TEG", "ed/WLD", "ed/ALB", "ed/DMNH"],
     },
   },
   EDGG: {
