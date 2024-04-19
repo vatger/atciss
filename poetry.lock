@@ -1568,13 +1568,13 @@ yaml = ["pyyaml (>=6.0.1)"]
 
 [[package]]
 name = "pydantic-xml"
-version = "2.9.1"
+version = "2.9.2"
 description = "pydantic xml extension"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pydantic_xml-2.9.1-py3-none-any.whl", hash = "sha256:d65c223edfd9aaa38c86a2943ca1398626d7305bafc60bb42d849e788c7a57e1"},
-    {file = "pydantic_xml-2.9.1.tar.gz", hash = "sha256:46ae91358996af81b1b408bf9d3e74dd00db34ff3de38ef9eb4da7b0a912c728"},
+    {file = "pydantic_xml-2.9.2-py3-none-any.whl", hash = "sha256:35414f95dcdebe39d044ccb61980f071e2814875bf7321f60bfc1563e953146f"},
+    {file = "pydantic_xml-2.9.2.tar.gz", hash = "sha256:3856aa48f79b4f998177439dcc8a72b13aa57ff440d19f59940778f32e66d0d3"},
 ]
 
 [package.dependencies]
