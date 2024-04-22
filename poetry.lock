@@ -2242,13 +2242,13 @@ taskiq = ">=0.8.0,<1"
 
 [[package]]
 name = "taskiq-redis"
-version = "0.5.5"
+version = "0.5.6"
 description = "Redis integration for taskiq"
 optional = false
-python-versions = ">=3.8.1,<4.0.0"
+python-versions = "<4.0.0,>=3.8.1"
 files = [
-    {file = "taskiq_redis-0.5.5-py3-none-any.whl", hash = "sha256:4a7add1e30b13bac771c21caf7217f79a417fd28ebb0d33bdca67b9ebb76bd23"},
-    {file = "taskiq_redis-0.5.5.tar.gz", hash = "sha256:251f0af753de2742128d6e3a3beed40cf9222537596882b604c0f85353c2b5a0"},
+    {file = "taskiq_redis-0.5.6-py3-none-any.whl", hash = "sha256:f113f9e2331d2a4babbe7fe902898efe6921319680118893444201058683eee8"},
+    {file = "taskiq_redis-0.5.6.tar.gz", hash = "sha256:7591e32e2cf127ba58aeb15d6e62ea261ad9ec7ea54936043c9517ac90257224"},
 ]
 
 [package.dependencies]
