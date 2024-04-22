@@ -294,8 +294,9 @@
           let
             mkCIApp = name: packages: script: {
               type = "app";
-              program = toString (
-                pkgs.writeScript name ''
+              program = lib.getExe (
+                pkgs.writeScriptBin name ''
+                  #!${pkgs.stdenv.shell}
                   export PATH="${lib.makeBinPath ([ pkgs.atciss-dev ] ++ packages)}"
                   ${script}
                 ''
