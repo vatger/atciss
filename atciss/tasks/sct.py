@@ -42,6 +42,7 @@ def extract_sct_file(zipfile: ZipFile) -> str | None:
         if path.suffix == ".sct":
             logger.info(f".sct file: {path.name}")
             return path.read_text(encoding="windows-1252")
+    return None
 
 
 @broker.task()
