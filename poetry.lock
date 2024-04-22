@@ -2184,13 +2184,13 @@ full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart (>=0.0.7
 
 [[package]]
 name = "taskiq"
-version = "0.11.0"
+version = "0.11.1"
 description = "Distributed task queue with full async support"
 optional = false
-python-versions = ">=3.8.1,<4.0.0"
+python-versions = "<4.0.0,>=3.8.1"
 files = [
-    {file = "taskiq-0.11.0-py3-none-any.whl", hash = "sha256:9544dc661065fbf5551253425f55d0b3aae56ce4bbbedb9ea1c66e81e4532929"},
-    {file = "taskiq-0.11.0.tar.gz", hash = "sha256:b986d9a4b83689e6e1b9525c08df54d99ded240771db41d96f96b45d67cf120b"},
+    {file = "taskiq-0.11.1-py3-none-any.whl", hash = "sha256:35a058f5478aeffc048a1ab23728077d88ce162b30452d0eef8282793c607a58"},
+    {file = "taskiq-0.11.1.tar.gz", hash = "sha256:cf21f2fc433293ff5c01dbb0fc3cef4d0a9f90641ca48e82594043003512f261"},
 ]
 
 [package.dependencies]
