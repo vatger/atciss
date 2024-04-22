@@ -145,7 +145,7 @@ async def get_user(
     return user
 
 
-async def get_controller(user: Annotated[User, Depends(get_user)]) -> User:
+def get_controller(user: Annotated[User, Depends(get_user)]) -> User:
     if not user.rostered:
         raise HTTPException(status.HTTP_403_FORBIDDEN, "controller is not in the roster")
 
@@ -155,7 +155,7 @@ async def get_controller(user: Annotated[User, Depends(get_user)]) -> User:
     return user
 
 
-async def get_admin(
+def get_admin(
     token: Annotated[str, Depends(oauth2_scheme)],
     user: Annotated[User, Depends(get_user)],
 ) -> User:
@@ -173,7 +173,7 @@ async def get_admin(
 @router.get(
     "/auth",
 )
-async def auth_config() -> AuthInfoModel:
+def auth_config() -> AuthInfoModel:
     return AuthInfoModel(
         client_id=settings.VATSIM_CLIENT_ID,
         auth_url=settings.VATSIM_AUTH_URL,
