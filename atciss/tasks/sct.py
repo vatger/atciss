@@ -37,11 +37,12 @@ async def fetch_airac_zip(http_client: ClientSession, url: str) -> ZipFile:
     return ZipFile(BytesIO(zipbytes))
 
 
-async def extract_sct_file(zipfile: ZipFile) -> str | None:
+def extract_sct_file(zipfile: ZipFile) -> str | None:
     for path in Path(zipfile).iterdir():
         if path.suffix == ".sct":
             logger.info(f".sct file: {path.name}")
             return path.read_text(encoding="windows-1252")
+    return None
 
 
 @broker.task()
@@ -51,7 +52,7 @@ async def import_sct(
 ) -> None:
     airac_zip_url = await find_airac_zip_url(http_client)
     airac_zip = await fetch_airac_zip(http_client, airac_zip_url)
-    airac_sct_file = await extract_sct_file(airac_zip)
+    airac_sct_file = extract_sct_file(airac_zip)
 
     if airac_sct_file:
         sct = sct_parser.parse(airac_sct_file)

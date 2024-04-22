@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 @router.get("/admin/tasks")
-async def get_tasks(
+def get_tasks(
     user: Annotated[User, Depends(get_admin)],
 ) -> list[str]:
     return list(broker.get_all_tasks().keys())
