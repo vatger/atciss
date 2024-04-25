@@ -66,16 +66,12 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         <Link to="ac" sx={{ gridRow: "2/3" }}>
           <Button variant="nav">A/C-Type</Button>
         </Link>
-        {user?.admin && (
-          <>
-            <Link to="aip-ifr" sx={{ gridRow: "2/3" }}>
-              <Button variant="nav">AIP IFR</Button>
-            </Link>
-            <Link to="aip-vfr" sx={{ gridRow: "2/3" }}>
-              <Button variant="nav">AIP VFR</Button>
-            </Link>
-          </>
-        )}
+        <Link to="aip-ifr" sx={{ gridRow: "2/3" }}>
+          <Button variant="nav">AIP IFR</Button>
+        </Link>
+        <Link to="aip-vfr" sx={{ gridRow: "2/3" }}>
+          <Button variant="nav">AIP VFR</Button>
+        </Link>
         {user?.admin && (
           <Link to="bookings" sx={{ gridRow: "2/3" }}>
             <Button variant="nav">Bookings</Button>

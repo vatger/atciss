@@ -71,19 +71,11 @@ const router = createBrowserRouter([
       },
       {
         path: "aip-ifr",
-        element: (
-          <RequireAdmin>
-            <AipIfr />
-          </RequireAdmin>
-        ),
+        element: <AipIfr />,
       },
       {
         path: "aip-vfr",
-        element: (
-          <RequireAdmin>
-            <AipVfr />
-          </RequireAdmin>
-        ),
+        element: <AipVfr />,
       },
       {
         path: "/admin",
