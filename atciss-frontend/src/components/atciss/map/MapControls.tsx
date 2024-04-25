@@ -30,7 +30,6 @@ import { Box, Flex, Text } from "theme-ui"
 import { SectorControls } from "../SectorControls"
 import { LevelChoice } from "./LevelChoice"
 import { Search } from "./search/Search"
-import { selectUser } from "app/auth/slice"
 
 export const MapControls = ({ map }: { map: RefObject<Map> }) => {
   const dispatch = useAppDispatch()
@@ -48,7 +47,6 @@ export const MapControls = ({ map }: { map: RefObject<Map> }) => {
   const airways = useAppSelector(selectAirwayOnMap)
   const airwayLowerUpper = useAppSelector(selectAirwayLowerUpper)
   const sigmet = useAppSelector(selectSigmetOnMap)
-  const user = useAppSelector(selectUser)
 
   return (
     <Search map={map}>
@@ -62,18 +60,16 @@ export const MapControls = ({ map }: { map: RefObject<Map> }) => {
           open flightmaps
         </Text>
       </Box>
-      {user?.admin && (
-        <Box>
-          <Text as="label" variant="label">
-            <input
-              type="checkbox"
-              checked={dfs}
-              onChange={(e) => dispatch(setDFS(e.target.checked))}
-            />
-            DFS ICAO map
-          </Text>
-        </Box>
-      )}
+      <Box>
+        <Text as="label" variant="label">
+          <input
+            type="checkbox"
+            checked={dfs}
+            onChange={(e) => dispatch(setDFS(e.target.checked))}
+          />
+          DFS ICAO map
+        </Text>
+      </Box>
       <Box>
         <Text as="label" variant="label">
           <input
