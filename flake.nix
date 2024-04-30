@@ -104,6 +104,9 @@
                 gitignore-parser = pyprev.gitignore-parser.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.setuptools ];
                 });
+                fastapi = pyprev.fastapi.overridePythonAttrs (old: {
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.pdm-backend ];
+                });
               }
             );
           in
