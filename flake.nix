@@ -89,6 +89,9 @@
                       --replace 'poetry.masonry.api' 'poetry.core.masonry.api'
                   '';
                 });
+                sqlmodel = pyprev.sqlmodel.overridePythonAttrs (old: {
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.pdm-backend ];
+                });
                 taskiq = pyprev.taskiq.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
                 });
