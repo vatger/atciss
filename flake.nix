@@ -86,7 +86,7 @@
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
                   postPatch = ''
                     substituteInPlace pyproject.toml \
-                      --replace 'poetry.masonry.api' 'poetry.core.masonry.api'
+                      --replace-fail 'poetry.masonry.api' 'poetry.core.masonry.api'
                   '';
                 });
                 sqlmodel = pyprev.sqlmodel.overridePythonAttrs (old: {
@@ -138,9 +138,9 @@
 
             atciss-frontend = final.napalm.buildPackage ./atciss-frontend {
               NODE_ENV = "production";
-              nodejs = final.nodejs_20;
+              nodejs = final.nodejs_22;
               npmCommands = [
-                "npm install --include=dev --nodedir=${final.nodejs_20}/include/node --loglevel verbose --ignore-scripts"
+                "npm install --include=dev --nodedir=${final.nodejs_22}/include/node --loglevel verbose --ignore-scripts"
                 "npm run build"
               ];
               installPhase = ''
@@ -165,7 +165,7 @@
           overlays = [ self.overlays.default ];
         };
         inherit (pkgs) lib;
-        nodejs = pkgs.nodejs_20;
+        nodejs = pkgs.nodejs_22;
       in
       {
         packages = {
