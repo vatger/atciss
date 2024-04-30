@@ -30,7 +30,7 @@ services:
         condition: service_healthy
 
   db:
-    image: postgis/postgis:16-3.4-alpine@sha256:ff3cb1040a395f2bc4fd3a288b8bf6f54033957a2728edfb46d67f144a1af687
+    image: postgis/postgis:16-3.4-alpine@sha256:62f31fa40950df2a827fe793c26523887497903cd39e3ad6bfa342abbf1771e7
     volumes:
       - atciss-db-data:/var/lib/postgresql/data/pgdata
     environment:
@@ -42,7 +42,7 @@ services:
       retries: 3
 
   redis:
-    image: redis:alpine@sha256:1b503bb77079ba644371969e06e1a6a1670bb34c2251107c0fc3a21ef9fdaeca
+    image: redis:alpine@sha256:a40e29800d387e3cf9431902e1e7a362e4d819233d68ae39380532c3310091ac
     volumes:
       - atciss-redis-data:/data
 
