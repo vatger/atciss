@@ -33,7 +33,7 @@ pynotam = { git = "https://github.com/globin/PyNotam", rev = "84b741863d09aaa616
 python-dateutil = "^2.9.0"
 python-jose = "^3.3.0"
 redis = "^5"
-regex = "^2023.12.25"
+regex = "^2024.4.28"
 shapely = "^2.0.4"
 sqlalchemy = { version = "^2.0.29", extras = [ "asyncio" ] }
 sqlmodel = "0.0.18"
@@ -42,7 +42,7 @@ taskiq-redis = "^0"
 taskiq-fastapi = "^0"
 uvicorn = {extras = ["standard"], version = "^0.29"}
 xmltodict = "^0.13.0"
-vatsim = "^0.1"
+vatsim = "^0.1.1"
 mypy = "^1.10.0"
 
 [tool.poetry.group.dev.dependencies]
@@ -55,7 +55,6 @@ ruff = "0.4.2"
 types-xmltodict = "^0.13.0.3"
 pyrasite = "^2.0"
 taskiq = { version = "^0", extras = ["reload"] }
-watchfiles = "~0.21.0"
 
 [tool.poetry.scripts]
 atciss = 'atciss.cli:cli'
