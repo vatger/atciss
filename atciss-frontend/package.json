@@ -43,7 +43,7 @@
     "prettier-config-nick": "^1.0.2",
     "sass": "^1.76.0",
     "typescript": "^5.4.5",
-    "vite": "^5.2.10",
+    "vite": "^5.2.11",
     "vitest": "^1.5.3"
   },
   "eslintConfig": {
