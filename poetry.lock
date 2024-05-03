@@ -598,13 +598,13 @@ files = [
 
 [[package]]
 name = "geoalchemy2"
-version = "0.15.0"
+version = "0.15.1"
 description = "Using SQLAlchemy with Spatial Databases"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "GeoAlchemy2-0.15.0-py3-none-any.whl", hash = "sha256:180b552992e57dd9dc8148cea7c6c2c44b7878265d1484e3811a27e0e6e1ff2c"},
-    {file = "geoalchemy2-0.15.0.tar.gz", hash = "sha256:a799b7d14c2ec0d1ccbc11f98fb40f1388a83c42d94992b0cf55933c93d4988a"},
+    {file = "GeoAlchemy2-0.15.1-py3-none-any.whl", hash = "sha256:c1083cc3270608c3d5000a5487069ac9e75ac21a8ef2b7ebc29e060a0d4719ec"},
+    {file = "geoalchemy2-0.15.1.tar.gz", hash = "sha256:33df0cd901abf8518ec0985f9201d42cce65887127cf59f40be38cf758a9a6dc"},
 ]
 
 [package.dependencies]
@@ -2791,4 +2791,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "c41a78921a1bd78a09f50beebbdd073747d68daa2c12b6edae03ac629778a1b5"
+content-hash = "12641c76b17471edf9af0e32cf38bab4ed613feb54bc905b34954b24dfad84e2"
