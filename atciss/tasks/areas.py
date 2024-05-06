@@ -10,7 +10,7 @@ from atciss.app.views.areas import AreaBooking, EAUPAreas
 from atciss.tkq import broker
 
 
-@broker.task(schedule=[{"cron": "*/10 * * * *"}])
+@broker.task(schedule=[{"cron": "*/30 * * * *"}])
 async def fetch_areas(
     redis: Annotated[Redis, Depends(get_redis)],
 ) -> None:
