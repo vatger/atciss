@@ -2,7 +2,8 @@
 
 from typing import Annotated, cast
 
-from eaup.dfs import Dfs_Aup
+from eaup.dfs import Dfs_Aup, parse_dfs_areas_to_eaup
+from eaup.eaup import Eaup, EaupInfo, merge_to_eaup
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import TypeAdapter
 
@@ -36,10 +37,20 @@ async def get_areas(
 )
 async def get_topsky_areas(
     redis: Annotated[Redis, Depends(get_redis)],
-) -> Dfs_Aup:
+) -> Eaup:
     """Get topsky-compatible area bookings for today."""
-    dfs_aup = cast(str | None, await redis.get("areas:dfs_aup"))
-    if dfs_aup is None:
+    dfs_aup_str = cast(str | None, await redis.get("areas:dfs_aup"))
+    if dfs_aup_str is None:
         raise HTTPException(status_code=404)
 
-    return TypeAdapter(Dfs_Aup).validate_json(dfs_aup)
+    dfs_aup = TypeAdapter(Dfs_Aup).validate_json(dfs_aup_str)
+    dfs_areas = parse_dfs_areas_to_eaup(dfs_aup)
+    return merge_to_eaup(
+        info=EaupInfo(
+            type="atciss",
+            valid_wef=dfs_aup.header.valid_from,
+            valid_til=dfs_aup.header.valid_until,
+            released_on=dfs_aup.header.valid_from,
+        ),
+        area_list=dfs_areas,
+    )
