@@ -1,12 +1,10 @@
 from typing import Annotated
 
-from aiohttp import ClientSession
 from eaup.dfs import Dfs_Aup, get_dfs_areas
 from loguru import logger
 from pydantic import TypeAdapter
 from taskiq_dependencies import Depends
 
-from atciss.app.utils import get_aiohttp_client
 from atciss.app.utils.redis import Redis, get_redis
 from atciss.app.views.areas import AreaBooking, EAUPAreas
 from atciss.tkq import broker
@@ -14,7 +12,6 @@ from atciss.tkq import broker
 
 @broker.task(schedule=[{"cron": "*/10 * * * *"}])
 async def fetch_areas(
-    http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
     redis: Annotated[Redis, Depends(get_redis)],
 ) -> None:
     """Periodically fetch active areas."""
