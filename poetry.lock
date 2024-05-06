@@ -474,6 +474,27 @@ graph = ["objgraph (>=1.7.2)"]
 profile = ["gprof2dot (>=2022.7.29)"]
 
 [[package]]
+name = "eaup"
+version = "0.1.0"
+description = ""
+optional = false
+python-versions = "^3.10"
+files = []
+develop = false
+
+[package.dependencies]
+beautifulsoup4 = "^4.11.1"
+pydantic = "^2.6"
+requests = "^2.27.1"
+stringcase = "^1.2.0"
+
+[package.source]
+type = "git"
+url = "https://gitlab.com/fpletz/eaup.git"
+reference = "d9270df4097ca62359215cc762d41a0827d8dd06"
+resolved_reference = "d9270df4097ca62359215cc762d41a0827d8dd06"
+
+[[package]]
 name = "ecdsa"
 version = "0.19.0"
 description = "ECDSA cryptographic signature library (pure python)"
@@ -2169,6 +2190,16 @@ anyio = ">=3.4.0,<5"
 full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart (>=0.0.7)", "pyyaml"]
 
 [[package]]
+name = "stringcase"
+version = "1.2.0"
+description = "String case converter."
+optional = false
+python-versions = "*"
+files = [
+    {file = "stringcase-1.2.0.tar.gz", hash = "sha256:48a06980661908efe8d9d34eab2b6c13aefa2163b3ced26972902e3bdfd87008"},
+]
+
+[[package]]
 name = "taskiq"
 version = "0.11.3"
 description = "Distributed task queue with full async support"
@@ -2791,4 +2822,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "555c6ae852d1cf60db3bb419a02f17fdf91604cd04e48dacd9eceff922ffcc98"
+content-hash = "775cbb8741b027bd11ea146c03456b315affaf4efead0e093905a7dadd146dab"

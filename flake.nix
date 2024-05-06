@@ -110,6 +110,9 @@
                 fastapi = pyprev.fastapi.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.pdm-backend ];
                 });
+                eaup = pyprev.eaup.overridePythonAttrs (old: {
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
+                });
               }
             );
           in
