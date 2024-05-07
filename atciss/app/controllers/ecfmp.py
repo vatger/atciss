@@ -1,8 +1,7 @@
-"""Application controllers - ECFMP."""
-
 from typing import Annotated, cast
 
 from fastapi import APIRouter, Depends, Query
+from fastapi.responses import ORJSONResponse
 from loguru import logger
 from pydantic import TypeAdapter
 
@@ -16,6 +15,7 @@ router = APIRouter()
 
 @router.get(
     "/ecfmp/{fir}",
+    response_class=ORJSONResponse,
     responses={404: {}},
 )
 async def get_flow_measures(
@@ -33,6 +33,7 @@ async def get_flow_measures(
 
 @router.get(
     "/event",
+    response_class=ORJSONResponse,
     responses={404: {}},
 )
 async def get_events(

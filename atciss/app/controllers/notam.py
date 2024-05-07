@@ -1,10 +1,9 @@
-"""Application controllers - notam."""
-
 from collections.abc import Sequence
 from datetime import UTC, datetime
 from typing import Annotated, cast
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi.responses import ORJSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import delete, select
 
@@ -19,6 +18,7 @@ router = APIRouter()
 
 @router.get(
     "/notam",
+    response_class=ORJSONResponse,
 )
 async def notam_get(
     icao: Annotated[list[str], Query(...)],
@@ -43,6 +43,7 @@ async def notam_get(
 
 @router.get(
     "/notam/read",
+    response_class=ORJSONResponse,
 )
 async def notam_seen_get(
     user: Annotated[User, Depends(get_user)],

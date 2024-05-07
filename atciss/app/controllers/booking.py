@@ -1,10 +1,9 @@
-"""Application controllers - booking."""
-
 from collections.abc import Sequence
 from datetime import UTC, datetime, timedelta
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Query
+from fastapi.responses import ORJSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import and_, or_, select
 
@@ -17,8 +16,11 @@ from ..views.booking import Booking
 router = APIRouter()
 
 
-@router.get("/booking")
-async def auth_config(
+@router.get(
+    "/booking",
+    response_class=ORJSONResponse,
+)
+async def get_bookings(
     prefixes: Annotated[Sequence[str], Query(alias="region", default_factory=list)],
     _: Annotated[User, Depends(get_user)],
     session: Annotated[AsyncSession, Depends(get_session)],

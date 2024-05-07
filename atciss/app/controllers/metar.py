@@ -1,10 +1,8 @@
-"""Application controllers - metar."""
-
 from collections.abc import Sequence
 from typing import Annotated, cast
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from fastapi.responses import PlainTextResponse
+from fastapi.responses import ORJSONResponse, PlainTextResponse
 from loguru import logger
 from metar.Metar import ParserError
 
@@ -32,6 +30,7 @@ async def fetch_metar(icao: AirportIcao, redis: Redis) -> MetarModel | None:
 
 @router.get(
     "/metar",
+    response_class=ORJSONResponse,
 )
 async def metars_get(
     airports: Annotated[Sequence[AirportIcao], Query(alias="icao")],
@@ -61,6 +60,7 @@ async def metar_raw_get(
 
 @router.get(
     "/metar/{icao}",
+    response_class=ORJSONResponse,
     responses={404: {}},
 )
 async def metar_get(

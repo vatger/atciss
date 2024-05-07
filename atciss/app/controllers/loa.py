@@ -1,8 +1,7 @@
-"""Application controllers - metar."""
-
 from typing import Annotated, cast
 
 from fastapi import APIRouter, Depends, Query
+from fastapi.responses import ORJSONResponse
 from pydantic import TypeAdapter
 
 from atciss.app.controllers.auth import get_user
@@ -14,7 +13,7 @@ router = APIRouter()
 
 @router.get(
     "/loa",
-    tags=["loa"],
+    response_class=ORJSONResponse,
 )
 async def metar_get(
     sector: Annotated[list[str], Query(...)],

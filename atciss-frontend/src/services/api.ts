@@ -87,7 +87,7 @@ export const api = createApi({
 
     areas: builder.query<AreaBooking[], void>({
       query: () => ({
-        url: "areas/",
+        url: "areas",
       }),
     }),
 

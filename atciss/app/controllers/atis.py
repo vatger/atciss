@@ -1,10 +1,8 @@
-"""Application controllers - metar."""
-
 from collections.abc import Sequence
 from typing import Annotated, cast
 
 from fastapi import APIRouter, Depends, Query
-from fastapi.responses import PlainTextResponse
+from fastapi.responses import ORJSONResponse, PlainTextResponse
 from loguru import logger
 from pydantic import TypeAdapter
 from vatsim.types import Atis
@@ -20,6 +18,7 @@ router = APIRouter()
 
 @router.get(
     "/atis",
+    response_class=ORJSONResponse,
 )
 async def atis_get(
     airports: Annotated[Sequence[AirportIcao], Query(alias="icao", default_factory=list)],

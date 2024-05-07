@@ -1,11 +1,10 @@
-"""Application controllers - sector status."""
-
 from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Query
+from fastapi.responses import ORJSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
@@ -20,6 +19,7 @@ router = APIRouter()
 
 @router.get(
     "/sectorstatus",
+    response_class=ORJSONResponse,
 )
 async def sectorstatus_get(
     sectors: Annotated[Sequence[str], Query(alias="id")],
@@ -51,6 +51,7 @@ class StatusData:
 
 @router.post(
     "/sectorstatus",
+    response_class=ORJSONResponse,
 )
 async def sectorstatus_post(
     status_data: StatusData,

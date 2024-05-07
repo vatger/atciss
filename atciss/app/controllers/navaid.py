@@ -3,6 +3,7 @@ from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query
+from fastapi.responses import ORJSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased
 from sqlmodel import select
@@ -17,7 +18,10 @@ from ..models import User
 router = APIRouter()
 
 
-@router.get("/navaid")
+@router.get(
+    "/navaid",
+    response_class=ORJSONResponse,
+)
 async def get_naviads(
     navaids: Annotated[Sequence[str], Query(alias="id", default_factory=list)],
     _: Annotated[User, Depends(get_user)],
@@ -29,7 +33,10 @@ async def get_naviads(
     return results.scalars().all()
 
 
-@router.get("/navaid/search")
+@router.get(
+    "/navaid/search",
+    response_class=ORJSONResponse,
+)
 async def search_navaids(
     search: Annotated[str, Query(alias="q")],
     _: Annotated[User, Depends(get_user)],
@@ -41,7 +48,10 @@ async def search_navaids(
     return results.scalars().all()
 
 
-@router.get("/navaid/airway/{airway_id}")
+@router.get(
+    "/navaid/airway/{airway_id}",
+    response_class=ORJSONResponse,
+)
 async def airway_navaids(
     airway_id: UUID,
     _: Annotated[User, Depends(get_user)],

@@ -1,9 +1,8 @@
-"""Application controllers - taf."""
-
 from collections.abc import Sequence
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi.responses import ORJSONResponse
 
 from atciss.app.controllers.auth import get_user
 from atciss.app.models import User
@@ -22,6 +21,7 @@ async def fetch_taf(icao: AirportIcao, redis: Redis) -> str | None:
 
 @router.get(
     "/taf",
+    response_class=ORJSONResponse,
 )
 async def tafs_get(
     airports: Annotated[Sequence[AirportIcao], Query(alias="icao")],
@@ -35,6 +35,7 @@ async def tafs_get(
 @router.get(
     "/taf/{icao}",
     responses={404: {}},
+    response_class=ORJSONResponse,
 )
 async def taf_get(
     icao: AirportIcao,

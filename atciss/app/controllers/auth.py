@@ -1,11 +1,10 @@
-"""Application controllers - auth."""
-
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from typing import Annotated
 
 from aiohttp import ClientSession
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import ORJSONResponse
 from fastapi.security import OAuth2AuthorizationCodeBearer
 from jose import JWTError, jwt
 from loguru import logger
@@ -182,6 +181,7 @@ def auth_config() -> AuthInfoModel:
 
 @router.post(
     "/auth",
+    response_class=ORJSONResponse,
 )
 async def auth(
     req: AuthRequest,

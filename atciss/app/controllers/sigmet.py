@@ -1,10 +1,9 @@
-"""Application controllers - booking."""
-
 from collections.abc import Sequence
 from datetime import UTC, datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Query
+from fastapi.responses import ORJSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
@@ -17,7 +16,10 @@ from ..models import User
 router = APIRouter()
 
 
-@router.get("/sigmet")
+@router.get(
+    "/sigmet",
+    response_class=ORJSONResponse,
+)
 async def auth_config(
     firs: Annotated[Sequence[str], Query(alias="fir", default_factory=list)],
     user: Annotated[User, Depends(get_user)],

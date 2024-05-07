@@ -1,6 +1,7 @@
 from typing import Annotated, Literal
 
 from fastapi import APIRouter, Depends
+from fastapi.responses import ORJSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from sqlmodel import select
@@ -13,7 +14,11 @@ from atciss.app.views.airway import AirwaySegment, AirwaySegmentWithRefs
 router = APIRouter()
 
 
-@router.get("/airway/{hi_lo}", response_model=list[AirwaySegmentWithRefs])
+@router.get(
+    "/airway/{hi_lo}",
+    response_model=list[AirwaySegmentWithRefs],
+    response_class=ORJSONResponse,
+)
 async def get_airways(
     hi_lo: Literal["LOWER", "UPPER"],
     _: Annotated[User, Depends(get_user)],

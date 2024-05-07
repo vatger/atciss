@@ -1,8 +1,7 @@
-"""Application controllers - Areas."""
-
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import PlainTextResponse
 
 from atciss.app.controllers.auth import get_user
 from atciss.app.models import User
@@ -14,6 +13,7 @@ router = APIRouter()
 @router.get(
     "/aliases/{fir}",
     responses={404: {}},
+    response_class=PlainTextResponse,
 )
 async def get_areas(
     fir: str,

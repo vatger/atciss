@@ -1,8 +1,7 @@
-"""Application controllers - metar."""
-
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
+from fastapi.responses import ORJSONResponse
 from loguru import logger
 from pydantic import TypeAdapter
 
@@ -17,7 +16,7 @@ router = APIRouter()
 
 @router.get(
     "/airspace",
-    tags=["airspace"],
+    response_class=ORJSONResponse,
 )
 async def airspace_get(
     user: Annotated[User, Depends(get_user)],
