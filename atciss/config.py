@@ -32,12 +32,13 @@ class Application(BaseSettings):
     )
     REDIS_URL: RedisDsn = cast(RedisDsn, "redis://localhost:6379")
 
-    ADMINS: list[str] = [
-        "10000010",  # dev
-        "1519114",  # RG
-        "1586741",  # AL
-        "1532450",  # FP
-        "1432304",  # JV
+    ADMINS: list[int] = [
+        10000009,  # dev SUP
+        10000010,  # dev ADM
+        1519114,  # RG
+        1586741,  # AL
+        1532450,  # FP
+        1432304,  # JV
     ]
 
     FIRS: list[str] = ["EDGG", "EDMM", "EDWW"]

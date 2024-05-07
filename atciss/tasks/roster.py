@@ -41,11 +41,14 @@ async def fetch_roster(
         settings.ROSTER_API_URL, headers={"Authorization": f"Token {settings.ROSTER_API_TOKEN}"}
     )
 
+    rostered_cids = []
+    if settings.DEBUG:
+        rostered_cids.extend(settings.ADMINS)
+
     if req.status == 401:
         logger.error("ROSTER_API_TOKEN invalid")
         if not settings.DEBUG:
             return
-        rostered_cids = [10000009, 10000010]
     else:
         rostered_controllers_json = await req.json()
         try:
@@ -55,7 +58,7 @@ async def fetch_roster(
             data = TypeAdapter(list[RosterControllerPermit]).validate_python(
                 rostered_controllers_json
             )
-            rostered_cids = [o.user_cid for o in data]
+            rostered_cids.extend([o.user_cid for o in data])
 
     logger.info(f"Fetched {len(rostered_cids)} rostered controllers")
 

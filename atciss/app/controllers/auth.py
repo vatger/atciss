@@ -101,7 +101,7 @@ def create_jwt(cid: str, refresh_token: str | None) -> str:
     to_encode: dict[str, str | None | datetime | bool] = {
         "sub": cid,
         "refresh_token": refresh_token,
-        "admin": cid in settings.ADMINS,
+        "admin": int(cid) in settings.ADMINS,
     }
     expire = datetime.now(UTC) + timedelta(days=7.5)
     to_encode.update({"exp": expire})
