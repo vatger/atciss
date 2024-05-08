@@ -3,12 +3,13 @@ import { z3 } from "app/utils"
 import { LatLng } from "leaflet"
 import { DateTime, Duration } from "luxon"
 import { useState } from "react"
-import { LayerGroup, Polygon, Tooltip } from "react-leaflet"
+import { LayerGroup, Polygon } from "react-leaflet"
 import { usePollAreas } from "services/areaApi"
 import { selectLevel } from "services/mapSlice"
 import { Box, Text } from "theme-ui"
 import { AreaBooking } from "types/area"
 import { VerticalBoundary } from "./VerticalBoundary"
+import { Tooltip } from "components/atciss/map/Tooltip"
 
 const Area = ({ area }: { area: AreaBooking }) => {
   const [center, setCenter] = useState<LatLng | null>(null)
@@ -19,7 +20,6 @@ const Area = ({ area }: { area: AreaBooking }) => {
 
   return (
     <Polygon
-      pane="markerPane"
       pathOptions={{
         color: active ? "#ff0000" : "#ff9900",
         weight: 5,

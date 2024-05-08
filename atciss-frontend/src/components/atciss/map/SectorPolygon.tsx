@@ -2,10 +2,11 @@ import { createSelector } from "@reduxjs/toolkit"
 import { useAppSelector } from "app/hooks"
 import { RootState } from "app/store"
 import { z3 } from "app/utils"
+import { Tooltip } from "components/atciss/map/Tooltip"
 import { VerticalBoundary } from "components/atciss/map/VerticalBoundary"
 import { LatLng } from "leaflet"
 import { useState } from "react"
-import { Polygon, Tooltip } from "react-leaflet"
+import { Polygon } from "react-leaflet"
 import {
   selectControllerFromPosition,
   selectOwner,

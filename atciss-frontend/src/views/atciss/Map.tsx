@@ -13,7 +13,7 @@ import { SigmetLayer } from "components/atciss/map/SigmetLayer"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 import { useRef } from "react"
-import { MapContainer } from "react-leaflet"
+import { MapContainer, Pane } from "react-leaflet"
 import { selectMapCentre } from "services/configSlice"
 import {
   selectAirwayOnMap,
@@ -41,11 +41,29 @@ export const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         ref={map}
       >
         <BackgroundTiles />
-        {sectorsOnMap && <SectorLayer />}
-        {areasOnMap && <AreaLayer />}
-        {sigmetOnMap && <SigmetLayer />}
-        <NavaidLayer />
-        {airwaysOnMap && <AirwayLayer />}
+        {sectorsOnMap && (
+          <Pane name="sectors" style={{ zIndex: 320 }}>
+            <SectorLayer />
+          </Pane>
+        )}
+        {areasOnMap && (
+          <Pane name="areas" style={{ zIndex: 330 }}>
+            <AreaLayer />
+          </Pane>
+        )}
+        {sigmetOnMap && (
+          <Pane name="sigmet" style={{ zIndex: 340 }}>
+            <SigmetLayer />
+          </Pane>
+        )}
+        {airwaysOnMap && (
+          <Pane name="airways" style={{ zIndex: 350 }}>
+            <AirwayLayer />
+          </Pane>
+        )}
+        <Pane name="navaids" style={{ zIndex: 360 }}>
+          <NavaidLayer />
+        </Pane>
         <AerodromeLayer />
       </MapContainer>
       <Flex

@@ -2,11 +2,12 @@
 
 import { useAppSelector } from "app/hooks"
 import { z3 } from "app/utils"
+import { Tooltip } from "components/atciss/map/Tooltip"
 import { VerticalBoundary } from "components/atciss/map/VerticalBoundary"
 import { LatLng } from "leaflet"
 import { DateTime } from "luxon"
 import { useState } from "react"
-import { LayerGroup, Polygon, Tooltip } from "react-leaflet"
+import { LayerGroup, Polygon } from "react-leaflet"
 import { selectActiveFir, selectNeighbourFirs } from "services/configSlice"
 import { selectSigmets, usePollSigmet } from "services/sigmetApi"
 import { Box, Text } from "theme-ui"
@@ -22,7 +23,6 @@ const Sigmet = ({ sigmet }: { sigmet: SigmetType }) => {
   return (
     active && (
       <Polygon
-        pane="markerPane"
         pathOptions={{
           color: "#ff0",
           weight: 5,

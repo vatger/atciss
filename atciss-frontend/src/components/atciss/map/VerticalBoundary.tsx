@@ -55,9 +55,7 @@ export const VerticalBoundary = ({
     zoom > 8 && (
       <>
         {createPortal(icon, element)}
-        <Marker position={center as LatLngExpression} icon={divIcon}>
-          <>Test</>
-        </Marker>
+        <Marker position={center as LatLngExpression} icon={divIcon} />
       </>
     )
   )

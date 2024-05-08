@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit"
 import { useAppSelector } from "app/hooks"
-import { CircleMarker, LayerGroup, Tooltip } from "react-leaflet"
+import { Tooltip } from "components/atciss/map/Tooltip"
+import { CircleMarker, LayerGroup } from "react-leaflet"
 import {
   selectAirportControllers,
   selectAirportTopdownController,

@@ -1,7 +1,8 @@
 import { useAtcissTheme } from "app/atciss/theme"
 import { useAppDispatch, useAppSelector } from "app/hooks"
+import { Popup } from "components/atciss/map/Popup"
 import { useState } from "react"
-import { LayerGroup, Polyline, Popup, useMap, useMapEvent } from "react-leaflet"
+import { LayerGroup, Polyline, useMap, useMapEvent } from "react-leaflet"
 import { selectAirways } from "services/airwayApi"
 import { api } from "services/api"
 import {
@@ -48,7 +49,6 @@ export const AirwayLayer = () => {
               dispatch(setSelectedAirway(null))
             },
           }}
-          pane="shadowPane"
         >
           <Popup>
             <Flex

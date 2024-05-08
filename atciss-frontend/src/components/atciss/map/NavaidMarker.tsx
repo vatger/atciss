@@ -1,7 +1,8 @@
+import { Tooltip } from "components/atciss/map/Tooltip"
 import L, { LatLngExpression } from "leaflet"
 import { ReactElement, ReactNode } from "react"
 import { createPortal } from "react-dom"
-import { Marker, Tooltip } from "react-leaflet"
+import { Marker } from "react-leaflet"
 import { Box, Flex, Text } from "theme-ui"
 import { Navaid } from "types/dfs"
 

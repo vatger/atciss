@@ -1,7 +1,7 @@
 import { useAppSelector } from "app/hooks"
 import { DateTime } from "luxon"
 import { useEffect, useState } from "react"
-import { TileLayer, WMSTileLayer } from "react-leaflet"
+import { Pane, TileLayer, WMSTileLayer } from "react-leaflet"
 import {
   selectDFSOnMap,
   selectDWDOnMap,
@@ -61,26 +61,29 @@ export const BackgroundTiles = () => {
         />
       )}
       {dwd && (
-        <WMSTileLayer
-          attribution="Deutscher Wetterdienst (DWD)"
-          url="https://maps.dwd.de/geoserver/wms"
-          params={{
-            layers: "dwd:Niederschlagsradar",
-            transparent: true,
-            format: "image/png",
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            cachebust: cachebust.toUTC().toISO(),
-          }}
-          opacity={1}
-          pane="shadowPane"
-        />
+        <Pane name="wxradar" style={{ zIndex: 300 }}>
+          <WMSTileLayer
+            attribution="Deutscher Wetterdienst (DWD)"
+            url="https://maps.dwd.de/geoserver/wms"
+            params={{
+              layers: "dwd:Niederschlagsradar",
+              transparent: true,
+              format: "image/png",
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              cachebust: cachebust.toUTC().toISO(),
+            }}
+            opacity={1}
+          />
+        </Pane>
       )}
       {lightning && (
-        <TileLayer
-          attribution="Lightning data © Lightningmaps.org and Blitzortung.org contributors CC-BY-SA 4.0"
-          url={`https://tiles.lightningmaps.org/?x={x}&y={y}&z={z}&s=256&cachebust=${cachebust.toUnixInteger()}`}
-        />
+        <Pane name="lightning" style={{ zIndex: 370 }}>
+          <TileLayer
+            attribution="Lightning data © Lightningmaps.org and Blitzortung.org contributors CC-BY-SA 4.0"
+            url={`https://tiles.lightningmaps.org/?x={x}&y={y}&z={z}&s=256&cachebust=${cachebust.toUnixInteger()}`}
+          />
+        </Pane>
       )}
     </>
   )
