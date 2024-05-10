@@ -33,7 +33,7 @@ pynotam = { git = "https://github.com/globin/PyNotam", rev = "84b741863d09aaa616
 python-dateutil = "^2.9.0"
 python-jose = "^3.3.0"
 redis = "^5"
-regex = "^2024.4.28"
+regex = "^2024.5.10"
 shapely = "^2.0.4"
 sqlalchemy = { version = "^2.0.30", extras = [ "asyncio" ] }
 sqlmodel = "0.0.18"
