@@ -2554,13 +2554,13 @@ typing-extensions = ">=3.7.4.3"
 
 [[package]]
 name = "types-beautifulsoup4"
-version = "4.12.0.20240504"
+version = "4.12.0.20240511"
 description = "Typing stubs for beautifulsoup4"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types-beautifulsoup4-4.12.0.20240504.tar.gz", hash = "sha256:d7b7af4ccc52fc22784d33a529695e34329a9bdd5db6a649c9b25cb2c3a148d5"},
-    {file = "types_beautifulsoup4-4.12.0.20240504-py3-none-any.whl", hash = "sha256:84e04e4473b3c79da04d9d1f89d20a38e5cc92f9c080a8e1f9d36a287b350465"},
+    {file = "types-beautifulsoup4-4.12.0.20240511.tar.gz", hash = "sha256:004f6096fdd83b19cdbf6cb10e4eae57b10205eccc365d0a69d77da836012e28"},
+    {file = "types_beautifulsoup4-4.12.0.20240511-py3-none-any.whl", hash = "sha256:7ceda66a93ba28d759d5046d7fec9f4cad2f563a77b3a789efc90bcadafeefd1"},
 ]
 
 [package.dependencies]
@@ -3165,4 +3165,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "1bf6dbadc3d2247de90001ec40ed87d4f806f046f2b90061f3187c0c1b0f1478"
+content-hash = "d1930fabc2b8621880b189932304c5649212021ab4a5c1552286643fc81949a2"
