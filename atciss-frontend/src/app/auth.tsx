@@ -1,4 +1,6 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query"
+import { theme } from "app/atciss/theme"
+import { Footer } from "components/atciss/Footer"
 import { useEffect } from "react"
 import {
   redirect,
@@ -9,7 +11,6 @@ import {
 import { Button, Flex, ThemeUIProvider } from "theme-ui"
 import { LOCAL_STORAGE_JWT_KEY, login, logout, selectUser } from "./auth/slice"
 import { useAppDispatch, useAppSelector } from "./hooks"
-import { theme } from "app/atciss/theme"
 
 export const RequireAuth = ({ children }: { children?: JSX.Element }) => {
   const user = useAppSelector(selectUser)
@@ -58,10 +59,11 @@ export const Auth = () => {
 
   return (
     <ThemeUIProvider theme={theme}>
-      <Flex
-        sx={{ justifyContent: "center", alignItems: "center", height: "100vh" }}
-      >
-        <Button onClick={redirect}>Log in with VATSIM Connect</Button>
+      <Flex sx={{ height: "100vh", flexDirection: "column" }}>
+        <Flex sx={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+          <Button onClick={redirect}>Log in with VATSIM Connect</Button>
+        </Flex>
+        <Footer />
       </Flex>
     </ThemeUIProvider>
   )
