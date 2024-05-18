@@ -58,7 +58,7 @@
         (
           final: _prev:
           let
-            python = final.python311;
+            python = final.python312;
             overrides = final.poetry2nix.overrides.withDefaults (
               pyfinal: pyprev: {
                 vatsim = pyprev.vatsim.overridePythonAttrs (old: {
