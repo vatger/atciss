@@ -86,7 +86,7 @@ export const Initials = () => {
         <tbody>
           {initials
             ?.toSorted((a, b) => {
-              return a[key].localeCompare(b.cid) * direction
+              return a[key].localeCompare(b[key]) * direction
             })
             .map((initials) => (
               <tr key={initials.id}>
