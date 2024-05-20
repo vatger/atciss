@@ -39,11 +39,6 @@ class Application(BaseSettings):
         1586741,  # AL
         1532450,  # FN
         1432304,  # JV
-        1441619,  # MM
-        1593864,  # MG
-        1378091,  # JD
-        1626019,  # LG
-        1470223,  # ML
     ]
 
     FIR_ADMINS: dict[str, list[int]] = {
@@ -54,6 +49,11 @@ class Application(BaseSettings):
             1586741,  # AL
             1532450,  # FN
             1432304,  # JV
+            1441619,  # MM
+            1593864,  # MG
+            1378091,  # JD
+            1626019,  # LG
+            1470223,  # ML
         ],
         "EDGG": [
             10000009,  # dev SUP
