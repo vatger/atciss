@@ -50,6 +50,11 @@ export const theme: AtcissTheme = {
     monospace:
       "'Source Code Pro', source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace",
   },
+  styles: {
+    a: {
+      color: "text",
+    },
+  },
   text: {
     atisXL: {
       color: "primary",

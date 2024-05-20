@@ -5,6 +5,9 @@ type FIR = {
   neighbourPrefixes: string[]
   neighbourFirs: string[]
   pages: { [name: string]: Page }
+  initials: {
+    enabled: boolean
+  }
 }
 type Page = {
   staffingSectors: string[]
@@ -101,6 +104,9 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
       "LOVV",
       "LSAS",
     ],
+    initials: {
+      enabled: true,
+    },
     pages: {
       "ATIS APP": {
         staffingSectors: [
@@ -335,6 +341,9 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
     neighbourPrefixes: ["ED", "ET", "EB", "EH", "EL", "LF", "LS"],
     neighbourFirs: ["EDMM", "EDWW", "EHAA", "EBBU", "LFEE", "LSAS"],
     mapCentre: [50.03330525, 8.570456],
+    initials: {
+      enabled: false,
+    },
     pages: {
       // TODO: IRL different layout
       "ATIS EBG02/04": {
@@ -543,6 +552,9 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
     neighbourPrefixes: ["ED", "ET", "EH", "EK", "EP", "ES"],
     neighbourFirs: ["EDGG", "EDMM", "EHAA", "EKDK", "ESMM", "EPWW"],
     mapCentre: [53.047399804, 9.988227138],
+    initials: {
+      enabled: false,
+    },
     pages: {
       "ATIS NORD": {
         staffingSectors: [

@@ -37,9 +37,33 @@ class Application(BaseSettings):
         10000010,  # dev ADM
         1519114,  # RG
         1586741,  # AL
-        1532450,  # FP
+        1532450,  # FN
         1432304,  # JV
+        1441619,  # MM
+        1593864,  # MG
+        1378091,  # JD
+        1626019,  # LG
+        1470223,  # ML
     ]
+
+    FIR_ADMINS: dict[str, list[int]] = {
+        "EDMM": [
+            10000009,  # dev SUP
+            10000010,  # dev ADM
+            1519114,  # RG
+            1586741,  # AL
+            1532450,  # FN
+            1432304,  # JV
+        ],
+        "EDGG": [
+            10000009,  # dev SUP
+            10000010,  # dev ADM
+        ],
+        "EDWW": [
+            10000009,  # dev SUP
+            10000010,  # dev ADM
+        ],
+    }
 
     FIRS: list[str] = ["EDGG", "EDMM", "EDWW"]
 

@@ -16,6 +16,7 @@ import { AipVfr } from "views/atciss/AipVfr"
 import { AircraftData } from "views/atciss/AircraftData"
 import { Alias } from "views/atciss/Alias"
 import { AtisAfw } from "views/atciss/AtisAfw"
+import { Initials } from "views/atciss/Initials"
 import { LOA } from "views/atciss/LOA"
 import { Map } from "views/atciss/Map"
 import { Notams } from "views/atciss/Notam"
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
       {
         path: "aip-vfr",
         element: <AipVfr />,
+      },
+      {
+        path: "initials",
+        element: <Initials />,
       },
       {
         path: "/admin",

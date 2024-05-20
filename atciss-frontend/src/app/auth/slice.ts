@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../store"
+import { selectActiveFir } from "services/configSlice"
 
 const parseJwt = (token: string) => {
   const base64Url = token.split(".")[1]
@@ -20,6 +21,7 @@ export const LOCAL_STORAGE_JWT_KEY = "atciss_jwt"
 interface User {
   cid: string
   admin: boolean
+  fir_admin: string[]
   exp: number
 }
 
@@ -30,9 +32,9 @@ interface AuthState {
 const getUserWithExpiryCheck = (jwt: string | null): User | null => {
   if (!jwt) return null
 
-  const claims = parseJwt(jwt)
+  const claims: User = parseJwt(jwt)
   if (claims.exp * 1000 > Date.now()) {
-    return { exp: claims.exp, cid: claims.sub, admin: claims.admin }
+    return claims
   } else {
     localStorage.removeItem(LOCAL_STORAGE_JWT_KEY)
     return null
@@ -58,6 +60,11 @@ const authSlice = createSlice({
 })
 
 export const selectUser = (store: RootState) => store.auth.user
+export const selectIsFirAdmin = createSelector(
+  selectUser,
+  selectActiveFir,
+  (user, fir) => user?.fir_admin?.includes(fir) ?? false,
+)
 
 export const { login, logout } = authSlice.actions
 export const { reducer: authReducer } = authSlice

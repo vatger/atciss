@@ -97,10 +97,11 @@ class AuthRequest:
 
 
 def create_jwt(cid: str, refresh_token: str | None) -> str:
-    to_encode: dict[str, str | None | datetime | bool] = {
+    to_encode: dict[str, str | None | datetime | bool | list[str]] = {
         "sub": cid,
         "refresh_token": refresh_token,
         "admin": int(cid) in settings.ADMINS,
+        "fir_admin": [fir for fir in settings.FIR_ADMINS if int(cid) in settings.FIR_ADMINS[fir]],
     }
     expire = datetime.now(UTC) + timedelta(days=7.5)
     to_encode.update({"exp": expire})
@@ -149,6 +150,13 @@ def get_controller(user: Annotated[User, Depends(get_user)]) -> User:
         raise HTTPException(status.HTTP_403_FORBIDDEN, "controller is not in the roster")
 
     if user.rating not in ["S2", "S3", "C1", "C3", "I1", "I3", "SUP", "ADM"]:
+        raise HTTPException(status.HTTP_403_FORBIDDEN, f"not allowed with rating {user.rating}")
+
+    return user
+
+
+def get_fir_admin(fir: str, user: Annotated[User, Depends(get_user)]) -> User:
+    if user.cid not in settings.FIR_ADMINS[fir]:
         raise HTTPException(status.HTTP_403_FORBIDDEN, f"not allowed with rating {user.rating}")
 
     return user

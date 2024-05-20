@@ -60,6 +60,11 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         <Link to="alias" sx={{ gridRow: "2/3" }}>
           <Button variant="nav">Alias</Button>
         </Link>
+        {FIR_SETTINGS[activeFir].initials.enabled && (
+          <Link to="initials" sx={{ gridRow: "2/3" }}>
+            <Button variant="nav">Initials</Button>
+          </Link>
+        )}
         <Link to="windy" sx={{ gridRow: "2/3" }}>
           <Button variant="nav">Windy</Button>
         </Link>

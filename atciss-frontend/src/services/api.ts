@@ -2,6 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithAuth } from "app/auth"
 import { tafFormat } from "app/utils"
 import { Agreements } from "services/agreementsApi"
+import { Initials } from "services/initialsApi"
 // import { Booking } from "services/bookingApi"
 import { SectorStatus } from "services/sectorstatusApi"
 import { AircraftPerformanceData } from "types/aircraft"
@@ -16,7 +17,7 @@ import { Metar, Sigmet } from "types/wx"
 
 export const api = createApi({
   baseQuery: fetchWithAuth,
-  tagTypes: ["agreements", "notamSeen", "sectorstatus"],
+  tagTypes: ["agreements", "initials", "notamSeen", "sectorstatus"],
   endpoints: (builder) => ({
     aerodromesByIcaos: builder.query<{ [id: string]: Aerodrome }, string[]>({
       query: (icaoList) => ({
@@ -52,6 +53,44 @@ export const api = createApi({
       invalidatesTags: (_r, _e, arg) => [{ type: "agreements", id: arg.fir }],
     }),
 
+    initialsByFir: builder.query<Initials[], string>({
+      query: (fir) => ({
+        url: `initials/${fir}`,
+      }),
+      providesTags: (result, _, arg) => {
+        if (!result) {
+          return ["initials"]
+        }
+
+        const initialTags = result.map((initial) => ({
+          type: "initials" as const,
+          id: initial.id,
+        }))
+
+        return [{ type: "initials", id: arg }, ...initialTags]
+      },
+    }),
+    addInitial: builder.mutation<Initials, Omit<Initials, "id">>({
+      query: (initials) => ({
+        url: `initials/${initials.fir}`,
+        body: initials,
+        method: "POST",
+      }),
+      invalidatesTags: (_r, _e, initials) => [
+        { type: "initials", id: initials.fir },
+      ],
+    }),
+    deleteInitials: builder.mutation<null, Initials>({
+      query: (initials) => ({
+        url: `initials/${initials.fir}`,
+        body: initials,
+        method: "DELETE",
+      }),
+      invalidatesTags: (_r, _e, initials) => [
+        { type: "initials", id: initials.fir },
+        { type: "initials", id: initials.id },
+      ],
+    }),
     metarsByIcaoCodes: builder.query<{ [id: string]: Metar }, string[]>({
       query: (icaoList) => ({
         url: "metar",

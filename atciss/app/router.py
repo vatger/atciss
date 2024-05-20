@@ -15,6 +15,7 @@ from .controllers import (
     auth,
     booking,
     ecfmp,
+    initials,
     loa,
     metar,
     navaid,
@@ -42,6 +43,7 @@ root_api_router.include_router(areas.router, tags=["airspace"])
 root_api_router.include_router(atis.router, tags=["aerodrome"])
 root_api_router.include_router(booking.router, tags=["vatsim"])
 root_api_router.include_router(ecfmp.router, tags=["airspace"])
+root_api_router.include_router(initials.router, tags=["user"])
 root_api_router.include_router(loa.router, tags=["airspace"])
 root_api_router.include_router(metar.router, tags=["wx"])
 root_api_router.include_router(navaid.router, tags=["navaid"])
