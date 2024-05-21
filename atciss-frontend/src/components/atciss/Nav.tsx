@@ -83,23 +83,44 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           </Link>
         )}
       </Grid>
-      <select
-        value={activeFir}
-        onChange={(e) => dispatch(setActiveFir(e.target.value))}
+      <Grid
+        sx={{
+          gap: ".5rem",
+          gridTemplateColumns: "repeat(auto-fit, 6rem)",
+          gridTemplateRows: "2rem 2rem",
+          flex: "auto",
+          justifyContent: "flex-end",
+        }}
       >
-        {Object.keys(FIR_SETTINGS).map((fir) => (
-          <option key={fir}>{fir}</option>
-        ))}
-      </select>
+        <Flex
+          sx={{
+            p: 2,
+            gap: 2,
+            alignItems: "flex-start",
+          }}
+        >
+          <select
+            value={activeFir}
+            onChange={(e) => dispatch(setActiveFir(e.target.value))}
+          >
+            {Object.keys(FIR_SETTINGS).map((fir) => (
+              <option key={fir}>{fir}</option>
+            ))}
+          </select>
 
-      <a
-        sx={{ color: "background" }}
-        onClick={() =>
-          setColorMode(colorMode === "default" ? "dark" : "default")
-        }
-      >
-        {colorMode === "default" ? <>&#x263E;</> : <>&#x263C;</>}
-      </a>
+          <a
+            sx={{ color: "background" }}
+            onClick={() =>
+              setColorMode(colorMode === "default" ? "dark" : "default")
+            }
+          >
+            {colorMode === "default" ? <>&#x263E;</> : <>&#x263C;</>}
+          </a>
+        </Flex>
+        <Link to="logout" sx={{ gridRow: "2/3" }}>
+          <Button variant="nav">Logout</Button>
+        </Link>
+      </Grid>
     </Flex>
   )
 }

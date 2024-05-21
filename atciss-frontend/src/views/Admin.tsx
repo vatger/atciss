@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { Box, Button, Flex } from "theme-ui"
-import { LOCAL_STORAGE_JWT_KEY } from "../app/auth/slice"
+import { LOCAL_STORAGE_ACCESS_KEY } from "../app/auth/slice"
 
 export const Admin = () => {
   const [tasks, setTasks] = useState<string[]>([])
-  const token = localStorage.getItem(LOCAL_STORAGE_JWT_KEY)
+  const token = localStorage.getItem(LOCAL_STORAGE_ACCESS_KEY)
 
   const runTask = (name: string) => async () =>
     await fetch(`/api/admin/task/${name}`, {

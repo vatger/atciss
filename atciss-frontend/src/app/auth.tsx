@@ -1,4 +1,9 @@
-import { fetchBaseQuery } from "@reduxjs/toolkit/query"
+import {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+  fetchBaseQuery,
+} from "@reduxjs/toolkit/query"
 import { theme } from "app/atciss/theme"
 import { Footer } from "components/atciss/Footer"
 import { useEffect } from "react"
@@ -9,8 +14,16 @@ import {
   useNavigate,
 } from "react-router-dom"
 import { Button, Flex, ThemeUIProvider } from "theme-ui"
-import { LOCAL_STORAGE_JWT_KEY, login, logout, selectUser } from "./auth/slice"
+import {
+  LOCAL_STORAGE_REFRESH_KEY,
+  LOCAL_STORAGE_ACCESS_KEY,
+  login,
+  logout,
+  selectUser,
+  AuthResponse,
+} from "./auth/slice"
 import { useAppDispatch, useAppSelector } from "./hooks"
+import { Mutex } from "async-mutex"
 
 export const RequireAuth = ({ children }: { children?: JSX.Element }) => {
   const user = useAppSelector(selectUser)
@@ -69,10 +82,10 @@ export const Auth = () => {
   )
 }
 
-export const fetchWithAuth = fetchBaseQuery({
+const fetchWithAuth = fetchBaseQuery({
   baseUrl: "/api/",
   prepareHeaders: (headers) => {
-    const token = localStorage.getItem(LOCAL_STORAGE_JWT_KEY)
+    const token = localStorage.getItem(LOCAL_STORAGE_ACCESS_KEY)
 
     if (token) {
       headers.set("authorization", `Bearer ${token}`)
@@ -80,14 +93,58 @@ export const fetchWithAuth = fetchBaseQuery({
     return headers
   },
   responseHandler: async (response) => {
-    if (response.status === 401) {
-      location.replace("/auth")
-    }
-
     const text = await response.text()
     return text.length ? JSON.parse(text) : null
   },
 })
+
+const refreshMutex = new Mutex()
+export const fetchWithReauth: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions) => {
+  await refreshMutex.waitForUnlock()
+  let result = await fetchWithAuth(args, api, extraOptions)
+  if (result.error && result.error.status === 401) {
+    if (!refreshMutex.isLocked()) {
+      const release = await refreshMutex.acquire()
+      try {
+        if (await refreshTokens()) {
+          result = await fetchWithAuth(args, api, extraOptions)
+        } else {
+          location.replace("/auth")
+        }
+      } finally {
+        release()
+      }
+    } else {
+      await refreshMutex.waitForUnlock()
+      result = await fetchWithAuth(args, api, extraOptions)
+    }
+  }
+  return result
+}
+
+export const refreshTokens = async () => {
+  const refreshToken = localStorage.getItem(LOCAL_STORAGE_REFRESH_KEY)
+  const response = await fetch(`/api/auth/refresh`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${refreshToken}`,
+    },
+  })
+  const text = await response.text()
+  const data = text.length ? JSON.parse(text) : null
+
+  if (response.status !== 401 && data !== null) {
+    localStorage.setItem(LOCAL_STORAGE_ACCESS_KEY, data.access)
+    localStorage.setItem(LOCAL_STORAGE_REFRESH_KEY, data.refresh)
+    return true
+  }
+  return false
+}
 
 export const authCallbackLoader = async () => {
   const query = new URL(window.location.href).searchParams
@@ -111,7 +168,7 @@ export const authCallbackLoader = async () => {
 }
 
 export const AuthCallback = () => {
-  const data = useLoaderData() as { jwt: string }
+  const data = useLoaderData() as AuthResponse
   const user = useAppSelector(selectUser)
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -120,9 +177,9 @@ export const AuthCallback = () => {
     if (user) {
       navigate("/")
     } else {
-      dispatch(login(data.jwt))
+      dispatch(login(data))
     }
-  }, [dispatch, navigate, user, data.jwt])
+  }, [dispatch, navigate, user, data])
 
   return <>{JSON.stringify(user)}</>
 }
@@ -130,10 +187,16 @@ export const AuthCallback = () => {
 export const Logout = () => {
   const user = useAppSelector(selectUser)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (user) dispatch(logout())
+    navigate("/auth")
   }, [dispatch, user])
 
-  return <>{user ? "Logging out" : "Logged out"}</>
+  return (
+    <ThemeUIProvider theme={theme}>
+      <h1>{user ? "Logging out" : "Logged out"}</h1>
+    </ThemeUIProvider>
+  )
 }

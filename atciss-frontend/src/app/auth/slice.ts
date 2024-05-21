@@ -16,7 +16,8 @@ const parseJwt = (token: string) => {
   return JSON.parse(jsonPayload)
 }
 
-export const LOCAL_STORAGE_JWT_KEY = "atciss_jwt"
+export const LOCAL_STORAGE_ACCESS_KEY = "atciss_access"
+export const LOCAL_STORAGE_REFRESH_KEY = "atciss_refresh"
 
 interface User {
   cid: string
@@ -29,6 +30,11 @@ interface AuthState {
   user: User | null
 }
 
+export interface AuthResponse {
+  access: string
+  refresh: string
+}
+
 const getUserWithExpiryCheck = (jwt: string | null): User | null => {
   if (!jwt) return null
 
@@ -36,7 +42,7 @@ const getUserWithExpiryCheck = (jwt: string | null): User | null => {
   if (claims.exp * 1000 > Date.now()) {
     return claims
   } else {
-    localStorage.removeItem(LOCAL_STORAGE_JWT_KEY)
+    localStorage.removeItem(LOCAL_STORAGE_ACCESS_KEY)
     return null
   }
 }
@@ -44,16 +50,20 @@ const getUserWithExpiryCheck = (jwt: string | null): User | null => {
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: getUserWithExpiryCheck(localStorage.getItem(LOCAL_STORAGE_JWT_KEY)),
+    user: getUserWithExpiryCheck(
+      localStorage.getItem(LOCAL_STORAGE_ACCESS_KEY),
+    ),
   } as AuthState,
   reducers: {
-    login(state, action: PayloadAction<string>) {
-      const jwt = action.payload
-      localStorage.setItem(LOCAL_STORAGE_JWT_KEY, jwt)
-      state.user = getUserWithExpiryCheck(jwt)
+    login(state, action: PayloadAction<AuthResponse>) {
+      const payload = action.payload
+      localStorage.setItem(LOCAL_STORAGE_ACCESS_KEY, payload.access)
+      localStorage.setItem(LOCAL_STORAGE_REFRESH_KEY, payload.refresh)
+      state.user = getUserWithExpiryCheck(payload.access)
     },
     logout(state) {
-      localStorage.removeItem(LOCAL_STORAGE_JWT_KEY)
+      localStorage.removeItem(LOCAL_STORAGE_ACCESS_KEY)
+      localStorage.removeItem(LOCAL_STORAGE_REFRESH_KEY)
       state.user = null
     },
   },

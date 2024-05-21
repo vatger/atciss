@@ -88,7 +88,8 @@ class AuthInfoModel:
 
 @dataclass
 class AuthModel:
-    jwt: str
+    access: str
+    refresh: str
 
 
 @dataclass
@@ -96,18 +97,30 @@ class AuthRequest:
     code: str
 
 
-def create_jwt(cid: str, refresh_token: str | None) -> str:
-    to_encode: dict[str, str | None | datetime | bool | list[str]] = {
-        "sub": cid,
-        "refresh_token": refresh_token,
-        "admin": int(cid) in settings.ADMINS,
-        "fir_admin": [fir for fir in settings.FIR_ADMINS if int(cid) in settings.FIR_ADMINS[fir]],
-    }
-    expire = datetime.now(UTC) + timedelta(days=7.5)
-    to_encode.update({"exp": expire})
+def create_access_token(cid: str, validity_minutes: int = 10) -> str:
+    return jwt.encode(
+        {
+            "sub": cid,
+            "admin": int(cid) in settings.ADMINS,
+            "fir_admin": [
+                fir for fir in settings.FIR_ADMINS if int(cid) in settings.FIR_ADMINS[fir]
+            ],
+            "exp": datetime.now(UTC) + timedelta(minutes=validity_minutes),
+        },
+        settings.SECRET_KEY,
+        algorithm=ALGORITHM,
+    )
 
-    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
-    return encoded_jwt
+
+def create_refresh_token(cid: str, validity_minutes: int = 60 * 24 * 7) -> str:
+    return jwt.encode(
+        {
+            "sub": cid,
+            "exp": datetime.now(UTC) + timedelta(minutes=validity_minutes),
+        },
+        settings.SECRET_KEY,
+        algorithm=ALGORITHM,
+    )
 
 
 oauth2_scheme = OAuth2AuthorizationCodeBearer(
@@ -245,4 +258,20 @@ async def auth(
 
     await session.commit()
 
-    return AuthModel(jwt=create_jwt(user_response.data.cid, auth_response.refresh_token))
+    return AuthModel(
+        access=create_access_token(user_response.data.cid),
+        refresh=create_refresh_token(user_response.data.cid),
+    )
+
+
+@router.post(
+    "/auth/refresh",
+    response_class=ORJSONResponse,
+)
+def auth_refresh(
+    user: Annotated[User, Depends(get_user)],
+):
+    return AuthModel(
+        access=create_access_token(str(user.cid)),
+        refresh=create_refresh_token(str(user.cid)),
+    )

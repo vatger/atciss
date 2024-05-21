@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
-import { fetchWithAuth } from "app/auth"
+import { fetchWithReauth } from "app/auth"
 import { tafFormat } from "app/utils"
 import { Agreements } from "services/agreementsApi"
 import { Initials } from "services/initialsApi"
@@ -16,7 +16,7 @@ import { AerodromeTraffic, Atis, Controller } from "types/vatsim"
 import { Metar, Sigmet } from "types/wx"
 
 export const api = createApi({
-  baseQuery: fetchWithAuth,
+  baseQuery: fetchWithReauth,
   tagTypes: ["agreements", "initials", "notamSeen", "sectorstatus"],
   endpoints: (builder) => ({
     aerodromesByIcaos: builder.query<{ [id: string]: Aerodrome }, string[]>({
