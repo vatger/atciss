@@ -256,7 +256,7 @@
             ++ (with pkgs; [
               nil
               pyright
-              poetry
+              (poetry.override { python3 = python312; })
               ruff
               curl
               docker-compose

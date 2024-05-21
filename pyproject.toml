@@ -8,7 +8,7 @@ readme = "README.md"
 repository = "https://github.com/vatger/atciss"
 
 [tool.poetry.dependencies]
-python = "~3.11"
+python = "^3.11"
 aiohttp = "^3.9.5"
 alembic = "^1.13.1"
 asgi-correlation-id = "^4.3.1"
