@@ -58,7 +58,8 @@
           final: _prev:
           let
             python = final.python312;
-            overrides = final.poetry2nix.overrides.withDefaults (
+            overrides = overrides' ++ [ (_: _: { inherit (final) ruff; }) ];
+            overrides' = final.poetry2nix.overrides.withDefaults (
               pyfinal: pyprev: {
                 vatsim = pyprev.vatsim.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
