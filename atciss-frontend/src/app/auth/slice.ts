@@ -16,14 +16,22 @@ const parseJwt = (token: string) => {
   return JSON.parse(jsonPayload)
 }
 
+const tokenClaimsValid = (claims: TokenClaims | null) => {
+  if (claims === null) return false
+  return claims.exp * 1000 > Date.now()
+}
+
 export const LOCAL_STORAGE_ACCESS_KEY = "atciss_access"
 export const LOCAL_STORAGE_REFRESH_KEY = "atciss_refresh"
 
-interface User {
+interface TokenClaims {
   cid: string
+  exp: number
+}
+
+interface User extends TokenClaims {
   admin: boolean
   fir_admin: string[]
-  exp: number
 }
 
 interface AuthState {
@@ -36,13 +44,15 @@ export interface AuthResponse {
 }
 
 const getUserWithExpiryCheck = (jwt: string | null): User | null => {
-  if (!jwt) return null
+  const refresh: string | null = localStorage.getItem(LOCAL_STORAGE_REFRESH_KEY)
+  if (!jwt || !refresh) return null
 
   const claims: User = parseJwt(jwt)
-  if (claims.exp * 1000 > Date.now()) {
+  if (tokenClaimsValid(claims) || tokenClaimsValid(parseJwt(refresh))) {
     return claims
   } else {
     localStorage.removeItem(LOCAL_STORAGE_ACCESS_KEY)
+    localStorage.removeItem(LOCAL_STORAGE_REFRESH_KEY)
     return null
   }
 }

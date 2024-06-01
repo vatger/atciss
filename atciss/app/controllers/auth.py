@@ -270,7 +270,7 @@ async def auth(
 )
 def auth_refresh(
     user: Annotated[User, Depends(get_user)],
-):
+) -> AuthModel:
     return AuthModel(
         access=create_access_token(str(user.cid)),
         refresh=create_refresh_token(str(user.cid)),
