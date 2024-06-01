@@ -111,6 +111,9 @@
                 eaup = pyprev.eaup.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
                 });
+                pyright = pyprev.pyright.overridePythonAttrs (old: {
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.setuptools ];
+                });
               }
             );
           in
