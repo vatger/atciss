@@ -19,7 +19,7 @@
     };
 
     poetry2nix = {
-      url = "github:fpletz/poetry2nix";
+      url = "github:nix-community/poetry2nix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
