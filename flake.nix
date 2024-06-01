@@ -249,12 +249,11 @@
           };
         };
 
-        devShells.default = pkgs.atciss-dev.env.overrideAttrs (oldAttrs: {
-          nativeBuildInputs =
-            oldAttrs.nativeBuildInputs
-            ++ [ nodejs ]
+        devShells.default = pkgs.mkShell {
+          packages =
+            [ nodejs ]
             ++ (with pkgs; [
-              nil
+              atciss-dev
               pyright
               (poetry.override { python3 = python312; })
               ruff
@@ -294,7 +293,7 @@
                 };
               };
             }).shellHook;
-        });
+        };
 
         apps =
           let
