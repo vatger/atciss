@@ -58,7 +58,8 @@
           final: _prev:
           let
             python = final.python312;
-            overrides = overrides' ++ [ (_: _: { inherit (final) ruff; }) ];
+            overrides = overrides' ++ [ (_: _: { ruff = null; }) ];
+            overrides-dev = overrides' ++ [ (_: _: { inherit (final) ruff; }) ];
             overrides' = final.poetry2nix.overrides.withDefaults (
               pyfinal: pyprev: {
                 vatsim = pyprev.vatsim.overridePythonAttrs (old: {
@@ -130,7 +131,8 @@
                 });
 
             atciss-dev = final.poetry2nix.mkPoetryEnv {
-              inherit python overrides;
+              inherit python;
+              overrides = overrides-dev;
               pyproject = ./pyproject.toml;
               poetrylock = ./poetry.lock;
               extraPackages = ps: [ ps.ipython ];
@@ -169,6 +171,8 @@
       in
       {
         packages = {
+          nix-fast-build = inputs.nix-fast-build.packages.${system}.default;
+
           default = pkgs.atciss;
           backend = pkgs.atciss;
           contrib = pkgs.atciss-contrib;
@@ -249,92 +253,82 @@
           };
         };
 
-        devShells.default = pkgs.mkShell {
-          packages =
-            [ nodejs ]
-            ++ (with pkgs; [
-              atciss-dev
-              pyright
-              (poetry.override { python3 = python312; })
-              ruff
-              curl
-              docker-compose
-            ]);
-          shellHook =
-            ''
-              export POETRY_HOME=${pkgs.poetry}
-              export POETRY_BINARY=${pkgs.poetry}/bin/poetry
-              export POETRY_VIRTUALENVS_IN_PROJECT=true
-              export PYTHONPATH=${pkgs.atciss-dev}/${pkgs.atciss-dev.sitePackages}
-              unset SOURCE_DATE_EPOCH
-            ''
-            + (pre-commit-hooks.lib.${system}.run {
-              src = ./.;
-              hooks = {
-                nixfmt = {
-                  enable = true;
-                  package = pkgs.nixfmt-rfc-style;
-                };
-                statix.enable = true;
-                nil.enable = true;
-                eslint = {
-                  enable = true;
-                  settings = {
-                    binPath = pkgs.writeShellScript "eslint" ''./atciss-frontend/node_modules/.bin/eslint "$@"'';
-                    extensions = "\\.(j|t)sx?";
+        devShells =
+          let
+            commonPackages = [
+              (pkgs.poetry.override { python3 = pkgs.python312; })
+              pkgs.ruff
+              pkgs.pyright
+              pkgs.curl
+              nodejs
+              pkgs.atciss-dev
+            ];
+          in
+          {
+            ci = pkgs.mkShell {
+              packages = commonPackages ++ [
+                nix-fast-build.packages.${system}.nix-fast-build
+                pkgs.git
+                pkgs.cachix
+              ];
+            };
+
+            default = pkgs.mkShell {
+              packages = commonPackages;
+              shellHook =
+                ''
+                  export POETRY_VIRTUALENVS_IN_PROJECT=true
+                  export PYTHONPATH=${pkgs.atciss-dev}/${pkgs.atciss-dev.sitePackages}
+                  unset SOURCE_DATE_EPOCH
+                ''
+                + (pre-commit-hooks.lib.${system}.run {
+                  src = ./.;
+                  hooks = {
+                    nixfmt = {
+                      enable = true;
+                      package = pkgs.nixfmt-rfc-style;
+                    };
+                    statix.enable = true;
+                    nil.enable = true;
+                    eslint = {
+                      enable = true;
+                      settings = {
+                        binPath = pkgs.writeShellScript "eslint" ''./atciss-frontend/node_modules/.bin/eslint "$@"'';
+                        extensions = "\\.(j|t)sx?";
+                      };
+                    };
+                    # pylint.enable = true;
+                    pylint.settings.binPath = "${pkgs.atciss-dev}/bin/pylint";
+                    # pyright.enable = true;
+                    ruff = {
+                      enable = true;
+                      entry = lib.mkForce "${pkgs.atciss-dev}/bin/ruff check --fix";
+                    };
                   };
-                };
-                # pylint.enable = true;
-                pylint.settings.binPath = "${pkgs.atciss-dev}/bin/pylint";
-                # pyright.enable = true;
-                ruff = {
-                  enable = true;
-                  entry = lib.mkForce "${pkgs.atciss-dev}/bin/ruff check --fix";
-                };
-              };
-            }).shellHook;
-        };
+                }).shellHook;
+            };
+          };
 
         apps =
           let
-            mkCIApp = name: packages: script: {
+            mkCIApp = name: script: {
               type = "app";
-              program = toString (
-                pkgs.writeScript name ''
-                  export PATH="${lib.makeBinPath ([ pkgs.atciss-dev ] ++ packages)}"
-                  ${script}
-                ''
-              );
+              program = toString (pkgs.writeScript name script);
             };
           in
           {
-            pylint = mkCIApp "pylint" [ ] ''
-              pylint -f colorized -r y atciss
+            pylint = mkCIApp "pylint" ''
+              nix develop .#ci -c pylint -f colorized -r y atciss
             '';
-            ruff = mkCIApp "ruff" [ ] ''
-              ruff check --output-format github atciss
+            ruff = mkCIApp "ruff" ''
+              nix develop .#ci -c ruff check --output-format github atciss
             '';
-            format = mkCIApp "ruff" [ ] ''
-              ruff format --check --diff
+            format = mkCIApp "ruff" ''
+              nix develop .#ci -c ruff format --check --diff
             '';
-            eslint =
-              mkCIApp "eslint"
-                [
-                  nodejs
-                  pkgs.bash
-                ]
-                ''
-                  (cd atciss-frontend && npm install && npm run lint)
-                '';
-            build =
-              mkCIApp "nix-fast-build"
-                [
-                  nix-fast-build.packages.${system}.nix-fast-build
-                  pkgs.git
-                ]
-                ''
-                  nix-fast-build --no-nom --skip-cached
-                '';
+            eslint = mkCIApp "eslint" ''
+              nix develop .#ci -c ${lib.getExe pkgs.bash} -c '(cd atciss-frontend && npm install && npm run lint)'
+            '';
           };
 
         formatter = pkgs.nixfmt-rfc-style;

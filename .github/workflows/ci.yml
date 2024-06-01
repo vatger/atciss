@@ -10,7 +10,7 @@ env:
 
 jobs:
   devshell:
-    name: Cache development shell
+    name: Build development shells
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,8 +22,9 @@ jobs:
         with:
           name: atciss
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - name: Build development shell
-        run: nix build -L .#devShells.x86_64-linux.default
+      - name: Build development shells
+        run: |
+          nix run .#nix-fast-build -- -f .#devShells --no-nom --skip-cached
 
   lint:
     name: Code Lint
@@ -66,7 +67,8 @@ jobs:
           name: atciss
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Build flake outputs
-        run: nix run .#build
+        run: |
+          nix run .#nix-fast-build -- -f .#devShells --no-nom --skip-cached
 
   docker-images:
     name: Docker Images
