@@ -313,7 +313,7 @@
           let
             mkCIApp = name: script: {
               type = "app";
-              program = toString (pkgs.writeScript name script);
+              program = toString (pkgs.writers.writeBash name script);
             };
           in
           {
