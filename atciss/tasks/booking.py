@@ -32,7 +32,7 @@ async def fetch_booking(
     removed_bookings = await db_session.execute(
         select(Booking)
         .where(Booking.start >= datetime.now(tz=UTC))
-        .where(Booking.id.not_in(booking.id for booking in bookings))
+        .where(Booking.id.not_in(booking.id for booking in bookings))  # pylint: disable=no-member
     )
     for booking in removed_bookings.all():
         logger.debug(f"Deleting removed {booking}")
