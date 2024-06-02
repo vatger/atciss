@@ -1,3 +1,4 @@
+from datetime import UTC, datetime, timedelta
 from typing import Annotated
 
 from aiohttp import ClientSession
@@ -9,7 +10,7 @@ from taskiq_dependencies import Depends
 
 from atciss.app.utils import get_aiohttp_client
 from atciss.app.utils.db import get_session
-from atciss.app.views.booking import Booking, VatbookData
+from atciss.app.views.booking import Booking
 from atciss.tkq import broker
 
 
@@ -18,26 +19,29 @@ async def fetch_booking(
     http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
     db_session: Annotated[AsyncSession, Depends(get_session)],
 ) -> None:
-    """Periodically fetch sector data."""
+    """Periodically fetch bookings data."""
     async with http_client.get("https://atc-bookings.vatsim.net/api/booking") as res:
-        data = TypeAdapter(list[Booking]).validate_python(await res.json())
+        bookings = TypeAdapter(list[Booking]).validate_python(await res.json())
 
-    async with http_client.get("http://vatbook.euroutepro.com/xml2.php") as res:
-        try:
-            vatbook_data = VatbookData.from_xml(await res.read())
-        except Exception as e:
-            logger.warning(e)
-            raise
+    logger.info(f"Bookings received: {len(bookings)}")
 
-    logger.info(f"Vatsim bookings received: {len(data)} bookings")
-    logger.info(f"Vatbook bookings received: {len(vatbook_data.atcs.bookings)} bookings")
-
-    callsigns = await db_session.exec(select(Booking.callsign).distinct())
-    data.extend(
-        Booking.model_validate(b)
-        for b in vatbook_data.atcs.bookings
-        if b.callsign not in callsigns.all()
-    )
-
-    for booking in data:
+    for booking in bookings:
         _ = await db_session.merge(booking)
+
+    # Delete future bookings that were not in the fetched data (probably removed)
+    removed_bookings = await db_session.execute(
+        select(Booking)
+        .where(Booking.start >= datetime.now(tz=UTC))
+        .where(Booking.id.not_in(booking.id for booking in bookings))
+    )
+    for booking in removed_bookings.all():
+        logger.debug(f"Deleting removed {booking}")
+        db_session.delete(booking)
+
+    # Remove old bookings
+    old_bookings = await db_session.execute(
+        select(Booking).where(Booking.end <= datetime.now(tz=UTC) - timedelta(days=1))
+    )
+    for booking in old_bookings.all():
+        logger.debug(f"Deleting old {booking}")
+        db_session.delete(booking)
