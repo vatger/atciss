@@ -1,4 +1,5 @@
-from typing import Annotated
+from datetime import UTC, datetime, timedelta
+from typing import Annotated, cast
 
 from aiohttp import ClientSession
 from bs4 import BeautifulSoup
@@ -13,6 +14,7 @@ from atciss.app.utils import get_aiohttp_client
 from atciss.app.utils.db import get_session
 from atciss.app.utils.redis import Redis, get_redis
 from atciss.app.views.dfs_aixm import Aerodrome
+from atciss.app.views.notam import NotamModel, NotamSeen
 from atciss.config import settings
 from atciss.tkq import broker
 
@@ -66,3 +68,23 @@ async def fetch_notam(
                 pipe.set(f"notam:{location}:{notam.notam_id}", notam.full_text)
         logger.info(f"NOTAMs: {len(notams)} received")
         await pipe.execute()
+
+    # Remove old NOTAMs
+    notam_keys = await redis.keys("notam:*:*")
+    notam_text = cast(list[str], await redis.mget(notam_keys))
+    icao_notams = [NotamModel.from_str(n) for n in notam_text]
+    async with redis.pipeline() as pipe:
+        for notam in icao_notams:
+            if notam.valid_till <= datetime.now(tz=UTC) - timedelta(days=7):
+                logger.debug(f"Deleting NOTAM {notam.location}:{notam.notam_id}")
+                res = await pipe.delete(*[
+                    f"notam:{location}:{notam.notam_id}" for location in notam.location
+                ])
+                await res.execute()
+
+                seens = await db_session.execute(
+                    select(NotamSeen).where(NotamSeen.notam_id == notam.notam_id)
+                )
+                for seen in seens.all():
+                    logger.debug(f"Removing seen NOTAM record from {seen.cid}")
+                    _ = await db_session.delete(seen)
