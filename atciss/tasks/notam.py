@@ -85,6 +85,6 @@ async def fetch_notam(
                 seens = await db_session.execute(
                     select(NotamSeen).where(NotamSeen.notam_id == notam.notam_id)
                 )
-                for seen in seens.all():
+                for (seen,) in seens.all():
                     logger.debug(f"Removing seen NOTAM record from {seen.cid}")
                     _ = await db_session.delete(seen)
