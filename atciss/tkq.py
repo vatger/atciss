@@ -7,7 +7,7 @@ import taskiq_fastapi
 from prometheus_client import Counter, Histogram
 from taskiq import PrometheusMiddleware, TaskiqMiddleware, TaskiqScheduler
 from taskiq.schedule_sources import LabelScheduleSource
-from taskiq_redis import ListQueueBroker, RedisAsyncResultBackend
+from taskiq_redis import ListQueueBroker
 from typing_extensions import override
 
 from atciss.config import settings
@@ -65,18 +65,10 @@ class PrometheusWorkerMiddleware(PrometheusMiddleware):
         super().startup()
 
 
-broker = (
-    ListQueueBroker(
-        url=str(settings.REDIS_URL),
-    )
-    .with_result_backend(
-        RedisAsyncResultBackend(
-            redis_url=str(settings.REDIS_URL),
-        )
-    )
-    .with_middlewares(
-        PrometheusWorkerMiddleware(metrics_path=Path("/tmp")),
-    )
+broker = ListQueueBroker(
+    url=str(settings.REDIS_URL),
+).with_middlewares(
+    PrometheusWorkerMiddleware(metrics_path=Path("/tmp")),
 )
 
 scheduler = TaskiqScheduler(
