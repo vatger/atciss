@@ -3,7 +3,7 @@ import { DateTime } from "luxon"
 import { api } from "services/api"
 import { RootState } from "../app/store"
 import { selectNotamDesignators } from "./configSlice"
-import { selectReadFiltered } from "./notamSlice"
+import { selectInactiveFiltered, selectReadFiltered } from "./notamSlice"
 
 export const usePollNotamByIcaoCodes: typeof api.useNotamsByIcaoCodesQuery = (
   icao,
@@ -37,18 +37,23 @@ export const selectNotamIsRead = createSelector(
 
 export const selectNotamsByDesignator = createSelector(
   selectAllNotams,
+  selectInactiveFiltered,
   selectReadFiltered,
   selectReadNotamIds,
   (_state: RootState, icao: string) => icao,
-  (notams, readFiltered, readNotams, icao) => {
+  (notams, inactiveFiltered, readFiltered, readNotams, icao) => {
     const icaoNotams = (notams[icao ?? ""] ?? []).filter(
       (n) => DateTime.utc() <= DateTime.fromISO(n.valid_till).toUTC(),
     )
 
     return {
-      notams: icaoNotams.filter(
-        (n) => !readFiltered || !readNotams.includes(n.notam_id),
-      ),
+      notams: icaoNotams
+        .filter((n) => !readFiltered || !readNotams.includes(n.notam_id))
+        .filter(
+          (n) =>
+            !inactiveFiltered ||
+            DateTime.fromISO(n.valid_from).toUTC() <= DateTime.utc(),
+        ),
       total: icaoNotams.length,
     }
   },
