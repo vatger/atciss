@@ -2500,18 +2500,18 @@ taskiq = ">=0.8.0,<1"
 
 [[package]]
 name = "taskiq-redis"
-version = "0.5.6"
+version = "1.0.0"
 description = "Redis integration for taskiq"
 optional = false
 python-versions = "<4.0.0,>=3.8.1"
 files = [
-    {file = "taskiq_redis-0.5.6-py3-none-any.whl", hash = "sha256:f113f9e2331d2a4babbe7fe902898efe6921319680118893444201058683eee8"},
-    {file = "taskiq_redis-0.5.6.tar.gz", hash = "sha256:7591e32e2cf127ba58aeb15d6e62ea261ad9ec7ea54936043c9517ac90257224"},
+    {file = "taskiq_redis-1.0.0-py3-none-any.whl", hash = "sha256:867949594e63402bdb8378fcc9f1e4e1a18360cb7d3da30fe06d8c33cb74822f"},
+    {file = "taskiq_redis-1.0.0.tar.gz", hash = "sha256:45b2ac312a61725b4a5bdc5595f160d83986eac21eb5bc080ede5e6272d87d61"},
 ]
 
 [package.dependencies]
 redis = ">=5,<6"
-taskiq = ">=0.10.3,<1"
+taskiq = ">=0.11.1,<1"
 
 [[package]]
 name = "tomlkit"
@@ -3167,4 +3167,4 @@ test = ["big-O", "jaraco.functools", "jaraco.itertools", "jaraco.test", "more-it
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "525916f413dca0a662ed92de239dc5b1da9c62f6e0340b980542585c0afd733a"
+content-hash = "85a7fa16e0dbc20cce3a4893df8297dac86053096e009dfbac1c0bf3584715ca"
