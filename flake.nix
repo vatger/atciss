@@ -58,9 +58,7 @@
           final: _prev:
           let
             python = final.python312;
-            overrides = overrides' ++ [ (_: _: { ruff = null; }) ];
-            overrides-dev = overrides' ++ [ (_: _: { inherit (final) ruff; }) ];
-            overrides' = final.poetry2nix.overrides.withDefaults (
+            overrides = final.poetry2nix.overrides.withDefaults (
               pyfinal: pyprev: {
                 vatsim = pyprev.vatsim.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
@@ -134,8 +132,7 @@
                 });
 
             atciss-dev = final.poetry2nix.mkPoetryEnv {
-              inherit python;
-              overrides = overrides-dev;
+              inherit python overrides;
               pyproject = ./pyproject.toml;
               poetrylock = ./poetry.lock;
               extraPackages = ps: [ ps.ipython ];
