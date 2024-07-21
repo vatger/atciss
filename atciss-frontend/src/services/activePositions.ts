@@ -58,15 +58,16 @@ export const selectSelectedPosition = createSelector(
   selectPositions,
   (selected, active, synced, me, positions) =>
     synced && me
-      ? Object.entries(positions).find(([, pos]) =>
+      ? (Object.entries(positions).find(([, pos]) =>
           pos?.pre.some(
             (prefix) =>
               `${prefix}${pos.frequency}` === controllerMatchString(me),
           ),
-        )?.[0] ?? null
+        )?.[0] ?? null)
       : active[selected ?? ""]
         ? selected
-        : Object.entries(active).find(([, isActive]) => isActive)?.[0] ?? null,
+        : (Object.entries(active).find(([, isActive]) => isActive)?.[0] ??
+          null),
 )
 
 export const selectIsPositionActive = createSelector(
@@ -127,13 +128,13 @@ export const selectOwnedSectors = createSelector(
   (activePositions, sectors, pos) =>
     pos === null
       ? []
-      : Object.entries(sectors).reduce(
+      : (Object.entries(sectors).reduce(
           (acc, [id, s]) =>
             ownerFromSectorsActivePositions(s, activePositions) === pos
               ? [...acc, id.replace(/.*\//, "")] // FIXME check
               : acc,
           [] as string[],
-        ) ?? [],
+        ) ?? []),
 )
 
 const getOwner = (
