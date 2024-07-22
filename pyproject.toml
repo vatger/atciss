@@ -36,7 +36,7 @@ redis = "^5"
 regex = "^2024.5.15"
 shapely = "^2.0.5"
 sqlalchemy = { version = "^2.0.31", extras = [ "asyncio" ] }
-sqlmodel = "0.0.20"
+sqlmodel = "0.0.21"
 taskiq = "^0"
 taskiq-redis = "^1"
 taskiq-fastapi = "^0"
