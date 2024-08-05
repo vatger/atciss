@@ -17,7 +17,7 @@
     "@emotion/react": "^11.11.3",
     "@reduxjs/toolkit": "^2.2.7",
     "async-mutex": "^0.5.0",
-    "luxon": "^3.4.4",
+    "luxon": "^3.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
