@@ -45,13 +45,17 @@ xmltodict = "^0.13.0"
 vatsim = "^0.1.1"
 eaup = { git = "https://gitlab.com/fpletz/eaup.git", rev = "d9270df4097ca62359215cc762d41a0827d8dd06" }
 
+# needs bump in poetry2nix
+watchfiles = "~0.22"
+orjson = "3.10.6"
+
 [tool.poetry.group.dev.dependencies]
 pylint = "^3.2"
 types-beautifulsoup4 = "^4.12.0.20240511"
 types-python-jose = "^3.3.4.20240106"
 mypy = "^1.11.1"
 pyright = "1.1.375"
-ruff = "0.5.1"
+ruff = "0.5.6"
 types-xmltodict = "^0.13.0.3"
 pyrasite = "^2.0"
 taskiq = { version = "^0", extras = ["reload"] }
