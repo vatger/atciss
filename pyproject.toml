@@ -23,7 +23,7 @@ greenlet = "^3.0.3"
 haversine = "^2.8.1"
 lark = "^1"
 loguru = "^0.7.2"
-lxml = "^5.2.2"
+lxml = "^5.3.0"
 metar = { git = "https://github.com/globin/python-metar", rev = "35efaa6f76d00bd53b9e29bb0f87fbc3c80d8af2" }
 prometheus-fastapi-instrumentator = "^7.0.0"
 pydantic = "~2.8"
