@@ -71,7 +71,7 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Build flake outputs
         run: |
-          nix run .#nix-fast-build -- -f .#devShells --no-nom --skip-cached
+          nix run .#nix-fast-build -- --no-nom --skip-cached
 
   docker-images:
     name: Docker Images
