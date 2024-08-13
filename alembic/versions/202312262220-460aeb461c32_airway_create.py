@@ -24,7 +24,7 @@ depends_on: str | Sequence[str] | None = None
 def upgrade() -> None:
     op.create_table(
         "airway",
-        sa.Column("id", sqlmodel.sql.sqltypes.GUID(), nullable=False),
+        sa.Column("id", sa.Uuid(), nullable=False),
         sa.Column("designatorPrefix", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
         sa.Column("designatorSecondLetter", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
         sa.Column("designatorNumber", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
@@ -33,7 +33,7 @@ def upgrade() -> None:
     )
     op.create_table(
         "airwaysegment",
-        sa.Column("id", sqlmodel.sql.sqltypes.GUID(), nullable=False),
+        sa.Column("id", sa.Uuid(), nullable=False),
         sa.Column("level", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("true_track", sa.Float(), nullable=True),
         sa.Column("reverse_true_track", sa.Float(), nullable=True),
@@ -42,9 +42,9 @@ def upgrade() -> None:
         sa.Column("upper_limit_uom", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("lower_limit", sa.Integer(), nullable=False),
         sa.Column("lower_limit_uom", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-        sa.Column("start_id", sqlmodel.sql.sqltypes.GUID(), nullable=False),
-        sa.Column("end_id", sqlmodel.sql.sqltypes.GUID(), nullable=False),
-        sa.Column("airway_id", sqlmodel.sql.sqltypes.GUID(), nullable=False),
+        sa.Column("start_id", sa.Uuid(), nullable=False),
+        sa.Column("end_id", sa.Uuid(), nullable=False),
+        sa.Column("airway_id", sa.Uuid(), nullable=False),
         sa.Column(
             "curve_extent",
             geoalchemy2.types.Geometry(
