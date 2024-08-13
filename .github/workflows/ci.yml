@@ -27,7 +27,7 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Build development shells
         run: |
-          nix run .#nix-fast-build -- -f .#devShells --no-nom --skip-cached
+          nix run .#nix-fast-build -- -f .#devShells.x86_64-linux --no-nom --skip-cached
 
   lint:
     name: Code Lint
