@@ -2521,13 +2521,13 @@ files = [
 
 [[package]]
 name = "taskiq"
-version = "0.11.6"
+version = "0.11.7"
 description = "Distributed task queue with full async support"
 optional = false
 python-versions = "<4.0.0,>=3.8.1"
 files = [
-    {file = "taskiq-0.11.6-py3-none-any.whl", hash = "sha256:6a994aa1d44cd2bc683e8e5b8376b9ac12d2288a0e2825efe9b977d27f3023b0"},
-    {file = "taskiq-0.11.6.tar.gz", hash = "sha256:97826018bd6ccd46ca7e41549d22d054f7fe9c069c15803586b027407adb6ec4"},
+    {file = "taskiq-0.11.7-py3-none-any.whl", hash = "sha256:15f741ca03e812724985333a327a2344ab720e7d54daaa932e1d3df7639558da"},
+    {file = "taskiq-0.11.7.tar.gz", hash = "sha256:dcb43960de0309b10bda814ce4da3963e532d50c132687a43edffa3f60da440a"},
 ]
 
 [package.dependencies]
