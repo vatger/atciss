@@ -55,7 +55,7 @@ types-beautifulsoup4 = "^4.12.0.20240511"
 types-python-jose = "^3.3.4.20240106"
 mypy = "^1.11.1"
 pyright = "1.1.377"
-ruff = "0.5.7"
+ruff = "0.6.1"
 types-xmltodict = "^0.13.0.3"
 pyrasite = "^2.0"
 taskiq = { version = "^0", extras = ["reload"] }
