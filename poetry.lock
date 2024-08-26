@@ -1882,13 +1882,13 @@ yaml = ["pyyaml (>=6.0.1)"]
 
 [[package]]
 name = "pydantic-xml"
-version = "2.11.0"
+version = "2.12.0"
 description = "pydantic xml extension"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pydantic_xml-2.11.0-py3-none-any.whl", hash = "sha256:033b2b997a99bdb18ab93d7ed66a5bc9ec490753afc011f084bd625ad2d0bdfd"},
-    {file = "pydantic_xml-2.11.0.tar.gz", hash = "sha256:7fbe816b8251b45aabe0c11992fc52e2921afd8f46f256b3f60ed82f869361da"},
+    {file = "pydantic_xml-2.12.0-py3-none-any.whl", hash = "sha256:f7fe4bf473a1d138ca493ad31fe86e133e888b97b79f9c40db85201e60ba7d5d"},
+    {file = "pydantic_xml-2.12.0.tar.gz", hash = "sha256:ceadc3467629f7b4f9a478bcc5c5dc9e94b8772bd1cfd84d33615777c43e5600"},
 ]
 
 [package.dependencies]
@@ -3279,4 +3279,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "4e4de9b16c6a5caf09d5e05c30a17c9fe6af2b05ace11cfce793b34f41a5550c"
+content-hash = "4f3c8d082ed03e68a3d053be8f09d5a6e30945cddb73f3d03ea78277e017cb20"
