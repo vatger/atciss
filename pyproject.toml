@@ -17,7 +17,7 @@ astral = "^3.2"
 asyncpg = "^0.29.0"
 beautifulsoup4 = "^4.12.3"
 click = "^8.1"
-fastapi = {version = "^0.112.2", extras = ["all"]}
+fastapi = { version = "^0.112.2", extras = ["all"] }
 geoalchemy2 = "^0.15.2"
 greenlet = "^3.0.3"
 haversine = "^2.8.1"
@@ -28,19 +28,19 @@ metar = { git = "https://github.com/globin/python-metar", rev = "35efaa6f76d00bd
 prometheus-fastapi-instrumentator = "^7.0.0"
 pydantic = "~2.8"
 pydantic-settings = "^2.4.0"
-pydantic-xml = {extras = ["lxml"], version = "^2.12"}
+pydantic-xml = { extras = ["lxml"], version = "^2.12" }
 pynotam = { git = "https://github.com/globin/PyNotam", rev = "84b741863d09aaa616e6f378a2e6e5eab8df706f" }
 python-dateutil = "^2.9.0"
 python-jose = "^3.3.0"
 redis = "^5"
 regex = "^2024.7.24"
 shapely = "^2.0.6"
-sqlalchemy = { version = "^2.0.32", extras = [ "asyncio" ] }
+sqlalchemy = { version = "^2.0.32", extras = ["asyncio"] }
 sqlmodel = "0.0.21"
 taskiq = "^0"
 taskiq-redis = "^1"
 taskiq-fastapi = "^0"
-uvicorn = {extras = ["standard"], version = "^0.30"}
+uvicorn = { extras = ["standard"], version = "^0.30" }
 xmltodict = "^0.13.0"
 vatsim = "^0.1.1"
 eaup = { git = "https://gitlab.com/fpletz/eaup.git", rev = "d9270df4097ca62359215cc762d41a0827d8dd06" }
@@ -55,7 +55,7 @@ types-beautifulsoup4 = "^4.12.0.20240511"
 types-python-jose = "^3.3.4.20240106"
 mypy = "^1.11.2"
 pyright = "1.1.378"
-ruff = "0.5.7"
+ruff = "0.6.1"
 types-xmltodict = "^0.13.0.3"
 pyrasite = "^2.0"
 taskiq = { version = "^0", extras = ["reload"] }
@@ -68,9 +68,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.mypy]
-exclude = [
-  "atciss/app/views/notam.py",
-]
+exclude = ["atciss/app/views/notam.py"]
 python_version = '3.11'
 show_error_codes = true
 follow_imports = 'silent'
@@ -89,10 +87,7 @@ disallow_untyped_defs = true
 implicit_optional = true
 
 [[tool.mypy.overrides]]
-module = [
-    "parsimonious.*",
-    "redis.*",
-]
+module = ["parsimonious.*", "redis.*"]
 ignore_missing_imports = true
 
 [tool.pylint.format]
@@ -145,27 +140,27 @@ preview = true
 
 [tool.ruff.lint]
 select = [
-  "E",  # pycodestyle errors
-  "W",  # pycodestyle warnings
-  "F",  # pyflakes
-  "C90",  # mccabe
-  "I",  # isort
-  "ASYNC",  # flake8-async
-  "B",  # flake8-bugbear
-  "BLE",  # flake8-blind-except
-  "COM",  # flake8-commas
-  "C4",  # flake8-comprehensions
-  "DTZ",  # flake8-datetimez
-  "EM",  # flake8-errmsg
-  "ICN",  # flake8-import-conventions
-  "PYI",  # flake8-pyi
-  "Q",  # flake8-quotes
-  "SIM",  # flake8-simplify
-  "TCH",  # flake8-typechecking
-  "PTH",  # flake8-use-pathlib
-  "UP",  # pyupgrade
-  "RUF",  # ruff-specific
-  "TRY",  # tryceratops
-  "FURB", # refurb
+  "E",     # pycodestyle errors
+  "W",     # pycodestyle warnings
+  "F",     # pyflakes
+  "C90",   # mccabe
+  "I",     # isort
+  "ASYNC", # flake8-async
+  "B",     # flake8-bugbear
+  "BLE",   # flake8-blind-except
+  "COM",   # flake8-commas
+  "C4",    # flake8-comprehensions
+  "DTZ",   # flake8-datetimez
+  "EM",    # flake8-errmsg
+  "ICN",   # flake8-import-conventions
+  "PYI",   # flake8-pyi
+  "Q",     # flake8-quotes
+  "SIM",   # flake8-simplify
+  "TCH",   # flake8-typechecking
+  "PTH",   # flake8-use-pathlib
+  "UP",    # pyupgrade
+  "RUF",   # ruff-specific
+  "TRY",   # tryceratops
+  "FURB",  # refurb
 ]
 ignore = ["COM812"]
