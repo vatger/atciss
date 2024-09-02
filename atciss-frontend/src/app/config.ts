@@ -627,7 +627,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
         ],
         majorAerodromes: ["EDDB"],
         aerodromes: ["EDAH", "ETNL"],
-        relevantAerodromes: ["ETSH", "EDDV", "EDDC", "EDDP"],
+        relevantAerodromes: ["ETSH", "EDDV", "EDDC", "EDDP", "EKCH"],
         areas: {
           "ED-R17 Jaegerbrueck": ["ED-R17A", "ED-R17B"],
           "ED-R71 Klietz": ["ED-R71"],
