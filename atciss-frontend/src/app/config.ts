@@ -66,7 +66,9 @@ export const SPLIT_PRESETS: {
     "MRZ-FLG": { positions: ["ed/MRZ", "ed/FLG"] },
     "MRZ-BOR": { positions: ["ed/MRZ", "ed/BOR"] },
     "MRZ-MAR": { positions: ["ed/MRZ", "ed/MAR"] },
+    "MAR-BOR": { positions: ["ed/MAR", "ed/BOR"] },
     "MAR-FLG": { positions: ["ed/MAR", "ed/FLG"] },
+    "BOR-FLG": { positions: ["ed/BOR", "ed/FLG"] },
     "MRZ-MAR-FLG": { positions: ["ed/MRZ", "ed/MAR", "ed/FLG"] },
     "MRZ-MAR-BOR": { positions: ["ed/MRZ", "ed/MAR", "ed/BOR"] },
     "MRZ-BOR-FLG": { positions: ["ed/MRZ", "ed/BOR", "ed/FLG"] },
@@ -625,7 +627,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
         ],
         majorAerodromes: ["EDDB"],
         aerodromes: ["EDAH", "ETNL"],
-        relevantAerodromes: ["ETSH", "EDDV", "EDDC", "EDDP"],
+        relevantAerodromes: ["ETSH", "EDDV", "EDDC", "EDDP", "EKCH"],
         areas: {
           "ED-R17 Jaegerbrueck": ["ED-R17A", "ED-R17B"],
           "ED-R71 Klietz": ["ED-R71"],
