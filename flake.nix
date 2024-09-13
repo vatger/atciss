@@ -112,6 +112,9 @@
                 pyright = pyprev.pyright.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.setuptools ];
                 });
+                urllib3 = pyprev.urllib3.overridePythonAttrs (old: {
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.hatch-vcs ];
+                });
               }
             );
           in
