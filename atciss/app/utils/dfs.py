@@ -31,7 +31,10 @@ def get_dfs_aixm_url(datasets: dict[str, LeafItem], amdt_id: int, dataset_name: 
     if dataset_name in datasets:
         for release in datasets[dataset_name].releases:
             if release.type.startswith("AIXM"):
-                return f"https://aip.dfs.de/datasets/rest/{amdt_id}/{release.filename}"
+                return (
+                    "https://aip.dfs.de/datasets/scripts/getItem.php?"
+                    f"amdt={amdt_id}&content={release.filename}"
+                )
 
     return None
 

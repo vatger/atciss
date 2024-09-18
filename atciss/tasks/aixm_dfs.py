@@ -36,22 +36,27 @@ async def fetch_dfs_aixm_data(
     if ad_url is None:
         logger.error("Could not retrieve ADHP URL, aborting.")
         return
+    logger.debug(f"ADHP URL: {ad_url}")
 
     if runway_url is None:
         logger.error("Could not retrieve RWY URL, aborting.")
         return
+    logger.debug(f"Runway URL: {runway_url}")
 
     if navaid_url is None:
         logger.error("Could not retrieve Navaid URL, aborting.")
         return
+    logger.debug(f"Navaid URL: {navaid_url}")
 
     if waypoint_url is None:
         logger.error("Could not retrieve WPT URL, aborting.")
         return
+    logger.debug(f"Waypoint URL: {waypoint_url}")
 
     if route_url is None:
         logger.error("Could not retrieve Routes URL, aborting.")
         return
+    logger.debug(f"Route URL: {route_url}")
 
     aixm_data = await asyncio.gather(
         *(
