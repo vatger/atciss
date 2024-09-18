@@ -75,17 +75,33 @@ async def import_sct(
         )
         blocked_aerodromes = result.all()
 
+        navaids_updated = navaids_added = 0
         filtered_navaids = [n for n in sct.navaids() if n.designator not in blocked_navaids]
         for navaid in filtered_navaids:
+            stmt = select(Navaid).where(Navaid.designator == navaid.designator)
+            existing = await db_session.scalar(stmt)
+            if existing is not None:
+                navaid.id = existing.id
+                navaids_updated += 1
+            else:
+                navaids_added += 1
             _ = await db_session.merge(navaid)
 
+        ads_updated = ads_added = 0
         filtered_aerodromes = [
             a for a in sct.aerodromes() if a.icao_designator not in blocked_aerodromes
         ]
         for aerodrome in filtered_aerodromes:
+            stmt = select(Aerodrome).where(Aerodrome.icao_designator == aerodrome.icao_designator)
+            existing = await db_session.scalar(stmt)
+            if existing is not None:
+                aerodrome.id = existing.id
+                ads_updated += 1
+            else:
+                ads_added += 1
             _ = await db_session.merge(aerodrome)
 
         logger.info(
-            f"SCT: Updated {len(filtered_navaids)} navaids and "
-            + f"{len(filtered_aerodromes)} aerodromes",
+            f"SCT: Updated {navaids_updated} navaids (+{navaids_added}) and "
+            + f"{ads_updated} aerodromes (+{ads_added})",
         )
