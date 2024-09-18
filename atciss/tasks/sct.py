@@ -46,6 +46,17 @@ def extract_sct_file(zipfile: ZipFile) -> str | None:
 
 
 @broker.task()
+async def clear_sct_navdata(
+    db_session: Annotated[AsyncSession, Depends(get_session)],
+) -> None:
+    for navaid in await db_session.scalars(select(Navaid).where(Navaid.source == "SCT")):
+        _ = await db_session.delete(navaid)
+    for ad in await db_session.scalars(select(Aerodrome).where(Aerodrome.source == "SCT")):
+        _ = await db_session.delete(ad)
+    logger.info("SCT navdata removed")
+
+
+@broker.task()
 async def import_sct(
     http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
     db_session: Annotated[AsyncSession, Depends(get_session)],
