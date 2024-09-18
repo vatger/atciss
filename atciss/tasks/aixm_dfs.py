@@ -164,7 +164,7 @@ async def process_waypoints(aixm: AIXMData, session: AsyncSession):
     for wpt in aixm.type("DesignatedPoint"):
         navaid_type = wpt["aixm:type"].get()
         if navaid_type is None:
-            logger.warning("Waypoint {wpt_id} has no type, discarding.")
+            logger.warning(f"Waypoint {wpt.id} has no type, discarding.")
             continue
 
         navaid_type = navaid_type.replace("OTHER:ADHP", "TERMINAL")
@@ -184,7 +184,15 @@ async def process_waypoints(aixm: AIXMData, session: AsyncSession):
         ad_id = wpt["aixm:airportHeliport", "@xlink:href"].get()
         # urn:uuid check filters foreign ADs (ELLX)
         if ad_id is not None and ad_id.startswith("urn:uuid:"):
-            wpt_data["aerodrome_id"] = UUID(ad_id[9:])
+            ad_uuid = UUID(ad_id[9:])
+            stmt = select(Aerodrome).where(Aerodrome.id == ad_uuid)
+            ad = await session.scalar(stmt)
+            if ad is not None:
+                wpt_data["aerodrome_id"] = ad_uuid
+            else:
+                logger.warning(
+                    f"Waypoint {wpt_data['designator']} {wpt.id}: Aerodrome {ad_uuid} not found!"
+                )
 
         remark = wpt[
             "aixm:annotation",
