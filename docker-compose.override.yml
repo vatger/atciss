@@ -1,5 +1,6 @@
 services:
   backend:
+    image: atciss-backend-local
     build:
       context: .
       target: dev
@@ -14,9 +15,7 @@ services:
       - ./alembic.ini:/code/alembic.ini
 
   worker:
-    build:
-      context: .
-      target: dev
+    image: atciss-backend-local
     ports:
       - "9000:9000"
     environment:
@@ -25,13 +24,17 @@ services:
     volumes:
       - ./atciss:/code/atciss
       - ./contrib:/code/contrib
+    # ensure current atciss-backend-local image is used
+    depends_on:
+      - backend
 
   scheduler:
-    build:
-      context: .
-      target: dev
+    image: atciss-backend-local
     volumes:
       - ./atciss:/code/atciss
+    # ensure current atciss-backend-local image is used
+    depends_on:
+      - backend
 
   db:
     environment:
