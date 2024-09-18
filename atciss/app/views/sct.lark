@@ -1,6 +1,6 @@
 start: ((_COMMENT _NL) | section)+
 
-section: section_header _NL line+
+section: section_header _NL line*
 
 ?line: (_COMMENT | location | runway | airway | fix | broken) _NL
 
