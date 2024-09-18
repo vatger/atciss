@@ -1,5 +1,6 @@
 import asyncio
 import io
+import re
 from collections import defaultdict
 from typing import Annotated, Any
 from uuid import UUID
@@ -254,6 +255,32 @@ async def process_navaid(aixm: AIXMData, feature: AIXMFeature, session: AsyncSes
 
 
 async def process_routes(aixm: AIXMData, session: AsyncSession):
+    async def navaid_from_fixDesignatedPoint(point: dict) -> UUID | None:
+        title = point["@xlink:title"]
+        uuid = UUID(point["@xlink:href"][9:])
+
+        stmt = select(Navaid).where(Navaid.id == uuid)
+        navaid = await session.scalar(stmt)
+
+        if navaid is None:
+            if title.startswith("urn:aixm:"):
+                _ = await create_or_update(
+                    session,
+                    Navaid,
+                    {
+                        "id": uuid,
+                        "designator": re.search("aixm:designator=([A-Z]+);", title).groups()[0],
+                        "type": re.search("aixm:type=([A-Z]+);", title).groups()[0],
+                        "location": re.search("gml:pos=([0-9. ]+)", title).groups()[0],
+                        "source": "DFS",
+                    },
+                )
+            else:
+                logger.error(f"Navaid not found: {uuid}: {title}")
+                return None
+
+        return uuid
+
     logger.info("Processing DFS route data")
 
     routes = []
@@ -274,33 +301,24 @@ async def process_routes(aixm: AIXMData, session: AsyncSession):
         upper_limit_uom = route_segment["aixm:upperLimit", "@uom"].get()
         lower_limit = route_segment["aixm:lowerLimit", "#text"].int()
         lower_limit_uom = route_segment["aixm:lowerLimit", "@uom"].get()
+
         start_dict = route_segment["aixm:start", "aixm:EnRouteSegmentPoint"].get()
-        start = start_dict.get(
+        start_point = start_dict.get(
             "aixm:pointChoice_fixDesignatedPoint",
             start_dict.get("aixm:pointChoice_navaidSystem"),
         )
-        try:
-            start_id = UUID(start["@xlink:href"][9:])
-        except ValueError:
-            # non-ED: gml urn, not uuid
-            stmt = select(Navaid).where(Navaid.designator == start["@xlink:title"])
-            wpt = await session.scalar(stmt)
-            start_id = wpt.id
+        start_id = await navaid_from_fixDesignatedPoint(start_point)
+
         end_dict = route_segment["aixm:end", "aixm:EnRouteSegmentPoint"].get()
-        end = end_dict.get(
+        end_point = end_dict.get(
             "aixm:pointChoice_fixDesignatedPoint",
             end_dict.get("aixm:pointChoice_navaidSystem"),
         )
-        try:
-            end_id = UUID(end["@xlink:href"][9:])
-        except ValueError:
-            # non-ED: gml urn, not uuid
-            stmt = select(Navaid).where(Navaid.designator == end["@xlink:title"])
-            wpt = await session.scalar(stmt)
-            if wpt is None:
-                logger.error(f"No waypoint found in database: {end['@xlink:title']}")
-                continue
-            end_id = wpt.id
+        end_id = await navaid_from_fixDesignatedPoint(end_point)
+
+        if start_id is None or end_id is None:
+            logger.error(f"No start or end point found for {route_segment.id}, ignoring")
+            continue
 
         route_segments.append({
             "id": UUID(route_segment.id),
