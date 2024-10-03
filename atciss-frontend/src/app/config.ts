@@ -63,6 +63,7 @@ export const SPLIT_PRESETS: {
     "DST-HRZ": { positions: ["ed/DST", "ed/HRZ"] },
     "DST-EMS": { positions: ["ed/DST", "ed/EMS"] },
     "ALR-HEI-EIDE": { positions: ["ed/ALR", "ed/HEI", "ed/EIDE"] },
+    "FLG": { positions: ["ed/FLG"] },
     "MRZ-FLG": { positions: ["ed/MRZ", "ed/FLG"] },
     "MRZ-BOR": { positions: ["ed/MRZ", "ed/BOR"] },
     "MRZ-MAR": { positions: ["ed/MRZ", "ed/MAR"] },
@@ -654,7 +655,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
           ["ed/SAS", "ed/TRN"],
         ],
         majorAerodromes: ["EDDB"],
-        aerodromes: ["ETSH"],
+        aerodromes: ["ETSH", "EDAZ"],
         relevantAerodromes: ["EDDC", "EDDP"],
         areas: {
           "ED-R54 Lehnin": ["ED-R54"],
