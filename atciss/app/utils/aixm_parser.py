@@ -103,7 +103,6 @@ class AIXMData:
 
     def id(self, message_id: str) -> AIXMFeature:
         """Returns messages of given ID."""
-        if message_id.startswith("urn:uuid:"):
-            message_id = message_id[9:]
+        message_id = message_id.removeprefix("urn:uuid:")
 
         return self.xlinks[message_id]
