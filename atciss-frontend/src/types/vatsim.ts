@@ -1,5 +1,5 @@
 export interface Atis {
-  cid: number
+  cid: string
   name: string
   callsign: string
   frequency: string
@@ -26,7 +26,7 @@ export interface AerodromeTraffic {
 }
 
 export interface Controller {
-  cid: number
+  cid: string
   name: string
   callsign: string
   frequency: string

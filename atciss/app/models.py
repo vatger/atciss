@@ -12,7 +12,7 @@ from .views.dfs_aixm import (  # noqa: F401
 
 
 class UserBase(SQLModel):
-    cid: int = Field(default=None, nullable=False, primary_key=True)
+    cid: str = Field(default=None, nullable=False, primary_key=True)
     name: str
     rating: str
     rostered: bool = Field(default=False)

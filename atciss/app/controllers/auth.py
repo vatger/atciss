@@ -24,7 +24,6 @@ ALGORITHM = "HS256"
 
 @dataclass
 class AuthResponse:
-    scopes: list[str]
     token_type: str
     expires_in: int
     access_token: str
@@ -55,7 +54,7 @@ class UserPersonalData:
     name_last: str
     name_full: str
     email: str
-    country: UserIdNameData
+    country: UserIdNameData | None = None
 
 
 @dataclass
@@ -69,10 +68,10 @@ class UserVatsimData:
 
 @dataclass
 class UserData:
-    cid: str
+    cid: str | int
     personal: UserPersonalData
     vatsim: UserVatsimData
-    oauth: OAuthData
+    oauth: OAuthData | None = None
 
 
 @dataclass
@@ -84,6 +83,7 @@ class UserResponse:
 class AuthInfoModel:
     client_id: str
     auth_url: str
+    scopes: str
 
 
 @dataclass
@@ -101,10 +101,8 @@ def create_access_token(cid: str, validity_minutes: int = 10) -> str:
     return jwt.encode(
         {
             "sub": cid,
-            "admin": int(cid) in settings.ADMINS,
-            "fir_admin": [
-                fir for fir in settings.FIR_ADMINS if int(cid) in settings.FIR_ADMINS[fir]
-            ],
+            "admin": cid in settings.ADMINS,
+            "fir_admin": [fir for fir in settings.FIR_ADMINS if cid in settings.FIR_ADMINS[fir]],
             "exp": datetime.now(UTC) + timedelta(minutes=validity_minutes),
         },
         settings.SECRET_KEY,
@@ -146,7 +144,7 @@ async def get_user(
             raise credentials_exception
 
         user: User | None = None
-        stmt = select(User).where(User.cid == int(cid))
+        stmt = select(User).where(User.cid == cid)
         user = await session.scalar(stmt)
 
         if user is None:
@@ -197,6 +195,7 @@ def auth_config() -> AuthInfoModel:
     return AuthInfoModel(
         client_id=settings.VATSIM_CLIENT_ID,
         auth_url=settings.VATSIM_AUTH_URL,
+        scopes=settings.VATSIM_AUTH_SCOPES,
     )
 
 
@@ -224,23 +223,25 @@ async def auth(
             logger.warning(f"Not authorized: {await res.text()}")
             raise HTTPException(401, "Not authorised by VATSIM")
 
-        auth_response = TypeAdapter(AuthResponse).validate_python(await res.json())
+        json = await res.json()
+        auth_response = TypeAdapter(AuthResponse).validate_python(json)
 
     async with http_client.get(
-        f"{settings.VATSIM_AUTH_URL}/api/user",
+        f"{settings.VATSIM_AUTH_URL}/{settings.VATSIM_AUTH_USERINFO_PATH}",
         headers={"Authorization": f"Bearer {auth_response.access_token}"},
     ) as res:
         user_response_json = await res.json()
         user_response = TypeAdapter(UserResponse).validate_python(user_response_json)
 
-    if not user_response.data.oauth.token_valid:
+    # this is None if it is vatger auth => check if vatsim.net connect
+    if user_response.data.oauth is not None and not user_response.data.oauth.token_valid:
         logger.warning(f"No valid token: {await res.text()}")
         raise HTTPException(401, "No valid token from VATSIM")
 
     if user_response.data.vatsim.rating.short in ("INAC", "SUS"):
         raise HTTPException(401, "Account inactive or suspended")
 
-    cid = int(user_response.data.cid)
+    cid = str(user_response.data.cid)
     user = await session.get(User, cid)
 
     user_data = {
@@ -259,8 +260,8 @@ async def auth(
     await session.commit()
 
     return AuthModel(
-        access=create_access_token(user_response.data.cid),
-        refresh=create_refresh_token(user_response.data.cid),
+        access=create_access_token(cid),
+        refresh=create_refresh_token(cid),
     )
 
 
@@ -272,6 +273,6 @@ def auth_refresh(
     user: Annotated[User, Depends(get_user)],
 ) -> AuthModel:
     return AuthModel(
-        access=create_access_token(str(user.cid)),
-        refresh=create_refresh_token(str(user.cid)),
+        access=create_access_token(user.cid),
+        refresh=create_refresh_token(user.cid),
     )

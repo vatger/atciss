@@ -11,7 +11,7 @@ class ValidatingSQLModel(SQLModel):
 
 class Booking(ValidatingSQLModel, table=True):
     id: int = Field(int, primary_key=True)
-    cid: int
+    cid: str
     callsign: str
     start: AwareDatetime = Field(sa_column=Column(DateTime(timezone=True), nullable=False))
     end: AwareDatetime = Field(sa_column=Column(DateTime(timezone=True), nullable=False))

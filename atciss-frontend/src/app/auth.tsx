@@ -65,7 +65,7 @@ export const Auth = () => {
 
     if (data !== null) {
       window.location.replace(
-        `${data.auth_url}/oauth/authorize?client_id=${data.client_id}&redirect_uri=${window.location.protocol}//${window.location.host}%2Fauth%2Fcallback&response_type=code&scope=full_name+email+vatsim_details+country`,
+        `${data.auth_url}/oauth/authorize?client_id=${data.client_id}&redirect_uri=${window.location.protocol}//${window.location.host}%2Fauth%2Fcallback&response_type=code&scope=${data.scopes}`,
       )
     }
   }
@@ -74,7 +74,7 @@ export const Auth = () => {
     <ThemeUIProvider theme={theme}>
       <Flex sx={{ height: "100vh", flexDirection: "column" }}>
         <Flex sx={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
-          <Button onClick={redirect}>Log in with VATSIM Connect</Button>
+          <Button onClick={redirect}>Log in with VATSIM</Button>
         </Flex>
         <Footer />
       </Flex>

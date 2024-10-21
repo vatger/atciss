@@ -1,6 +1,6 @@
 export type Booking = {
   id: number
-  cid: number
+  cid: string
   type: string
   callsign: string
   start: string

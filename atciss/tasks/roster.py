@@ -26,7 +26,7 @@ class RosterController(BaseModel):
 
 
 class RosterControllerPermit(BaseModel):
-    user_cid: int
+    user_cid: str
     permitted_upto: str
 
 
