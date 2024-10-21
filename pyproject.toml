@@ -56,7 +56,7 @@ types-python-jose = "^3.3.4.20240106"
 mypy = "^1.11.2"
 pyright = "1.1.382.post1"
 ruff = "0.6.1"
-types-xmltodict = "^0.13.0.3"
+types-xmltodict = "^0.14.0.20241009"
 pyrasite = "^2.0"
 taskiq = { version = "^0", extras = ["reload"] }
 
