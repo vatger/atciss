@@ -14,7 +14,7 @@ alembic = "^1.13.3"
 asgi-correlation-id = "^4.3.3"
 asgiref = "^3.8.1"
 astral = "^3.2"
-asyncpg = "^0.29.0"
+asyncpg = "^0.30.0"
 beautifulsoup4 = "^4.12.3"
 click = "^8.1"
 fastapi = { version = "^0.115.0", extras = ["all"] }
