@@ -31,8 +31,13 @@ class AuthResponse:
 
 
 @dataclass
+class VatgerTokenValid:
+    id: bool
+
+
+@dataclass
 class OAuthData:
-    token_valid: bool
+    token_valid: bool | VatgerTokenValid
 
 
 @dataclass
@@ -54,7 +59,7 @@ class UserPersonalData:
     name_last: str
     name_full: str
     email: str
-    country: UserIdNameData | None = None
+    country: UserIdNameData
 
 
 @dataclass
@@ -68,10 +73,10 @@ class UserVatsimData:
 
 @dataclass
 class UserData:
-    cid: str | int
+    cid: str
     personal: UserPersonalData
     vatsim: UserVatsimData
-    oauth: OAuthData | None = None
+    oauth: OAuthData
 
 
 @dataclass
@@ -233,8 +238,13 @@ async def auth(
         user_response_json = await res.json()
         user_response = TypeAdapter(UserResponse).validate_python(user_response_json)
 
-    # this is None if it is vatger auth => check if vatsim.net connect
-    if user_response.data.oauth is not None and not user_response.data.oauth.token_valid:
+    if (
+        isinstance(user_response.data.oauth.token_valid, bool)
+        and user_response.data.oauth.token_valid is not True
+    ) or (
+        not isinstance(user_response.data.oauth.token_valid, bool)
+        and user_response.data.oauth.token_valid.id is not True
+    ):
         logger.warning(f"No valid token: {await res.text()}")
         raise HTTPException(401, "No valid token from VATSIM")
 
