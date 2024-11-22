@@ -46,7 +46,7 @@ vatsim = "^0.1.1"
 eaup = { git = "https://gitlab.com/fpletz/eaup.git", rev = "d9270df4097ca62359215cc762d41a0827d8dd06" }
 
 # needs bump in poetry2nix
-watchfiles = "~0.23"
+watchfiles = "~0.24"
 orjson = "3.10.7"
 
 [tool.poetry.group.dev.dependencies]
@@ -55,7 +55,7 @@ types-beautifulsoup4 = "^4.12.0.20241020"
 types-python-jose = "^3.3.4.20240106"
 mypy = "^1.13.0"
 pyright = "1.1.389"
-ruff = "0.6.1"
+ruff = "0.8.0"
 types-xmltodict = "^0.14.0.20241009"
 pyrasite = "^2.0"
 taskiq = { version = "^0", extras = ["reload"] }
@@ -93,14 +93,14 @@ ignore_missing_imports = true
 [tool.pylint.format]
 jobs = 0
 disable = [
-        "W0611", # unused-import
-        "R0902", # too-many-instance-attributes
-        "R0903", # too-few-public-methods
-        "C0114", # missing-module-docstring
-        "C0115", # missing-class-docstring
-        "C0116", # missing-function-docstring
-        "W0511", # fixme
-        "C0103", # invalid-name
+    "W0611", # unused-import
+    "R0902", # too-many-instance-attributes
+    "R0903", # too-few-public-methods
+    "C0114", # missing-module-docstring
+    "C0115", # missing-class-docstring
+    "C0116", # missing-function-docstring
+    "W0511", # fixme
+    "C0103", # invalid-name
 ]
 output-format = "colorized"
 max-line-length = 100
@@ -140,27 +140,27 @@ preview = true
 
 [tool.ruff.lint]
 select = [
-        "E",     # pycodestyle errors
-        "W",     # pycodestyle warnings
-        "F",     # pyflakes
-        "C90",   # mccabe
-        "I",     # isort
-        "ASYNC", # flake8-async
-        "B",     # flake8-bugbear
-        "BLE",   # flake8-blind-except
-        "COM",   # flake8-commas
-        "C4",    # flake8-comprehensions
-        "DTZ",   # flake8-datetimez
-        "EM",    # flake8-errmsg
-        "ICN",   # flake8-import-conventions
-        "PYI",   # flake8-pyi
-        "Q",     # flake8-quotes
-        "SIM",   # flake8-simplify
-        "TCH",   # flake8-typechecking
-        "PTH",   # flake8-use-pathlib
-        "UP",    # pyupgrade
-        "RUF",   # ruff-specific
-        "TRY",   # tryceratops
-        "FURB",  # refurb
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "F",     # pyflakes
+    "C90",   # mccabe
+    "I",     # isort
+    "ASYNC", # flake8-async
+    "B",     # flake8-bugbear
+    "BLE",   # flake8-blind-except
+    "COM",   # flake8-commas
+    "C4",    # flake8-comprehensions
+    "DTZ",   # flake8-datetimez
+    "EM",    # flake8-errmsg
+    "ICN",   # flake8-import-conventions
+    "PYI",   # flake8-pyi
+    "Q",     # flake8-quotes
+    "SIM",   # flake8-simplify
+    "TCH",   # flake8-typechecking
+    "PTH",   # flake8-use-pathlib
+    "UP",    # pyupgrade
+    "RUF",   # ruff-specific
+    "TRY",   # tryceratops
+    "FURB",  # refurb
 ]
 ignore = ["COM812"]
