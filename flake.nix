@@ -124,7 +124,6 @@
                 inherit python overrides;
                 projectDir = final.poetry2nix.cleanPythonSources { src = ./.; };
                 pythonImportCheck = [ "atciss" ];
-                groups = [ ];
                 checkgroups = [ ];
               }).overrideAttrs
                 (_: {
