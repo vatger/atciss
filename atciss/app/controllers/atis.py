@@ -116,7 +116,7 @@ async def atis_generate(
 
     lowvis = "LOW VISIBILITY PROCEDURES IN OPERATION CATEGORY 2 AND 3 AVAILABLE" if lvp else None
 
-    def avail(o: None | float, f: str = "{}") -> str:
+    def avail(o: float | None, f: str = "{}") -> str:
         return f.format(int(o)) if o is not None else "UNAVAILABLE"
 
     wind = (
