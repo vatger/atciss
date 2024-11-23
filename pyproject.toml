@@ -47,7 +47,7 @@ eaup = { git = "https://gitlab.com/fpletz/eaup.git", rev = "d9270df4097ca6235921
 
 # needs bump in poetry2nix
 watchfiles = "~0.24"
-orjson = "3.10.7"
+orjson = "3.10.11"
 
 [tool.poetry.group.dev.dependencies]
 pylint = "^3.3"
