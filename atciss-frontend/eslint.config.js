@@ -22,6 +22,7 @@ export default tseslint.config(
     rules: {
       "react/no-unknown-property": ["error", { ignore: ["sx"] }],
       "react/prop-types": ["error", { ignore: ["pane"] }],
+      "@typescript-eslint/no-invalid-void-type": "off",
     },
   },
 )

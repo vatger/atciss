@@ -124,7 +124,7 @@ export const api = createApi({
       }),
     }),
 
-    areas: builder.query<AreaBooking[], null>({
+    areas: builder.query<AreaBooking[], void>({
       query: () => ({
         url: "areas",
       }),
@@ -144,7 +144,7 @@ export const api = createApi({
     //   }),
     // }),
 
-    controllers: builder.query<Controller[], null>({
+    controllers: builder.query<Controller[], void>({
       query: () => ({
         url: "vatsim/controllers",
       }),
@@ -194,13 +194,13 @@ export const api = createApi({
         params: icaoList.map((icao) => ["icao", icao]),
       }),
     }),
-    notamsSeen: builder.query<string[], null>({
+    notamsSeen: builder.query<string[], void>({
       query: () => ({
         url: "notam/read",
       }),
       providesTags: ["notamSeen"],
     }),
-    notamSeen: builder.mutation<null, string>({
+    notamSeen: builder.mutation<void, string>({
       query: (id) => ({
         url: "notam/read",
         params: { id },
@@ -208,7 +208,7 @@ export const api = createApi({
       }),
       invalidatesTags: ["notamSeen"],
     }),
-    notamUnseen: builder.mutation<null, string>({
+    notamUnseen: builder.mutation<void, string>({
       query: (id) => ({
         url: "notam/read",
         params: { id },
@@ -217,7 +217,7 @@ export const api = createApi({
       invalidatesTags: ["notamSeen"],
     }),
 
-    sectors: builder.query<SectorData, null>({
+    sectors: builder.query<SectorData, void>({
       query: () => ({
         url: "airspace",
       }),
