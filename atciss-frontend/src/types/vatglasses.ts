@@ -1,18 +1,18 @@
 import { LatLngExpression } from "leaflet"
 
-export type Runway = {
+export interface Runway {
   icao: string
   runway: string | string[]
 }
 
-export type Sector = {
+export interface Sector {
   points: LatLngExpression[]
   min: number | null
   max: number | null
   runways: Runway[]
 }
 
-export type Airspace = {
+export interface Airspace {
   id: string
   uid: string | null
   remark: string | null
@@ -21,19 +21,19 @@ export type Airspace = {
   sectors: Sector[]
 }
 
-export type RwyDependentTopDown = {
+export interface RwyDependentTopDown {
   runway: Runway
   topdown: string[]
 }
 
-export type Airport = {
+export interface Airport {
   callsign: string
   coord: LatLngExpression
   topdown: (string | RwyDependentTopDown)[]
   runways: string[]
 }
 
-export type Position = {
+export interface Position {
   id: string
   name: string
   pre: string[]
@@ -43,8 +43,8 @@ export type Position = {
   colours: { hex: string }[]
 }
 
-export type SectorData = {
-  airspace: { [indicator: string]: Airspace }
-  positions: { [indicator: string]: Position }
-  airports: { [indicator: string]: Airport }
+export interface SectorData {
+  airspace: Record<string, Airspace>
+  positions: Record<string, Position>
+  airports: Record<string, Airport>
 }

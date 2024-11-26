@@ -1,7 +1,7 @@
 import { ReactElement } from "react"
 import { Flex, Text } from "theme-ui"
 
-type AcInfoBoxProps = {
+interface AcInfoBoxProps {
   item: string | ReactElement
   value: string
   backgroundColor: string

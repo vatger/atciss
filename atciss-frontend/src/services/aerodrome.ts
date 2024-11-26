@@ -5,7 +5,7 @@ import { selectSectorData } from "services/sectorApi"
 import { Airport } from "types/vatglasses"
 import { RootState } from "../app/store"
 
-const emptyAirports: { [indicator: string]: Airport } = {}
+const emptyAirports: Record<string, Airport> = {}
 export const selectAirports = createSelector(
   selectSectorData,
   (sectorDataResponse) => sectorDataResponse.data?.airports ?? emptyAirports,

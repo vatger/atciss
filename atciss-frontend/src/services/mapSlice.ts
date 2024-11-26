@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { RootState } from "../app/store"
 import { localStorageOrDefault, setLocalStorage } from "../app/utils"
 
-type MapState = {
+interface MapState {
   level: number
   ofm: boolean
   dfs: boolean

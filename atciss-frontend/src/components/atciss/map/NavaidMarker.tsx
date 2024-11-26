@@ -6,7 +6,7 @@ import { Marker } from "react-leaflet"
 import { Box, Flex, Text } from "theme-ui"
 import { Navaid } from "types/dfs"
 
-export const ICONS: { [key: string]: ReactElement } = {
+export const ICONS: Record<string, ReactElement> = {
   rnav: (
     <g>
       <path

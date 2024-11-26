@@ -1,16 +1,16 @@
-export type Event = {
+export interface Event {
   name: string
   date_start: string
   date_end: string
   fir: string
 }
 
-export type FilterEvent = {
+export interface FilterEvent {
   event_id: number
   event_vatcan: string | null
 }
 
-export type Filter = {
+export interface Filter {
   type:
     | "ADEP"
     | "ADES"
@@ -23,7 +23,7 @@ export type Filter = {
   value: (string | number)[] | number | FilterEvent
 }
 
-export type Measure = {
+export interface Measure {
   type:
     | "prohibit"
     | "minimum_departure_interval"
@@ -39,7 +39,7 @@ export type Measure = {
   value: number | string[] | null
 }
 
-export type FlowMeasure = {
+export interface FlowMeasure {
   ident: string
   event_id: number | null
   reason: string

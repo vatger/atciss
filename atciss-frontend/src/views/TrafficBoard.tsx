@@ -44,8 +44,8 @@ const BoardLine = ({ text }: { text: string }) => (
     {text
       .replaceAll("-", " ")
       .split("")
-      .map((letter) => (
-        <BoardLetter letter={letter} />
+      .map((letter, idx) => (
+        <BoardLetter letter={letter} key={idx} />
       ))}
   </Box>
 )

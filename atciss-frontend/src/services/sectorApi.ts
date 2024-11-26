@@ -19,7 +19,7 @@ export const selectPosition = createSelector(
   (positions, id): Position | null => positions[id ?? ""] ?? null,
 )
 
-const emptyAirspaces: { [indicator: string]: Airspace } = {}
+const emptyAirspaces: Record<string, Airspace> = {}
 export const selectAirspace = createSelector(
   selectSectorData,
   (sectorDataResponse) => sectorDataResponse.data?.airspace ?? emptyAirspaces,

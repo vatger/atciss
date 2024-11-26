@@ -1,4 +1,4 @@
-export type LoaItem = {
+export interface LoaItem {
   aerodrome: string // FIXME: should be string[]
   adep_ades: "ADEP" | "ADES" | null
   cop: string

@@ -1,26 +1,27 @@
 import { LatLngTuple } from "leaflet"
 
-type FIR = {
+interface FIR {
   mapCentre: LatLngTuple
   neighbourPrefixes: string[]
   neighbourFirs: string[]
-  pages: { [name: string]: Page }
+  pages: Record<string, Page>
   initials: {
     enabled: boolean
   }
 }
-type Page = {
+interface Page {
   staffingSectors: string[]
   statusSectors: string[][]
   majorAerodromes: string[]
   aerodromes: string[]
   relevantAerodromes: string[]
-  areas: { [name: string]: string[] }
+  areas: Record<string, string[]>
 }
 
-export const SPLIT_PRESETS: {
-  [fir: string]: { [name: string]: { level?: number; positions: string[] } }
-} = {
+export const SPLIT_PRESETS: Record<
+  string,
+  Record<string, { level?: number; positions: string[] }>
+> = {
   EDMM: {
     "ZUG-HOF": { positions: ["ed/ZUG", "ed/HOF", "ed/DMNH"] },
     "RDG-GER": { positions: ["ed/RDG", "ed/GER", "ed/DMNH"] },
@@ -93,7 +94,7 @@ export const SPLIT_PRESETS: {
 }
 
 // TODO move to UI?
-export const FIR_SETTINGS: { [name: string]: FIR } = {
+export const FIR_SETTINGS: Record<string, FIR> = {
   EDMM: {
     mapCentre: [49.2646, 11.4134],
     neighbourPrefixes: ["ED", "ET", "EP", "LI", "LK", "LO", "LS"],
@@ -706,7 +707,7 @@ export const FIR_SETTINGS: { [name: string]: FIR } = {
     },
   },
 }
-export const FIR_TO_VATGLASSES: { [fir: string]: string } = {
+export const FIR_TO_VATGLASSES: Record<string, string> = {
   EDMM: "ed",
   EDUU: "ed",
   EDGG: "ed",

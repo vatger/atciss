@@ -84,7 +84,7 @@ export const selectGroupToPositions = createSelector(
         ...acc,
         [pos.pre[0]]: [...(acc[pos.pre[0]] ?? []), id],
       }),
-      {} as { [index: string]: string[] },
+      {} as Record<string, string[]>,
     ),
 )
 
@@ -140,7 +140,7 @@ export const selectOwnedSectors = createSelector(
 const getOwner = (
   sector: Airspace,
   activePositions: PositionStatus,
-  positions: { [id: string]: Position },
+  positions: Record<string, Position>,
 ) => {
   const owner = ownerFromSectorsActivePositions(sector, activePositions)
   return owner ? positions[owner] : null

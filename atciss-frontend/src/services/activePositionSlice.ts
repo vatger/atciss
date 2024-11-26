@@ -117,7 +117,7 @@ const activePositionSlice = createSlice({
             ...Object.keys(positions).reduce(
               (acc, id) => ({
                 ...acc,
-                [id]: true && !queryParams.has("pos"),
+                [id]: !queryParams.has("pos"),
               }),
               {},
             ),

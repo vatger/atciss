@@ -4,8 +4,8 @@ import { FIR_SETTINGS } from "../app/config"
 import { localStorageOrDefault, setLocalStorage } from "../app/utils"
 import { selectActiveFir } from "./configSlice"
 
-type AtisAfwState = {
-  activePagePerFir: { [fir: string]: string }
+interface AtisAfwState {
+  activePagePerFir: Record<string, string>
 }
 
 const atisAfwSlice = createSlice({

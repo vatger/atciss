@@ -1,4 +1,4 @@
-export type Notam = {
+export interface Notam {
   full_text: string
   notam_id: string
   notam_type: string
@@ -10,7 +10,7 @@ export type Notam = {
   scope: string[]
   fl_lower: number
   fl_upper: number
-  area: { [index: string]: string | number }
+  area: Record<string, string | number>
   location: string[]
   valid_from: string
   valid_till: string

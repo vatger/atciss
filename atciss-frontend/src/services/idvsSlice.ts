@@ -4,7 +4,7 @@ import { localStorageOrDefault, setLocalStorage } from "../app/utils"
 import { selectDfsAd } from "services/aerodrome"
 import { selectAtis } from "services/atisApi"
 
-type ConfigState = {
+interface ConfigState {
   activeAerodrome: string
 }
 

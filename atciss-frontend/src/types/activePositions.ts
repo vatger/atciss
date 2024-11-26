@@ -1,6 +1,6 @@
-export type PositionStatus = { [id: string]: boolean }
+export type PositionStatus = Record<string, boolean>
 
-export type ActivePositionState = {
+export interface ActivePositionState {
   manualActive: PositionStatus
   sectorsSyncedToOnline: boolean
   positionSyncedToOnline: boolean

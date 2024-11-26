@@ -57,7 +57,7 @@ export const Sector = ({ id }: { id: string }) => {
     : []
 }
 
-type SectorPolygonProps = {
+interface SectorPolygonProps {
   sectorBounds: SectorBounds
   id: string
 }

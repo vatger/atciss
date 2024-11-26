@@ -1,6 +1,6 @@
 import { LatLngTuple } from "leaflet"
 
-export type AreaBooking = {
+export interface AreaBooking {
   name: string
   polygon: LatLngTuple[]
   lower_limit: number

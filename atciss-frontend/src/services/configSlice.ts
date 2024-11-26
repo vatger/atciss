@@ -3,7 +3,7 @@ import { RootState } from "../app/store"
 import { FIR_SETTINGS } from "../app/config"
 import { localStorageOrDefault, setLocalStorage } from "../app/utils"
 
-type ConfigState = {
+interface ConfigState {
   activeFir: string
 }
 

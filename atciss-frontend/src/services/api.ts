@@ -19,13 +19,13 @@ export const api = createApi({
   baseQuery: fetchWithReauth,
   tagTypes: ["agreements", "initials", "notamSeen", "sectorstatus"],
   endpoints: (builder) => ({
-    aerodromesByIcaos: builder.query<{ [id: string]: Aerodrome }, string[]>({
+    aerodromesByIcaos: builder.query<Record<string, Aerodrome>, string[]>({
       query: (icaoList) => ({
         url: "aerodrome",
         params: icaoList.map((icao) => ["icao", icao]),
       }),
     }),
-    aerodromesByPrefixes: builder.query<{ [id: string]: Aerodrome }, string[]>({
+    aerodromesByPrefixes: builder.query<Record<string, Aerodrome>, string[]>({
       query: (prefixes) => ({
         url: "aerodrome",
         params: prefixes.map((prefix) => ["prefix", prefix]),
@@ -91,7 +91,7 @@ export const api = createApi({
         { type: "initials", id: initials.id },
       ],
     }),
-    metarsByIcaoCodes: builder.query<{ [id: string]: Metar }, string[]>({
+    metarsByIcaoCodes: builder.query<Record<string, Metar>, string[]>({
       query: (icaoList) => ({
         url: "metar",
         params: icaoList.map((icao) => ["icao", icao]),
@@ -124,13 +124,13 @@ export const api = createApi({
       }),
     }),
 
-    areas: builder.query<AreaBooking[], void>({
+    areas: builder.query<AreaBooking[], null>({
       query: () => ({
         url: "areas",
       }),
     }),
 
-    atisByIcaoCodes: builder.query<{ [id: string]: Atis }, string[]>({
+    atisByIcaoCodes: builder.query<Record<string, Atis>, string[]>({
       query: (icaoList) => ({
         url: "atis",
         params: icaoList.map((icao) => ["icao", icao]),
@@ -144,7 +144,7 @@ export const api = createApi({
     //   }),
     // }),
 
-    controllers: builder.query<Controller[], void>({
+    controllers: builder.query<Controller[], null>({
       query: () => ({
         url: "vatsim/controllers",
       }),
@@ -188,19 +188,19 @@ export const api = createApi({
       }),
     }),
 
-    notamsByIcaoCodes: builder.query<{ [icao: string]: Notam[] }, string[]>({
+    notamsByIcaoCodes: builder.query<Record<string, Notam[]>, string[]>({
       query: (icaoList) => ({
         url: "notam",
         params: icaoList.map((icao) => ["icao", icao]),
       }),
     }),
-    notamsSeen: builder.query<string[], void>({
+    notamsSeen: builder.query<string[], null>({
       query: () => ({
         url: "notam/read",
       }),
       providesTags: ["notamSeen"],
     }),
-    notamSeen: builder.mutation<void, string>({
+    notamSeen: builder.mutation<null, string>({
       query: (id) => ({
         url: "notam/read",
         params: { id },
@@ -208,7 +208,7 @@ export const api = createApi({
       }),
       invalidatesTags: ["notamSeen"],
     }),
-    notamUnseen: builder.mutation<void, string>({
+    notamUnseen: builder.mutation<null, string>({
       query: (id) => ({
         url: "notam/read",
         params: { id },
@@ -217,13 +217,13 @@ export const api = createApi({
       invalidatesTags: ["notamSeen"],
     }),
 
-    sectors: builder.query<SectorData, void>({
+    sectors: builder.query<SectorData, null>({
       query: () => ({
         url: "airspace",
       }),
     }),
 
-    sectorStatusByIds: builder.query<{ [id: string]: SectorStatus }, string[]>({
+    sectorStatusByIds: builder.query<Record<string, SectorStatus>, string[]>({
       query: (ids) => ({
         url: "sectorstatus",
         params: ids.map((id) => ["id", id]),
@@ -258,7 +258,7 @@ export const api = createApi({
       }),
     }),
 
-    tafByIcaoCodes: builder.query<{ [id: string]: string }, string[]>({
+    tafByIcaoCodes: builder.query<Record<string, string>, string[]>({
       query: (icaoList) => ({
         url: "taf",
         params: icaoList.map((icao) => ["icao", icao]),

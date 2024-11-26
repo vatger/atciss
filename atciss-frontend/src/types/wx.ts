@@ -35,7 +35,7 @@ export interface Metar {
   tl: number | null
 }
 
-export type Sigmet = {
+export interface Sigmet {
   isigmetId: number
   icaoId: string
   firId: string
