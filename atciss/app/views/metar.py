@@ -14,7 +14,6 @@ from pydantic import (
 )
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
 
     from metar.Datatypes import distance
 
@@ -83,12 +82,12 @@ class MetarModel(BaseModel):
     temp: float | None
     dewpt: float | None
     qnh: float | None
-    rvr: Sequence[RvrModel]
+    rvr: list[RvrModel]
     weather: list[str]
     weather_text: str
     recent_weather: list[str]
     recent_weather_text: str
-    clouds: Sequence[CloudModel]
+    clouds: list[CloudModel]
     trend: str
 
     @field_validator("weather", "recent_weather", mode="before")
