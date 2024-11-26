@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import { Box, Text } from "theme-ui"
 import { usePollGetTraffic } from "../services/trafficApi"
-import { useParams, useSearchParams } from "react-router-dom"
+import { useParams, useSearchParams } from "react-router"
 import { DateTime } from "luxon"
 
 const formatETA = (datestring?: string) => {

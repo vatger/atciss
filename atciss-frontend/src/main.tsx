@@ -3,7 +3,7 @@ import { store } from "app/store"
 import React from "react"
 import ReactDOM from "react-dom/client"
 import { Provider } from "react-redux"
-import { RouterProvider } from "react-router-dom"
+import { RouterProvider } from "react-router"
 import "./index.css"
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

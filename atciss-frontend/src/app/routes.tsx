@@ -8,7 +8,7 @@ import {
   authCallbackLoader,
 } from "app/auth"
 import { Idvs } from "app/idvs/App"
-import { createBrowserRouter } from "react-router-dom"
+import { createBrowserRouter } from "react-router"
 import { Admin } from "views/Admin"
 import { TrafficBoard } from "views/TrafficBoard"
 import { AipIfr } from "views/atciss/AipIfr"

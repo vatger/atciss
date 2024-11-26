@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 import { Button, Flex, Grid, ThemeUIStyleObject, useColorMode } from "theme-ui"
 
 const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {

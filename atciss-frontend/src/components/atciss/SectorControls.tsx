@@ -2,7 +2,7 @@ import { SPLIT_PRESETS } from "app/config"
 import { useAppDispatch, useAppSelector } from "app/hooks"
 import { SectorGroup } from "components/atciss/sectorControls/SectorGroup"
 import { SelectedPosition } from "components/atciss/sectorControls/SelectedPosition"
-import { useSearchParams } from "react-router-dom"
+import { useSearchParams } from "react-router"
 import {
   disableAllPositions,
   enableAllPositions,

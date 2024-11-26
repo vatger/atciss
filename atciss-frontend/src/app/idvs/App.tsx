@@ -1,7 +1,7 @@
 import { theme } from "app/idvs/theme"
 import { Footer } from "components/atciss/Footer"
 import { Nav } from "components/idvs/Nav"
-import { Outlet } from "react-router-dom"
+import { Outlet } from "react-router"
 import { Flex, ThemeUIProvider } from "theme-ui"
 
 const Idvs = () => (
