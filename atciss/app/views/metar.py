@@ -14,7 +14,6 @@ from pydantic import (
 )
 
 if TYPE_CHECKING:
-
     from metar.Datatypes import distance
 
 AirportIcao = Annotated[str, StringConstraints(min_length=4, max_length=4, to_upper=True)]
