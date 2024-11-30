@@ -20,7 +20,7 @@ click = "^8.1"
 fastapi = { version = "^0.115.5", extras = ["all"] }
 geoalchemy2 = "^0.16.0"
 greenlet = "^3.1.1"
-haversine = "^2.8.1"
+haversine = "^2.9.0"
 lark = "^1"
 loguru = "^0.7.2"
 lxml = "^5.3.0"
