@@ -46,7 +46,7 @@ vatsim = "^0.1.1"
 eaup = { git = "https://gitlab.com/fpletz/eaup.git", rev = "d9270df4097ca62359215cc762d41a0827d8dd06" }
 
 # needs bump in poetry2nix
-watchfiles = "~0.24"
+watchfiles = "~1.0"
 orjson = "3.10.11"
 
 [tool.poetry.group.dev.dependencies]
