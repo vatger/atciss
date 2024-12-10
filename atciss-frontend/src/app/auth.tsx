@@ -20,7 +20,7 @@ import {
 import { useAppDispatch, useAppSelector } from "./hooks"
 import { Mutex } from "async-mutex"
 
-export const RequireAuth = ({ children }: { children?: JSX.Element }) => {
+export const RequireAuth = ({ children }: { children?: React.JSX.Element }) => {
   const user = useAppSelector(selectUser)
   const navigate = useNavigate()
   const location = useLocation()
@@ -34,7 +34,11 @@ export const RequireAuth = ({ children }: { children?: JSX.Element }) => {
   return children || <></>
 }
 
-export const RequireAdmin = ({ children }: { children?: JSX.Element }) => {
+export const RequireAdmin = ({
+  children,
+}: {
+  children?: React.JSX.Element
+}) => {
   const user = useAppSelector(selectUser)
   const navigate = useNavigate()
 

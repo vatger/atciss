@@ -12,7 +12,7 @@ import { SectorLayer } from "components/atciss/map/SectorLayer"
 import { SigmetLayer } from "components/atciss/map/SigmetLayer"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
-import { useRef } from "react"
+import { RefObject, useRef } from "react"
 import { MapContainer, Pane } from "react-leaflet"
 import { selectMapCentre } from "services/configSlice"
 import {
@@ -29,7 +29,8 @@ export const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const airwaysOnMap = useAppSelector(selectAirwayOnMap)
   const sigmetOnMap = useAppSelector(selectSigmetOnMap)
   const centre = useAppSelector(selectMapCentre)
-  const map = useRef<L.Map>(null)
+  // FIXME react-leaflet type for MapControls seems to be broken
+  const map = useRef<L.Map>(null) as RefObject<L.Map>
 
   return (
     <SidebarLayout sx={sx}>
