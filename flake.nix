@@ -144,7 +144,7 @@
               NODE_ENV = "production";
               nodejs = final.nodejs_22;
               npmCommands = [
-                "npm install --include=dev --nodedir=${final.nodejs_22}/include/node --loglevel verbose --ignore-scripts --legacy-peer-deps"
+                "npm install --include=dev --nodedir=${final.nodejs_22}/include/node --loglevel verbose --ignore-scripts"
                 "npm run build"
               ];
               installPhase = ''
