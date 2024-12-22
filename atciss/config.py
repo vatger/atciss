@@ -28,6 +28,7 @@ class Application(BaseSettings):
     VATSIM_REDIRECT_URL: str = "http://localhost:5173/auth/callback"
     ROSTER_API_URL: str = "https://vatsim-germany.org/api/vateud/roster"
     ROSTER_API_TOKEN: str = "invalid"
+    GDPR_API_TOKEN: str = "invalid"
 
     DATABASE_DSN: PostgresDsn = cast(
         PostgresDsn, "postgresql+asyncpg://postgres:fnord@localhost/atciss"
