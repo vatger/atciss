@@ -492,7 +492,7 @@ export const FIR_SETTINGS: Record<string, FIR> = {
         statusSectors: [
           ["ed/DKA", "ed/NOR"],
           ["ed/PADL", "ed/PADH", "ed/BOT", "ed/DUS"],
-          ["ed/EIF", "ed/RUD", "ed/TAU", "ed/SIG"],
+          ["ed/GIN", "ed/EIF", "ed/RUD", "ed/TAU", "ed/SIG"],
         ],
         majorAerodromes: ["EDDK", "EDDL"],
         aerodromes: ["EDDG", "EDLV", "EDLW", "EDLP", "EDLN", "ETNN", "ETNG"],
