@@ -26,7 +26,7 @@ import {
   setSectors,
   setSigmet,
 } from "services/mapSlice"
-import { Box, Flex, Text } from "theme-ui"
+import { Button, Flex } from "theme-ui"
 import { SectorControls } from "../SectorControls"
 import { LevelChoice } from "./LevelChoice"
 import { Search } from "./search/Search"
@@ -50,117 +50,177 @@ export const MapControls = ({ map }: { map: RefObject<Map> }) => {
 
   return (
     <Search map={map}>
-      <Box>
-        <Text as="label" variant="label">
-          <input
-            type="checkbox"
-            checked={ofm}
-            onChange={(e) => dispatch(setOpenFlightmaps(e.target.checked))}
-          />
-          open flightmaps
-        </Text>
-      </Box>
-      <Box>
-        <Text as="label" variant="label">
-          <input
-            type="checkbox"
-            checked={dfs}
-            onChange={(e) => dispatch(setDFS(e.target.checked))}
-          />
-          DFS ICAO map
-        </Text>
-      </Box>
-      <Box>
-        <Text as="label" variant="label">
-          <input
-            type="checkbox"
-            checked={satellite}
-            onChange={(e) => dispatch(setSatellite(e.target.checked))}
-          />
-          Satellite
-        </Text>
-      </Box>
-      <Box>
-        <Text as="label" variant="label">
-          <input
-            type="checkbox"
-            checked={dwd}
-            onChange={(e) => dispatch(setDWD(e.target.checked))}
-          />
-          DWD Niederschlagsradar
-        </Text>
-      </Box>
-      <Box>
-        <Text as="label" variant="label">
-          <input
-            type="checkbox"
-            checked={lightning}
-            onChange={(e) => dispatch(setLightning(e.target.checked))}
-          />
-          Blitzortung
-        </Text>
-      </Box>
-      <Box>
-        <Text as="label" variant="label">
-          <input
-            type="checkbox"
-            checked={sigmet}
-            onChange={(e) => dispatch(setSigmet(e.target.checked))}
-          />
-          SIGMET
-        </Text>
-      </Box>
-      <Box>
-        <Text as="label" variant="label">
-          <input
-            type="checkbox"
-            checked={areas}
-            onChange={(e) => dispatch(setAreas(e.target.checked))}
-          />
-          Areas
-        </Text>
-      </Box>
-      <Box>
-        <Text as="label" variant="label">
-          <input
-            type="checkbox"
-            checked={sectors}
-            onChange={(e) => dispatch(setSectors(e.target.checked))}
-          />
-          Sectors
-        </Text>
-      </Box>
-      <Box>
-        <Text as="label" variant="label">
-          <input
-            type="checkbox"
-            checked={loa}
-            onChange={(e) => dispatch(setLoa(e.target.checked))}
-          />
-          LOA
-        </Text>
-      </Box>
-      <Flex sx={{ gap: 2 }}>
-        <Text as="label" variant="label">
-          <input
-            type="checkbox"
-            checked={airways}
-            onChange={(e) => dispatch(setAirwayOnMap(e.target.checked))}
-          />
-          Airways
-        </Text>
-        {airways && (
-          <select
-            value={airwayLowerUpper}
-            onChange={(e) =>
-              dispatch(setAirwayLowerUpper(e.target.value as "LOWER" | "UPPER"))
-            }
-          >
-            <option value="LOWER">Lower</option>
-            <option value="UPPER">Upper</option>
-          </select>
-        )}
+      <Flex
+        sx={{ justifyContent: "space-evenly", gap: 2, alignItems: "center" }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+          <line x1="8" y1="2" x2="8" y2="18"></line>
+          <line x1="16" y1="6" x2="16" y2="22"></line>
+        </svg>
+        <Button
+          variant={ofm ? "selectedSecondaryNav" : "secondaryNav"}
+          sx={{ flex: 1 }}
+          onClick={() => dispatch(setOpenFlightmaps(!ofm))}
+        >
+          OFM
+        </Button>
+        <Button
+          variant={dfs ? "selectedSecondaryNav" : "secondaryNav"}
+          sx={{ flex: 1 }}
+          onClick={() => dispatch(setDFS(!dfs))}
+        >
+          ICAO
+        </Button>
+        <Button
+          variant={satellite ? "selectedSecondaryNav" : "secondaryNav"}
+          sx={{ flex: 1 }}
+          onClick={() => dispatch(setSatellite(!satellite))}
+        >
+          SAT
+        </Button>
       </Flex>
+      <Flex
+        sx={{ justifyContent: "space-evenly", gap: 2, alignItems: "center" }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M19 16.9A5 5 0 0 0 18 7h-1.26a8 8 0 1 0-11.62 9"></path>
+          <polyline points="13 11 9 17 15 17 11 23"></polyline>
+        </svg>
+        <Button
+          variant={dwd ? "selectedSecondaryNav" : "secondaryNav"}
+          sx={{ flex: 1 }}
+          onClick={() => dispatch(setDWD(!dwd))}
+        >
+          DWD Precip
+        </Button>
+        <Button
+          variant={lightning ? "selectedSecondaryNav" : "secondaryNav"}
+          sx={{ flex: 1 }}
+          onClick={() => dispatch(setLightning(!lightning))}
+        >
+          Lightning
+        </Button>
+        <Button
+          variant={sigmet ? "selectedSecondaryNav" : "secondaryNav"}
+          sx={{ flex: 1 }}
+          onClick={() => dispatch(setSigmet(!sigmet))}
+        >
+          SIGMET
+        </Button>
+      </Flex>
+      <Flex
+        sx={{ justifyContent: "space-evenly", gap: 2, alignItems: "center" }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+          <polyline points="2 17 12 22 22 17"></polyline>
+          <polyline points="2 12 12 17 22 12"></polyline>
+        </svg>
+        <Button
+          variant={sectors ? "selectedSecondaryNav" : "secondaryNav"}
+          sx={{ flex: 1 }}
+          onClick={() => dispatch(setSectors(!sectors))}
+        >
+          Sectors
+        </Button>
+        <Button
+          variant={loa ? "selectedSecondaryNav" : "secondaryNav"}
+          sx={{ flex: 1 }}
+          onClick={() => dispatch(setLoa(!loa))}
+        >
+          LOA
+        </Button>
+        <Button
+          variant={areas ? "selectedSecondaryNav" : "secondaryNav"}
+          sx={{ flex: 1 }}
+          onClick={() => dispatch(setAreas(!areas))}
+        >
+          Areas
+        </Button>
+      </Flex>
+      <Flex
+        sx={{ justifyContent: "space-evenly", gap: 2, alignItems: "center" }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="12" cy="12" r="4"></circle>
+          <line x1="1.05" y1="12" x2="7" y2="12"></line>
+          <line x1="17.01" y1="12" x2="22.96" y2="12"></line>
+        </svg>
+        <Button
+          variant={airways ? "selectedSecondaryNav" : "secondaryNav"}
+          sx={{ flex: 1 }}
+          onClick={() => dispatch(setAirwayOnMap(!airways))}
+        >
+          Airways
+        </Button>
+        <Button
+          variant={
+            airwayLowerUpper === "LOWER"
+              ? "selectedSecondaryNav"
+              : "secondaryNav"
+          }
+          sx={{
+            flex: 1,
+            visibility: airways ? "visible" : "hidden",
+          }}
+          onClick={() => dispatch(setAirwayLowerUpper("LOWER"))}
+        >
+          lower
+        </Button>
+        <Button
+          variant={
+            airwayLowerUpper === "UPPER"
+              ? "selectedSecondaryNav"
+              : "secondaryNav"
+          }
+          sx={{ flex: 1, visibility: airways ? "visible" : "hidden" }}
+          onClick={() => dispatch(setAirwayLowerUpper("UPPER"))}
+        >
+          upper
+        </Button>
+      </Flex>
+
       {(areas || sectors || loa) && <LevelChoice />}
       {sectors && <SectorControls />}
     </Search>
