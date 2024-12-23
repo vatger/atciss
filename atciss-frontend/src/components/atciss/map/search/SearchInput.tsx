@@ -1,17 +1,18 @@
 import { useAppDispatch, useAppSelector } from "app/hooks"
+import { XmInput } from "components/atciss/XmInput"
 import { selectSearch, setSearch } from "services/mapSlice"
-import { Input } from "theme-ui"
 
 export const SearchInput = () => {
   const search = useAppSelector(selectSearch)
   const dispatch = useAppDispatch()
 
   return (
-    <Input
-      placeholder="Search"
-      type="search"
+    <XmInput
       value={search}
+      type="search"
       onChange={(e) => dispatch(setSearch(e.target.value))}
+      sx={{ fontSize: "1.2rem", fontFamily: "monospace", fontWeight: "bold" }}
+      placeholder={"Search"}
     />
   )
 }

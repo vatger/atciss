@@ -8,6 +8,7 @@ import { setSelectedPosition } from "services/activePositionSlice"
 import { selectMe } from "services/controllerApi"
 import { selectPosition } from "services/sectorApi"
 import { Box, Text } from "theme-ui"
+import { XmSelect } from "../XmSelect"
 
 const PositionOption = ({ id }: { id: string }) => {
   const position = useAppSelector((store) => selectPosition(store, id))
@@ -35,16 +36,17 @@ export const SelectedPosition = () => {
             {me.cid})
           </>
         ) : (
-          <select
-            value={selectedPosition ?? undefined}
+          <XmSelect
+            defaultValue={selectedPosition ?? undefined}
             onChange={(e) => dispatch(setSelectedPosition(e.target.value))}
+            sx={{ fontFamily: "monospace", fontWeight: "bold" }}
           >
             {Object.entries(activePositions)
               .filter(([, p]) => p)
               .map(([id]) => (
                 <PositionOption key={id} id={id} />
               ))}
-          </select>
+          </XmSelect>
         )}
       </Box>
     </label>

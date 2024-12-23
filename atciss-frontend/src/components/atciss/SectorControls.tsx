@@ -37,8 +37,8 @@ export const SectorControls = () => {
 
   return (
     <>
-      <Text variant="label">Sync to Online</Text>
       <Flex sx={{ justifyContent: "space-between" }}>
+        <Text variant="label">Sync to</Text>
         <label>
           <input
             type="checkbox"
@@ -47,7 +47,7 @@ export const SectorControls = () => {
               dispatch(setSectorsSyncedToOnline(e.target.checked))
             }
           />
-          Sectors
+          Online Sectors
         </label>
         <label>
           <input
@@ -58,7 +58,7 @@ export const SectorControls = () => {
               dispatch(setPositionSyncedToOnline(e.target.checked))
             }
           />
-          Active Position
+          My Active Position
         </label>
       </Flex>
       <SelectedPosition />

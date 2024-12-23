@@ -1,7 +1,8 @@
 import { useAppDispatch, useAppSelector } from "app/hooks"
 import { useId } from "react"
 import { selectLevel, setLevel } from "services/mapSlice"
-import { Grid, Input, Label, Slider } from "theme-ui"
+import { Grid, Label, Slider } from "theme-ui"
+import { XmInput } from "../XmInput"
 
 export const LevelChoice = () => {
   const dispatch = useAppDispatch()
@@ -30,7 +31,7 @@ export const LevelChoice = () => {
         value={level}
         onChange={(e) => dispatch(setLevel(parseInt(e.target.value)))}
       />
-      <Input
+      <XmInput
         type="number"
         min="0"
         max="430"

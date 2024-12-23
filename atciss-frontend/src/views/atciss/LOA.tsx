@@ -4,6 +4,7 @@ import { useAppSelector } from "app/hooks"
 import { SidebarLayout } from "components/SidebarLayout"
 import { LoaRow } from "components/atciss/LoaRow"
 import { SectorControls } from "components/atciss/SectorControls"
+import { XmInput } from "components/atciss/XmInput"
 import { useState } from "react"
 import { selectOwnedSectors } from "services/activePositions"
 import { api } from "services/api"
@@ -11,7 +12,7 @@ import {
   selectFilteredEntryLoas,
   selectFilteredExitLoas,
 } from "services/loaApi"
-import { Box, Flex, Input, ThemeUIStyleObject } from "theme-ui"
+import { Box, Flex, ThemeUIStyleObject } from "theme-ui"
 
 export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const ownedSectors = useAppSelector(selectOwnedSectors)
@@ -70,10 +71,16 @@ export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       <Flex
         sx={{ flexDirection: "column", gap: 2, overflow: "hidden", padding: 2 }}
       >
-        <Input
-          placeholder="Filter"
+        <XmInput
           value={filter}
+          type="search"
           onChange={(e) => setFilter(e.target.value)}
+          sx={{
+            fontSize: "1.2rem",
+            fontFamily: "monospace",
+            fontWeight: "bold",
+          }}
+          placeholder={"Filter"}
         />
         <SectorControls />
       </Flex>
