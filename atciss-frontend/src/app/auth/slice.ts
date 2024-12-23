@@ -25,7 +25,7 @@ export const LOCAL_STORAGE_ACCESS_KEY = "atciss_access"
 export const LOCAL_STORAGE_REFRESH_KEY = "atciss_refresh"
 
 interface TokenClaims {
-  cid: string
+  sub: string
   exp: number
 }
 

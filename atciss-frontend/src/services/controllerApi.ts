@@ -16,5 +16,5 @@ export const selectMe = createSelector(
   selectControllers,
   selectUser,
   (controllers, user) =>
-    controllers.find((c) => c.cid.toString() === user?.cid),
+    controllers.find((c) => c.cid.toString() === user?.sub),
 )
