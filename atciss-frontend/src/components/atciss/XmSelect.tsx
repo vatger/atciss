@@ -15,8 +15,10 @@ export const XmSelect = (props: PropsWithChildren<SelectProps>) => {
         py: 1,
         borderBottomColor: "darkshadow",
         borderRightColor: "darkshadow",
-        borderTopColor: "#d6d6d6",
-        borderLeftColor: "#d6d6d6",
+        borderTopColor: "brightshadow",
+        borderLeftColor: "brightshadow",
+        background: "inputBackground",
+        fontFamily: "body",
         ...props.sx,
       }}
     >

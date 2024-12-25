@@ -1,18 +1,18 @@
 /** @jsxImportSource theme-ui */
 
 import { Link } from "react-router"
-import { Button, Flex, Grid, ThemeUIStyleObject, useColorMode } from "theme-ui"
+import { Button, Flex, Grid, ThemeUIStyleObject } from "theme-ui"
 
 import { FIR_SETTINGS } from "app/config"
 import { useAppDispatch, useAppSelector } from "app/hooks"
 import { Clock } from "components/atciss/Clock"
 import { selectActiveFir, setActiveFir } from "services/configSlice"
 import { selectUser } from "app/auth/slice"
+import { XmSelect } from "./XmSelect"
 
 const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const dispatch = useAppDispatch()
   const activeFir = useAppSelector(selectActiveFir)
-  const [colorMode, setColorMode] = useColorMode()
   const user = useAppSelector(selectUser)
 
   return (
@@ -92,34 +92,19 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           justifyContent: "flex-end",
         }}
       >
-        <Flex
+        <XmSelect
+          value={activeFir}
+          onChange={(e) => dispatch(setActiveFir(e.target.value))}
           sx={{
-            p: 2,
-            gap: 2,
-            alignItems: "flex-start",
+            minWidth: "6rem",
+            backgroundColor: "primary",
+            color: "background",
           }}
         >
-          <select
-            value={activeFir}
-            onChange={(e) => dispatch(setActiveFir(e.target.value))}
-          >
-            {Object.keys(FIR_SETTINGS).map((fir) => (
-              <option key={fir}>{fir}</option>
-            ))}
-          </select>
-
-          <a
-            sx={{ color: "background" }}
-            onClick={() =>
-              setColorMode(colorMode === "default" ? "dark" : "default")
-            }
-          >
-            {colorMode === "default" ? <>&#x263E;</> : <>&#x263C;</>}
-          </a>
-        </Flex>
-        <Link to="logout" sx={{ gridRow: "2/3" }}>
-          <Button variant="nav">Logout</Button>
-        </Link>
+          {Object.keys(FIR_SETTINGS).map((fir) => (
+            <option key={fir}>{fir}</option>
+          ))}
+        </XmSelect>
       </Grid>
     </Flex>
   )

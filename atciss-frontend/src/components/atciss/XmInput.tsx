@@ -15,8 +15,10 @@ export const XmInput = (props: PropsWithChildren<InputProps>) => {
         py: 1,
         borderTopColor: "darkshadow",
         borderLeftColor: "darkshadow",
-        borderBottomColor: "#d6d6d6",
-        borderRightColor: "#d6d6d6",
+        borderBottomColor: "brightshadow",
+        borderRightColor: "brightshadow",
+        background: "inputBackground",
+        fontFamily: "body",
         ...props.sx,
       }}
     >
