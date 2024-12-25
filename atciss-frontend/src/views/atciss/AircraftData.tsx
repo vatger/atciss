@@ -113,6 +113,7 @@ export const AircraftData = () => {
           onChange={(e) => dispatch(setQuery(e.target.value))}
           sx={{ fontSize: "2rem", fontFamily: "monospace", fontWeight: "bold" }}
           placeholder={"Search"}
+          type="search"
         ></XmInput>
 
         {Object.entries(quickLinks).map(([key, value]) => (
