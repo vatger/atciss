@@ -395,7 +395,7 @@ export const FIR_SETTINGS: Record<string, FIR> = {
           "ed/PADH",
           "ed/PADL",
           "ed/EIF",
-          "ed/DUS",
+          "ed/DLA",
           "ed/NOR",
           "ed/DKA",
           "ed/RUD",
@@ -433,7 +433,7 @@ export const FIR_SETTINGS: Record<string, FIR> = {
           "ed/PADH",
           "ed/PADL",
           "ed/HMM",
-          "ed/DUS",
+          "ed/DLA",
           "ed/BOT",
           "ed/DKA",
           "ed/NOR",
@@ -443,7 +443,7 @@ export const FIR_SETTINGS: Record<string, FIR> = {
         ],
         statusSectors: [
           ["ed/PADH", "ed/PADL", "ed/HMM"],
-          ["ed/DUS", "ed/BOT", "ed/DLD"],
+          ["ed/DLA", "ed/BOT", "ed/DLD"],
           ["ed/DKA", "ed/NOR", "ed/TAU", "ed/SIG", "ed/GIN"],
           ["ed/RHR", "ed/MNS"],
         ],
@@ -454,7 +454,7 @@ export const FIR_SETTINGS: Record<string, FIR> = {
       },
       "ATIS DUS": {
         staffingSectors: [
-          "ed/DUS",
+          "ed/DLA",
           "ed/BOT",
           "ed/DKA",
           "ed/NOR",
@@ -465,7 +465,7 @@ export const FIR_SETTINGS: Record<string, FIR> = {
           "ed/SIG",
         ],
         statusSectors: [
-          ["ed/DUS", "ed/BOT", "ed/DLD"],
+          ["ed/DLA", "ed/BOT", "ed/DLD"],
           ["ed/DKA", "ed/NOR", "ed/TAU", "ed/SIG"],
           ["ed/PADH", "ed/PADL", "ed/HMM"],
           ["ed/RHR", "ed/MNS"],
@@ -483,7 +483,7 @@ export const FIR_SETTINGS: Record<string, FIR> = {
           "ed/PADL",
           "ed/PADH",
           "ed/BOT",
-          "ed/DUS",
+          "ed/DLA",
           "ed/EIF",
           "ed/TAU",
           "ed/SIG",
@@ -491,7 +491,7 @@ export const FIR_SETTINGS: Record<string, FIR> = {
         ],
         statusSectors: [
           ["ed/DKA", "ed/NOR"],
-          ["ed/PADL", "ed/PADH", "ed/BOT", "ed/DUS"],
+          ["ed/PADL", "ed/PADH", "ed/BOT", "ed/DLA"],
           ["ed/GIN", "ed/EIF", "ed/RUD", "ed/TAU", "ed/SIG"],
         ],
         majorAerodromes: ["EDDK", "EDDL"],
