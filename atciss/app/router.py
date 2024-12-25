@@ -15,6 +15,7 @@ from .controllers import (
     auth,
     booking,
     ecfmp,
+    gdpr,
     initials,
     loa,
     metar,
@@ -35,6 +36,7 @@ root_api_router.include_router(auth.router, tags=["user"])
 root_api_router.include_router(ac_data.router, tags=["aircraft"])
 root_api_router.include_router(ad.router, tags=["aerodrome"])
 root_api_router.include_router(admin.router, tags=["admin"])
+root_api_router.include_router(gdpr.router, tags=["admin"])
 root_api_router.include_router(agreements.router, tags=["info"])
 root_api_router.include_router(airspace.router, tags=["airspace"])
 root_api_router.include_router(airway.router, tags=["airway"])
