@@ -31,6 +31,7 @@ export const Agreements = () => {
         border: 2,
         borderRadius: 0,
         borderStyle: "inset",
+        fontFamily: "monospace",
       }}
     ></Textarea>
   )
