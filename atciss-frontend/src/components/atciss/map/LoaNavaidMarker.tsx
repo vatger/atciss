@@ -21,21 +21,28 @@ export const LoaNavaidMarker = ({ designator }: { designator: string }) => {
   return (
     navaid && (
       <NavaidMarker navaid={navaid}>
-        <table sx={{ width: "100%", fontSize: 2 }}>
+        <table
+          sx={{
+            fontSize: 2,
+            fontFamily: "body",
+            whiteSpace: "normal",
+            minWidth: "50vw",
+          }}
+        >
           <thead>
             <tr>
-              <th>ADEP/ADES</th>
-              <th>FL</th>
-              <th>REMARK</th>
-              <th>FROM</th>
-              <th>TO</th>
+              <th sx={{ pt: 0 }}>ADEP/ADES</th>
+              <th sx={{ pt: 0 }}>FL</th>
+              <th sx={{ pt: 0 }}>REMARK</th>
+              <th sx={{ pt: 0 }}>FROM</th>
+              <th sx={{ pt: 0 }}>TO</th>
             </tr>
           </thead>
           {!!xloasByNavaid.length && (
             <>
               <thead>
                 <tr>
-                  <th>Exit</th>
+                  <th sx={{ pt: 1 }}>Exit</th>
                 </tr>
               </thead>
               <tbody>
@@ -53,7 +60,7 @@ export const LoaNavaidMarker = ({ designator }: { designator: string }) => {
             <>
               <thead>
                 <tr>
-                  <th>Entry</th>
+                  <th sx={{ pt: 1 }}>Entry</th>
                 </tr>
               </thead>
               <tbody>

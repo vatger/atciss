@@ -200,12 +200,14 @@ export const NavaidMarker = ({
     <>
       {createPortal(icon, element)}
       <Marker position={navaid.location as LatLngExpression} icon={divIcon}>
-        <Tooltip>
+        <Tooltip permanent={navaid.designator == "AMOSA" ? true : false}>
           <Flex
             sx={{
               gap: 2,
               justifyContent: "space-between",
               alignItems: "baseline",
+              maxWidth: "80vw",
+              fontFamily: "body",
             }}
           >
             <Box>

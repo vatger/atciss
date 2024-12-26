@@ -75,6 +75,7 @@ const AerodromeMarker = ({ icao }: { icao: string }) => {
               alignItems: "baseline",
               gap: "2",
               fontSize: "2",
+              fontFamily: "body",
             }}
           >
             <Text variant="mapAd">{icao}</Text>

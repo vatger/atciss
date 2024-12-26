@@ -96,7 +96,7 @@ export const SectorPolygon = ({
           max={max}
         />
         <Tooltip>
-          <Box sx={{ fontSize: "1" }}>
+          <Box sx={{ fontSize: "1", fontFamily: "body" }}>
             <Text variant="label">{sector.id}</Text>
             {(sector.remark || sector.uid) &&
               ` (${sector.uid ?? sector.remark})`}{" "}
@@ -107,8 +107,8 @@ export const SectorPolygon = ({
               {controller.name} ({controller.cid})
             </Box>
           )}
-          <Box sx={{ fontSize: "1" }}>
-            FL{z3(min ?? 0)}-FL{z3(max ?? 660)}
+          <Box sx={{ fontSize: "1", fontFamily: "body" }}>
+            FL{z3(min ?? 0)}&ndash;FL{z3(max ?? 660)}
           </Box>
         </Tooltip>
       </Polygon>
