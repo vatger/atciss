@@ -628,7 +628,7 @@ export const FIR_SETTINGS: Record<string, FIR> = {
           ["ed/SAS", "ed/HAME", "ed/HAN", "ed/HOL", "ed/SOL", "ed/CEL"],
         ],
         majorAerodromes: ["EDDB"],
-        aerodromes: ["EDAH", "ETNL"],
+        aerodromes: ["EDAH", "ETNL", "EDBC"],
         relevantAerodromes: ["ETSH", "EDDV", "EDDC", "EDDP", "EKCH"],
         areas: {
           "ED-R17 Jaegerbrueck": ["ED-R17A", "ED-R17B"],
