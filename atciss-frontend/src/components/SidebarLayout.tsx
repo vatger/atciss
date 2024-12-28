@@ -12,7 +12,7 @@ export const SidebarLayout = ({
     sx={{
       ...sx,
       gap: 1,
-      gridTemplateColumns: "4fr 1fr",
+      gridTemplateColumns: "4fr 25rem",
       width: "100%",
       height: "100%",
       overflowY: "auto",
