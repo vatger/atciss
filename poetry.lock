@@ -3118,19 +3118,19 @@ test = ["aiohttp (>=3.10.5)", "flake8 (>=5.0,<6.0)", "mypy (>=0.800)", "psutil",
 
 [[package]]
 name = "vatsim"
-version = "0.1.1"
+version = "0.2.0"
 description = "Library for interacting with VATSIM APIs and data"
 optional = false
-python-versions = "<4.0,>=3.11"
+python-versions = ">=3.10"
 files = [
-    {file = "vatsim-0.1.1-py3-none-any.whl", hash = "sha256:5181f0799e8302fbf2a858ba22fa54ca9e241dd9efa7350aa8ee2dd5a5b9f08e"},
-    {file = "vatsim-0.1.1.tar.gz", hash = "sha256:6dad2ba7c8407f79cf5268e2abd748e63e04226b783d0d1f63d44fc3827cbedd"},
+    {file = "vatsim-0.2.0-py3-none-any.whl", hash = "sha256:badb3e5122164e2cdd28069781907e4d411b68ba68d0a0f4df5f714f10470744"},
+    {file = "vatsim-0.2.0.tar.gz", hash = "sha256:b1a6f30485fa8841e3fa4418f94bab1aa7386f09dc3d1d33a75088ab0136d777"},
 ]
 
 [package.dependencies]
-pydantic = ">=2.5,<3.0"
-regex = ">=2023.12.25,<2025.0.0"
-requests = ">=2.28,<3.0"
+pydantic = ">=2.10.2"
+regex = ">=2024.11.6"
+requests = ">=2.32.3"
 
 [[package]]
 name = "watchdog"
@@ -3495,4 +3495,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "2ed520ba4173e9feb17faf7a4e0715c505f5661d25b21c9123d3c18c964837bf"
+content-hash = "d3572c4e436a802e9ad64ab2f1598a35ae54ef925d13d8a80438ff03169f3847"
