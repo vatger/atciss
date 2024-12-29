@@ -86,6 +86,18 @@ export const theme: IdvsTheme = {
       fontSize: 6,
     },
   },
+  cards: {
+    footer: {
+      border: 2,
+      borderStyle: "solid",
+      p: 1,
+      px: 4,
+      borderTopColor: "darkshadow",
+      borderLeftColor: "darkshadow",
+      borderBottomColor: "brightshadow",
+      borderRightColor: "brightshadow",
+    },
+  },
   buttons: {
     primary: {
       color: "text",
