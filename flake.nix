@@ -14,7 +14,6 @@
       url = "github:cachix/pre-commit-hooks.nix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        nixpkgs-stable.follows = "nixpkgs";
       };
     };
 
@@ -60,17 +59,18 @@
             python = final.python312;
             overrides = final.poetry2nix.overrides.withDefaults (
               pyfinal: pyprev: {
-                vatsim = pyprev.vatsim.overridePythonAttrs (old: {
+                asgi-correlation-id = pyprev.asgi-correlation-id.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
+                  postPatch = ''
+                    substituteInPlace pyproject.toml \
+                      --replace-fail 'poetry.masonry.api' 'poetry.core.masonry.api'
+                  '';
                 });
-                pynotam = pyprev.pynotam.overridePythonAttrs (old: {
+                click = pyprev.click.overridePythonAttrs (old: {
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.flit-core ];
+                });
+                eaup = pyprev.eaup.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
-                });
-                pydantic-xml = pyprev.pydantic-xml.overridePythonAttrs (old: {
-                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
-                });
-                types-xmltodict = pyprev.types-xmltodict.overridePythonAttrs (old: {
-                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.setuptools ];
                 });
                 fastapi-async-sqlalchemy = pyprev.fastapi-async-sqlalchemy.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.setuptools ];
@@ -78,15 +78,29 @@
                 frozenlist = pyprev.frozenlist.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.expandvars ];
                 });
+                gitignore-parser = pyprev.gitignore-parser.overridePythonAttrs (old: {
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.setuptools ];
+                });
+                isort = pyprev.isort.overridePythonAttrs (old: {
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.hatch-vcs ];
+                });
+                loguru = pyprev.loguru.overridePythonAttrs (old: {
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.flit-core ];
+                });
+                pycron = pyprev.pycron.overridePythonAttrs (old: {
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
+                });
+                pydantic-xml = pyprev.pydantic-xml.overridePythonAttrs (old: {
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
+                });
+                pynotam = pyprev.pynotam.overridePythonAttrs (old: {
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
+                });
                 pyrasite = pyprev.pyrasite.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.setuptools ];
                 });
-                asgi-correlation-id = pyprev.asgi-correlation-id.overridePythonAttrs (old: {
-                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
-                  postPatch = ''
-                    substituteInPlace pyproject.toml \
-                      --replace-fail 'poetry.masonry.api' 'poetry.core.masonry.api'
-                  '';
+                pyright = pyprev.pyright.overridePythonAttrs (old: {
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.setuptools ];
                 });
                 sqlmodel = pyprev.sqlmodel.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.pdm-backend ];
@@ -103,17 +117,14 @@
                 taskiq-redis = pyprev.taskiq-redis.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
                 });
-                gitignore-parser = pyprev.gitignore-parser.overridePythonAttrs (old: {
-                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.setuptools ];
-                });
-                eaup = pyprev.eaup.overridePythonAttrs (old: {
-                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
-                });
-                pyright = pyprev.pyright.overridePythonAttrs (old: {
+                types-xmltodict = pyprev.types-xmltodict.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.setuptools ];
                 });
                 urllib3 = pyprev.urllib3.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.hatch-vcs ];
+                });
+                vatsim = pyprev.vatsim.overridePythonAttrs (old: {
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
                 });
               }
             );
