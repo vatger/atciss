@@ -32,12 +32,12 @@ class SctFile:
 
     def navaids(self) -> list[Navaid]:
         return cast(
-            list[Navaid],
+            "list[Navaid]",
             self.sections["VOR"] + self.sections["NDB"] + self.sections["FIXES"],
         )
 
     def aerodromes(self) -> list[Aerodrome]:
-        return cast(list[Aerodrome], self.sections["AIRPORT"])
+        return cast("list[Aerodrome]", self.sections["AIRPORT"])
 
 
 class SctTransformer(Transformer):
@@ -66,8 +66,10 @@ class SctTransformer(Transformer):
     def section(self, children: Sequence[str | Navaid | Aerodrome | list[SctRunway]]) -> SctSection:
         name, *rest = children
         if name == "RUNWAY":
-            rest = itertools.chain.from_iterable(cast(list[list[SctRunway]], rest))
-        return SctSection(cast(str, name), cast(list[Navaid | Aerodrome | SctRunway], list(rest)))
+            rest = itertools.chain.from_iterable(cast("list[list[SctRunway]]", rest))
+        return SctSection(
+            cast("str", name), cast("list[Navaid | Aerodrome | SctRunway]", list(rest))
+        )
 
     def coord_part(self, children: tuple[str, int, int, float]) -> float:
         hemi, deg, minute, sec = children

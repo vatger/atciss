@@ -19,7 +19,7 @@ from atciss.tkq import broker
 
 
 async def get_ad_name(icao: str, redis_client: Redis) -> str | None:
-    ad_json = cast(str | None, await redis_client.get(f"basic:ad:{icao}"))
+    ad_json = cast("str | None", await redis_client.get(f"basic:ad:{icao}"))
     if ad_json is None:
         return None
 

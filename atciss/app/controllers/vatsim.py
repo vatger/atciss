@@ -24,7 +24,7 @@ async def controllers_get(
     controllers = []
     controller_keys = await redis.keys("vatsim:controller:*")
     for c in controller_keys:
-        controller_json = cast(str | None, await redis.get(c))
+        controller_json = cast("str | None", await redis.get(c))
         if controller_json is None:
             continue
         controllers.append(TypeAdapter(Controller).validate_json(controller_json))

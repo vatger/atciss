@@ -117,7 +117,7 @@ class MetarModel(BaseModel):
         model = MetarModel.model_validate({
             "station_id": parsed.station_id,
             "raw": raw_metar,
-            "time": cast(datetime, parsed.time).replace(tzinfo=UTC),
+            "time": cast("datetime", parsed.time).replace(tzinfo=UTC),
             "automatic": parsed.mod == "AUTO",
             "wind_dir": parsed.wind_dir.value() if parsed.wind_dir is not None else None,
             "wind_speed": parsed.wind_speed.value("KT") if parsed.wind_speed is not None else None,

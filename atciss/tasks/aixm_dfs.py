@@ -269,9 +269,9 @@ async def process_routes(aixm: AIXMData, session: AsyncSession):
                     Navaid,
                     {
                         "id": uuid,
-                        "designator": re.search("aixm:designator=([A-Z]+);", title).groups()[0],
-                        "type": re.search("aixm:type=([A-Z]+);", title).groups()[0],
-                        "location": re.search("gml:pos=([0-9. ]+)", title).groups()[0],
+                        "designator": re.search(r"aixm:designator=([A-Z]+);", title).groups()[0],
+                        "type": re.search(r"aixm:type=([A-Z]+);", title).groups()[0],
+                        "location": re.search(r"gml:pos=([0-9. ]+)", title).groups()[0],
                         "source": "DFS",
                     },
                 )

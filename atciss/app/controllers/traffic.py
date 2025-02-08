@@ -21,7 +21,7 @@ async def ad_get(
     redis: Annotated[Redis, Depends(get_redis)],
 ) -> AerodromeTraffic:
     icao = icao.upper()
-    traffic_json = cast(str | None, await redis.get(f"vatsim:traffic:{icao}"))
+    traffic_json = cast("str | None", await redis.get(f"vatsim:traffic:{icao}"))
     if traffic_json is None:
         raise HTTPException(status_code=404, detail="No aerodrome traffic information found.")
 

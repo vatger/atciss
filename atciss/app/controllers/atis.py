@@ -29,7 +29,7 @@ async def atis_get(
     atis = {}
     for icao in airports:
         icao = icao.upper()
-        atis_json = cast(str | None, await redis.get(f"vatsim:atis:{icao}"))
+        atis_json = cast("str | None", await redis.get(f"vatsim:atis:{icao}"))
         if atis_json is None:
             continue
         atis[icao] = TypeAdapter(Atis).validate_json(atis_json)

@@ -31,7 +31,7 @@ def postgis_coordinate_validate(
         return data
 
     if isinstance(data, str):
-        data = cast(tuple[str, str], data.split(" "))
+        data = cast("tuple[str, str]", data.split(" "))
 
     return WKTElement(f"POINT({data[1]} {data[0]})")
 
@@ -53,7 +53,7 @@ def postgis_line_validate(
 
     if isinstance(data, str):
         it = iter(data.split(" "))
-        data = cast(list[tuple[str, str]], zip(it, it, strict=False))
+        data = cast("list[tuple[str, str]]", zip(it, it, strict=False))
 
     line = ",".join(f"{p[1]} {p[0]}" for p in data)
 
@@ -77,12 +77,12 @@ def postgis_polygon_validate(
 
     if isinstance(data, str):
         it = iter(data.split(" "))
-        data = cast(list[tuple[str, str]], zip(it, it, strict=False))
+        data = cast("list[tuple[str, str]]", zip(it, it, strict=False))
 
     if len(data) and isinstance(data[0], dict):
-        polygon = ",".join(f"{p['lon']} {p['lat']}" for p in cast(list[LatLonDict], data))
+        polygon = ",".join(f"{p['lon']} {p['lat']}" for p in cast("list[LatLonDict]", data))
     else:
-        polygon = ",".join(f"{p[1]} {p[0]}" for p in cast(list[tuple[str, str]], data))
+        polygon = ",".join(f"{p[1]} {p[0]}" for p in cast("list[tuple[str, str]]", data))
 
     return WKTElement(f"POLYGON(({polygon}))")
 

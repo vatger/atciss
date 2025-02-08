@@ -31,4 +31,4 @@ async def ad_get(
     )
     results = await session.execute(stmt)
 
-    return {cast(str, ad.icao_designator): ad for ad in results.scalars().all()}
+    return {cast("str", ad.icao_designator): ad for ad in results.scalars().all()}

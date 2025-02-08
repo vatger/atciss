@@ -73,6 +73,6 @@ def setup_logging() -> None:
     logging.basicConfig(handlers=[InterceptHandler()], level=0)
 
     for name in logging.root.manager.loggerDict:  # pylint: disable=no-member
-        _logger = logging.getLogger(name)
-        _logger.handlers = [InterceptHandler()]
-        _logger.propagate = False
+        current_logger = logging.getLogger(name)
+        current_logger.handlers = [InterceptHandler()]
+        current_logger.propagate = False

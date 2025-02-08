@@ -24,7 +24,7 @@ async def get_flow_measures(
     redis: Annotated[Redis, Depends(get_redis)],
 ) -> list[FlowMeasure]:
     """Get ECFMP flow measures for a FIR."""
-    flow_measures = cast(str | None, await redis.get(f"ecfmp:flow_measures:{fir}"))
+    flow_measures = cast("str | None", await redis.get(f"ecfmp:flow_measures:{fir}"))
     if flow_measures is None:
         flow_measures = "[]"
 
@@ -44,7 +44,7 @@ async def get_events(
     """Get ECFMP flow measures for a FIR."""
     events = []
     for f in fir:
-        fir_events = cast(str | None, await redis.get(f"ecfmp:events:{f}"))
+        fir_events = cast("str | None", await redis.get(f"ecfmp:events:{f}"))
         if fir_events is None:
             logger.warning(f"No event for {f}")
             continue

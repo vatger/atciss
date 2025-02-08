@@ -71,7 +71,7 @@ async def fetch_notam(
 
     # Remove old NOTAMs
     notam_keys = await redis.keys("notam:*:*")
-    notam_text = cast(list[str], await redis.mget(notam_keys))
+    notam_text = cast("list[str]", await redis.mget(notam_keys))
     icao_notams = [NotamModel.from_str(n) for n in notam_text]
     async with redis.pipeline() as pipe:
         for notam in icao_notams:

@@ -24,7 +24,7 @@ async def get_areas(
     redis: Annotated[Redis, Depends(get_redis)],
 ) -> list[AreaBooking]:
     """Get all area bookings for today."""
-    areas = cast(str | None, await redis.get("areas:bookings"))
+    areas = cast("str | None", await redis.get("areas:bookings"))
     if areas is None:
         raise HTTPException(status_code=404)
 
@@ -40,7 +40,7 @@ async def get_topsky_areas(
     redis: Annotated[Redis, Depends(get_redis)],
 ) -> Eaup:
     """Get topsky-compatible area bookings for today."""
-    dfs_aup_str = cast(str | None, await redis.get("areas:dfs_aup"))
+    dfs_aup_str = cast("str | None", await redis.get("areas:dfs_aup"))
     if dfs_aup_str is None:
         raise HTTPException(status_code=404)
 

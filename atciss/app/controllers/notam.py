@@ -31,7 +31,7 @@ async def notam_get(
     for i in icao:
         i = i.upper()
         notam_keys = await redis.keys(f"notam:{i}:*")
-        notam_text = cast(list[str], await redis.mget(notam_keys))
+        notam_text = cast("list[str]", await redis.mget(notam_keys))
         icao_notams = [NotamModel.from_str(n) for n in notam_text]
         notams[i] = icao_notams
 

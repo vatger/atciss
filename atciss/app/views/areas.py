@@ -24,7 +24,7 @@ def convert_point(point: str | Coordinate) -> Coordinate:
     lat *= -1 if ns == "S" else 1
     lng *= -1 if we == "W" else 1
     return cast(
-        Coordinate,
+        "Coordinate",
         [convert_degsecmin_coordinate(lat), convert_degsecmin_coordinate(lng)],
     )
 

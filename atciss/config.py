@@ -31,9 +31,9 @@ class Application(BaseSettings):
     GDPR_API_TOKEN: str = "invalid"
 
     DATABASE_DSN: PostgresDsn = cast(
-        PostgresDsn, "postgresql+asyncpg://postgres:fnord@localhost/atciss"
+        "PostgresDsn", "postgresql+asyncpg://postgres:fnord@localhost/atciss"
     )
-    REDIS_URL: RedisDsn = cast(RedisDsn, "redis://localhost:6379")
+    REDIS_URL: RedisDsn = cast("RedisDsn", "redis://localhost:6379")
 
     ADMINS: list[str] = [
         "10000009",  # dev SUP

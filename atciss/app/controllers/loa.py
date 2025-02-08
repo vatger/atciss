@@ -24,7 +24,7 @@ async def metar_get(
     loaitems = []
     for s in sector:
         s = s.upper()
-        loaitems_json = cast(str | None, await redis.get(f"loa:{s}"))
+        loaitems_json = cast("str | None", await redis.get(f"loa:{s}"))
         if loaitems_json is None:
             continue
         loaitems.extend(TypeAdapter(list[LoaItem]).validate_json(loaitems_json))

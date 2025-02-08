@@ -16,7 +16,7 @@ router = APIRouter()
 
 async def fetch_metar(icao: AirportIcao, redis: Redis) -> MetarModel | None:
     try:
-        metar = cast(str | None, await redis.get(f"metar:{icao}"))
+        metar = cast("str | None", await redis.get(f"metar:{icao}"))
         if metar is None:
             return None
         else:
@@ -51,7 +51,7 @@ async def metar_raw_get(
     redis: Annotated[Redis, Depends(get_redis)],
 ) -> str:
     """Get METAR for a single airport. Compatible to metar.vatsim.net."""
-    metar = cast(str | None, await redis.get(f"metar:{icao}"))
+    metar = cast("str | None", await redis.get(f"metar:{icao}"))
     if metar is None:
         raise HTTPException(status_code=404)
 
