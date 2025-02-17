@@ -166,7 +166,7 @@ export const api = createApi({
     loaBySectors: builder.query<LoaItem[], string[]>({
       query: (sectors) => ({
         url: "loa",
-        params: sectors.map((sector) => ["sector", sector.replace(/.*\//, "")]),
+        params: sectors.map((sector) => ["sector", sector]),
       }),
     }),
 

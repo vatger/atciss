@@ -707,19 +707,3 @@ export const FIR_SETTINGS: Record<string, FIR> = {
     },
   },
 }
-export const FIR_TO_VATGLASSES: Record<string, string> = {
-  EDMM: "ed",
-  EDUU: "ed",
-  EDGG: "ed",
-  EDWW: "ed",
-  EDYY: "ed",
-  EBBU: "eb-el",
-  EHAA: "eh",
-  EKDK: "ek",
-  ESMM: "es",
-  LIPP: "li",
-  LKAA: "lk",
-  LOVV: "lo",
-  EPWW: "ep",
-  LSAS: "ls",
-}
