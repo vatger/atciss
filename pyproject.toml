@@ -8,7 +8,7 @@ readme = "README.md"
 repository = "https://github.com/vatger/atciss"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
 aiohttp = "^3.11.11"
 alembic = "^1.14.0"
 asgi-correlation-id = "^4.3.4"
@@ -22,6 +22,7 @@ geoalchemy2 = "^0.16.0"
 greenlet = "^3.1.1"
 haversine = "^2.9.0"
 lark = "^1"
+loa = { git = "https://github.com/vatger-nav/loa.git", rev = "dcd8fccddb7bc94830975ccc1a5c8d10edc7de18" }
 loguru = "^0.7.2"
 lxml = "^5.3.0"
 metar = { git = "https://github.com/globin/python-metar", rev = "35efaa6f76d00bd53b9e29bb0f87fbc3c80d8af2" }
@@ -42,7 +43,7 @@ taskiq-redis = "^1"
 taskiq-fastapi = "^0"
 uvicorn = { extras = ["standard"], version = "^0.32" }
 xmltodict = "^0.14.2"
-vatsim = "^0.1.1"
+vatsim = "^0.2.0"
 eaup = { git = "https://gitlab.com/fpletz/eaup.git", rev = "d9270df4097ca62359215cc762d41a0827d8dd06" }
 
 # needs bump in poetry2nix
@@ -93,14 +94,14 @@ ignore_missing_imports = true
 [tool.pylint.format]
 jobs = 0
 disable = [
-    "W0611", # unused-import
-    "R0902", # too-many-instance-attributes
-    "R0903", # too-few-public-methods
-    "C0114", # missing-module-docstring
-    "C0115", # missing-class-docstring
-    "C0116", # missing-function-docstring
-    "W0511", # fixme
-    "C0103", # invalid-name
+        "W0611", # unused-import
+        "R0902", # too-many-instance-attributes
+        "R0903", # too-few-public-methods
+        "C0114", # missing-module-docstring
+        "C0115", # missing-class-docstring
+        "C0116", # missing-function-docstring
+        "W0511", # fixme
+        "C0103", # invalid-name
 ]
 output-format = "colorized"
 max-line-length = 100
@@ -140,27 +141,27 @@ preview = true
 
 [tool.ruff.lint]
 select = [
-    "E",     # pycodestyle errors
-    "W",     # pycodestyle warnings
-    "F",     # pyflakes
-    "C90",   # mccabe
-    "I",     # isort
-    "ASYNC", # flake8-async
-    "B",     # flake8-bugbear
-    "BLE",   # flake8-blind-except
-    "COM",   # flake8-commas
-    "C4",    # flake8-comprehensions
-    "DTZ",   # flake8-datetimez
-    "EM",    # flake8-errmsg
-    "ICN",   # flake8-import-conventions
-    "PYI",   # flake8-pyi
-    "Q",     # flake8-quotes
-    "SIM",   # flake8-simplify
-    "TCH",   # flake8-typechecking
-    "PTH",   # flake8-use-pathlib
-    "UP",    # pyupgrade
-    "RUF",   # ruff-specific
-    "TRY",   # tryceratops
-    "FURB",  # refurb
+        "E",     # pycodestyle errors
+        "W",     # pycodestyle warnings
+        "F",     # pyflakes
+        "C90",   # mccabe
+        "I",     # isort
+        "ASYNC", # flake8-async
+        "B",     # flake8-bugbear
+        "BLE",   # flake8-blind-except
+        "COM",   # flake8-commas
+        "C4",    # flake8-comprehensions
+        "DTZ",   # flake8-datetimez
+        "EM",    # flake8-errmsg
+        "ICN",   # flake8-import-conventions
+        "PYI",   # flake8-pyi
+        "Q",     # flake8-quotes
+        "SIM",   # flake8-simplify
+        "TCH",   # flake8-typechecking
+        "PTH",   # flake8-use-pathlib
+        "UP",    # pyupgrade
+        "RUF",   # ruff-specific
+        "TRY",   # tryceratops
+        "FURB",  # refurb
 ]
 ignore = ["COM812"]

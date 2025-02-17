@@ -1,11 +1,12 @@
-from typing import Annotated, cast
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import ORJSONResponse
-from pydantic import TypeAdapter
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel import select
 
 from atciss.app.controllers.auth import get_user
-from atciss.app.utils.redis import Redis, get_redis
+from atciss.app.utils.db import get_session
 from atciss.app.views.loa import LoaItem
 
 router = APIRouter()
@@ -18,15 +19,12 @@ router = APIRouter()
 async def metar_get(
     sector: Annotated[list[str], Query(...)],
     cid: Annotated[str, Depends(get_user)],
-    redis: Annotated[Redis, Depends(get_redis)],
+    db_session: Annotated[AsyncSession, Depends(get_session)],
 ) -> list[LoaItem]:
     """Get LOA for sector."""
-    loaitems = []
-    for s in sector:
-        s = s.upper()
-        loaitems_json = cast("str | None", await redis.get(f"loa:{s}"))
-        if loaitems_json is None:
-            continue
-        loaitems.extend(TypeAdapter(list[LoaItem]).validate_json(loaitems_json))
 
-    return loaitems
+    items = await db_session.scalars(
+        select(LoaItem).where(LoaItem.from_sector.in_(sector) | LoaItem.to_sector.in_(sector))
+    )
+
+    return items

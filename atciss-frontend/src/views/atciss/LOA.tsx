@@ -43,7 +43,7 @@ export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           <tbody>
             {xLoas?.map((loa, idx) => (
               <LoaRow
-                key={`${loa.cop}-${loa.aerodrome}-${loa.adep_ades}-${loa.from_sector}-${loa.to_sector}-${idx}`}
+                key={`${loa.cop}-${loa.adep?.join("_")}-${loa.ades?.join("_")}-${loa.from_sector}-${loa.to_sector}-${idx}`}
                 loa={loa}
               />
             ))}
@@ -61,7 +61,7 @@ export const LOA = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           <tbody>
             {nLoas?.map((loa, idx) => (
               <LoaRow
-                key={`${loa.cop}-${loa.aerodrome}-${loa.adep_ades}-${loa.from_sector}-${loa.to_sector}-${idx}`}
+                key={`${loa.cop}-${loa.adep?.join("_")}-${loa.ades?.join("_")}-${loa.from_sector}-${loa.to_sector}-${idx}`}
                 loa={loa}
               />
             ))}

@@ -31,6 +31,7 @@ export const LoaNavaidMarker = ({ designator }: { designator: string }) => {
         >
           <thead>
             <tr>
+              <th sx={{ pt: 0 }}>ROUTE</th>
               <th sx={{ pt: 0 }}>ADEP/ADES</th>
               <th sx={{ pt: 0 }}>FL</th>
               <th sx={{ pt: 0 }}>REMARK</th>
@@ -48,9 +49,8 @@ export const LoaNavaidMarker = ({ designator }: { designator: string }) => {
               <tbody>
                 {xloasByNavaid.map((loa, idx) => (
                   <LoaRow
-                    key={`${loa.cop}-${loa.aerodrome}-${loa.adep_ades}-${loa.from_sector}-${loa.to_sector}-${idx}`}
+                    key={`${loa.cop}-${(loa.adep ?? []).join("_")}-${(loa.ades ?? []).join("_")}-${loa.from_sector}-${loa.to_sector}-${idx}`}
                     loa={loa}
-                    showCop={false}
                   />
                 ))}
               </tbody>
@@ -66,9 +66,8 @@ export const LoaNavaidMarker = ({ designator }: { designator: string }) => {
               <tbody>
                 {nloasByNavaid?.map((loa, idx) => (
                   <LoaRow
-                    key={`${loa.cop}-${loa.aerodrome}-${loa.adep_ades}-${loa.from_sector}-${loa.to_sector}-${idx}`}
+                    key={`${loa.cop}-${(loa.adep ?? []).join("_")}-${(loa.ades ?? []).join("_")}-${loa.from_sector}-${loa.to_sector}-${idx}`}
                     loa={loa}
-                    showCop={false}
                   />
                 ))}
               </tbody>

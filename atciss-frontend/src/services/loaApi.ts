@@ -43,7 +43,7 @@ export const selectRelevantExitLoas = createSelector(
   (relevantLoas, ownedSectors) =>
     relevantLoas
       .filter((loa) => ownedSectors.includes(loa.from_sector))
-      .sort(sortBy(["from_sector", "cop", "to_sector", "to_fir", "adep_ades"])),
+      .sort(sortBy(["from_sector", "cop", "to_sector", "adep", "ades"])),
 )
 
 export const selectRelevantEntryLoas = createSelector(
@@ -52,34 +52,36 @@ export const selectRelevantEntryLoas = createSelector(
   (relevantLoas, ownedSectors) =>
     relevantLoas
       .filter((loa) => ownedSectors.includes(loa.to_sector))
-      .sort(
-        sortBy(["to_sector", "cop", "from_sector", "from_fir", "adep_ades"]),
-      ),
+      .sort(sortBy(["to_sector", "cop", "from_sector", "adep", "ades"])),
 )
 
-const filterFn = (filter: string, to_from: "to" | "from") => (loa: LoaItem) =>
-  loa.aerodrome.toLowerCase().includes(filter.toLowerCase()) ||
+const filterFn = (filter: string) => (loa: LoaItem) =>
+  (loa.adep ?? []).some((ad) => ad.includes(filter.toUpperCase())) ||
+  (loa.ades ?? []).some((ad) => ad.includes(filter.toUpperCase())) ||
   loa.from_sector.toLowerCase().includes(filter.toLowerCase()) ||
   loa.to_sector.toLowerCase().includes(filter.toLowerCase()) ||
-  loa[`${to_from}_fir`].toLowerCase().includes(filter.toLowerCase()) ||
-  loa.special_conditions.toLowerCase().includes(filter.toLowerCase()) ||
-  loa.cop.toLowerCase().includes(filter.toLowerCase())
+  loa.remarks?.toLowerCase().includes(filter.toLowerCase()) ||
+  loa.cop?.toLowerCase().includes(filter.toLowerCase())
 
 export const selectFilteredExitLoas = createSelector(
   selectRelevantExitLoas,
   (_state: RootState, filter: string) => filter,
-  (loas, filter) => loas.filter(filterFn(filter, "to")),
+  (loas, filter) => loas.filter(filterFn(filter)),
 )
 
 export const selectFilteredEntryLoas = createSelector(
   selectRelevantEntryLoas,
   (_state: RootState, filter: string) => filter,
-  (loas, filter) => loas.filter(filterFn(filter, "from")),
+  (loas, filter) => loas.filter(filterFn(filter)),
 )
 
 export const selectLoaCops = createSelector(
   selectRelevantLoas,
-  (relevantLoas) => [...new Set(relevantLoas.map((loa) => loa.cop))],
+  (relevantLoas) => [
+    ...new Set(
+      relevantLoas.map((loa) => loa.cop).filter((cop) => cop !== null),
+    ),
+  ],
 )
 
 export const selectExitLoasByNavaid = createSelector(

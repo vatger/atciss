@@ -131,7 +131,7 @@ export const selectOwnedSectors = createSelector(
       : (Object.entries(sectors).reduce(
           (acc, [id, s]) =>
             ownerFromSectorsActivePositions(s, activePositions) === pos
-              ? [...acc, id.replace(/.*\//, "")] // FIXME check
+              ? [...acc, id] // FIXME check
               : acc,
           [] as string[],
         ) ?? []),
