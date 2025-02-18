@@ -34,7 +34,7 @@ export const LoaRow = ({ loa }: { loa: LoaItem }) => {
           <>&#x02197; {loa.adep.join(", ")}</>
         )}
         {loa.ades && loa.ades.length > 0 && (
-          <>&#x02197; {loa.ades.join(", ")}</>
+          <>&#x02198; {loa.ades.join(", ")}</>
         )}
       </td>
       <td>
