@@ -41,7 +41,7 @@ sqlmodel = "0.0.22"
 taskiq = "^0"
 taskiq-redis = "^1"
 taskiq-fastapi = "^0"
-uvicorn = { extras = ["standard"], version = "^0.32" }
+uvicorn = { extras = ["standard"], version = "^0.34" }
 xmltodict = "^0.14.2"
 vatsim = "^0.2.0"
 eaup = { git = "https://gitlab.com/fpletz/eaup.git", rev = "d9270df4097ca62359215cc762d41a0827d8dd06" }
