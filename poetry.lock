@@ -2891,13 +2891,13 @@ files = [
 
 [[package]]
 name = "types-python-jose"
-version = "3.3.4.20240106"
+version = "3.4.0.20250224"
 description = "Typing stubs for python-jose"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 files = [
-    {file = "types-python-jose-3.3.4.20240106.tar.gz", hash = "sha256:b18cf8c5080bbfe1ef7c3b707986435d9efca3e90889acb6a06f65e06bc3405a"},
-    {file = "types_python_jose-3.3.4.20240106-py3-none-any.whl", hash = "sha256:b515a6c0c61f5e2a53bc93e3a2b024cbd42563e2e19cbde9fd1c2cc2cfe77ccc"},
+    {file = "types_python_jose-3.4.0.20250224-py3-none-any.whl", hash = "sha256:fb0c4134882b700a871f854c4a1bc865ad048ee472cd8d4f4625d1a7b842b264"},
+    {file = "types_python_jose-3.4.0.20250224.tar.gz", hash = "sha256:70d70880d55416e89ed659f0b735af5437dd49ba6c86a116f5af4448aef6a5c8"},
 ]
 
 [package.dependencies]
@@ -3495,4 +3495,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "967b32ff631a6250bd2251e59ee9b23c0635ce91c03bd1824a2dcb2e5f7048f5"
+content-hash = "6e52e2e72636e969039c139d42db435217c9a30ff7145c098551b6ef21d17e76"
