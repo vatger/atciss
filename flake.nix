@@ -84,6 +84,9 @@
                 isort = pyprev.isort.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.hatch-vcs ];
                 });
+                izulu = pyprev.izulu.overridePythonAttrs (old: {
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.setuptools ];
+                });
                 loa = pyprev.loa.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.hatch-vcs ];
                 });
