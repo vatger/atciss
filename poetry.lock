@@ -2907,14 +2907,14 @@ files = [
 
 [[package]]
 name = "taskiq-fastapi"
-version = "0.3.3"
+version = "0.3.4"
 description = "FastAPI integration for taskiq"
 optional = false
 python-versions = "<4.0.0,>=3.8.1"
 groups = ["main"]
 files = [
-    {file = "taskiq_fastapi-0.3.3-py3-none-any.whl", hash = "sha256:b08df2f923ead3acaddae4e0afe9f07a29b9fac879300ba964c894288c91e90a"},
-    {file = "taskiq_fastapi-0.3.3.tar.gz", hash = "sha256:c72fd3f1b602b7ab611ce7a5131c9b12167c5fc1b11f3c938b0c7a3f0e507b83"},
+    {file = "taskiq_fastapi-0.3.4-py3-none-any.whl", hash = "sha256:a465f4583014dcc56f207b5463fec693cb15014795e3fbe516da699146acf8cd"},
+    {file = "taskiq_fastapi-0.3.4.tar.gz", hash = "sha256:66a8daa5a724923d33decc1abdc3902894630252103f9649ed48884ae524c78b"},
 ]
 
 [package.dependencies]
