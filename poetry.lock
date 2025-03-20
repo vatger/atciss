@@ -2923,19 +2923,19 @@ taskiq = ">=0.8.0,<1"
 
 [[package]]
 name = "taskiq-redis"
-version = "1.0.2"
+version = "1.0.3"
 description = "Redis integration for taskiq"
 optional = false
-python-versions = "<4.0.0,>=3.8.1"
+python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "taskiq_redis-1.0.2-py3-none-any.whl", hash = "sha256:d24c4ba34560eb882af351ec34eab4fc90ff6b82ef9b3245d0a499d335b92086"},
-    {file = "taskiq_redis-1.0.2.tar.gz", hash = "sha256:9a8e8b8e26847e25fbe6e6f8f910632a66f3d38bb5249699193efcfd1e84e25f"},
+    {file = "taskiq_redis-1.0.3-py3-none-any.whl", hash = "sha256:9fcf1d943b84f4ee84c0582df49c545d107cdf33e29bea5b821a4649a8e5dff2"},
+    {file = "taskiq_redis-1.0.3.tar.gz", hash = "sha256:5a940b466c8ea06ae2d221d2275e87571c4f33ed682aace1add94d8dcb1b2c62"},
 ]
 
 [package.dependencies]
 redis = ">=5,<6"
-taskiq = ">=0.11.1,<1"
+taskiq = ">=0.11.12,<1"
 
 [[package]]
 name = "tomlkit"
