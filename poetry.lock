@@ -1056,15 +1056,18 @@ files = [
 
 [[package]]
 name = "izulu"
-version = "0.5.4"
+version = "0.50.0"
 description = "The exceptional library"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 groups = ["main", "dev"]
 files = [
-    {file = "izulu-0.5.4-py3-none-any.whl", hash = "sha256:6431499a04f68daca0b852dfa5cfbcb7be804166bcdc4efd4dd4e6dd7a3e5898"},
-    {file = "izulu-0.5.4.tar.gz", hash = "sha256:a6619402ab3c04ca32bbfb5000138287691e0b47d9794ba55a10af403ed23644"},
+    {file = "izulu-0.50.0-py3-none-any.whl", hash = "sha256:4e9ae2508844e7c5f62c468a8b9e2deba2f60325ef63f01e65b39fd9a6b3fab4"},
+    {file = "izulu-0.50.0.tar.gz", hash = "sha256:cc8e252d5e8560c70b95380295008eeb0786f7b745a405a40d3556ab3252d5f5"},
 ]
+
+[package.extras]
+compatibility = ["typing-extensions (>=4.5.0)"]
 
 [[package]]
 name = "jinja2"
@@ -2861,21 +2864,21 @@ files = [
 
 [[package]]
 name = "taskiq"
-version = "0.11.14"
+version = "0.11.16"
 description = "Distributed task queue with full async support"
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main", "dev"]
 files = [
-    {file = "taskiq-0.11.14-py3-none-any.whl", hash = "sha256:2619afae71db9e8817f282d7fd415678bccf85f7bd545b6496866957accd17cb"},
-    {file = "taskiq-0.11.14.tar.gz", hash = "sha256:7c9736633d18ff169c6e52c6d6dc938a9bafa377278833100d0a1018c59e97ac"},
+    {file = "taskiq-0.11.16-py3-none-any.whl", hash = "sha256:2cbc458890c0a5544a34ea2489bce255bcbc8459b2a344b62a43f7db51c1389c"},
+    {file = "taskiq-0.11.16.tar.gz", hash = "sha256:52e73794503c41250e384f9e1a2645fa56fd25ffebbbf512ca708a7a46e728f3"},
 ]
 
 [package.dependencies]
 anyio = ">=3"
 gitignore-parser = {version = ">=0,<1", optional = true, markers = "extra == \"reload\""}
 importlib-metadata = "*"
-izulu = "0.5.4"
+izulu = "0.50.0"
 packaging = ">=19"
 pycron = ">=3.0.0,<4.0.0"
 pydantic = ">=1.0,<=3.0"
