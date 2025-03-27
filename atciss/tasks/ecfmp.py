@@ -12,7 +12,7 @@ from atciss.app.views.ecfmp import ECFMP, Event, FlowMeasure
 from atciss.tkq import broker
 
 
-@broker.task(schedule=[{"cron": "*/1 * * * *"}])
+@broker.task(schedule=[{"cron": "*/5 * * * *"}])
 async def fetch_ecfmp(
     http_client: Annotated[ClientSession, Depends(get_aiohttp_client)],
     redis: Annotated[Redis, Depends(get_redis)],
