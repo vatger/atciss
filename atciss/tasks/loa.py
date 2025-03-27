@@ -29,9 +29,12 @@ async def fetch_loas(
 
     prev_loa_items = await db_session.execute(select(LoaItem))
     for (loa_item,) in prev_loa_items.all():
-        _ = await db_session.delete(loa_item)
+        await db_session.delete(loa_item)
 
     for idx, loa_item in enumerate(loas):
         db_session.add(LoaItem.model_validate({"id": idx, **loa_item.model_dump()}))
+
+    await db_session.flush()
+    await db_session.commit()
 
     logger.info(f"LoAs: {len(loas)} received")
