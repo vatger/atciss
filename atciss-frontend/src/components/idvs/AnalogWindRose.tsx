@@ -7,7 +7,7 @@ const roseSegmentClasses = (metar: Metar, segment: number): string => {
 
     for (let s = start_segment; s != end_segment; s += 10) {
       if (s == segment) return "st1 st1-active"
-      if (s == 350) s = -10
+      if (s == 360) s = -10
     }
   }
 
