@@ -16,7 +16,7 @@ class Traffic:
     eta: datetime | None
     groundspeed: int
 
-    def __lt__(self, other):
+    def __lt__(self, other: "Traffic"):
         return self.eta < other.eta
 
     def __le__(self, other):
