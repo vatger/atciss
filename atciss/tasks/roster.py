@@ -26,7 +26,7 @@ class RosterController(BaseModel):
 
 
 class RosterControllerPermit(BaseModel):
-    user_cid: str
+    user_cid: int
     permitted_upto: str
 
 
@@ -53,12 +53,12 @@ async def fetch_roster(
         rostered_controllers_json = await req.json()
         try:
             data = TypeAdapter(list[RosterController]).validate_python(rostered_controllers_json)
-            rostered_cids = [o.id for o in data]
+            rostered_cids = [str(o.id) for o in data]
         except ValidationError:
             data = TypeAdapter(list[RosterControllerPermit]).validate_python(
                 rostered_controllers_json
             )
-            rostered_cids.extend([o.user_cid for o in data])
+            rostered_cids.extend([str(o.user_cid) for o in data])
 
     logger.info(f"Fetched {len(rostered_cids)} rostered controllers")
 
