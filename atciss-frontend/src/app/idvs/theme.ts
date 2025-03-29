@@ -16,8 +16,8 @@ export const useIdvsTheme = useTheme as () => IdvsTheme
 export const theme: IdvsTheme = {
   colors: {
     text: "#000",
-    background: "#aaa",
-    primary: "#ccc",
+    background: "#ababab",
+    primary: "#d2d2d2",
     secondary: "#a0e6fa",
     primaryText: "var(--theme-ui-colors-text)",
     clockBackground: "var(--theme-ui-colors-primary)",

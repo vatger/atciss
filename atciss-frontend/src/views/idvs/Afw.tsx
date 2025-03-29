@@ -1,6 +1,7 @@
 import { BaroClock } from "components/idvs/BaroClock"
+import { RunwayDisplay } from "components/idvs/RunwayDisplay"
 import { Wind } from "components/idvs/Wind"
-import { Box, Flex } from "theme-ui"
+import { Flex } from "theme-ui"
 
 export const Afw = () => {
   return (
@@ -10,12 +11,12 @@ export const Afw = () => {
         flexDirection: "column",
         justifyContent: "space-between",
         p: 2,
+        gap: 1,
       }}
     >
       <Wind />
-      <Box>Rwy</Box>
+      <RunwayDisplay />
       <BaroClock />
-      <Box>remark</Box>
     </Flex>
   )
 }

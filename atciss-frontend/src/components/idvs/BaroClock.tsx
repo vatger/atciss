@@ -27,17 +27,21 @@ export const BaroClock = () => {
   return (
     <Flex sx={{ justifyContent: "space-between" }}>
       <Grid sx={{ gap: 3, gridAutoFlow: "column", alignItems: "baseline" }}>
-        <Box>QNH</Box>
+        <Box sx={{ width: "3rem" }}>QNH</Box>
         <Flex>
-          <InfoBox sx={{ fontSize: 6 }}>{metar?.qnh.toFixed(0)}</InfoBox>
-          <InfoBox>{hpaToInhg(metar?.qnh).toFixed(2)}</InfoBox>
+          <InfoBox sx={{ fontSize: 6, px: 4 }}>{metar?.qnh.toFixed(0)}</InfoBox>
+          <InfoBox
+            sx={{ px: 3, pb: 2, display: "flex", alignItems: "flex-end" }}
+          >
+            {hpaToInhg(metar?.qnh).toFixed(2)}
+          </InfoBox>
         </Flex>
         {qfe && (
           <>
             <Box>QFE</Box>
             <Flex>
-              <InfoBox>{qfe.toFixed(0)}</InfoBox>
-              <InfoBox>{hpaToInhg(qfe).toFixed(2)}</InfoBox>
+              <InfoBox sx={{ px: 3 }}>{qfe.toFixed(0)}</InfoBox>
+              <InfoBox sx={{ px: 3 }}>{hpaToInhg(qfe).toFixed(2)}</InfoBox>
             </Flex>
           </>
         )}

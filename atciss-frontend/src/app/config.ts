@@ -17,6 +17,9 @@ interface Page {
   relevantAerodromes: string[]
   areas: Record<string, string[]>
 }
+interface AerodromeSetup {
+  splitATIS: boolean
+}
 
 export const SPLIT_PRESETS: Record<
   string,
@@ -708,5 +711,11 @@ export const FIR_SETTINGS: Record<string, FIR> = {
         },
       },
     },
+  },
+}
+
+export const AD_SETUP: Record<string, AerodromeSetup> = {
+  EDDF: {
+    splitATIS: true,
   },
 }
