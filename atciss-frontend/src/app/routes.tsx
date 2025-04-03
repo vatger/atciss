@@ -18,7 +18,6 @@ import { Alias } from "views/atciss/Alias"
 import { AtisAfw } from "views/atciss/AtisAfw"
 import { Initials } from "views/atciss/Initials"
 import { LOA } from "views/atciss/LOA"
-import { LOADoc } from "views/atciss/LOADoc"
 import { Map } from "views/atciss/Map"
 import { Notams } from "views/atciss/Notam"
 import { Windy } from "views/atciss/Windy"
@@ -66,10 +65,6 @@ const router = createBrowserRouter([
       {
         path: "notam",
         element: <Notams />,
-      },
-      {
-        path: "loa/docs",
-        element: <LOADoc />,
       },
       {
         path: "loa",

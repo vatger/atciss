@@ -12,8 +12,7 @@ import {
 import { Text, Badge, Box, Card, Flex, ThemeUIStyleObject } from "theme-ui"
 import { LoaDoc } from "types/loa"
 import { Cycle } from "airac-cc"
-import { XmButton } from "components/atciss/XmButton"
-import { useNavigate } from "react-router"
+import { LoaControls } from "components/atciss/LoaControls"
 
 const Doc = ({ doc }: { doc: LoaDoc }) => {
   const dispatch = useAppDispatch()
@@ -68,8 +67,6 @@ export const LOADoc = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const loaDocs = useAppSelector(selectLoaDocs)
   const doc = useAppSelector(selectOpenDocument)
 
-  const navigate = useNavigate()
-
   return (
     <SidebarLayout sx={{ ...sx, overflowY: "hidden" }}>
       <Box>
@@ -95,9 +92,7 @@ export const LOADoc = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           padding: 2,
         }}
       >
-        <XmButton onClick={() => navigate("/loa")}>
-          Switch to <strong>LOA Table</strong>
-        </XmButton>
+        <LoaControls />
         <Box>
           {loaDocs.map((doc) => (
             <Doc key={doc.filename} doc={doc} />
