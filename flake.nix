@@ -257,6 +257,10 @@
                         proxy_pass $backend_target;
                       }
 
+                      location /static/ {
+                        proxy_pass $backend_target;
+                      }
+
                       location /metrics {
                         proxy_pass $backend_target;
                       }
