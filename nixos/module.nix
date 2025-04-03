@@ -44,6 +44,9 @@ in
           "/api" = {
             proxyPass = "http://localhost:8000";
           };
+          "/static" = {
+            proxyPass = "http://localhost:8000";
+          };
         };
       };
     };
