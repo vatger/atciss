@@ -22,7 +22,7 @@ geoalchemy2 = "^0.17.1"
 greenlet = "^3.1.1"
 haversine = "^2.9.0"
 lark = "^1"
-loa = { git = "https://github.com/vatger-nav/loa.git", rev = "dcd8fccddb7bc94830975ccc1a5c8d10edc7de18" }
+loa = { git = "https://github.com/vatger-nav/loa.git", rev = "a4ba3ec01c496522e794b379e7181e3b813ebf7c" }
 loguru = "^0.7.2"
 lxml = "^5.3.0"
 metar = { git = "https://github.com/globin/python-metar", rev = "35efaa6f76d00bd53b9e29bb0f87fbc3c80d8af2" }

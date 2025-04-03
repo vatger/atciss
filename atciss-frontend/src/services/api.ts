@@ -9,7 +9,7 @@ import { AircraftPerformanceData } from "types/aircraft"
 import { AreaBooking } from "types/area"
 import { Aerodrome, AirwaySegment, Navaid } from "types/dfs"
 import { Event, FlowMeasure } from "types/ecfmp"
-import { LoaItem } from "types/loa"
+import { LoaDoc, LoaItem } from "types/loa"
 import { Notam } from "types/notam"
 import { SectorData } from "types/vatglasses"
 import { AerodromeTraffic, Atis, Controller } from "types/vatsim"
@@ -121,6 +121,12 @@ export const api = createApi({
     aliases: builder.query<string, string>({
       query: (fir) => ({
         url: `aliases/${fir}`,
+      }),
+    }),
+
+    loaDocsByFir: builder.query<LoaDoc[], string>({
+      query: (fir) => ({
+        url: `loa/docs/${fir}`,
       }),
     }),
 

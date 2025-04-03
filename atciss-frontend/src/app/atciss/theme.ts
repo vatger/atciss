@@ -16,6 +16,7 @@ export const useAtcissTheme = useTheme as () => AtcissTheme
 export const theme: AtcissTheme = {
   colors: {
     text: "#000",
+    invertedText: "#fff",
     background: "#eaeaea",
     inputBackground: "#fff",
     primary: "#0082b3",
@@ -34,6 +35,7 @@ export const theme: AtcissTheme = {
     modes: {
       dark: {
         text: "#fff",
+        invertedText: "#000",
         background: "#222",
         inputBackground: "#000",
         primary: "#90c6da",
@@ -194,6 +196,16 @@ export const theme: AtcissTheme = {
         borderBottomColor: "brightshadow",
         borderRightColor: "brightshadow",
       },
+    },
+  },
+  badges: {
+    primary: {
+      backgroundColor: "primary",
+      color: "invertedText",
+    },
+    fresh: {
+      backgroundColor: "orange",
+      color: "invertedText",
     },
   },
   space: ["0px", "4px", "8px", "16px", "32px", "48px", "64px"],

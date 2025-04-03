@@ -9,6 +9,7 @@ import { atisAfwReducer } from "../services/atisAfwSlice"
 import { notamReducer } from "../services/notamSlice"
 import { idvsReducer } from "services/idvsSlice"
 import { api } from "services/api"
+import { loaDocsReducer } from "services/loaDocsSlice"
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
     idvs: idvsReducer,
     map: mapReducer,
     notamView: notamReducer,
+    loaDocs: loaDocsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),

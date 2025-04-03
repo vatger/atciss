@@ -2,6 +2,7 @@
 
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
+from pathlib import Path
 from uuid import uuid4
 
 from asgi_correlation_id import CorrelationIdMiddleware, correlation_id
@@ -13,6 +14,7 @@ from asgiref.typing import (
     Scope,
 )
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from loguru import logger
 from prometheus_fastapi_instrumentator import Instrumentator as PrometheusInstrumentator
 
@@ -75,5 +77,12 @@ def get_application() -> FastAPI:
 
     logger.debug("Add application routes.")
     app.include_router(root_api_router)
+
+    loa_docs_path = Path(settings.LOA_DOCS_PATH)
+    if not loa_docs_path.exists():
+        logger.info("Created empty LoA document path")
+        loa_docs_path.mkdir(parents=True, exist_ok=True)
+
+    app.mount("/static/loa", StaticFiles(directory=settings.LOA_DOCS_PATH), name="static-loa")
 
     return app

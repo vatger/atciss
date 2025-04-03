@@ -17,3 +17,13 @@ export interface LoaItem {
   areas: string[] | null
   rfl: string | null
 }
+
+export interface LoaDoc {
+  filename: string
+  name: string
+  related_firs: string[] | null
+  firs: string[]
+  keywords: string[] | null
+  airac: number
+  effective_date: string
+}
