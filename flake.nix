@@ -258,7 +258,7 @@
                       }
 
                       location /static/ {
-                        proxy_pass $backend_target;
+                        alias /srv/atciss-static/;
                       }
 
                       location /metrics {

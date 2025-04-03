@@ -10,9 +10,12 @@ services:
 
   worker:
     image: ghcr.io/vatger/atciss/atciss-backend
+    volumes:
+      - atciss-static-files:/srv/atciss-static
     command: worker
     environment:
       ATCISS_REDIS_URL: redis://redis
+      ATCISS_LOA_DOCS_PATH: /srv/atciss-static/loa/
     depends_on:
       redis:
         condition: service_healthy
@@ -56,3 +59,4 @@ services:
 volumes:
   atciss-db-data:
   atciss-redis-data:
+  atciss-static-files:

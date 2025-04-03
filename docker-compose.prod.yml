@@ -19,6 +19,8 @@ services:
 
   frontend:
     image: ghcr.io/vatger/atciss/atciss-frontend
+    volumes:
+      - atciss-static-files:/srv/atciss-static:ro
     ports:
       - "8011:80"
     depends_on:
