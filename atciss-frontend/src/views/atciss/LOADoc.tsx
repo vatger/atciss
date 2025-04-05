@@ -66,7 +66,7 @@ export const LOADoc = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const doc = useAppSelector(selectOpenDocument)
 
   return (
-    <SidebarLayout sx={{ overflowY: "hidden", ...sx }} foo={"test"}>
+    <SidebarLayout sx={{ overflowY: "hidden", ...sx }}>
       <Box>
         {doc && (
           <object
