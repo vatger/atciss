@@ -10,12 +10,12 @@ export const SidebarLayout = ({
 }) => (
   <Grid
     sx={{
-      ...sx,
       gap: 1,
       gridTemplateColumns: "4fr 25rem",
       width: "100%",
       height: "100%",
       overflowY: "auto",
+      ...sx,
     }}
   >
     {children}

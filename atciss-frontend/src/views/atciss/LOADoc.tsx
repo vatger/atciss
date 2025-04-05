@@ -1,5 +1,3 @@
-/** @jsxImportSource theme-ui */
-
 import { useAppDispatch, useAppSelector } from "app/hooks"
 import { SidebarLayout } from "components/SidebarLayout"
 import { api } from "services/api"
@@ -68,7 +66,7 @@ export const LOADoc = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const doc = useAppSelector(selectOpenDocument)
 
   return (
-    <SidebarLayout sx={{ ...sx, overflowY: "hidden" }}>
+    <SidebarLayout sx={{ overflowY: "hidden", ...sx }} foo={"test"}>
       <Box>
         {doc && (
           <object
