@@ -22,38 +22,64 @@ const Doc = ({ doc }: { doc: LoaDoc }) => {
     <Card
       sx={{
         backgroundColor: openDoc == myDoc ? "secondary" : "",
-        cursor: "pointer",
         marginBottom: 2,
-        borderBottom: "0px solid #333",
         padding: 1,
-      }}
-      onClick={() => {
-        dispatch(setOpenDocument(myDoc))
+        display: "flex",
+        gap: 2,
       }}
     >
-      <strong>{doc.name}</strong>
-      <br />
-      <Flex sx={{ justifyContent: "space-between" }}>
-        <Box>
-          {doc.firs.map((fir) => (
-            <Badge key={fir} sx={{ marginRight: 1 }}>
-              {fir}
+      <Box
+        sx={{ flexGrow: "1", cursor: "pointer" }}
+        onClick={() => {
+          dispatch(setOpenDocument(myDoc))
+        }}
+      >
+        <strong>{doc.name}</strong>
+        <br />
+        <Flex sx={{ justifyContent: "space-between" }}>
+          <Box>
+            {doc.firs.map((fir) => (
+              <Badge key={fir} sx={{ marginRight: 1 }}>
+                {fir}
+              </Badge>
+            ))}
+          </Box>
+          <Box>
+            <Badge
+              sx={{ marginRight: 1 }}
+              variant={
+                currentAirac.identifier == doc.airac.toString()
+                  ? "fresh"
+                  : "primary"
+              }
+            >
+              {doc.airac}
             </Badge>
-          ))}
-        </Box>
-        <Box>
-          <Badge
-            sx={{ marginRight: 1 }}
-            variant={
-              currentAirac.identifier == doc.airac.toString()
-                ? "fresh"
-                : "primary"
-            }
-          >
-            {doc.airac}
-          </Badge>
-          <Text sx={{ fontSize: 1 }}>{doc.effective_date}</Text>
-        </Box>
+            <Text sx={{ fontSize: 1 }}>{doc.effective_date}</Text>
+          </Box>
+        </Flex>
+      </Box>
+      <Flex
+        sx={{ alignItems: "center", cursor: "pointer" }}
+        onClick={() => {
+          window.open(`/static/loa/${myDoc}`)
+        }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <line x1="10" y1="14" x2="21" y2="3"></line>
+        </svg>
       </Flex>
     </Card>
   )
