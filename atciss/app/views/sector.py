@@ -113,7 +113,7 @@ def reformat_position(positions: dict[str, dict[str, Any]], region: str | None) 
     return {
         f"{region}/{id}": pos | {"name": id, "id": f"{region}/{id}"}
         for id, pos in positions.items()
-        if id not in ["GGC", "MMC", "WWC"]
+        if id not in ["GGC", "MMC"]
     }
 
 
