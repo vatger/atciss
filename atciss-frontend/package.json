@@ -40,7 +40,7 @@
                 "eslint": "^9.23.0",
                 "eslint-config-prettier": "^10.1.1",
                 "eslint-plugin-prettier": "^5.2.6",
-                "eslint-plugin-react": "^7.37.4",
+                "eslint-plugin-react": "^7.37.5",
                 "jsdom": "^26.0.0",
                 "prettier": "^3.5.3",
                 "prettier-config-nick": "^1.0.2",
