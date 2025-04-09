@@ -7,9 +7,9 @@ from fastapi import Depends
 from loguru import logger
 
 from atciss.app.utils import get_aiohttp_client
-from atciss.app.utils.metar import fetch_raw_metar
+from atciss.app.utils.metar import fetch_raw_metar, get_metar_ts
 from atciss.app.utils.redis import Redis, get_redis
-from atciss.app.utils.taf import fetch_taf
+from atciss.app.utils.taf import fetch_taf, get_taf_ts
 from atciss.tkq import broker
 
 
@@ -31,34 +31,25 @@ async def fetch_taf_metar(
 
         async with redis.pipeline() as pipe:
             for c in csv_data:
+                # Filter status headers sometimes appearing as well as column description
+                if len(c) < 2 or c[0] == "raw_text":
+                    continue
+
                 try:
-                    if len(c) < 2 or c[0] == "raw_text":
-                        continue
+                    new_value, icao, new_ts, *_ = c
 
-                    prev_value = (
-                        await fetch_raw_metar(c[1], redis)
-                        if taf_metar == "metar"
-                        else await fetch_taf(c[1], redis)
-                    )
-                    if prev_value is not None:
-                        if taf_metar == "metar":
-                            prev_metar_ts = int(prev_value.split(" ")[1][:-1])
-                            new_metar_ts = int(c[0].split(" ")[1][:-1])
-
-                            # Only replace newer METARs
-                            if prev_metar_ts > new_metar_ts:
-                                continue
-
-                            if prev_metar_ts != new_metar_ts:
-                                _ = pipe.set(f"{taf_metar}-prev:{c[1]}", prev_value)
-                        else:
-                            if prev_value != c[0]:
-                                _ = pipe.set(f"{taf_metar}-prev:{c[1]}", prev_value)
+                    if taf_metar == "metar":
+                        old_value = await fetch_raw_metar(icao, redis)
+                        old_ts = await get_metar_ts(icao, redis)
                     else:
-                        # Initialize with old METAR/TAF if nothing found
-                        _ = pipe.set(f"{taf_metar}-prev:{c[1]}", c[0])
+                        old_value = await fetch_taf(icao, redis)
+                        old_ts = await get_taf_ts(icao, redis)
 
-                    _ = pipe.set(f"{taf_metar}:{c[1]}", c[0])
+                    if old_ts is None or new_ts > old_ts:
+                        # Initializing first time: New value is old value
+                        _ = pipe.set(f"{taf_metar}-prev:{icao}", old_value or new_value)
+                        _ = pipe.set(f"{taf_metar}:{icao}", new_value)
+                        _ = pipe.set(f"{taf_metar}-ts:{icao}", new_ts)
                 except ValueError as e:
                     logger.warning(f"{taf_metar} parsing failed: {e}")
             _ = await pipe.execute()
