@@ -12,10 +12,10 @@ async def fetch_metar(icao: AirportIcao, redis: Redis) -> MetarModel | None:
         metar = cast("str | None", await redis.get(f"metar:{icao}"))
         if metar is None:
             return None
-        else:
-            parsed = MetarModel.from_str(metar)
-            parsed.raw = metar
-            return parsed
+
+        parsed = MetarModel.from_str(metar)
+        parsed.raw = metar
+        return parsed  # noqa: TRY300
     except ParserError as e:
         logger.warning(e)
     return None
@@ -26,10 +26,10 @@ async def fetch_previous_metar(icao: AirportIcao, redis: Redis) -> MetarModel | 
         metar = cast("str | None", await redis.get(f"metar-prev:{icao}"))
         if metar is None:
             return None
-        else:
-            parsed = MetarModel.from_str(metar)
-            parsed.raw = metar
-            return parsed
+
+        parsed = MetarModel.from_str(metar)
+        parsed.raw = metar
+        return parsed  # noqa: TRY300
     except ParserError as e:
         logger.warning(e)
     return None
