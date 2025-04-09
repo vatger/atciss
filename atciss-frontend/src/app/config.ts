@@ -28,30 +28,24 @@ export const SPLIT_PRESETS: Record<
   EDMM: {
     "ZUG-HOF": { positions: ["ed/ZUG", "ed/HOF", "ed/DMNH"] },
     "RDG-GER": { positions: ["ed/RDG", "ed/GER", "ed/DMNH"] },
-    "HOF-GER": { positions: ["ed/HOF", "ed/GER"] },
+    "BBG-GER": { positions: ["ed/BBG", "ed/GER"] },
+    "HOF-HAL": { positions: ["ed/HOF", "ed/HAL"] },
     "ZUG-ALB": { positions: ["ed/ZUG", "ed/ALB", "ed/DMNH"] },
-    "TRU-ALB": { positions: ["ed/TRU", "ed/ALB", "ed/DMNH"] },
-    "ZUG-WLD": { positions: ["ed/ZUG", "ed/WLD", "ed/DMNH"] },
-    "TRU-WLD": { positions: ["ed/TRU", "ed/WLD", "ed/DMNH"] },
+    "STA-WLD": { positions: ["ed/STA", "ed/WLD", "ed/DMNH"] },
     "ALB-EGG": { positions: ["ed/ALB", "ed/EGG"] },
+    "NDG-ALB": { positions: ["ed/NDG", "ed/ALB"] },
     "WLD-EGG": { positions: ["ed/WLD", "ed/EGG"] },
-    "ZUG-NDG-ALB": {
-      positions: ["ed/ZUG", "ed/NDG", "ed/ALB", "ed/DMNH"],
+    "STA-NDG-ALB": {
+      positions: ["ed/STA", "ed/NDG", "ed/ALB", "ed/DMNH"],
     },
-    "TRU-NDG-ALB": {
-      positions: ["ed/TRU", "ed/NDG", "ed/ALB", "ed/DMNH"],
-    },
-    "ZUG-WLD-ALB": {
-      positions: ["ed/ZUG", "ed/WLD", "ed/ALB", "ed/DMNH"],
-    },
-    "ZUG-WLD-EGG": {
+    "STA-WLD-EGG": {
       positions: ["ed/ZUG", "ed/WLD", "ed/EGG", "ed/DMNH"],
     },
-    "TRU-WLD-EGG": {
-      positions: ["ed/TRU", "ed/WLD", "ed/EGG", "ed/DMNH"],
+    "STA-TEG-NDG-ALB": {
+      positions: ["ed/STA", "ed/TEG", "ed/NDG", "ed/ALB", "ed/DMNH"],
     },
-    "ZUG-TEG-WLD-ALB": {
-      positions: ["ed/ZUG", "ed/TEG", "ed/WLD", "ed/ALB", "ed/DMNH"],
+    "FUE-TEG-NDG-ALB": {
+      positions: ["ed/FUE", "ed/TEG", "ed/NDG", "ed/ALB", "ed/DMNH"],
     },
   },
   EDGG: {
@@ -78,12 +72,18 @@ export const SPLIT_PRESETS: Record<
     "MRZ-BOR-FLG": { positions: ["ed/MRZ", "ed/BOR", "ed/FLG"] },
   },
   EDUU: {
-    "ERL-HVL-WUR": { level: 320, positions: ["ed/SAL", "ed/HVL", "ed/WUR"] },
+    "CHI-SAL-HVL-WUR": {
+      level: 320,
+      positions: ["ed/CHI", "ed/SAL", "ed/HVL", "ed/WUR"],
+    },
     "OSE-HVL-SAL": { level: 320, positions: ["ed/OSE", "ed/HVL", "ed/SAL"] },
     "OSE-HVL": { level: 320, positions: ["ed/OSE", "ed/HVL"] },
-    "ERL-DON": { level: 320, positions: ["ed/ERL", "ed/DON"] },
-    "ALP-DON": { level: 320, positions: ["ed/ALP", "ed/DON"] },
+    "CHI-ERL": { level: 320, positions: ["ed/CHI", "ed/ERL"] },
     "ALP-DON-SAL": { level: 320, positions: ["ed/ALP", "ed/DON", "ed/SAL"] },
+    "ALP-ISA-ERL-SPE": {
+      level: 320,
+      positions: ["ed/ALP", "ed/ISA", "ed/ERL", "ed/SPE"],
+    },
     "NTM-SLN": { level: 320, positions: ["ed/NTM", "ed/SLN"] },
   },
   EDYY: {
