@@ -7,16 +7,10 @@ from fastapi.responses import ORJSONResponse
 from atciss.app.controllers.auth import get_user
 from atciss.app.models import User
 from atciss.app.utils.redis import Redis, get_redis
+from atciss.app.utils.taf import fetch_taf
 from atciss.app.views.metar import AirportIcao
 
 router = APIRouter()
-
-
-async def fetch_taf(icao: AirportIcao, redis: Redis) -> str | None:
-    taf = await redis.get(f"taf:{icao}")
-    if taf is None:
-        return None
-    return taf
 
 
 @router.get(

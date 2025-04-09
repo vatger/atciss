@@ -13,6 +13,11 @@ export interface Rvr {
   trend: string | null
 }
 
+export interface MetarTuple {
+  current: Metar
+  previous: Metar
+}
+
 export interface Metar {
   raw: string
   station_id: string

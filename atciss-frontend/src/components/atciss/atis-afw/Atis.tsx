@@ -1,5 +1,5 @@
 import { useAppSelector } from "app/hooks"
-import { z2, z3, z4 } from "app/utils"
+import { deltaArrow, z2, z3, z4 } from "app/utils"
 import { AtisRow } from "components/atciss/atis-afw/atis/AtisRow"
 import { DateTime } from "luxon"
 import { api } from "services/api"
@@ -32,7 +32,8 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       >
         {filteredAerodromes.length ? (
           filteredAerodromes.map((aerodrome) => {
-            const metar = metars[aerodrome]
+            const metar = metars[aerodrome].current
+            const prev_metar = metars[aerodrome].previous
             const obs = new Date(`${metar.time}`)
             const wind = metar.wind_dir !== null ? z3(metar.wind_dir) : "VRB"
             const wind_gust = metar.wind_gust ? `G${z2(metar.wind_gust)}` : ""
@@ -154,7 +155,10 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                 <AtisRow>
                   <Text>
                     <Text variant="label">Temp/Dew:</Text>{" "}
-                    {z2(Math.round(metar.temp))}/{z2(Math.round(metar.dewpt))}
+                    {z2(Math.round(metar.temp))}
+                    {deltaArrow(metar.temp, prev_metar?.temp)}/
+                    {z2(Math.round(metar.dewpt))}
+                    {deltaArrow(metar.dewpt, prev_metar?.dewpt)}
                   </Text>
                   <Box>
                     <Text>
@@ -176,6 +180,10 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                       }}
                     >
                       {metar.qnh.toFixed(0)}
+                      {deltaArrow(
+                        metar.qnh.toFixed(0),
+                        prev_metar?.qnh.toFixed(0),
+                      )}
                     </Text>
                     /{hpaToInhg(metar.qnh).toFixed(2)}
                   </Text>

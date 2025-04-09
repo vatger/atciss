@@ -24,7 +24,7 @@ const WindBox = ({ id }: { id: number }) => {
   const aerodrome = useAppSelector(selectActiveAerodrome)
   usePollAtisByIcaoCodes([aerodrome])
   const runway = useAppSelector((store) => selectRunwayDirection(store, id))
-  const metar = useAppSelector((store) => selectMetar(store, aerodrome))
+  const metar = useAppSelector((store) => selectMetar(store, aerodrome)).current
 
   const angle_rad =
     metar &&
@@ -200,7 +200,7 @@ export const Wind = () => {
             </InfoBox>
           )}
         </Flex>
-        <InfoBox>{metar && xmc(metar)}</InfoBox>
+        <InfoBox>{metar?.current && xmc(metar.current)}</InfoBox>
       </Flex>
       <WindBox id={1} />
     </Grid>

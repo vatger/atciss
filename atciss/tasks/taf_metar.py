@@ -7,7 +7,9 @@ from fastapi import Depends
 from loguru import logger
 
 from atciss.app.utils import get_aiohttp_client
+from atciss.app.utils.metar import fetch_raw_metar
 from atciss.app.utils.redis import Redis, get_redis
+from atciss.app.utils.taf import fetch_taf
 from atciss.tkq import broker
 
 
@@ -29,6 +31,34 @@ async def fetch_taf_metar(
 
         async with redis.pipeline() as pipe:
             for c in csv_data:
-                if len(c) >= 2:
-                    pipe.set(f"{taf_metar}:{c[1]}", c[0])
-            await pipe.execute()
+                try:
+                    if len(c) < 2 or c[0] == "raw_text":
+                        continue
+
+                    prev_value = (
+                        await fetch_raw_metar(c[1], redis)
+                        if taf_metar == "metar"
+                        else await fetch_taf(c[1], redis)
+                    )
+                    if prev_value is not None:
+                        if taf_metar == "metar":
+                            prev_metar_ts = int(prev_value.split(" ")[1][:-1])
+                            new_metar_ts = int(c[0].split(" ")[1][:-1])
+
+                            # Only replace newer METARs
+                            if prev_metar_ts > new_metar_ts:
+                                continue
+
+                            if prev_metar_ts != new_metar_ts:
+                                _ = pipe.set(f"{taf_metar}-prev:{c[1]}", prev_value)
+                        else:
+                            if prev_value != c[0]:
+                                _ = pipe.set(f"{taf_metar}-prev:{c[1]}", prev_value)
+                    else:
+                        # Initialize with old METAR/TAF if nothing found
+                        _ = pipe.set(f"{taf_metar}-prev:{c[1]}", c[0])
+
+                    _ = pipe.set(f"{taf_metar}:{c[1]}", c[0])
+                except ValueError as e:
+                    logger.warning(f"{taf_metar} parsing failed: {e}")
+            _ = await pipe.execute()

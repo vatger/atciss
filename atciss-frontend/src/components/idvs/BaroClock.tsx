@@ -16,7 +16,9 @@ export const BaroClock = () => {
   usePollMetarByIcaoCodes([aerodrome])
   api.useAerodromesByIcaosQuery([aerodrome])
 
-  const metar = useAppSelector((store) => selectMetar(store, aerodrome))
+  const metar = useAppSelector((store) =>
+    selectMetar(store, aerodrome),
+  )?.current
   const ad = useAppSelector((store) => selectDfsAd(store, aerodrome))
   const elevation = ad?.elevation
   const qfe =

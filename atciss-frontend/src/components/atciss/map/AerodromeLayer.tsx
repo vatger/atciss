@@ -45,7 +45,7 @@ const AerodromeMarker = ({ icao }: { icao: string }) => {
   const metar = useAppSelector((store) => selectMetar(store, icao))
   const taf = useAppSelector((store) => selectTaf(store, icao))
   const atis = useAppSelector((store) => selectAtis(store, icao))
-  const xmcState = metar ? xmc(metar) : null
+  const xmcState = metar?.current ? xmc(metar.current) : null
   const coord = useAppSelector((store) => selectAirportCoordinates(store, icao))
 
   return (
@@ -98,10 +98,10 @@ const AerodromeMarker = ({ icao }: { icao: string }) => {
                   {topdownPosition.frequency})
                 </>
               )}
-          {metar?.raw && (
+          {metar?.current?.raw && (
             <Box sx={{ fontSize: "1", mt: 1 }}>
               <Text variant="label">METAR</Text>
-              <pre>{metar?.raw?.replace(/.*?[A-Z]{4}\s/, "")}</pre>
+              <pre>{metar?.current?.raw?.replace(/.*?[A-Z]{4}\s/, "")}</pre>
             </Box>
           )}
           {taf && (

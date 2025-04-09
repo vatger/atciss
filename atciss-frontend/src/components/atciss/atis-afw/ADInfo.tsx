@@ -1,5 +1,5 @@
 import { useAppSelector } from "app/hooks"
-import { z2, z3 } from "app/utils"
+import { deltaArrow, z2, z3 } from "app/utils"
 import { selectPageAerodromes } from "services/atisAfwSlice"
 import { usePollAtisByIcaoCodes } from "services/atisApi"
 import { usePollMetarByIcaoCodes } from "services/metarApi"
@@ -8,9 +8,11 @@ import { Box, Flex, Grid, Text, ThemeUIStyleObject } from "theme-ui"
 const Aerodrome = ({ icao }: { icao: string }) => {
   const { data: metarData } = usePollMetarByIcaoCodes([icao])
   const { data: atisData } = usePollAtisByIcaoCodes([icao])
-  const metar = metarData?.[icao]
+  const prev_metar = metarData?.[icao]?.previous
+  const metar = metarData?.[icao]?.current
   const atis = atisData?.[icao]
   const qnh = metar?.qnh?.toFixed() ?? ""
+  const qnh_delta = deltaArrow(qnh, prev_metar?.qnh)
   const wind = metar?.wind_dir ? z3(metar.wind_dir) : "VRB"
   const wind_gust = metar?.wind_gust ? `G${z2(metar.wind_gust)}` : ""
   const wind_from_to =
@@ -40,6 +42,7 @@ const Aerodrome = ({ icao }: { icao: string }) => {
         <>
           <Box>
             <Text variant="label">QNH:</Text> {qnh}
+            {qnh_delta}
           </Box>
           <Box sx={{ gridColumn: "span 2" }}>
             <Text variant="label">Wind:</Text> {wind}

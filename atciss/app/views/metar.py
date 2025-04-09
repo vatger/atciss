@@ -62,6 +62,13 @@ class CloudModel:
         )
 
 
+class MetarTupleModel(BaseModel):
+    """METAR current and previous combined response model."""
+
+    current: MetarModel | None
+    previous: MetarModel | None
+
+
 class MetarModel(BaseModel):
     """METAR response model."""
 

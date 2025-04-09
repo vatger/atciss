@@ -13,7 +13,7 @@ import { LoaDoc, LoaItem } from "types/loa"
 import { Notam } from "types/notam"
 import { SectorData } from "types/vatglasses"
 import { AerodromeTraffic, Atis, Controller } from "types/vatsim"
-import { Metar, Sigmet } from "types/wx"
+import { MetarTuple, Sigmet } from "types/wx"
 
 export const api = createApi({
   baseQuery: fetchWithReauth,
@@ -91,7 +91,7 @@ export const api = createApi({
         { type: "initials", id: initials.id },
       ],
     }),
-    metarsByIcaoCodes: builder.query<Record<string, Metar>, string[]>({
+    metarsByIcaoCodes: builder.query<Record<string, MetarTuple>, string[]>({
       query: (icaoList) => ({
         url: "metar",
         params: icaoList.map((icao) => ["icao", icao]),
