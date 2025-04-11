@@ -96,6 +96,9 @@
                 pycron = pyprev.pycron.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
                 });
+                pydantic_core = pyprev.pydantic_core.overridePythonAttrs (old: {
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.hatch-vcs ];
+                });
                 pydantic-xml = pyprev.pydantic-xml.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.poetry-core ];
                 });
@@ -125,6 +128,9 @@
                 });
                 types-xmltodict = pyprev.types-xmltodict.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.setuptools ];
+                });
+                typing-inspection = pyprev.typing-inspection.overridePythonAttrs (old: {
+                  nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.hatch-vcs ];
                 });
                 urllib3 = pyprev.urllib3.overridePythonAttrs (old: {
                   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pyfinal.hatch-vcs ];
