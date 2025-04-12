@@ -34,6 +34,23 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           filteredAerodromes.map((aerodrome) => {
             const metar = metars[aerodrome].current
             const prev_metar = metars[aerodrome].previous
+            if (metar === null) {
+              return (
+                <Flex
+                  sx={{
+                    padding: 1,
+                    flexDirection: "column",
+                    flex: 1,
+                    fontSize: 2,
+                    fontFamily: "monospace",
+                    backgroundColor: "background",
+                  }}
+                  key={aerodrome}
+                >
+                  No METAR found for {aerodrome}
+                </Flex>
+              )
+            }
             const obs = new Date(`${metar.time}`)
             const wind = metar.wind_dir !== null ? z3(metar.wind_dir) : "VRB"
             const wind_gust = metar.wind_gust ? `G${z2(metar.wind_gust)}` : ""
