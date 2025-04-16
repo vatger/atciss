@@ -15,7 +15,7 @@ asgi-correlation-id = "^4.3.4"
 asgiref = "^3.8.1"
 astral = "^3.2"
 asyncpg = "^0.30.0"
-beautifulsoup4 = "^4.12.3"
+beautifulsoup4 = "^4.13.4"
 click = "^8.1"
 fastapi = { version = "^0.115.12", extras = ["all"] }
 geoalchemy2 = "^0.17.1"
