@@ -36,7 +36,7 @@
                 "@types/luxon": "^3.6.2",
                 "@types/react": "^19",
                 "@types/react-dom": "^19",
-                "@vitejs/plugin-react": "^4.3.3",
+                "@vitejs/plugin-react": "^4.4.0",
                 "eslint": "^9.24.0",
                 "eslint-config-prettier": "^10.1.2",
                 "eslint-plugin-prettier": "^5.2.6",
