@@ -28,30 +28,24 @@ export const SPLIT_PRESETS: Record<
   EDMM: {
     "ZUG-HOF": { positions: ["ed/ZUG", "ed/HOF", "ed/DMNH"] },
     "RDG-GER": { positions: ["ed/RDG", "ed/GER", "ed/DMNH"] },
-    "HOF-GER": { positions: ["ed/HOF", "ed/GER"] },
+    "BBG-GER": { positions: ["ed/BBG", "ed/GER"] },
+    "HOF-HAL": { positions: ["ed/HOF", "ed/HAL"] },
     "ZUG-ALB": { positions: ["ed/ZUG", "ed/ALB", "ed/DMNH"] },
-    "TRU-ALB": { positions: ["ed/TRU", "ed/ALB", "ed/DMNH"] },
-    "ZUG-WLD": { positions: ["ed/ZUG", "ed/WLD", "ed/DMNH"] },
-    "TRU-WLD": { positions: ["ed/TRU", "ed/WLD", "ed/DMNH"] },
+    "STA-WLD": { positions: ["ed/STA", "ed/WLD", "ed/DMNH"] },
     "ALB-EGG": { positions: ["ed/ALB", "ed/EGG"] },
+    "NDG-ALB": { positions: ["ed/NDG", "ed/ALB"] },
     "WLD-EGG": { positions: ["ed/WLD", "ed/EGG"] },
-    "ZUG-NDG-ALB": {
-      positions: ["ed/ZUG", "ed/NDG", "ed/ALB", "ed/DMNH"],
+    "STA-NDG-ALB": {
+      positions: ["ed/STA", "ed/NDG", "ed/ALB", "ed/DMNH"],
     },
-    "TRU-NDG-ALB": {
-      positions: ["ed/TRU", "ed/NDG", "ed/ALB", "ed/DMNH"],
-    },
-    "ZUG-WLD-ALB": {
-      positions: ["ed/ZUG", "ed/WLD", "ed/ALB", "ed/DMNH"],
-    },
-    "ZUG-WLD-EGG": {
+    "STA-WLD-EGG": {
       positions: ["ed/ZUG", "ed/WLD", "ed/EGG", "ed/DMNH"],
     },
-    "TRU-WLD-EGG": {
-      positions: ["ed/TRU", "ed/WLD", "ed/EGG", "ed/DMNH"],
+    "STA-TEG-NDG-ALB": {
+      positions: ["ed/STA", "ed/TEG", "ed/NDG", "ed/ALB", "ed/DMNH"],
     },
-    "ZUG-TEG-WLD-ALB": {
-      positions: ["ed/ZUG", "ed/TEG", "ed/WLD", "ed/ALB", "ed/DMNH"],
+    "FUE-TEG-NDG-ALB": {
+      positions: ["ed/FUE", "ed/TEG", "ed/NDG", "ed/ALB", "ed/DMNH"],
     },
   },
   EDGG: {
@@ -78,20 +72,26 @@ export const SPLIT_PRESETS: Record<
     "MRZ-BOR-FLG": { positions: ["ed/MRZ", "ed/BOR", "ed/FLG"] },
   },
   EDUU: {
-    "ERL-HVL-WUR": { level: 320, positions: ["ed/SAL", "ed/HVL", "ed/WUR"] },
+    "CHI-SAL-HVL-WUR": {
+      level: 320,
+      positions: ["ed/CHI", "ed/SAL", "ed/HVL", "ed/WUR"],
+    },
     "OSE-HVL-SAL": { level: 320, positions: ["ed/OSE", "ed/HVL", "ed/SAL"] },
     "OSE-HVL": { level: 320, positions: ["ed/OSE", "ed/HVL"] },
-    "ERL-DON": { level: 320, positions: ["ed/ERL", "ed/DON"] },
-    "ALP-DON": { level: 320, positions: ["ed/ALP", "ed/DON"] },
+    "CHI-ERL": { level: 320, positions: ["ed/CHI", "ed/ERL"] },
     "ALP-DON-SAL": { level: 320, positions: ["ed/ALP", "ed/DON", "ed/SAL"] },
+    "ALP-ISA-ERL-SPE": {
+      level: 320,
+      positions: ["ed/ALP", "ed/ISA", "ed/ERL", "ed/SPE"],
+    },
     "NTM-SLN": { level: 320, positions: ["ed/NTM", "ed/SLN"] },
   },
   EDYY: {
-    "JEV-CEL": { level: 320, positions: ["ed/JEV", "ed/CEL"] },
-    "JEV-SOL": { level: 320, positions: ["ed/JEV", "ed/SOL"] },
-    "JEV-HOL": { level: 320, positions: ["ed/JEV", "ed/HOL"] },
-    "CEL-SOL": { level: 320, positions: ["ed/CEL", "ed/SOL"] },
-    "RHR-MNS": { level: 320, positions: ["ed/RHR", "ed/MNS"] },
+    "JL-CL": { level: 320, positions: ["ed/JL", "ed/CL"] },
+    "JL-SL": { level: 320, positions: ["ed/JL", "ed/SL"] },
+    "JL-HL": { level: 320, positions: ["ed/JL", "ed/HL"] },
+    "CL-SL": { level: 320, positions: ["ed/CL", "ed/SL"] },
+    "RL-ML": { level: 320, positions: ["ed/RL", "ed/ML"] },
   },
 }
 
@@ -175,7 +175,7 @@ export const FIR_SETTINGS: Record<string, FIR> = {
           "ed/FRK",
         ],
         statusSectors: [
-          ["ed/ISA", "ed/DON", "ed/ALP", "ed/CHI"],
+          ["ed/ISA1", "ed/DON1", "ed/ALP1", "ed/CHI1"],
           ["ed/ALB", "ed/RDG", "ed/EGG", "ed/NDG", "ed/WLD", "ed/SWA"],
           ["ed/DMNH", "ed/DMNL", "ed/FUE", "ed/STA", "ed/TEG", "ed/TRU"],
           ["ed/HOF", "ed/BBG", "ed/FRK"],
@@ -221,7 +221,7 @@ export const FIR_SETTINGS: Record<string, FIR> = {
           "ed/TRU",
         ],
         statusSectors: [
-          ["ed/ALP", "ed/CHI", "ed/ISA", "ed/DON"],
+          ["ed/ALP1", "ed/CHI1", "ed/ISA1", "ed/DON1"],
           ["ed/FUE", "ed/STA", "ed/TRU", "ed/NDG", "ed/ALB", "ed/EGG"],
           ["ed/ZUG", "ed/TEG", "ed/ILR", "ed/SWA", "ed/DMSH", "ed/DMSL"],
         ],
@@ -261,9 +261,9 @@ export const FIR_SETTINGS: Record<string, FIR> = {
           "ed/RDG",
         ],
         statusSectors: [
-          ["ed/SOL", "ed/DON", "ed/ERL", "ed/SAL", "ed/SPE", "ed/HVL"],
-          ["ed/WUR", "ed/HRZ", "ed/HOF", "ed/HAL", "ed/MEI", "ed/BOR"],
-          ["ed/FUL", "ed/RDG", "ed/BBG", "ed/GER", "ed/SAS", "ed/FLG"],
+          ["ed/SL", "ed/DON1", "ed/ERL1", "ed/SAL1", "ed/SPE1", "ed/HVL1"],
+          ["ed/WUR1", "ed/HRZ", "ed/HOF", "ed/HAL", "ed/MEI", "ed/BOR"],
+          ["ed/FUL1", "ed/RDG", "ed/BBG", "ed/GER", "ed/SAS", "ed/FLG"],
           ["ed/GED", "ed/ALB", "ed/FRK", "ed/TRN", "ed/TRS", "ed/DBAS"],
           // LKAA, EPWW
         ],
@@ -292,9 +292,9 @@ export const FIR_SETTINGS: Record<string, FIR> = {
           "ed/RDG",
         ],
         statusSectors: [
-          ["ed/DON", "ed/ERL", "ed/SAL", "ed/SPE", "ed/HVL"],
-          ["ed/WUR", "ed/ALB", "ed/HOF", "ed/HAL", "ed/MEI", "ed/BOR"],
-          ["ed/FUL", "ed/RDG", "ed/BBG", "ed/GER", "ed/SAS", "ed/FLG"],
+          ["ed/DON1", "ed/ERL1", "ed/SAL1", "ed/SPE1", "ed/HVL1"],
+          ["ed/WUR1", "ed/ALB", "ed/HOF", "ed/HAL", "ed/MEI", "ed/BOR"],
+          ["ed/FUL1", "ed/RDG", "ed/BBG", "ed/GER", "ed/SAS", "ed/FLG"],
           ["ed/GED", "ed/SWA", "ed/FRK", "ed/TRN", "ed/TRS", "ed/DBAS"],
           // LKAA, EPWW
         ],
@@ -323,9 +323,9 @@ export const FIR_SETTINGS: Record<string, FIR> = {
           "ed/FRK",
         ],
         statusSectors: [
-          ["ed/SOL", "ed/ERL", "ed/SAL", "ed/SPE", "ed/HVL"],
+          ["ed/SOL1", "ed/ERL1", "ed/SAL1", "ed/SPE1", "ed/HVL1"],
           ["ed/HRZ", "ed/HOF", "ed/HAL", "ed/MEI", "ed/BOR"],
-          ["ed/FUL", "ed/BBG", "ed/GER", "ed/SAS", "ed/FLG"],
+          ["ed/FUL1", "ed/BBG", "ed/GER", "ed/SAS", "ed/FLG"],
           ["ed/GED", "ed/FRK", "ed/TRN", "ed/TRS", "ed/DBAS"],
           // LKAA, EPWW
         ],
@@ -447,7 +447,7 @@ export const FIR_SETTINGS: Record<string, FIR> = {
           ["ed/PADH", "ed/PADL", "ed/HMM"],
           ["ed/DLA", "ed/BOT", "ed/DLD"],
           ["ed/DKA", "ed/NOR", "ed/TAU", "ed/SIG", "ed/GIN"],
-          ["ed/RHR", "ed/MNS"],
+          ["ed/RL", "ed/ML"],
         ],
         majorAerodromes: ["EDDK", "EDDL"],
         aerodromes: ["EDDG", "EDLW", "EDLP", "EDLN", "ETNN", "ETNG"],
@@ -470,7 +470,7 @@ export const FIR_SETTINGS: Record<string, FIR> = {
           ["ed/DLA", "ed/BOT", "ed/DLD"],
           ["ed/DKA", "ed/NOR", "ed/TAU", "ed/SIG"],
           ["ed/PADH", "ed/PADL", "ed/HMM"],
-          ["ed/RHR", "ed/MNS"],
+          ["ed/RL", "ed/ML"],
         ],
         majorAerodromes: ["EDDL", "EDLV"],
         aerodromes: ["EDDK", "EDDG", "EDLW", "EDLP", "EDLN", "ETNN", "ETNG"],
@@ -581,7 +581,7 @@ export const FIR_SETTINGS: Record<string, FIR> = {
         statusSectors: [
           ["ed/HAM", "ed/HEI", "ed/ALR", "ed/EID"],
           ["ed/FRI", "ed/EMS", "ed/HRZ", "ed/HAN", "ed/MAR", "ed/MRZ"],
-          ["ed/JL", "ed/HL", "ed/ML", "ed/CL", "ed/OSE", "ed/HVL"],
+          ["ed/JL", "ed/HL", "ed/ML", "ed/CL", "ed/OSE1", "ed/HVL1"],
         ],
         majorAerodromes: ["EDDH", "EDDW"],
         aerodromes: ["EDHI", "EDHL", "EDXW", "ETMN", "ETNH", "ETNS", "ETNT"],
@@ -627,7 +627,7 @@ export const FIR_SETTINGS: Record<string, FIR> = {
         statusSectors: [
           ["ed/BOR", "ed/FLG", "ed/MAR", "ed/MRZ", "ed/HVL1", "ed/OSE1"],
           ["ed/DBAN", "ed/DBAS", "ed/DBDN", "ed/DBDS", "ed/HEI", "ed/HRZ"],
-          ["ed/GER", "ed/HAL", "ed/MEI", "ed/SPE", "ed/SAL", "ed/TRN"],
+          ["ed/GER", "ed/HAL", "ed/MEI", "ed/SPE1", "ed/SAL1", "ed/TRN"],
           ["ed/SAS", "ed/HAM", "ed/HAN", "ed/HL", "ed/SL", "ed/CL"],
         ],
         majorAerodromes: ["EDDB"],
@@ -686,14 +686,14 @@ export const FIR_SETTINGS: Record<string, FIR> = {
           "ed/PADL",
           "ed/HAM",
           "ed/TRN",
-          "ed/SAL",
-          "ed/RHR",
+          "ed/SAL1",
+          "ed/RL",
         ],
         statusSectors: [
           ["ed/EMS", "ed/HRZ", "ed/HAN"],
           ["ed/HAM", "ed/FRI", "ed/HEI", "ed/ALR", "ed/MAR", "ed/BOR"],
           ["ed/SL", "ed/CL", "ed/ML", "ed/JL", "ed/HL", "ed/RL"],
-          ["ed/HAL", "ed/TRN", "ed/SAL", "ed/FFM", "ed/FUL", "ed/HVL"],
+          ["ed/HAL", "ed/TRN", "ed/SAL1", "ed/FFM1", "ed/FUL1", "ed/HVL1"],
           ["ed/PADL", "ed/PADH", "ed/HMM", "ed/GIN", "ed/GED", "ed/HEF"],
         ],
         majorAerodromes: ["EDDV"],
