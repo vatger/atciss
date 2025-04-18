@@ -41,8 +41,8 @@ export const SPLIT_PRESETS: Record<
     "STA-WLD-EGG": {
       positions: ["ed/ZUG", "ed/WLD", "ed/EGG", "ed/DMNH"],
     },
-    "STA-TEG-NDG-ALB": {
-      positions: ["ed/STA", "ed/TEG", "ed/NDG", "ed/ALB", "ed/DMNH"],
+    "FUE-STA-NDG-ALB": {
+      positions: ["ed/FUE", "ed/STA", "ed/NDG", "ed/ALB", "ed/DMNH"],
     },
     "FUE-TEG-NDG-ALB": {
       positions: ["ed/FUE", "ed/TEG", "ed/NDG", "ed/ALB", "ed/DMNH"],
@@ -79,7 +79,7 @@ export const SPLIT_PRESETS: Record<
     "OSE-HVL-SAL": { level: 320, positions: ["ed/OSE", "ed/HVL", "ed/SAL"] },
     "OSE-HVL": { level: 320, positions: ["ed/OSE", "ed/HVL"] },
     "CHI-ERL": { level: 320, positions: ["ed/CHI", "ed/ERL"] },
-    "ALP-DON-SAL": { level: 320, positions: ["ed/ALP", "ed/DON", "ed/SAL"] },
+    "ISA-DON-SAL": { level: 320, positions: ["ed/ISA", "ed/DON", "ed/SAL"] },
     "ALP-ISA-ERL-SPE": {
       level: 320,
       positions: ["ed/ALP", "ed/ISA", "ed/ERL", "ed/SPE"],
