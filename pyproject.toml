@@ -19,7 +19,7 @@ beautifulsoup4 = "^4.13.4"
 click = "^8.1"
 fastapi = { version = "^0.115.12", extras = ["all"] }
 geoalchemy2 = "^0.17.1"
-greenlet = "^3.1.1"
+greenlet = "^3.2.1"
 haversine = "^2.9.0"
 lark = "^1"
 loa = { git = "https://github.com/vatger-nav/loa.git", rev = "a4ba3ec01c496522e794b379e7181e3b813ebf7c" }
