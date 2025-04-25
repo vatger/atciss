@@ -28,7 +28,7 @@ lxml = "^5.3.2"
 metar = { git = "https://github.com/globin/python-metar", rev = "35efaa6f76d00bd53b9e29bb0f87fbc3c80d8af2" }
 prometheus-fastapi-instrumentator = "^7.1.0"
 pydantic = "~2.11"
-pydantic-settings = "^2.8.1"
+pydantic-settings = "^2.9.1"
 pydantic-xml = { extras = ["lxml"], version = "^2.16" }
 pynotam = { git = "https://github.com/globin/PyNotam", rev = "84b741863d09aaa616e6f378a2e6e5eab8df706f" }
 python-dateutil = "^2.9.0"
