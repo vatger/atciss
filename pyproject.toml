@@ -53,7 +53,7 @@ jinja2 = "^3.1.5"
 
 [tool.poetry.group.dev.dependencies]
 pylint = "^3.3"
-types-beautifulsoup4 = "^4.12.0.20241020"
+types-beautifulsoup4 = "^4.12.0.20250516"
 types-python-jose = "^3.4.0.20250224"
 mypy = "^1.14.0"
 pyright = "1.1.400"
