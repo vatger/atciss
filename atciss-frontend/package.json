@@ -42,7 +42,7 @@
                 "eslint-plugin-prettier": "^5.5.0",
                 "eslint-plugin-react": "^7.37.5",
                 "jsdom": "^26.1.0",
-                "prettier": "^3.5.3",
+                "prettier": "^3.6.0",
                 "prettier-config-nick": "^1.0.2",
                 "sass": "^1.89.2",
                 "typescript": "^5.8.3",
