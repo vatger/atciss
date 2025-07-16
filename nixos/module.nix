@@ -20,7 +20,7 @@ in
       environmentFile = lib.mkOption { type = lib.types.path; };
       debug = lib.mkOption {
         type = lib.types.bool;
-        default = true;
+        default = false;
       };
     };
   };

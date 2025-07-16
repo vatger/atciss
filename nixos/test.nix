@@ -1,4 +1,7 @@
-{ inputs, pkgs }:
+{
+  inputs,
+  pkgs,
+}:
 let
   testing = import "${inputs.nixpkgs}/nixos/lib/testing-python.nix" {
     inherit pkgs;
