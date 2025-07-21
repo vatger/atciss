@@ -39,7 +39,7 @@
                 "@vitejs/plugin-react": "^4.7.0",
                 "eslint": "^9.31.0",
                 "eslint-config-prettier": "^10.1.8",
-                "eslint-plugin-prettier": "^5.5.1",
+                "eslint-plugin-prettier": "^5.5.3",
                 "eslint-plugin-react": "^7.37.5",
                 "jsdom": "^26.1.0",
                 "prettier": "^3.6.2",
