@@ -19,8 +19,8 @@ dependencies = [
         "asyncpg>=0.30.0,<0.31",
         "beautifulsoup4>=4.13.4,<5",
         "click>=8.2,<9",
-        "fastapi[all]>=0.115.12,<0.116",
-        "geoalchemy2>=0.17.1,<0.18",
+        "fastapi[all]>=0.116,<0.117",
+        "geoalchemy2>=0.18,<0.19",
         "greenlet>=3.2.1,<4",
         "haversine>=2.9.0,<3",
         "jinja2>=3.1.5,<4",
@@ -34,7 +34,7 @@ dependencies = [
         "pydantic>=2.11,<3",
         "python-dateutil>=2.9.0,<3",
         "python-jose>=3.4.0,<4",
-        "redis>=5,<6",
+        "redis>=6,<7",
         "regex==2024.11.6",
         "shapely>=2.0.6,<3",
         "sqlalchemy[asyncio]>=2.0.40,<3",
@@ -42,9 +42,9 @@ dependencies = [
         "taskiq-fastapi>=0.3.5,<0.4",
         "taskiq-redis>=1,<2",
         "taskiq>=0.11.18,<0.12",
-        "uvicorn[standard]>=0.34,<0.35",
+        "uvicorn[standard]>=0.35,<0.36",
         "vatsim>=0.2.0",
-        "watchfiles>=0.24,<0.25",
+        "watchfiles>=1,<2",
         "xmltodict>=0.14.2",
 
         "eaup",
@@ -69,7 +69,7 @@ dev = [
         "types-python-jose>=3.4.0.20250224,<4",
         "mypy>=1.14.0,<2",
         "pyright>=1.1.400,<2",
-        "ruff>=0.8.0,<0.9",
+        "ruff>=0.12.0,<0.13",
         "types-xmltodict>=0.14.0.20241009,<0.15",
         "pyrasite>=2.0,<3",
         "taskiq[reload]>=0.11.18,<0.12",
@@ -111,6 +111,7 @@ disable = [
         "C0114", # missing-module-docstring
         "C0115", # missing-class-docstring
         "C0116", # missing-function-docstring
+        "C0411", # wrong-import-order (buggy, ruff is better)
         "W0511", # fixme
         "C0103", # invalid-name
 ]
