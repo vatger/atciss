@@ -90,6 +90,8 @@ class MetarModel(BaseModel):
     qnh: float | None
     rvr: list[RvrModel]
     weather: list[str]
+    weather_bits: list[tuple[str, str | None, str, str | None, str | None]]
+    recent_weather_bits: list[tuple[str, str | None, str, str | None, str | None]]
     weather_text: str
     recent_weather: list[str]
     recent_weather_text: str
@@ -143,8 +145,10 @@ class MetarModel(BaseModel):
             "qnh": parsed.press.value("HPA") if parsed.press is not None else None,
             "rvr": [RvrModel.from_tuple(rvr) for rvr in parsed.runway],
             "weather": parsed.weather,
+            "weather_bits": parsed.weather,
             "weather_text": parsed.present_weather(),
             "recent_weather": parsed.recent,
+            "recent_weather_bits": parsed.recent,
             "recent_weather_text": parsed.recent_weather(),
             "clouds": [CloudModel.from_tuple(clouds) for clouds in parsed.sky],
             "trend": parsed.trend(),

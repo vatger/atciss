@@ -1,36 +1,31 @@
-import { useAppDispatch, useAppSelector } from "app/hooks"
+import { useAppSelector } from "app/hooks"
 import { z3 } from "app/utils"
-import { XmSelect } from "components/atciss/XmSelect"
 import { InfoBox } from "components/idvs/InfoBox"
-import {
-  selectAerodromesWithPrefixes,
-  selectIdvsAerodromes,
-} from "services/aerodrome"
 import { api } from "services/api"
 import { selectAtis, usePollAtisByIcaoCodes } from "services/atisApi"
 import {
   selectActiveAerodrome,
   selectRunwayDirection,
-  setActiveAerodrome,
 } from "services/idvsSlice"
 import { selectMetar, usePollMetarByIcaoCodes, xmc } from "services/metarApi"
 import { Box, Button, Flex, Grid, Text } from "theme-ui"
 import { AnalogWindRose } from "./AnalogWindRose"
 import { AD_SETUP } from "app/config"
-
-const AD_PREFIXES = ["ED", "ET"]
+import { AerodromeSelect } from "./AerodromeSelect"
 
 const WindBox = ({ id }: { id: number }) => {
   const aerodrome = useAppSelector(selectActiveAerodrome)
   usePollAtisByIcaoCodes([aerodrome])
   const runway = useAppSelector((store) => selectRunwayDirection(store, id))
-  const metar = useAppSelector((store) => selectMetar(store, aerodrome)).current
+  const metar = useAppSelector((store) =>
+    selectMetar(store, aerodrome),
+  )?.current
 
   const angle_rad =
     metar &&
-    runway &&
-    metar.wind_dir !== null &&
-    runway.magnetic_bearing !== null
+      runway &&
+      metar.wind_dir !== null &&
+      runway.magnetic_bearing !== null
       ? ((metar.wind_dir - runway.magnetic_bearing) * Math.PI) / 180
       : null
   const cross =
@@ -127,31 +122,6 @@ const WindBox = ({ id }: { id: number }) => {
         </Flex>
       </Flex>
     )
-  )
-}
-
-const AerodromeSelect = () => {
-  const aerodrome = useAppSelector(selectActiveAerodrome)
-  api.useAerodromesByPrefixesQuery(AD_PREFIXES)
-  const icaos = Object.keys(
-    useAppSelector((store) => selectAerodromesWithPrefixes(store, AD_PREFIXES)),
-  )
-  usePollMetarByIcaoCodes(icaos, { skip: !icaos.length })
-  const metarIcaos = useAppSelector((store) =>
-    selectIdvsAerodromes(store, AD_PREFIXES),
-  )
-  const dispatch = useAppDispatch()
-
-  return (
-    <XmSelect
-      onChange={(e) => dispatch(setActiveAerodrome(e.target.value))}
-      value={aerodrome}
-      sx={{ fontSize: 5, textAlign: "center" }}
-    >
-      {metarIcaos.map((ad) => (
-        <option key={ad}>{ad}</option>
-      ))}
-    </XmSelect>
   )
 }
 

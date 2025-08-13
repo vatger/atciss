@@ -1,0 +1,19 @@
+{{ airport_name }} INFORMATION {{ atis_letter }} AUTOMATIC MET REPORT TIME {{ metar.time }} ..
+EXPECT VECTORS FOR ILS APPROACH ..
+RUNWAY IN USE 28 ..
+{% if lvp %}LOW VIS PROCEDURES IN OPERATION, CAT II AND III AVBL ..{% endif %}
+{% if post_approach_rmk %}{{ post_approach_rmk }} ..{% endif %}
+TRL {{ raw_metar.tl }} ..
+{% if post_trl_rmk %}{{ post_trl_rmk }} ..{% endif %}
+WIND {{ metar.wind }} ..
+VISIBILITY {{ metar.visibility }} ..
+{% if metar.rvr %}{{ metar.rvr }} ..{% endif %}
+{% if metar.weather %}PRESENT WEATHER {{ metar.weather }} ..{% endif %}
+{{ metar.clouds }} ..
+TEMP {{ metar.temp }} DP {{ metar.dewpt }} ..
+QNH {{ metar.qnh }} ..
+{% if metar.recent %}RECENT {{ metar.recent }} ..{% endif %}
+{% if metar.trend %}TREND {{ metar.trend }} ..{% endif %}
+{% if dep_freq %}WHEN AIRBORNE {{ dep_freq | autohandoff('MUENCHEN RADAR') }} ..{% endif %}
+{% if end_rmk %}{{ end_rmk }} ..{% endif %}
+{{ airport_name }} INFORMATION {{ atis_letter }} OUT ..

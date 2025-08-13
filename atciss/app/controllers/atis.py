@@ -1,19 +1,124 @@
+import re
 from collections.abc import Sequence
 from typing import Annotated, cast
 
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import ORJSONResponse, PlainTextResponse
+from jinja2 import Environment, FileSystemLoader
 from loguru import logger
 from pydantic import TypeAdapter
 from vatsim.types import Atis
 
 from atciss.app.controllers.metar import fetch_metar
 from atciss.app.utils.redis import Redis, get_redis
-from atciss.app.views.metar import AirportIcao
+from atciss.app.views.atis import VerbalizedMetarModel, autohandoff
+from atciss.app.views.metar import AirportIcao, MetarModel
 from atciss.app.views.sector import Airport
 from atciss.config import settings
 
 router = APIRouter()
+
+jinja_env = Environment(loader=FileSystemLoader("atis-templates"))
+jinja_env.filters["autohandoff"] = autohandoff
+
+AD_CONFIG = {
+    "EDDM": {
+        "departure_unit": "MUENCHEN RADAR",
+        "autohandoff": False,
+        "approaches": {
+            "08L": ["ILS", "RNP", "LOC", "NDB"],
+            "08R": ["ILS", "RNP", "LOC", "NDB"],
+            "26L": ["ILS", "RNP", "LOC", "NDB"],
+            "26R": ["ILS", "RNP", "LOC", "NDB"],
+        },
+        "ops": ["PI"],
+    },
+    "EDMA": {
+        "departure_unit": "MUENCHEN RADAR",
+        "autohandoff": True,
+        "approaches": {
+            "07": ["RNP", "LOC", "NDB"],
+            "25": ["ILS", "RNP", "LOC", "NDB"],
+        },
+    },
+    "EDDN": {
+        "departure_unit": "MUENCHEN RADAR",
+        "autohandoff": True,
+        "approaches": {
+            "10": ["ILS", "RNP", "LOC", "VOR"],
+            "28": ["ILS", "RNP", "LOC Z", "LOC Y"],
+        },
+    },
+    "EDMO": {
+        "departure_unit": "MUENCHEN RADAR",
+        "autohandoff": True,
+        "approaches": {
+            "04": [],
+            "22": ["ILS", "RNP", "LOC", "NDB"],
+        },
+    },
+    "EDJA": {
+        "departure_unit": "MUENCHEN RADAR",
+        "autohandoff": True,
+        "approaches": {
+            "26": ["ILS", "RNP", "LOC", "NDB"],
+            "24": ["ILS", "RNP", "LOC", "NDB"],
+        },
+    },
+    "EDDP": {
+        "departure_unit": "MUENCHEN RADAR",
+        "autohandoff": False,
+        "approaches": {
+            "08L": ["ILS", "RNP", "LOC"],
+            "08R": ["ILS", "RNP", "LOC"],
+            "26L": ["ILS", "RNP", "LOC"],
+            "26R": ["ILS", "RNP", "LOC"],
+        },
+        "ops": ["PD", "PI"],
+    },
+    "EDDC": {
+        "departure_unit": "MUENCHEN RADAR",
+        "autohandoff": True,
+        "approaches": {
+            "04": ["ILS", "RNAVGPS", "LOC", "VOR"],
+            "22": ["ILS", "RNAVGPS", "LOC", "VOR"],
+        },
+    },
+    "EDDE": {
+        "departure_unit": "MUENCHEN RADAR",
+        "autohandoff": True,
+        "approaches": {
+            "09": ["ILS", "RNP", "LOC", "VOR"],
+            "27": ["ILS", "RNP", "LOC", "VOR"],
+        },
+    },
+    "EDQM": {
+        "departure_unit": "MUENCHEN RADAR",
+        "autohandoff": True,
+        "approaches": {
+            "08": ["RNP"],
+            "26": ["RNP"],
+        },
+    },
+    "EDNY": {
+        "departure_unit": {"119.925": "ALPS RADAR", "*": "MUENCHEN RADAR"},
+        "autohandoff": True,
+        "approaches": {
+            "06": ["ILS", "RNP"],
+            "24": ["ILS", "RNP"],
+        },
+    },
+    "ETSI": {
+        "departure_unit": "MUENCHEN RADAR",
+        "autohandoff": False,
+        "approaches": {
+            "06L": ["RNAVGNSS", "SRA"],
+            "06R": ["RNAVGNSS", "TACAN", "PAR", "SRA"],
+            "24L": ["ILS X", "LOC X", "RNAVGNSS", "TACAN", "PAR", "SRA"],
+            "24R": ["RNAVGNSS", "TACAN"],
+        },
+    },
+}
 
 
 @router.get(
@@ -37,11 +142,66 @@ async def atis_get(
     return atis
 
 
+async def get_airport_name(redis: Redis, airport: str) -> str:
+    airports: dict[str, Airport] = {}
+    for region in settings.SECTOR_REGIONS:
+        airports_json = await redis.get(f"sector:airports:{region}")
+        if airports_json is None:
+            logger.warning(f"No data for {region}")
+            continue
+
+        airports = airports | TypeAdapter(dict[str, Airport]).validate_json(airports_json)
+    return "".join(
+        {"Ä": "AE", "Ü": "UE", "Ö": "OE", "ß": "ss"}.get(c, c)
+        for c in (airports[airport].callsign.upper() if airport in airports else airport)
+    )
+
+
 @router.get(
     "/atis/generate",
     response_class=PlainTextResponse,
 )
 async def atis_generate(
+    redis: Annotated[Redis, Depends(get_redis)],
+    airport: Annotated[str, Query(alias="airport")],
+    atisCode: Annotated[str, Query(alias="info")],
+    arrivalRunwayStr: Annotated[str, Query(alias="arr")],
+    departureRunwayStr: Annotated[str, Query(alias="dep")],
+    approachType: Annotated[str, Query(alias="apptype")] = "ILS",
+    lvp: Annotated[bool, Query(alias="lvp")] = False,
+    departureFrequency: Annotated[str | None, Query(alias="depfreq")] = None,
+) -> str:
+    airport_name = await get_airport_name(redis, airport)
+    arrivalRunways = [rwy.upper() for rwy in arrivalRunwayStr.split(",")]
+    departureRunways = [rwy.upper() for rwy in departureRunwayStr.split(",")]
+
+    metar = await fetch_metar(airport, redis)
+    if metar is None:
+        return f"{airport_name} INFORMATION {atisCode} .. MET REPORT UNAVAILABLE .. {airport_name} INFORMATION {atisCode} OUT"
+
+    verbalized_metar = VerbalizedMetarModel(metar)
+
+    template = jinja_env.get_template("EDDM.jinja")
+    atis_content = template.render(
+        metar=verbalized_metar,
+        raw_metar=metar,
+        atis_letter=atisCode,
+        airport_name=airport_name,
+        arrival_runways=arrivalRunways,
+        departure_runways=departureRunways,
+        dep_freq=departureFrequency,
+        approach_type=approachType,
+        lvp=lvp,
+    )
+
+    return re.sub(r"\n{1,}", " ", atis_content).strip().upper()
+
+
+@router.get(
+    "/atis/generate_old",
+    response_class=PlainTextResponse,
+)
+async def atis_generate_old(
     redis: Annotated[Redis, Depends(get_redis)],
     arrivalRunwayStr: Annotated[str, Query(alias="arr")],
     departureRunwayStr: Annotated[str, Query(alias="dep")],

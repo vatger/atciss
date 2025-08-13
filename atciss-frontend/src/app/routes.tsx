@@ -8,6 +8,7 @@ import {
   authCallbackLoader,
 } from "app/auth"
 import { Idvs } from "app/idvs/App"
+import { Atis } from "views/idvs/Atis"
 import { createBrowserRouter } from "react-router"
 import { Admin } from "views/Admin"
 import { TrafficBoard } from "views/TrafficBoard"
@@ -106,7 +107,7 @@ const router = createBrowserRouter([
       },
       {
         path: "atis",
-        element: <>ATIS</>,
+        element: <Atis />,
       },
       {
         path: "opmet",
