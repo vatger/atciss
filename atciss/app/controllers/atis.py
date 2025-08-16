@@ -12,7 +12,7 @@ from vatsim.types import Atis
 from atciss.app.controllers.metar import fetch_metar
 from atciss.app.utils.redis import Redis, get_redis
 from atciss.app.views.atis import VerbalizedMetarModel, autohandoff
-from atciss.app.views.metar import AirportIcao, MetarModel
+from atciss.app.views.metar import AirportIcao
 from atciss.app.views.sector import Airport
 from atciss.config import settings
 
@@ -177,7 +177,8 @@ async def atis_generate(
 
     metar = await fetch_metar(airport, redis)
     if metar is None:
-        return f"{airport_name} INFORMATION {atisCode} .. MET REPORT UNAVAILABLE .. {airport_name} INFORMATION {atisCode} OUT"
+        return f"""{airport_name} INFORMATION {atisCode} ..
+        MET REPORT UNAVAILABLE .. {airport_name} INFORMATION {atisCode} OUT"""
 
     verbalized_metar = VerbalizedMetarModel(metar)
 
