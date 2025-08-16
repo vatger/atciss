@@ -43,7 +43,6 @@ dependencies = [
         "taskiq-redis>=1,<2",
         "taskiq>=0.11.18,<0.12",
         "uvicorn[standard]>=0.35,<0.36",
-        "vatsim>=0.2.0",
         "watchfiles>=1,<2",
         "xmltodict>=0.14.2",
 
@@ -51,6 +50,7 @@ dependencies = [
         "loa",
         "metar",
         "pynotam",
+        "vatsim",
 ]
 
 [project.scripts]
@@ -61,6 +61,7 @@ loa = { git = "https://github.com/vatger-nav/loa.git", rev = "a4ba3ec01c496522e7
 metar = { git = "https://github.com/globin/python-metar", rev = "35efaa6f76d00bd53b9e29bb0f87fbc3c80d8af2" }
 pynotam = { git = "https://github.com/globin/PyNotam", rev = "84b741863d09aaa616e6f378a2e6e5eab8df706f" }
 eaup = { git = "https://gitlab.com/fpletz/eaup.git", rev = "d9270df4097ca62359215cc762d41a0827d8dd06" }
+vatsim = { git = "https://github.com/fpletz/python-vatsim.git", rev = "ef56bdbc6a4348d8cbefbf6b9fe0aa98e0aed06c" }
 
 [dependency-groups]
 dev = [

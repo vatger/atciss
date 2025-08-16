@@ -249,7 +249,7 @@ requires-dist = [
     { name = "taskiq-fastapi", specifier = ">=0.3.5,<0.4" },
     { name = "taskiq-redis", specifier = ">=1,<2" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.35,<0.36" },
-    { name = "vatsim", specifier = ">=0.2.0" },
+    { name = "vatsim", git = "https://github.com/fpletz/python-vatsim.git?rev=ef56bdbc6a4348d8cbefbf6b9fe0aa98e0aed06c" },
     { name = "watchfiles", specifier = ">=1,<2" },
     { name = "xmltodict", specifier = ">=0.14.2" },
 ]
@@ -1817,15 +1817,11 @@ wheels = [
 [[package]]
 name = "vatsim"
 version = "0.2.0"
-source = { registry = "https://pypi.org/simple" }
+source = { git = "https://github.com/fpletz/python-vatsim.git?rev=ef56bdbc6a4348d8cbefbf6b9fe0aa98e0aed06c#ef56bdbc6a4348d8cbefbf6b9fe0aa98e0aed06c" }
 dependencies = [
     { name = "pydantic" },
     { name = "regex" },
     { name = "requests" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/df/e5/b252348c9114bdfef9a00370faf870e9379831108d090edf020d994965d0/vatsim-0.2.0.tar.gz", hash = "sha256:b1a6f30485fa8841e3fa4418f94bab1aa7386f09dc3d1d33a75088ab0136d777", size = 36753 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/bc/24/d1b5d673dfe34ef60bdb76d478e59d391df2eba75aa0d233a734e0f55ce8/vatsim-0.2.0-py3-none-any.whl", hash = "sha256:badb3e5122164e2cdd28069781907e4d411b68ba68d0a0f4df5f714f10470744", size = 5319 },
 ]
 
 [[package]]
