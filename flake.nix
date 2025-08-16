@@ -101,6 +101,11 @@
                         (final.resolveBuildSystem { hatchling = [ ]; })
                       ];
                     });
+                    vatsim = prev.vatsim.overrideAttrs (old: {
+                      nativeBuildInputs = old.nativeBuildInputs ++ [
+                        (final.resolveBuildSystem { hatchling = [ ]; })
+                      ];
+                    });
                     metar = prev.metar.overrideAttrs (old: {
                       nativeBuildInputs = old.nativeBuildInputs ++ [
                         (final.resolveBuildSystem { setuptools = [ ]; })
