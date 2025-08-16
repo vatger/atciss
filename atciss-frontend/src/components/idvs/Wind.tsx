@@ -23,9 +23,9 @@ const WindBox = ({ id }: { id: number }) => {
 
   const angle_rad =
     metar &&
-      runway &&
-      metar.wind_dir !== null &&
-      runway.magnetic_bearing !== null
+    runway &&
+    metar.wind_dir !== null &&
+    runway.magnetic_bearing !== null
       ? ((metar.wind_dir - runway.magnetic_bearing) * Math.PI) / 180
       : null
   const cross =
