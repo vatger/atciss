@@ -81,3 +81,26 @@ class EAUPAreas(BaseModel):
                 json.loads(a) for a in {json.dumps(area, sort_keys=True) for area in data["areas"]}
             ],
         }
+
+
+class VLARAArea(BaseModel):
+    area_id: str
+    lower: int
+    upper: int
+
+
+class VLARAReservation(BaseModel):
+    reservation_id: str
+    creator: int
+    callsigns: list[str]
+    booking_type: str
+    agency: str
+    permeability: str
+    activity_type: str
+    nbr_aircraft: int
+    priority: int
+    start: datetime
+    end: datetime
+    remarks: str
+    status: str
+    areas: list[VLARAArea]
