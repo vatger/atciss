@@ -1,5 +1,7 @@
-export const zn = (n: number) => (x: number) =>
-  (x < 0 ? "M" : "") + String(Math.abs(x)).padStart(n, "0")
+export const zn = (n: number) => (x: number | null) =>
+  x !== null
+    ? (x < 0 ? "M" : "") + String(Math.abs(x)).padStart(n, "0")
+    : "/".repeat(n)
 export const z2 = zn(2)
 export const z3 = zn(3)
 export const z4 = zn(4)

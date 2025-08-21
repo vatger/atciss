@@ -22,7 +22,7 @@ export const BaroClock = () => {
   const ad = useAppSelector((store) => selectDfsAd(store, aerodrome))
   const elevation = ad?.elevation
   const qfe =
-    elevation !== null
+    elevation !== null && metar?.qnh !== null
       ? metar?.qnh - (12.017 * (elevation / 3.28084)) / 100
       : null
 
@@ -31,19 +31,25 @@ export const BaroClock = () => {
       <Grid sx={{ gap: 3, gridAutoFlow: "column", alignItems: "baseline" }}>
         <Box sx={{ width: "3rem" }}>QNH</Box>
         <Flex>
-          <InfoBox sx={{ fontSize: 6, px: 4 }}>{metar?.qnh.toFixed(0)}</InfoBox>
+          <InfoBox sx={{ fontSize: 6, px: 4 }}>
+            {metar?.qnh?.toFixed(0) ?? "////"}
+          </InfoBox>
           <InfoBox
             sx={{ px: 3, pb: 2, display: "flex", alignItems: "flex-end" }}
           >
-            {hpaToInhg(metar?.qnh).toFixed(2)}
+            {hpaToInhg(metar?.qnh)?.toFixed(2) ?? "////"}
           </InfoBox>
         </Flex>
         {qfe && (
           <>
             <Box>QFE</Box>
             <Flex>
-              <InfoBox sx={{ px: 3 }}>{qfe.toFixed(0)}</InfoBox>
-              <InfoBox sx={{ px: 3 }}>{hpaToInhg(qfe).toFixed(2)}</InfoBox>
+              <InfoBox sx={{ px: 3 }}>
+                {elevation !== null ? (qfe?.toFixed(0) ?? "////") : ""}
+              </InfoBox>
+              <InfoBox sx={{ px: 3 }}>
+                {hpaToInhg(qfe)?.toFixed(2) ?? "////"}
+              </InfoBox>
             </Flex>
           </>
         )}

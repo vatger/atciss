@@ -26,8 +26,8 @@ export const xmc: (metar: Metar) => "VMC" | "IMC" | "LVP" = (metar) => {
       : "VMC"
 }
 
-export const hpaToInhg: (qnh: number) => number = (qnh) =>
-  qnh * 0.02952998057228486
+export const hpaToInhg: (qnh: number | null) => number | null = (qnh) =>
+  qnh ? qnh * 0.02952998057228486 : null
 
 export const usePollMetarByIcaoCodes: typeof api.useMetarsByIcaoCodesQuery = (
   icao,

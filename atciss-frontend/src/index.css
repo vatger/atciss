@@ -111,8 +111,9 @@ iframe {
 }
 
 code {
-  font-family: "Source Sans Pro", source-code-pro, Menlo, Monaco, Consolas,
-    "Courier New", monospace;
+  font-family:
+    "Source Sans Pro", source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
   font-variant-numeric: slashed-zero;
   font-variant-numeric: slashed-zero;
 }
@@ -152,8 +153,9 @@ pre {
 }
 
 .marker-label {
-  font-family: "Source Code Pro", source-code-pro, Menlo, Monaco, Consolas,
-    "Courier New", monospace;
+  font-family:
+    "Source Code Pro", source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
   font-weight: bold;
 }
 

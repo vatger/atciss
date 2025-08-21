@@ -11,7 +11,7 @@ const Aerodrome = ({ icao }: { icao: string }) => {
   const prev_metar = metarData?.[icao]?.previous
   const metar = metarData?.[icao]?.current
   const atis = atisData?.[icao]
-  const qnh = metar?.qnh?.toFixed() ?? ""
+  const qnh = metar?.qnh?.toFixed() ?? "////"
   const qnh_delta = deltaArrow(qnh, prev_metar?.qnh)
   const wind = metar?.wind_dir ? z3(metar.wind_dir) : "VRB"
   const wind_gust = metar?.wind_gust ? `G${z2(metar.wind_gust)}` : ""

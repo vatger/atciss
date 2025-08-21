@@ -60,7 +60,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                 : ""
             const elevation = ads[aerodrome].elevation
             const qfe =
-              elevation !== null
+              elevation !== null && metar.qnh !== null
                 ? metar.qnh - (12.017 * (elevation / 3.28084)) / 100
                 : null
 
@@ -171,10 +171,8 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                 </AtisRow>
                 <AtisRow>
                   <Text>
-                    <Text variant="label">Temp/Dew:</Text>{" "}
-                    {z2(Math.round(metar.temp))}
-                    {deltaArrow(metar.temp, prev_metar?.temp)}/
-                    {z2(Math.round(metar.dewpt))}
+                    <Text variant="label">Temp/Dew:</Text> {z2(metar.temp)}
+                    {deltaArrow(metar.temp, prev_metar?.temp)}/{z2(metar.dewpt)}
                     {deltaArrow(metar.dewpt, prev_metar?.dewpt)}
                   </Text>
                   <Box>
@@ -196,19 +194,20 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                         borderStyle: "solid",
                       }}
                     >
-                      {metar.qnh.toFixed(0)}
+                      {metar.qnh?.toFixed(0) ?? "////"}
                       {deltaArrow(
-                        metar.qnh.toFixed(0),
+                        metar.qnh?.toFixed(0),
                         prev_metar?.qnh.toFixed(0),
                       )}
                     </Text>
-                    /{hpaToInhg(metar.qnh).toFixed(2)}
+                    /{hpaToInhg(metar?.qnh)?.toFixed(2) ?? "////"}
                   </Text>
                   <Text>
-                    {qfe !== null && (
+                    {elevation !== null && (
                       <>
-                        <Text variant="label">QFE:</Text> {qfe.toFixed(0)}/
-                        {hpaToInhg(qfe).toFixed(2)}
+                        <Text variant="label">QFE:</Text>{" "}
+                        {qfe?.toFixed(0) ?? "////"}/
+                        {hpaToInhg(qfe)?.toFixed(2) ?? "////"}
                       </>
                     )}
                   </Text>
