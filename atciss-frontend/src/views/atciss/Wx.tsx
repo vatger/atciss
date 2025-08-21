@@ -28,7 +28,7 @@ const AerodromeWx = ({ ad }: { ad: string }) => {
   const taf = useAppSelector((store) => selectTaf(store, ad))
   const metar = useAppSelector((store) => selectMetar(store, ad))
   const rawMetar = useAppSelector((store) => selectRawMetar(store, ad))
-  const xmcState = metar ? xmc(metar.current) : null
+  const xmcState = metar?.current ? xmc(metar.current) : null
 
   return (
     <Flex sx={{ flexDirection: "column", fontSize: 2 }}>
