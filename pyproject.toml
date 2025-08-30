@@ -45,12 +45,12 @@ dependencies = [
         "uvicorn[standard]>=0.35,<0.36",
         "watchfiles>=1,<2",
         "xmltodict>=0.14.2",
-
         "eaup",
         "loa",
         "metar",
         "pynotam",
         "vatsim",
+        "geojson>=3.2.0",
 ]
 
 [project.scripts]

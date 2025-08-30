@@ -11,6 +11,8 @@ interface MapState {
   lightning: boolean
   sectors: boolean
   areas: boolean
+  areas_dfs: boolean
+  areas_vlara: boolean
   loa: boolean
   sigmet: boolean
   search: string
@@ -34,6 +36,8 @@ const mapSlice = createSlice({
       queryParams.has("pos") || localStorageOrDefault("map.sectors", true),
     sigmet: localStorageOrDefault("map.sigmet", false),
     areas: localStorageOrDefault("map.areas", true),
+    areas_dfs: localStorageOrDefault("map.areas.dfs", false),
+    areas_vlara: localStorageOrDefault("map.area.vlara", true),
     loa: localStorageOrDefault("map.loa", false),
     search: "",
     selectedAirway: null,
@@ -77,6 +81,12 @@ const mapSlice = createSlice({
     setAreas(state, { payload: active }: PayloadAction<boolean>) {
       state.areas = setLocalStorage("map.areas", active)
     },
+    setAreasDFS(state, { payload: active }: PayloadAction<boolean>) {
+      state.areas_dfs = setLocalStorage("map.areas.dfs", active)
+    },
+    setAreasVLARA(state, { payload: active }: PayloadAction<boolean>) {
+      state.areas_vlara = setLocalStorage("map.areas.vlara", active)
+    },
     setSigmet(state, { payload: active }: PayloadAction<boolean>) {
       state.sigmet = setLocalStorage("map.sigmet", active)
     },
@@ -115,6 +125,8 @@ export const selectSatelliteOnMap = (store: RootState) => store.map.satellite
 export const selectLightning = (store: RootState) => store.map.lightning
 export const selectSectorsOnMap = (store: RootState) => store.map.sectors
 export const selectAreasOnMap = (store: RootState) => store.map.areas
+export const selectAreasDFSOnMap = (store: RootState) => store.map.areas_dfs
+export const selectAreasVLARAOnMap = (store: RootState) => store.map.areas_vlara
 export const selectLoaOnMap = (store: RootState) => store.map.loa
 export const selectSigmetOnMap = (store: RootState) => store.map.sigmet
 export const selectSearch = (store: RootState) => store.map.search
@@ -133,6 +145,8 @@ export const {
   setLightning,
   setSectors,
   setAreas,
+  setAreasDFS,
+  setAreasVLARA,
   setLoa,
   setSigmet,
   setSearch,

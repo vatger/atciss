@@ -40,7 +40,7 @@ async def get_topsky_areas(
     redis: Annotated[Redis, Depends(get_redis)],
 ) -> Eaup:
     """Get topsky-compatible area bookings for today."""
-    dfs_aup_str = cast("str | None", await redis.get("areas:dfs_aup"))
+    dfs_aup_str = cast("str | None", await redis.get("areas:dfs:aup"))
     if dfs_aup_str is None:
         raise HTTPException(status_code=404)
 

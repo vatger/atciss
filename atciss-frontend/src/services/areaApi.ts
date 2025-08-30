@@ -14,5 +14,5 @@ const selectAllAreas = createSelector(
 export const selectArea = createSelector(
   selectAllAreas,
   (_state: RootState, name: string) => name,
-  (areas, name) => areas.find((area) => area.name == name),
+  (areas, name) => areas.filter((area) => area.name == name),
 )

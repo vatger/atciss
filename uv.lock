@@ -168,6 +168,7 @@ dependencies = [
     { name = "eaup" },
     { name = "fastapi", extra = ["all"] },
     { name = "geoalchemy2" },
+    { name = "geojson" },
     { name = "greenlet" },
     { name = "haversine" },
     { name = "jinja2" },
@@ -224,6 +225,7 @@ requires-dist = [
     { name = "eaup", git = "https://gitlab.com/fpletz/eaup.git?rev=d9270df4097ca62359215cc762d41a0827d8dd06" },
     { name = "fastapi", extras = ["all"], specifier = ">=0.116,<0.117" },
     { name = "geoalchemy2", specifier = ">=0.18,<0.19" },
+    { name = "geojson", specifier = ">=3.2.0" },
     { name = "greenlet", specifier = ">=3.2.1,<4" },
     { name = "haversine", specifier = ">=2.9.0,<3" },
     { name = "jinja2", specifier = ">=3.1.5,<4" },
@@ -517,6 +519,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/d3/15/88398e863a9e044e06957d0f214cc5f7ef3c1dee4c540d828bfa6c7d4535/geoalchemy2-0.18.0.tar.gz", hash = "sha256:9a04690cc33fbc580d15c7c028d9b1b1ea08271489730096c7092e1d486c2b7a", size = 239129 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b5/f5/1e36e49d4380d70d58c777953fd3c465b4fb242309b6bd6b88e45ef11bd7/geoalchemy2-0.18.0-py3-none-any.whl", hash = "sha256:ff0fe7339ba535c50845a2c7e8817a20c164364128991d795733b3c5904b1ee1", size = 81248 },
+]
+
+[[package]]
+name = "geojson"
+version = "3.2.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/85/5a/33e761df75c732fcea94aaf01f993d823138581d10c91133da58bc231e63/geojson-3.2.0.tar.gz", hash = "sha256:b860baba1e8c6f71f8f5f6e3949a694daccf40820fa8f138b3f712bd85804903", size = 24574 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/18/67/a7fa2d650602731c90e0a86279841b4586e14228199e8c09165ba4863e29/geojson-3.2.0-py3-none-any.whl", hash = "sha256:69d14156469e13c79479672eafae7b37e2dcd19bdfd77b53f74fa8fe29910b52", size = 15040 },
 ]
 
 [[package]]

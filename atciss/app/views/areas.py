@@ -37,6 +37,27 @@ class EAUPHeader:
 
 
 class AreaBooking(BaseModel):
+    source: str
+    name: str
+    polygon: list[Coordinate]
+    lower_limit: int
+    upper_limit: int
+    reservation_id: str | None
+    creator: int | None
+    callsigns: list[str] | None
+    booking_type: str | None
+    agency: str | None
+    permeability: str | None
+    activity_type: str | None
+    nbr_acft: int | None
+    priority: int | None
+    start: AwareDatetime
+    end: AwareDatetime
+    remarks: str | None
+    status: str | None
+
+
+class DFSAreaBooking(BaseModel):
     name: str
     polygon: list[Coordinate]
     lower_limit: int
@@ -68,7 +89,7 @@ class AreaBooking(BaseModel):
 
 class EAUPAreas(BaseModel):
     header: EAUPHeader
-    areas: list[AreaBooking]
+    areas: list[DFSAreaBooking]
 
     @model_validator(mode="before")
     @classmethod
@@ -97,7 +118,7 @@ class VLARAReservation(BaseModel):
     agency: str
     permeability: str
     activity_type: str
-    nbr_aircraft: int
+    nbr_acft: int
     priority: int
     start: datetime
     end: datetime

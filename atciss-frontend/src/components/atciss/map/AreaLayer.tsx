@@ -5,7 +5,11 @@ import { DateTime, Duration } from "luxon"
 import { useState } from "react"
 import { LayerGroup, Polygon } from "react-leaflet"
 import { usePollAreas } from "services/areaApi"
-import { selectLevel } from "services/mapSlice"
+import {
+  selectAreasVLARAOnMap,
+  selectAreasDFSOnMap,
+  selectLevel,
+} from "services/mapSlice"
 import { Box, Text } from "theme-ui"
 import { AreaBooking } from "types/area"
 import { VerticalBoundary } from "./VerticalBoundary"
@@ -14,8 +18,8 @@ import { Tooltip } from "components/atciss/map/Tooltip"
 const Area = ({ area }: { area: AreaBooking }) => {
   const [center, setCenter] = useState<LatLng | null>(null)
 
-  const start = DateTime.fromISO(area.start_datetime).toUTC()
-  const end = DateTime.fromISO(area.end_datetime).toUTC()
+  const start = DateTime.fromISO(area.start).toUTC()
+  const end = DateTime.fromISO(area.end).toUTC()
   const active = DateTime.utc() >= start
 
   return (
@@ -57,6 +61,14 @@ const Area = ({ area }: { area: AreaBooking }) => {
             "y-MM-dd HH:mm",
           )}`}
         </Box>
+        {area.source === "vlara" && (
+          <>
+            <Box>{area.agency}</Box>
+            <Box>
+              {area.activity_type} with {area.nbr_acft} ACFT
+            </Box>
+          </>
+        )}
       </Tooltip>
     </Polygon>
   )
@@ -66,18 +78,24 @@ export const AreaLayer = () => {
   const { data: areas } = usePollAreas()
 
   const level = useAppSelector(selectLevel)
+  const areas_dfs = useAppSelector(selectAreasDFSOnMap)
+  const areas_vlara = useAppSelector(selectAreasVLARAOnMap)
 
   const levelFilter = (a: AreaBooking) =>
     (a.lower_limit ?? 0) <= level && level < (a.upper_limit ?? 999)
   const isActive = (a: AreaBooking) =>
-    DateTime.fromISO(a.start_datetime).toUTC() <=
+    DateTime.fromISO(a.start).toUTC() <=
       DateTime.utc().plus(Duration.fromObject({ minutes: 30 })) &&
-    DateTime.fromISO(a.end_datetime).toUTC() >= DateTime.utc()
+    DateTime.fromISO(a.end).toUTC() >= DateTime.utc()
+  const sourceFilter = (a: AreaBooking) =>
+    (areas_dfs && a.source === "dfs_aup") ||
+    (areas_vlara && a.source === "vlara")
 
   return (
     <LayerGroup>
       {areas
         ?.filter(levelFilter)
+        .filter(sourceFilter)
         .filter(isActive)
         .map((area) => (
           <Area
