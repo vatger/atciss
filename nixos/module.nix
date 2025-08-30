@@ -67,7 +67,10 @@ in
       postgresql-create-postgis = {
         requiredBy = [ "atciss.service" ];
         before = [ "atciss.service" ];
-        after = [ "postgresql.service" ];
+        after = [
+          "postgresql.service"
+          "postgresql-setup.service"
+        ];
         serviceConfig = {
           Type = "oneshot";
           User = "postgres";
