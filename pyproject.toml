@@ -35,7 +35,7 @@ dependencies = [
         "python-dateutil>=2.9.0,<3",
         "python-jose>=3.4.0,<4",
         "redis>=6,<7",
-        "regex==2024.11.6",
+        "regex==2025.9.1",
         "shapely>=2.0.6,<3",
         "sqlalchemy[asyncio]>=2.0.40,<3",
         "sqlmodel==0.0.24",
@@ -44,13 +44,13 @@ dependencies = [
         "taskiq>=0.11.18,<0.12",
         "uvicorn[standard]>=0.35,<0.36",
         "watchfiles>=1,<2",
-        "xmltodict>=0.14.2",
+        "xmltodict>=0.14.2,<0.15",
         "eaup",
         "loa",
         "metar",
         "pynotam",
         "vatsim",
-        "geojson>=3.2.0",
+        "geojson>=3.2.0,<4",
 ]
 
 [project.scripts]

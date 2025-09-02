@@ -197,7 +197,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                       {metar.qnh?.toFixed(0) ?? "////"}
                       {deltaArrow(
                         metar.qnh?.toFixed(0),
-                        prev_metar?.qnh.toFixed(0),
+                        prev_metar?.qnh?.toFixed(0),
                       )}
                     </Text>
                     /{hpaToInhg(metar?.qnh)?.toFixed(2) ?? "////"}
