@@ -43,7 +43,7 @@ async def fetch_vlara_bookings(
     http_client: Annotated[aiohttp.ClientSession, Depends(get_aiohttp_client)],
 ) -> None:
     async with http_client.get(settings.VLARA_URL) as response:
-        json = await response.json(content_type="text/plain")
+        json = await response.json()
         bookings = TypeAdapter(list[VLARAReservation]).validate_python(json)
 
     logger.info(f"vLARA Areas: {len(bookings)} bookings received")
