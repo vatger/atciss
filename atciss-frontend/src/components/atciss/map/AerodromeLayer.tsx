@@ -17,7 +17,7 @@ import { selectAtis, usePollAtisByIcaoCodes } from "services/atisApi"
 import { usePollControllers } from "services/controllerApi"
 import { selectMetar, usePollMetarByIcaoCodes, xmc } from "services/metarApi"
 import { selectPosition } from "services/sectorApi"
-import { selectTaf, usePollTafByIcaoCodes } from "services/tafApi"
+// import { selectTaf, usePollTafByIcaoCodes } from "services/tafApi"
 import { Box, Flex, Text } from "theme-ui"
 
 const selectAirportCoordinates = createSelector(
@@ -43,7 +43,7 @@ const AerodromeMarker = ({ icao }: { icao: string }) => {
     selectControllerFromPosition(store, topdownOwner),
   )
   const metar = useAppSelector((store) => selectMetar(store, icao))
-  const taf = useAppSelector((store) => selectTaf(store, icao))
+  // const taf = useAppSelector((store) => selectTaf(store, icao))
   const atis = useAppSelector((store) => selectAtis(store, icao))
   const xmcState = metar?.current ? xmc(metar.current) : null
   const coord = useAppSelector((store) => selectAirportCoordinates(store, icao))
@@ -104,12 +104,12 @@ const AerodromeMarker = ({ icao }: { icao: string }) => {
               <pre>{metar?.current?.raw?.replace(/.*?[A-Z]{4}\s/, "")}</pre>
             </Box>
           )}
-          {taf && (
+          {/*taf && (
             <Box sx={{ fontSize: "1", mt: 1 }}>
               <Text variant="label">TAF</Text>
               <pre>{taf}</pre>
             </Box>
-          )}
+          )*/}
           {atis?.text_atis && (
             <Box sx={{ fontSize: "1", mt: 1 }}>
               <Flex
@@ -144,7 +144,7 @@ export const AerodromeLayer = () => {
   const airports = useAppSelector(selectAirportICAOs)
 
   usePollMetarByIcaoCodes(airports)
-  usePollTafByIcaoCodes(airports)
+  // usePollTafByIcaoCodes(airports)
   usePollAtisByIcaoCodes(airports)
   api.useAerodromesByIcaosQuery(airports)
 

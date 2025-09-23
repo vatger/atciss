@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithReauth } from "app/auth"
-import { tafFormat } from "app/utils"
+// import { tafFormat } from "app/utils"
 import { Agreements } from "services/agreementsApi"
 import { Initials } from "services/initialsApi"
 // import { Booking } from "services/bookingApi"
@@ -264,17 +264,17 @@ export const api = createApi({
       }),
     }),
 
-    tafByIcaoCodes: builder.query<Record<string, string>, string[]>({
-      query: (icaoList) => ({
-        url: "taf",
-        params: icaoList.map((icao) => ["icao", icao]),
-      }),
-      transformResponse: (tafs) =>
-        Object.entries(tafs ?? {}).reduce(
-          (acc, [ad, taf]) => ({ ...acc, [ad]: tafFormat(taf) }),
-          {},
-        ),
-    }),
+    // tafByIcaoCodes: builder.query<Record<string, string>, string[]>({
+    //   query: (icaoList) => ({
+    //     url: "taf",
+    //     params: icaoList.map((icao) => ["icao", icao]),
+    //   }),
+    //   transformResponse: (tafs) =>
+    //     Object.entries(tafs ?? {}).reduce(
+    //       (acc, [ad, taf]) => ({ ...acc, [ad]: tafFormat(taf) }),
+    //       {},
+    //     ),
+    // }),
 
     traffic: builder.query<AerodromeTraffic, string>({
       query: (q) => ({

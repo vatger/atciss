@@ -14,18 +14,18 @@ import {
   usePollRawMetar,
   xmc,
 } from "services/metarApi"
-import { selectTaf, usePollTafByIcaoCodes } from "services/tafApi"
+// import { selectTaf, usePollTafByIcaoCodes } from "services/tafApi"
 import { Box, Button, Flex, Grid, Text } from "theme-ui"
 
 const AerodromeWx = ({ ad }: { ad: string }) => {
   usePollMetarByIcaoCodes([ad])
   usePollRawMetar(ad)
-  usePollTafByIcaoCodes([ad])
+  // usePollTafByIcaoCodes([ad])
   usePollAtisByIcaoCodes([ad])
 
   const aerodrome = useAppSelector((store) => selectAirport(store, ad))
   const atis = useAppSelector((store) => selectAtis(store, ad))
-  const taf = useAppSelector((store) => selectTaf(store, ad))
+  // const taf = useAppSelector((store) => selectTaf(store, ad))
   const metar = useAppSelector((store) => selectMetar(store, ad))
   const rawMetar = useAppSelector((store) => selectRawMetar(store, ad))
   const xmcState = metar?.current ? xmc(metar.current) : null
@@ -66,14 +66,14 @@ const AerodromeWx = ({ ad }: { ad: string }) => {
           </Box>
         </Box>
       )}
-      {taf && (
+      {/* && taf && (
         <Box sx={{ mt: 3 }}>
           <Text variant="label">TAF</Text>
           <Box sx={{ p: 2, mt: 2, borderStyle: "inset" }}>
             <pre>{taf}</pre>
           </Box>
         </Box>
-      )}
+      )*/}
     </Flex>
   )
 }
