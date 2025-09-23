@@ -64,6 +64,9 @@ in
     };
 
     systemd.services = {
+      postgresql.serviceConfig = {
+        TimeoutStartSec = 300;
+      };
       postgresql-create-postgis = {
         requiredBy = [ "atciss.service" ];
         before = [ "atciss.service" ];
