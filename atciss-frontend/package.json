@@ -24,7 +24,7 @@
     "react-dom": "^19",
     "react-leaflet": "^5.0.0",
     "react-redux": "^9.1.2",
-    "react-router": "^7.9.2",
+    "react-router": "^7.9.5",
     "theme-ui": "^0.17.1"
   },
   "devDependencies": {
