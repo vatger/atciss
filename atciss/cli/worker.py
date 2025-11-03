@@ -1,5 +1,6 @@
 """Command-line interface - worker command."""
 
+import logging
 from multiprocessing import cpu_count
 
 import click
@@ -35,7 +36,9 @@ def worker(workers: int) -> int | None:
             broker="atciss.tkq:broker",
             modules=["atciss.tasks"],
             configure_logging=False,
-            log_level=LogLevel(settings.LOG_LEVEL),
+            log_level=LogLevel(
+                logging.getLevelNamesMapping().get(settings.LOG_LEVEL) or LogLevel.DEBUG
+            ),
             workers=workers,
             reload=settings.DEBUG,
         )

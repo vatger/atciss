@@ -1,6 +1,7 @@
 """Command-line interface - scheduler command."""
 
 import asyncio
+import logging
 
 import click
 from taskiq.cli.common_args import LogLevel
@@ -28,7 +29,9 @@ def scheduler() -> int | None:
                 scheduler="atciss.tkq:scheduler",
                 modules=["atciss.tasks"],
                 configure_logging=False,
-                log_level=LogLevel(settings.LOG_LEVEL),
+                log_level=LogLevel(
+                    logging.getLevelNamesMapping().get(settings.LOG_LEVEL) or LogLevel.DEBUG
+                ),
                 skip_first_run=False,
             )
         )
