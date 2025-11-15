@@ -1,3 +1,5 @@
+/** @jsxImportSource theme-ui */
+
 import { theme } from "app/atciss/theme"
 import { Footer } from "components/atciss/Footer"
 import { Nav } from "components/atciss/Nav"

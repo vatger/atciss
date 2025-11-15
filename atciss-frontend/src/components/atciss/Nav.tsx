@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 
-import { Link } from "react-router"
-import { Button, Flex, Grid, ThemeUIStyleObject } from "theme-ui"
+import { Link, useNavigate } from "react-router"
+import { Box, Button, Flex, Grid, ThemeUIStyleObject } from "theme-ui"
 
 import { FIR_SETTINGS } from "app/config"
 import { useAppDispatch, useAppSelector } from "app/hooks"
@@ -11,6 +11,7 @@ import { selectUser } from "app/auth/slice"
 import { XmSelect } from "./XmSelect"
 
 const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const activeFir = useAppSelector(selectActiveFir)
   const user = useAppSelector(selectUser)
@@ -28,9 +29,47 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         alignItems: "start",
       }}
     >
-      <Clock />
+      <Clock
+        ssx={{
+          display: ["none", "block"],
+          fontSize: [null, "80%", "100%"],
+        }}
+      />
+      <Box
+        sx={{
+          display: ["block", null, null, "none"],
+          flex: "auto",
+        }}
+      >
+        <XmSelect
+          value={activeFir}
+          onChange={(e) => navigate(e.target.value)}
+          sx={{
+            minWidth: "6rem",
+            backgroundColor: "primary",
+            color: "background",
+          }}
+        >
+          <option value="">Navigation</option>
+          <option value="">ATIS-AFW</option>
+          <option value="map">Map</option>
+          <option value="wx">Wx</option>
+          <option value="loa">LOA</option>
+          <option value="notam">NOTAM</option>
+          {user?.admin && <option value="idvs">IDVS</option>}
+          <option value="alias">Alias</option>
+          {FIR_SETTINGS[activeFir].initials.enabled && (
+            <option value="initials">Initials</option>
+          )}
+          <option value="windy">Windy</option>
+          <option value="ac">A/C-Type</option>
+          <option value="aip-ifr">AIP IFR</option>
+          <option value="aip-vfr">AIP VFR</option>
+        </XmSelect>
+      </Box>
       <Grid
         sx={{
+          display: ["none", "none", "none", "grid"],
           gap: ".5rem",
           gridTemplateColumns: "repeat(auto-fit, 6rem)",
           gridTemplateRows: "2rem 2rem",
@@ -87,7 +126,7 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         sx={{
           gap: ".5rem",
           gridTemplateColumns: "repeat(auto-fit, 6rem)",
-          gridTemplateRows: "2rem 2rem",
+          gridTemplateRows: "2rem",
           flex: "auto",
           justifyContent: "flex-end",
         }}

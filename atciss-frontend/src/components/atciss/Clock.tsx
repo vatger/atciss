@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react"
-import { Box, Text } from "theme-ui"
+/** @jsxImportSource theme-ui */
 
-const Clock = () => {
+import { useEffect, useState } from "react"
+import { Box, Text, ThemeUIStyleObject } from "theme-ui"
+
+const Clock = ({ ssx }: { ssx?: ThemeUIStyleObject }) => {
   const [time, setTime] = useState(new Date())
 
   useEffect(() => {
@@ -29,6 +31,7 @@ const Clock = () => {
         borderLeftColor: "darkshadow",
         borderBottomColor: "brightshadow",
         borderRightColor: "brightshadow",
+        ...ssx,
       }}
     >
       <Text variant="clock">

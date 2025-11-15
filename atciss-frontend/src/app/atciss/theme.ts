@@ -105,6 +105,7 @@ export const theme: AtcissTheme = {
       fontSize: 3,
     },
   },
+  breakpoints: ["32em", "48em", "64em"],
   cards: {
     footer: {
       border: 2,
