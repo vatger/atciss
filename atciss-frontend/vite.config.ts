@@ -13,10 +13,10 @@ export default defineConfig({
       types: "/src/types",
     },
   },
-  esbuild: {
-    jsxFactory: "jsx",
-    jsxInject: `import { jsx } from 'theme-ui'`,
-  },
+  // esbuild: {
+  //   jsxFactory: "jsx",
+  //   jsxInject: `import { jsx } from 'theme-ui'`,
+  // },
   server: {
     open: true,
     proxy: {
