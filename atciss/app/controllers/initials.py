@@ -23,7 +23,6 @@ router = APIRouter()
 )
 async def initials_get(
     fir: str,
-    user: Annotated[User, Depends(get_user)],
     session: Annotated[AsyncSession, Depends(get_session)],
 ) -> Sequence[Initials]:
     """Get status for multiple sectors."""
