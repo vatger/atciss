@@ -11,7 +11,7 @@ from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
 from atciss.app.utils.db import get_session
 from atciss.app.views.initials import Initials, InitialsBase
 
-from ..controllers.auth import get_fir_admin, get_user
+from ..controllers.auth import get_fir_admin
 from ..models import User
 
 router = APIRouter()
