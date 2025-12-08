@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@emotion/react": "^11.13.5",
-    "@reduxjs/toolkit": "^2.11.0",
+    "@reduxjs/toolkit": "^2.11.1",
     "airac-cc": "^1.0.6",
     "async-mutex": "^0.5.0",
     "leaflet": "^1.9.4",
