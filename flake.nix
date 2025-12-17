@@ -74,8 +74,8 @@
             sourcePreference = "wheel";
           };
 
-          nodejs = pkgs.nodejs_22;
-          python = pkgs.python313;
+          nodejs = pkgs.nodejs_24;
+          python = pkgs.python314;
 
           pythonSet =
             (pkgs.callPackage inputs.pyproject-nix.build.packages {
