@@ -126,6 +126,11 @@
                         (final.resolveBuildSystem { setuptools = [ ]; })
                       ];
                     });
+                    watchdog = prev.watchdog.overrideAttrs (old: {
+                      nativeBuildInputs = old.nativeBuildInputs ++ [
+                        (final.resolveBuildSystem { setuptools = [ ]; })
+                      ];
+                    });
                   })
                 ]
               );
@@ -143,13 +148,11 @@
             nix-fast-build = inputs.nix-fast-build.packages.${system}.default;
             atciss = (pythonSet.mkVirtualEnv "atciss-env" workspace.deps.default).overrideAttrs (old: {
               venvIgnoreCollisions = [ "bin/fastapi" ];
-              postInstall =
-                (old.preInstall or "")
-                + ''
-                  mkdir -p $out/share/atciss
-                  cp -R ${./alembic} $out/share/atciss/alembic
-                  cp -R ${./alembic.ini} $out/share/atciss/alembic.ini
-                '';
+              postInstall = (old.preInstall or "") + ''
+                mkdir -p $out/share/atciss
+                cp -R ${./alembic} $out/share/atciss/alembic
+                cp -R ${./alembic.ini} $out/share/atciss/alembic.ini
+              '';
             });
             atciss-frontend = inputs.napalm.legacyPackages.${system}.buildPackage ./atciss-frontend {
               NODE_ENV = "production";
@@ -314,32 +317,31 @@
                   PYTHONPATH = ".:${virtualenv}/${python.sitePackages}";
                 };
 
-                shellHook =
-                  ''
-                    export REPO_ROOT=$(git rev-parse --show-toplevel)
-                  ''
-                  + (inputs.pre-commit-hooks.lib.${system}.run {
-                    src = ./.;
-                    hooks = {
-                      nixfmt-rfc-style.enable = true;
-                      statix.enable = true;
-                      nil.enable = true;
-                      eslint = {
-                        enable = true;
-                        settings = {
-                          binPath = pkgs.writeShellScript "eslint" ''./atciss-frontend/node_modules/.bin/eslint "$@"'';
-                          extensions = "\\.(j|t)sx?";
-                        };
-                      };
-                      # pylint.enable = true;
-                      pylint.settings.binPath = "${virtualenv}/bin/pylint";
-                      # pyright.enable = true;
-                      ruff = {
-                        enable = true;
-                        entry = lib.mkForce "${virtualenv}/bin/ruff check --fix";
+                shellHook = ''
+                  export REPO_ROOT=$(git rev-parse --show-toplevel)
+                ''
+                + (inputs.pre-commit-hooks.lib.${system}.run {
+                  src = ./.;
+                  hooks = {
+                    nixfmt-rfc-style.enable = true;
+                    statix.enable = true;
+                    nil.enable = true;
+                    eslint = {
+                      enable = true;
+                      settings = {
+                        binPath = pkgs.writeShellScript "eslint" ''./atciss-frontend/node_modules/.bin/eslint "$@"'';
+                        extensions = "\\.(j|t)sx?";
                       };
                     };
-                  }).shellHook;
+                    # pylint.enable = true;
+                    pylint.settings.binPath = "${virtualenv}/bin/pylint";
+                    # pyright.enable = true;
+                    ruff = {
+                      enable = true;
+                      entry = lib.mkForce "${virtualenv}/bin/ruff check --fix";
+                    };
+                  };
+                }).shellHook;
               };
             };
           apps =
