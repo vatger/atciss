@@ -1,14 +1,66 @@
 from __future__ import annotations
 
-from pydantic import AwareDatetime, BaseModel
+from pydantic import AwareDatetime, BaseModel, ConfigDict
 from pynotam import Notam
 from sqlmodel import Column, DateTime, Field, SQLModel
+
+
+def to_camel(string: str) -> str:
+    parts = string.split("_")
+    return parts[0] + "".join(word.capitalize() for word in parts[1:])
 
 
 class NotamSeen(SQLModel, table=True):
     notam_id: str = Field(primary_key=True, nullable=False)
     cid: str = Field(primary_key=True, nullable=False)
     seen_at: AwareDatetime = Field(sa_column=Column(DateTime(timezone=True), nullable=False))
+
+
+class SourceNotamPoint(BaseModel):
+    type: str
+    coordinates: list[float]
+
+
+class SourceNotamReferral(BaseModel):
+    series: str
+    number: int
+    year: int
+
+
+class SourceNotam(BaseModel):
+    id: str
+    series: str
+    type: str
+    canceled: bool
+    issued: AwareDatetime
+    superseded_by: str | None
+    number: int
+    year: int
+    fir: str
+    selection_code: str | None
+    scope: str
+    traffic: str
+    purpose: str
+    fl_min: int
+    fl_max: int
+    effective_start: AwareDatetime
+    effective_end: AwareDatetime | None
+    effective_end_perm: bool
+    effective_end_est: bool
+    locations: list[str]
+    schedule: str | None
+    text: str
+    aftn_account: str
+    source: str
+    airport_name: str
+    icao_translation: str
+    referred_notam: SourceNotamReferral | None
+    coord: SourceNotamPoint | None
+
+    model_config = ConfigDict(
+        alias_generator=to_camel,
+        populate_by_name=True,
+    )
 
 
 class NotamModel(BaseModel):

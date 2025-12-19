@@ -19,6 +19,7 @@ class Application(BaseSettings):
     DOCS_URL: str = "/"
     BASE_URL: str = "http://localhost:8000"
     LOA_URL: str = "https://loa.vatsim-germany.org/api/v1/conditions"
+    NOTAM_URL: str = "https://notams.blip-radar.org/api/query?loc="
     VLARA_URL: str = "https://lara-backend.lusep.fi/data/reservations/edxx.json"
     VLARA_AREA_URL: str = (
         "https://ottotuhkunen.github.io/virtual-lara-airspace-data/data/edxx.geojson"
