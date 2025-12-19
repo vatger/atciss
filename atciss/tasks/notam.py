@@ -50,8 +50,9 @@ async def fetch_notam(
     ):
         logger.info(f"NOTAMs: fetching '{','.join(notams_to_fetch)}'")
         async with http_client.get(settings.NOTAM_URL + ",".join(notams_to_fetch)) as res:
-            json = await res.json()
-            received_notams = TypeAdapter(list[SourceNotam]).validate_python(json, by_alias=True)
+            received_notams = TypeAdapter(list[SourceNotam]).validate_python(
+                await res.json(), by_alias=True
+            )
 
         for notam_elem in received_notams:
             notam = convert_notam(notam_elem.icao_translation)
@@ -68,9 +69,8 @@ async def fetch_notam(
         _ = await pipe.execute()
 
     # Remove old NOTAMs
-    notam_keys = await redis.keys("notam:*:*")
     async with redis.pipeline() as pipe:
-        for notam_key in notam_keys:
+        for notam_key in await redis.keys("notam:*:*"):
             if notam_key not in current_notam_ids:
                 logger.debug(f"Deleting NOTAM {notam_key}")
                 res = await pipe.delete(notam_key)
