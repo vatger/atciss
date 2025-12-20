@@ -51,8 +51,8 @@ class SourceNotam(BaseModel):
     schedule: str | None
     text: str
     aftn_account: str
-    source: str
-    airport_name: str
+    source: str | None
+    airport_name: str | None
     icao_translation: str
     referred_notam: SourceNotamReferral | None
     coord: SourceNotamPoint | None
