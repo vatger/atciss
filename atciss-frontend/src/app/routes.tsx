@@ -24,6 +24,7 @@ import { Notams } from "views/atciss/Notam"
 import { Windy } from "views/atciss/Windy"
 import { Wx } from "views/atciss/Wx"
 import { Afw } from "views/idvs/Afw"
+import { About } from "views/atciss/About"
 // import { Bookings } from "src/views/Bookings"
 
 const router = createBrowserRouter([
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <AtisAfw sx={{ flex: "auto" }} />,
+      },
+      {
+        path: "about",
+        element: <About />,
       },
       {
         path: "map",

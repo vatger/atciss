@@ -22,7 +22,9 @@ const Footer = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       >
         <Box variant={"cards.footer"}>
           <Text sx={{ color: "primaryText" }}>
-            ATCISS/IDVS
+            <Link to="/about" sx={{ color: "primaryText" }}>
+              <strong>ATCISS/IDVS</strong>
+            </Link>
             <Link
               sx={{ color: "primaryText" }}
               target="_blank"
