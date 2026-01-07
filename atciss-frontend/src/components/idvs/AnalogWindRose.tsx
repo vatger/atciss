@@ -1,3 +1,4 @@
+import { useThemeUI } from "theme-ui"
 import { Metar } from "types/wx"
 
 const roseSegmentClasses = (metar: Metar, segment: number): string => {
@@ -15,6 +16,11 @@ const roseSegmentClasses = (metar: Metar, segment: number): string => {
 }
 
 export const AnalogWindRose = ({ metar }: { metar: Metar }) => {
+  const theme_context = useThemeUI()
+  const text_color = theme_context.theme.rawColors?.text || "#000"
+  const wind_rose_color =
+    theme_context.theme.rawColors?.windRoseActive || "#666"
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -25,10 +31,13 @@ export const AnalogWindRose = ({ metar }: { metar: Metar }) => {
       <defs>
         <style>
           {`
-            .st0 { font-size: 2.2rem; }
-            .st1 { fill: none; stroke: #000; transition: all 1s ease-out; }
-            .st1-active { fill: #666; }
-            #needle { transform-origin: center center; transform: rotate(${metar.wind_dir}deg); transition: all 1s ease-out; }
+            g, path { transition: all 1s ease-out; }
+            .st0 { font-size: 2.2rem; fill: ${text_color};}
+            .st1 { fill: none; stroke: ${text_color}; }
+            .st1-active { fill: ${wind_rose_color}; }
+            .rose-circle { fill: ${text_color}; }
+            #needle { transform-origin: center center; transform: rotate(${metar.wind_dir}deg); }
+            #Pointer { fill: ${text_color}; }
           `}
         </style>
       </defs>
@@ -213,8 +222,14 @@ export const AnalogWindRose = ({ metar }: { metar: Metar }) => {
           className={roseSegmentClasses(metar, 350)}
           d="M220,97.96v-25.41c-8.68,0-17.24.75-25.61,2.2l4.41,25.03c6.93-1.21,14.02-1.82,21.2-1.82Z"
         />
-        <path d="M220,73.54c39.12,0,75.9,15.23,103.56,42.9,27.66,27.66,42.9,64.44,42.9,103.56s-15.23,75.9-42.9,103.56c-27.66,27.66-64.44,42.9-103.56,42.9s-75.9-15.23-103.56-42.9c-27.66-27.66-42.9-64.44-42.9-103.56s15.23-75.9,42.9-103.56c27.66-27.66,64.44-42.9,103.56-42.9M220,71.54c-81.99,0-148.46,66.47-148.46,148.46s66.47,148.46,148.46,148.46,148.46-66.47,148.46-148.46-66.47-148.46-148.46-148.46h0Z" />
-        <path d="M220,99.33c32.23,0,62.54,12.55,85.33,35.34,22.79,22.79,35.34,53.1,35.34,85.33s-12.55,62.54-35.34,85.33c-22.79,22.79-53.1,35.34-85.33,35.34s-62.54-12.55-85.33-35.34c-22.79-22.79-35.34-53.1-35.34-85.33s12.55-62.54,35.34-85.33,53.1-35.34,85.33-35.34M220,97.33c-67.75,0-122.67,54.92-122.67,122.67s54.92,122.67,122.67,122.67,122.67-54.92,122.67-122.67-54.92-122.67-122.67-122.67h0Z" />
+        <path
+          className="rose-circle"
+          d="M220,73.54c39.12,0,75.9,15.23,103.56,42.9,27.66,27.66,42.9,64.44,42.9,103.56s-15.23,75.9-42.9,103.56c-27.66,27.66-64.44,42.9-103.56,42.9s-75.9-15.23-103.56-42.9c-27.66-27.66-42.9-64.44-42.9-103.56s15.23-75.9,42.9-103.56c27.66-27.66,64.44-42.9,103.56-42.9M220,71.54c-81.99,0-148.46,66.47-148.46,148.46s66.47,148.46,148.46,148.46,148.46-66.47,148.46-148.46-66.47-148.46-148.46-148.46h0Z"
+        />
+        <path
+          className="rose-circle"
+          d="M220,99.33c32.23,0,62.54,12.55,85.33,35.34,22.79,22.79,35.34,53.1,35.34,85.33s-12.55,62.54-35.34,85.33c-22.79,22.79-53.1,35.34-85.33,35.34s-62.54-12.55-85.33-35.34c-22.79-22.79-35.34-53.1-35.34-85.33s12.55-62.54,35.34-85.33,53.1-35.34,85.33-35.34M220,97.33c-67.75,0-122.67,54.92-122.67,122.67s54.92,122.67,122.67,122.67,122.67-54.92,122.67-122.67-54.92-122.67-122.67-122.67h0Z"
+        />
       </g>
       <g id="Pointer">
         <circle className="st2" cx="220" cy="220" r="14.81" />
