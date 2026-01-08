@@ -28,6 +28,7 @@ export const theme: IdvsTheme = {
     red: "#770011",
     orange: "#b97700",
     purple: "#770077",
+    windRoseActive: "#666",
     modes: {
       dark: {
         text: "#fff",
@@ -41,6 +42,7 @@ export const theme: IdvsTheme = {
         red: "#ff7788",
         orange: "#ffa333",
         purple: "#ff55ff",
+        windRoseActive: "#AAA",
       },
     },
   },

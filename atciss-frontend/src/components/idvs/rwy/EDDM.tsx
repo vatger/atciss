@@ -12,7 +12,16 @@ export const EDDM = () => {
   return (
     <>
       <HorizontalRunwayStrip
+        rwy1="08L"
+        rwy2="26R"
+        rvrs={["D", "C", "B", "A"]}
         sx={{ position: "absolute", left: "1%", top: "2rem", width: "98%" }}
+      ></HorizontalRunwayStrip>
+      <HorizontalRunwayStrip
+        rwy1="08R"
+        rwy2="26L"
+        rvrs={["H", "G", "F", "E"]}
+        sx={{ position: "absolute", left: "1%", bottom: "2rem", width: "98%" }}
       ></HorizontalRunwayStrip>
     </>
   )

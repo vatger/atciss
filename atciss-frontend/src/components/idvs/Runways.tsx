@@ -1,22 +1,49 @@
 import { useAppSelector } from "app/hooks"
 import { api } from "services/api"
+import { usePollAtisByIcaoCodes } from "services/atisApi"
 import { selectActiveAerodrome } from "services/idvsSlice"
-import { usePollMetarByIcaoCodes } from "services/metarApi"
+import { selectMetar, usePollMetarByIcaoCodes, xmc } from "services/metarApi"
 import { Box, Flex, Text, ThemeUIStyleObject } from "theme-ui"
 
 interface RVRValueProps {
   point: string
-  value: number
-  prevValue?: number
+  value?: number
+  trend?: string | null
 }
 
-const RVRValue = ({ point, value, prevValue }: RVRValueProps) => {
+interface ANBLFBitProps {
+  text: string
+  state?: string
+}
+
+const RVRValue = ({ point, value, trend }: RVRValueProps) => {
   return (
     <Box sx={{ width: "6rem" }}>
       {point}
       <br />
       <Text sx={{ fontSize: "1.9rem" }}>
-        {value} {prevValue && (prevValue > value ? "↓" : "↑")}
+        {value || "\u00A0"}
+        {trend && value && (trend == "D" ? "↓" : trend == "U" ? "↑" : "")}
+      </Text>
+    </Box>
+  )
+}
+
+const ANBLFBit = ({ text, state }: ANBLFBitProps) => {
+  return (
+    <Box sx={{ marginRight: "1rem" }}>
+      <Text
+        sx={{
+          fontSize: "1.9rem",
+          backgroundColor:
+            state == "bad"
+              ? "#ed5252"
+              : state == "good"
+                ? "#7bd67d"
+                : "inherit",
+        }}
+      >
+        {text}
       </Text>
     </Box>
   )
@@ -25,7 +52,14 @@ const RVRValue = ({ point, value, prevValue }: RVRValueProps) => {
 const ApproachStatus = ({ cat, suffix }: { cat: number; suffix?: string }) => {
   return (
     <Flex
-      sx={{ height: "2.5rem", gap: 3, mx: 6, fontSize: "2rem", color: "black" }}
+      sx={{
+        height: "2.5rem",
+        gap: 3,
+        mx: 6,
+        fontSize: "2rem",
+        color: "black",
+        width: "12rem",
+      }}
     >
       {cat === 0 && (
         <>
@@ -80,10 +114,39 @@ const ApproachStatus = ({ cat, suffix }: { cat: number; suffix?: string }) => {
   )
 }
 
-export const HorizontalRunwayStrip = ({ sx }: { sx?: ThemeUIStyleObject }) => {
+export const HorizontalRunwayStrip = ({
+  rwy1,
+  rwy2,
+  rvrs,
+  sx,
+}: {
+  rwy1: string
+  rwy2: string
+  rvrs: string[]
+  sx?: ThemeUIStyleObject
+}) => {
   const aerodrome = useAppSelector(selectActiveAerodrome)
   usePollMetarByIcaoCodes([aerodrome])
   api.useAerodromesByIcaosQuery([aerodrome])
+
+  const metar = useAppSelector((store) =>
+    selectMetar(store, aerodrome),
+  )?.current
+
+  const { data: atisData } = usePollAtisByIcaoCodes([aerodrome])
+  const atis = atisData?.[aerodrome]
+
+  let mc = "?"
+  if (metar) {
+    mc = xmc(metar)
+  }
+
+  const leftActive = atis?.runways_in_use.includes(rwy1)
+  const rightActive = atis?.runways_in_use.includes(rwy2)
+
+  const myRvr = metar?.rvr?.find(
+    (rvr) => rvr.runway == rwy1 || rvr.runway == rwy2,
+  )
 
   return (
     <Flex
@@ -96,10 +159,14 @@ export const HorizontalRunwayStrip = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       <Flex>
         <Text sx={{ width: "4rem" }}>RVR:</Text>
         <Flex sx={{ flexGrow: 9, justifyContent: "space-between" }}>
-          <RVRValue point="D" value={450} prevValue={500} />
-          <RVRValue point="C" value={450} prevValue={300} />
-          <RVRValue point="B" value={450} />
-          <RVRValue point="A" value={450} />
+          {rvrs.map((rvr) => (
+            <RVRValue
+              key={rvr}
+              point={rvr}
+              value={myRvr?.low}
+              trend={myRvr?.trend}
+            />
+          ))}
         </Flex>
       </Flex>
       <Flex
@@ -111,18 +178,24 @@ export const HorizontalRunwayStrip = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           fontSize: "3rem",
           p: 1,
           alignItems: "center",
+          justifyContent: rightActive ? "flex-end" : "flex-start",
         }}
       >
-        ⮕ &nbsp;08L
-        <ApproachStatus cat={0} />
-        <ApproachStatus cat={1} />
-        <ApproachStatus cat={2} />
-        <ApproachStatus cat={3} suffix="b" />
+        {leftActive && <>➡&nbsp;{rwy1}</>}
+        <ApproachStatus cat={mc == "LVP" ? 3 : 1} />
+        {rightActive && <>{rwy2}&nbsp;⬅</>}
       </Flex>
       <Flex sx={{}}>
-        <Text sx={{ width: "4rem" }}>BA:</Text>
+        <Text sx={{ width: "4rem" }}>RCC:</Text>
         <Flex sx={{ flexGrow: 9, justifyContent: "space-between" }}></Flex>
       </Flex>
+      <Box sx={{ marginTop: "1rem", paddingLeft: "4rem" }}>
+        <Text>ANBLF</Text>
+        <Flex>
+          <ANBLFBit text="LGT" />
+          <ANBLFBit text="DME" />
+        </Flex>
+      </Box>
     </Flex>
   )
 }
