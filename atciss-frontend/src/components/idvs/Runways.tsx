@@ -49,6 +49,31 @@ const ANBLFBit = ({ text, state }: ANBLFBitProps) => {
   )
 }
 
+const rotationMap: Record<string, string> = {
+  left: "180",
+  right: "0",
+  up: "90",
+  down: "270",
+}
+
+const RWYArrow = ({ dir }: { dir: string }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      version="1.1"
+      viewBox="0 0 37.31 21.94"
+      style={{
+        fill: "#fff",
+        height: dir == "left" || dir == "right" ? "100%" : "auto",
+        width: dir == "up" || dir == "down" ? "100%" : "auto",
+      }}
+      transform={"rotate(" + rotationMap[dir] + ")"}
+    >
+      <polygon points="0 16.47 18.31 16.47 18.31 21.94 37.31 10.97 18.31 0 18.31 5.47 0 5.47 0 16.47" />
+    </svg>
+  )
+}
+
 const ApproachStatus = ({ cat, suffix }: { cat: number; suffix?: string }) => {
   return (
     <Flex
@@ -58,7 +83,7 @@ const ApproachStatus = ({ cat, suffix }: { cat: number; suffix?: string }) => {
         mx: 6,
         fontSize: "2rem",
         color: "black",
-        width: "12rem",
+        width: "20rem",
       }}
     >
       {cat === 0 && (
@@ -181,9 +206,19 @@ export const HorizontalRunwayStrip = ({
           justifyContent: rightActive ? "flex-end" : "flex-start",
         }}
       >
-        {leftActive && <>➡&nbsp;{rwy1}</>}
+        {leftActive && (
+          <>
+            <RWYArrow dir={"right"} />
+            &nbsp;{rwy1}
+          </>
+        )}
         <ApproachStatus cat={mc == "LVP" ? 3 : 1} />
-        {rightActive && <>{rwy2}&nbsp;⬅</>}
+        {rightActive && (
+          <>
+            {rwy2}&nbsp;
+            <RWYArrow dir={"left"} />
+          </>
+        )}
       </Flex>
       <Flex sx={{}}>
         <Text sx={{ width: "4rem" }}>RCC:</Text>
