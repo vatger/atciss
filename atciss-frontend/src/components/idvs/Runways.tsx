@@ -212,7 +212,9 @@ export const HorizontalRunwayStrip = ({
             &nbsp;{rwy1}
           </>
         )}
-        <ApproachStatus cat={mc == "LVP" ? 3 : 1} />
+        {(leftActive || rightActive) && (
+          <ApproachStatus cat={mc == "LVP" ? 3 : 1} />
+        )}
         {rightActive && (
           <>
             {rwy2}&nbsp;
