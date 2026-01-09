@@ -3,13 +3,16 @@ import { Box, ThemeUIStyleObject } from "theme-ui"
 
 export const InfoBox = ({
   sx,
+  title,
   children,
 }: {
   sx?: ThemeUIStyleObject
+  title?: string
   children: ReactNode
 }) => {
   return (
     <Box
+      title={title}
       sx={{
         cursor: "default",
         py: 0,
