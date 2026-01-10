@@ -1,4 +1,4 @@
-import { useAppSelector } from "app/hooks"
+import { useAppDispatch, useAppSelector } from "app/hooks"
 import { z3 } from "app/utils"
 import { InfoBox } from "components/idvs/InfoBox"
 import { api } from "services/api"
@@ -6,6 +6,8 @@ import { selectAtis, usePollAtisByIcaoCodes } from "services/atisApi"
 import {
   selectActiveAerodrome,
   selectRunwayDirection,
+  selectShowAnalogWindRose,
+  setAnalogWindRoseShown,
 } from "services/idvsSlice"
 import {
   ceiling,
@@ -74,6 +76,7 @@ const rrsPermitted: (metar: Metar, headwind: number) => boolean = (
 }
 
 const WindBox = ({ id }: { id: number }) => {
+  const analog = useAppSelector(selectShowAnalogWindRose)
   const aerodrome = useAppSelector(selectActiveAerodrome)
   usePollAtisByIcaoCodes([aerodrome])
   const runway = useAppSelector((store) => selectRunwayDirection(store, id))
@@ -96,9 +99,11 @@ const WindBox = ({ id }: { id: number }) => {
         padding: 1,
       }}
     >
-      <InfoBox sx={{ pr: 0 }}>
-        <AnalogWindRose metar={metar} />
-      </InfoBox>
+      {analog && (
+        <InfoBox sx={{ pr: 0 }}>
+          <AnalogWindRose metar={metar} />
+        </InfoBox>
+      )}
       <Flex
         sx={{
           flexDirection: "column",
@@ -201,11 +206,14 @@ export const XmcIndicator = () => {
 
 export const Wind = () => {
   const aerodrome = useAppSelector(selectActiveAerodrome)
+  const analog = useAppSelector(selectShowAnalogWindRose)
   usePollAtisByIcaoCodes([aerodrome])
   api.useAerodromesByIcaosQuery([aerodrome])
 
   const atis = useAppSelector((store) => selectAtis(store, aerodrome))
   const splitAtis = AD_SETUP?.[aerodrome]?.splitATIS || false
+
+  const dispatch = useAppDispatch()
 
   return (
     <Grid
@@ -218,7 +226,9 @@ export const Wind = () => {
       <WindBox id={0} />
       <Flex sx={{ flexDirection: "column", textAlign: "center", gap: 2 }}>
         <AerodromeSelect />
-        <Button disabled>D/A</Button>
+        <Button onClick={() => dispatch(setAnalogWindRoseShown(!analog))}>
+          D/A
+        </Button>
         <Flex sx={{ gap: 2 }}>
           {splitAtis && (
             <>

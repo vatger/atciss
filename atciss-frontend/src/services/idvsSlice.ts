@@ -7,6 +7,7 @@ import { selectAtis } from "services/atisApi"
 interface ConfigState {
   activeAerodrome: string
   atisRwyConfigOpen: boolean
+  showAnalogWindRose: boolean
 }
 
 const idvsSlice = createSlice({
@@ -14,6 +15,7 @@ const idvsSlice = createSlice({
   initialState: {
     activeAerodrome: localStorageOrDefault("idvs.activeAerodrome", "EDDM"),
     atisRwyConfigOpen: false,
+    showAnalogWindRose: localStorageOrDefault("idvs.analogWindRose", true),
   } as ConfigState,
   reducers: {
     setActiveAerodrome(state, { payload }: PayloadAction<string>) {
@@ -21,6 +23,9 @@ const idvsSlice = createSlice({
     },
     setAtisRwyConfigOpen(state, { payload }: PayloadAction<boolean>) {
       state.atisRwyConfigOpen = payload
+    },
+    setAnalogWindRoseShown(state, { payload }: PayloadAction<boolean>) {
+      state.showAnalogWindRose = setLocalStorage("idvs.analogWindRose", payload)
     },
   },
 })
@@ -30,6 +35,9 @@ export const selectActiveAerodrome = (store: RootState) =>
 
 export const selectAtisRwyConfigOpen = (store: RootState) =>
   store.idvs.atisRwyConfigOpen
+
+export const selectShowAnalogWindRose = (store: RootState) =>
+  store.idvs.showAnalogWindRose
 
 export const selectRunwayDirection = createSelector(
   (store) => store,
@@ -55,5 +63,9 @@ export const selectRunwayDirection = createSelector(
   },
 )
 
-export const { setActiveAerodrome, setAtisRwyConfigOpen } = idvsSlice.actions
+export const {
+  setActiveAerodrome,
+  setAtisRwyConfigOpen,
+  setAnalogWindRoseShown,
+} = idvsSlice.actions
 export const { reducer: idvsReducer } = idvsSlice
