@@ -66,8 +66,8 @@ const RWYArrow = ({ dir }: { dir: string }) => {
         fill: "#fff",
         height: dir == "left" || dir == "right" ? "100%" : "auto",
         width: dir == "up" || dir == "down" ? "100%" : "auto",
+        transform: "rotate(" + rotationMap[dir] + "deg)",
       }}
-      transform={"rotate(" + rotationMap[dir] + ")"}
     >
       <polygon points="0 16.47 18.31 16.47 18.31 21.94 37.31 10.97 18.31 0 18.31 5.47 0 5.47 0 16.47" />
     </svg>
