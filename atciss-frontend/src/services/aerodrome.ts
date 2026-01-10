@@ -60,7 +60,7 @@ export const selectAerodromesWithMetarFromPrefixes = createSelector(
       api.endpoints.metarsByIcaoCodes.select(Object.keys(ads))(state).data ??
         {},
     )
-      .filter(([, metar]) => metar !== null)
+      .filter(([, metar]) => metar.current !== null)
       .map(([icao]) => icao),
 )
 
