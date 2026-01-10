@@ -1,5 +1,4 @@
 import { useAppDispatch, useAppSelector } from "app/hooks"
-import { XmSelect } from "components/atciss/XmSelect"
 import {
   selectAerodromesWithPrefixes,
   selectIdvsAerodromes,
@@ -7,7 +6,7 @@ import {
 import { api } from "services/api"
 import { selectActiveAerodrome, setActiveAerodrome } from "services/idvsSlice"
 import { usePollMetarByIcaoCodes } from "services/metarApi"
-import { ThemeUIStyleObject } from "theme-ui"
+import { Select, ThemeUIStyleObject } from "theme-ui"
 
 const AD_PREFIXES = ["ED", "ET"]
 
@@ -24,7 +23,8 @@ export const AerodromeSelect = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const dispatch = useAppDispatch()
 
   return (
-    <XmSelect
+    <Select
+      variant={"xmSelectXl"}
       onChange={(e) => dispatch(setActiveAerodrome(e.target.value))}
       value={aerodrome}
       sx={{ fontSize: 5, textAlign: "center", ...sx }}
@@ -32,6 +32,6 @@ export const AerodromeSelect = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       {metarIcaos.map((ad) => (
         <option key={ad}>{ad}</option>
       ))}
-    </XmSelect>
+    </Select>
   )
 }

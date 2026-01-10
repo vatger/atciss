@@ -68,7 +68,7 @@ export const Atis = () => {
         </AtisLine>
         <AtisLine label={"Obs. Time"}>
           <Input
-            variant={"xm_xl"}
+            variant={"xmInputXl"}
             sx={{ width: "10rem" }}
             readOnly={true}
             value={obs_time}
@@ -91,7 +91,7 @@ export const Atis = () => {
         </AtisLine>
         <AtisLine label={"TRL"}>
           <Input
-            variant={"xm_xl"}
+            variant={"xmInputXl"}
             readOnly={true}
             sx={{ width: "4rem" }}
             value={metar?.tl || ""}
@@ -101,7 +101,7 @@ export const Atis = () => {
           hello
         </AtisLine>
         <AtisLine label={"METAR"}>
-          <Input variant={"xm_xl"} readOnly={true} value={raw_metar} />
+          <Input variant={"xmInputXl"} readOnly={true} value={raw_metar} />
         </AtisLine>
         <AtisLine label={"Info 4"} height={3}>
           hello

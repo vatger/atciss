@@ -16,6 +16,7 @@ export const useIdvsTheme = useTheme as () => IdvsTheme
 export const theme: IdvsTheme = {
   colors: {
     text: "#000",
+    textDisabled: "#777",
     background: "#ababab",
     primary: "#d2d2d2",
     secondary: "#a0e6fa",
@@ -32,6 +33,7 @@ export const theme: IdvsTheme = {
     modes: {
       dark: {
         text: "#fff",
+        textDisabled: "#777",
         background: "#333",
         inputBackground: "#555",
         primary: "#555",
@@ -103,7 +105,7 @@ export const theme: IdvsTheme = {
     },
   },
   forms: {
-    xm: {
+    xmInput: {
       border: 2,
       borderRadius: 0,
       borderStyle: "solid",
@@ -116,7 +118,7 @@ export const theme: IdvsTheme = {
       background: "inputBackground",
       fontFamily: "monospace",
     },
-    xm_xl: {
+    xmInputXl: {
       border: 2,
       borderRadius: 0,
       borderStyle: "solid",
@@ -127,6 +129,19 @@ export const theme: IdvsTheme = {
       borderBottomColor: "brightshadow",
       borderRightColor: "brightshadow",
       background: "inputBackground",
+      fontFamily: "monospace",
+      fontSize: 4,
+    },
+    xmSelectXl: {
+      border: 2,
+      borderRadius: 0,
+      borderStyle: "solid",
+      px: 2,
+      py: 1,
+      borderTopColor: "brightshadow",
+      borderLeftColor: "brightshadow",
+      borderBottomColor: "darkshadow",
+      borderRightColor: "darkshadow",
       fontFamily: "monospace",
       fontSize: 4,
     },
@@ -154,7 +169,7 @@ export const theme: IdvsTheme = {
       },
       "&:disabled": {
         cursor: "not-allowed",
-        color: "darkshadow",
+        color: "textDisabled",
       },
     },
     nav: {
