@@ -18,6 +18,9 @@ class Application(BaseSettings):
     ALEMBIC_CFG_PATH: str = "alembic.ini"
     DOCS_URL: str = "/"
     BASE_URL: str = "http://localhost:8000"
+    VATGLASSES_BASE_URL: str = (
+        "https://raw.githubusercontent.com/lennycolton/vatglasses-data/main/data/"
+    )
     LOA_URL: str = "https://loa.vatsim-germany.org/api/v1/conditions"
     NOTAM_URL: str = "https://notams.blip-radar.org/api/query?loc="
     VLARA_URL: str = "https://lara-backend.lusep.fi/data/reservations/edxx.json"
