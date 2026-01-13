@@ -36,17 +36,17 @@ async def fetch_sector_data(
 
     async with redis.pipeline() as pipe:
         for region, region_data in data.items():
-            pipe.set(
+            _ = pipe.set(
                 f"sector:airports:{region}",
                 TypeAdapter(dict[str, Airport]).dump_json(region_data.airports),
             )
-            pipe.set(
+            _ = pipe.set(
                 f"sector:positions:{region}",
                 TypeAdapter(dict[str, Position]).dump_json(region_data.positions),
             )
-            pipe.set(
+            _ = pipe.set(
                 f"sector:airspaces:{region}",
                 TypeAdapter(dict[str, Airspace]).dump_json(region_data.airspace),
             )
 
-        await pipe.execute()
+        _ = await pipe.execute()
