@@ -25,16 +25,16 @@ def upgrade() -> None:
         "aerodrome", sa.Column("source", sqlmodel.sql.sqltypes.AutoString(), nullable=True)
     )
     op.execute(
-        sa.table(
-            "aerodrome", sa.Column("source", sqlmodel.sql.sqltypes.AutoString(), nullable=True)
-        )
+        sa
+        .table("aerodrome", sa.Column("source", sqlmodel.sql.sqltypes.AutoString(), nullable=True))
         .update()
         .values(source="DFS")
     )
     op.alter_column("aerodrome", "source", nullable=False)
     op.add_column("navaid", sa.Column("source", sqlmodel.sql.sqltypes.AutoString(), nullable=True))
     op.execute(
-        sa.table("navaid", sa.Column("source", sqlmodel.sql.sqltypes.AutoString(), nullable=True))
+        sa
+        .table("navaid", sa.Column("source", sqlmodel.sql.sqltypes.AutoString(), nullable=True))
         .update()
         .values(source="DFS")
     )
