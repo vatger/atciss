@@ -38,7 +38,7 @@ dependencies = [
         "regex==2026.1.15",
         "shapely>=2.0.6,<3",
         "sqlalchemy[asyncio]>=2.0.40,<3",
-        "sqlmodel==0.0.32",
+        "sqlmodel==0.0.33",
         "taskiq-fastapi>=0.4,<0.5",
         "taskiq-redis>=1,<2",
         "taskiq>=0.12,<0.13",
