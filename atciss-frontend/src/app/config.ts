@@ -72,17 +72,17 @@ export const SPLIT_PRESETS: Record<
     "MRZ-BOR-FLG": { positions: ["ed/MRZ", "ed/BOR", "ed/FLG"] },
   },
   EDUU: {
-    "CHI-SAL-HVL-WUR": {
+    "AMM-SAL-HVL-WUR": {
       level: 320,
-      positions: ["ed/CHI", "ed/SAL", "ed/HVL", "ed/WUR"],
+      positions: ["ed/AMM", "ed/SAL", "ed/HVL", "ed/WUR"],
     },
     "OSE-HVL-SAL": { level: 320, positions: ["ed/OSE", "ed/HVL", "ed/SAL"] },
     "OSE-HVL": { level: 320, positions: ["ed/OSE", "ed/HVL"] },
-    "CHI-ERL": { level: 320, positions: ["ed/CHI", "ed/ERL"] },
-    "ISA-DON-SAL": { level: 320, positions: ["ed/ISA", "ed/DON", "ed/SAL"] },
-    "ALP-ISA-ERL-SPE": {
+    "AMM-ERL": { level: 320, positions: ["ed/AMM", "ed/ERL"] },
+    "AMM-DON-SAL": { level: 320, positions: ["ed/AMM", "ed/DON", "ed/SAL"] },
+    "ALP-AMM-ERL-SPE": {
       level: 320,
-      positions: ["ed/ALP", "ed/ISA", "ed/ERL", "ed/SPE"],
+      positions: ["ed/ALP", "ed/AMM", "ed/ERL", "ed/SPE"],
     },
     "NTM-SLN": { level: 320, positions: ["ed/NTM", "ed/SLN"] },
   },
@@ -175,7 +175,7 @@ export const FIR_SETTINGS: Record<string, FIR> = {
           "ed/FRK",
         ],
         statusSectors: [
-          ["ed/ISA1", "ed/DON1", "ed/ALP1", "ed/CHI1"],
+          ["ed/DON1", "ed/ALP1", "ed/AMM1"],
           ["ed/ALB", "ed/RDG", "ed/EGG", "ed/NDG", "ed/WLD", "ed/SWA"],
           ["ed/DMNH", "ed/DMNL", "ed/FUE", "ed/STA", "ed/TEG", "ed/TRU"],
           ["ed/HOF", "ed/BBG", "ed/FRK"],
@@ -221,7 +221,7 @@ export const FIR_SETTINGS: Record<string, FIR> = {
           "ed/TRU",
         ],
         statusSectors: [
-          ["ed/ALP1", "ed/CHI1", "ed/ISA1", "ed/DON1"],
+          ["ed/ALP1", "ed/AMM1", "ed/DON1"],
           ["ed/FUE", "ed/STA", "ed/TRU", "ed/NDG", "ed/ALB", "ed/EGG"],
           ["ed/ZUG", "ed/TEG", "ed/ILR", "ed/SWA", "ed/DMSH", "ed/DMSL"],
         ],
