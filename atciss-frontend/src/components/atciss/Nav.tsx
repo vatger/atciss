@@ -116,9 +116,9 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         <Link to="aip-vfr" sx={{ gridRow: "2/3" }}>
           <Button variant="nav">AIP VFR</Button>
         </Link>
-        {user?.admin && (
-          <Link to="bookings" sx={{ gridRow: "2/3" }}>
-            <Button variant="nav">Bookings</Button>
+        {activeFir == "EDMM" && (
+          <Link to="staffing" sx={{ gridRow: "2/3" }}>
+            <Button variant="nav">Staffing</Button>
           </Link>
         )}
       </Grid>

@@ -25,6 +25,7 @@ import { Windy } from "views/atciss/Windy"
 import { Wx } from "views/atciss/Wx"
 import { Afw } from "views/idvs/Afw"
 import { About } from "views/atciss/About"
+import { StaffingNO } from "views/atciss/StaffingNO"
 // import { Bookings } from "src/views/Bookings"
 
 const router = createBrowserRouter([
@@ -60,10 +61,10 @@ const router = createBrowserRouter([
         path: "ac",
         element: <AircraftData />,
       },
-      // {
-      //   path: "bookings",
-      //   element: <Bookings />,
-      // },
+      {
+        path: "staffing",
+        element: <StaffingNO />,
+      },
       {
         path: "windy",
         element: <Windy />,
