@@ -271,7 +271,7 @@ requires-dist = [
     { name = "prometheus-fastapi-instrumentator", specifier = ">=7.1.0" },
     { name = "pydantic", specifier = ">=2.11,<3" },
     { name = "pydantic-settings", specifier = ">=2.9.1,<3" },
-    { name = "pydantic-xml", extras = ["lxml"], specifier = ">=2.16,<3" },
+    { name = "pydantic-xml", extras = ["lxml"], specifier = ">=2.20.0,<3" },
     { name = "pynotam", git = "https://github.com/globin/PyNotam?rev=84b741863d09aaa616e6f378a2e6e5eab8df706f" },
     { name = "python-dateutil", specifier = ">=2.9.0,<3" },
     { name = "python-jose", specifier = ">=3.4.0,<4" },
@@ -1282,15 +1282,15 @@ wheels = [
 
 [[package]]
 name = "pydantic-xml"
-version = "2.18.0"
+version = "2.20.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pydantic" },
     { name = "pydantic-core" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5e/64/cd62cbbba095d69fe601c8d6a1924988907eb5845b397a124fb49e0e5e44/pydantic_xml-2.18.0.tar.gz", hash = "sha256:e6838c9247de2ffe28127581de3cc360bc7176abe5fd87751dbafdd966416749", size = 26168, upload-time = "2025-10-10T20:12:43.251Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/cf/ab/5589aac52a5601bc91122625043034898c66fbe9fedce6785bfc6ef6e69e/pydantic_xml-2.20.0.tar.gz", hash = "sha256:38eb71fb66c05c31c632a50e964c273f67dafddc5aa7c64cd6bd2b487dc2eeaf", size = 26440, upload-time = "2026-04-11T21:24:23.967Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8e/cd/6a9174b5a432ef4f49e271418104b62a0da2881cc6dfc6b73dd20498931e/pydantic_xml-2.18.0-py3-none-any.whl", hash = "sha256:9b2412c8c84242223979e9274ade1d3566028cf6a9b1cdb6389384d2db5292c0", size = 42484, upload-time = "2025-10-10T20:12:42.258Z" },
+    { url = "https://files.pythonhosted.org/packages/7d/e0/e0baac028479a09b2b46d09c8f0b2a32d4991e7c7bd13c544e64c6ff86d0/pydantic_xml-2.20.0-py3-none-any.whl", hash = "sha256:b492819830ff368124c9f8b53ea23953373422eebded2393e9d99008a086e07a", size = 42882, upload-time = "2026-04-11T21:24:25.096Z" },
 ]
 
 [package.optional-dependencies]
