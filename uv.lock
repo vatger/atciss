@@ -283,7 +283,7 @@ requires-dist = [
     { name = "taskiq", specifier = ">=0.12,<0.13" },
     { name = "taskiq-fastapi", specifier = ">=0.4,<0.5" },
     { name = "taskiq-redis", specifier = ">=1,<2" },
-    { name = "uvicorn", extras = ["standard"], specifier = ">=0.40,<0.45" },
+    { name = "uvicorn", extras = ["standard"], specifier = ">=0.44.0,<0.45" },
     { name = "vatsim", git = "https://github.com/fpletz/python-vatsim.git?rev=ef56bdbc6a4348d8cbefbf6b9fe0aa98e0aed06c" },
     { name = "watchfiles", specifier = ">=1,<2" },
     { name = "xmltodict", specifier = ">=1,<2" },
