@@ -296,7 +296,7 @@ dev = [
     { name = "pyrasite", specifier = ">=2.0,<3" },
     { name = "pyright", specifier = ">=1.1.400,<2" },
     { name = "ruff", specifier = ">=0.15.11,<0.16" },
-    { name = "taskiq", extras = ["reload"], specifier = ">=0.12.1,<0.13" },
+    { name = "taskiq", extras = ["reload"], specifier = ">=0.12.2,<0.13" },
     { name = "types-beautifulsoup4", specifier = ">=4.12.0.20241020,<5" },
     { name = "types-python-jose", specifier = ">=3.4.0.20250224,<4" },
     { name = "types-xmltodict", specifier = ">=1,<2" },
@@ -722,15 +722,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/9c/cb/8ac0172223afbccb63986cc25049b154ecfb5e85932587206f42317be31d/itsdangerous-2.2.0.tar.gz", hash = "sha256:e0050c0b7da1eea53ffaf149c0cfbb5c6e2e2b69c4bef22c81fa6eb73e5f6173", size = 54410, upload-time = "2024-04-16T21:28:15.614Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/04/96/92447566d16df59b2a776c0fb82dbc4d9e07cd95062562af01e408583fc4/itsdangerous-2.2.0-py3-none-any.whl", hash = "sha256:c6242fc49e35958c8b15141343aa660db5fc54d4f13a1db01a3f5891b98700ef", size = 16234, upload-time = "2024-04-16T21:28:14.499Z" },
-]
-
-[[package]]
-name = "izulu"
-version = "0.50.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d0/58/6d6335c78b7ade54d8a6c6dbaa589e5c21b3fd916341d5a16f774c72652a/izulu-0.50.0.tar.gz", hash = "sha256:cc8e252d5e8560c70b95380295008eeb0786f7b745a405a40d3556ab3252d5f5", size = 48558, upload-time = "2025-03-24T15:52:21.51Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/4a/9f/bf9d33546bbb6e5e80ebafe46f90b7d8b4a77410b7b05160b0ca8978c15a/izulu-0.50.0-py3-none-any.whl", hash = "sha256:4e9ae2508844e7c5f62c468a8b9e2deba2f60325ef63f01e65b39fd9a6b3fab4", size = 18095, upload-time = "2025-03-24T15:52:19.667Z" },
 ]
 
 [[package]]
@@ -1722,20 +1713,19 @@ sdist = { url = "https://files.pythonhosted.org/packages/f3/1f/1241aa3d66e8dc161
 
 [[package]]
 name = "taskiq"
-version = "0.12.1"
+version = "0.12.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
     { name = "anyio" },
-    { name = "izulu" },
     { name = "packaging" },
     { name = "pycron" },
     { name = "pydantic" },
     { name = "taskiq-dependencies" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/92/cf/c4a47be05d85754f3e0ecc7b72131249adc067ea37517054459e94268fb1/taskiq-0.12.1.tar.gz", hash = "sha256:338dcf58eaca327e511a9380b2185bfa6a415dd79a5cf144546a2dbb95459298", size = 60536, upload-time = "2025-12-07T16:07:43.561Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c7/23/7c5b1ed6faaa6cbc7735b455e17af4ba53ca3deea1a6ef640386640253d8/taskiq-0.12.2.tar.gz", hash = "sha256:de0c375d9c68481dd0625ebaa332f8f582866a0499663a45cedf7407b00e03f0", size = 393931, upload-time = "2026-04-18T10:29:29.924Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4c/e4/a2fda3bcbb8b61108dc8e9db1a2d19a23578953db73e981f66b9d44f1207/taskiq-0.12.1-py3-none-any.whl", hash = "sha256:a8ade45e2e23edbadb972a88dec44e68c7daef83383d01fa3af48594a24a712a", size = 90668, upload-time = "2025-12-07T16:07:42.296Z" },
+    { url = "https://files.pythonhosted.org/packages/ef/5f/7800adec9853b9ab74e8ce91efe15f961afccd1e829c6b8a87d8462a1485/taskiq-0.12.2-py3-none-any.whl", hash = "sha256:491491ad255fb88bf4d3e04e356dd1e6507ca7d8197b68a2f89ce7c5b5c7cc51", size = 89885, upload-time = "2026-04-18T10:29:28.229Z" },
 ]
 
 [package.optional-dependencies]
