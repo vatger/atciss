@@ -284,7 +284,7 @@ requires-dist = [
     { name = "shapely", specifier = ">=2.0.6,<3" },
     { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.0.49,<3" },
     { name = "sqlmodel", specifier = "==0.0.38" },
-    { name = "taskiq", specifier = ">=0.12,<0.13" },
+    { name = "taskiq", specifier = ">=0.12.3,<0.13" },
     { name = "taskiq-fastapi", specifier = ">=0.5.0,<0.6" },
     { name = "taskiq-redis", specifier = ">=1,<2" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.46.0,<0.47" },
@@ -1717,7 +1717,7 @@ sdist = { url = "https://files.pythonhosted.org/packages/f3/1f/1241aa3d66e8dc161
 
 [[package]]
 name = "taskiq"
-version = "0.12.2"
+version = "0.12.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -1727,9 +1727,9 @@ dependencies = [
     { name = "pydantic" },
     { name = "taskiq-dependencies" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c7/23/7c5b1ed6faaa6cbc7735b455e17af4ba53ca3deea1a6ef640386640253d8/taskiq-0.12.2.tar.gz", hash = "sha256:de0c375d9c68481dd0625ebaa332f8f582866a0499663a45cedf7407b00e03f0", size = 393931, upload-time = "2026-04-18T10:29:29.924Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e8/e1/9bbf459974168c6a763f984a1fd6dbb06f5d0f07754e1dcd7361ef679543/taskiq-0.12.3.tar.gz", hash = "sha256:f9a3ae1b21d494a331e79e617ad116f3088e8bc98b9dc8cb9441e7957168cb76", size = 397625, upload-time = "2026-05-04T14:09:27.053Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ef/5f/7800adec9853b9ab74e8ce91efe15f961afccd1e829c6b8a87d8462a1485/taskiq-0.12.2-py3-none-any.whl", hash = "sha256:491491ad255fb88bf4d3e04e356dd1e6507ca7d8197b68a2f89ce7c5b5c7cc51", size = 89885, upload-time = "2026-04-18T10:29:28.229Z" },
+    { url = "https://files.pythonhosted.org/packages/19/04/c9ccf3b1aeee67bf8a79e02522b0847940b3e3f2dae316e6c4ab50a3cb47/taskiq-0.12.3-py3-none-any.whl", hash = "sha256:113ba7f65c71076f58f017f540d17c6389df5e76516b19a1f91b087dcd7a5803", size = 91787, upload-time = "2026-05-04T14:09:28.42Z" },
 ]
 
 [package.optional-dependencies]
