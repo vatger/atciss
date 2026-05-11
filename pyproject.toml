@@ -73,7 +73,7 @@ dev = [
         "ruff>=0.15.12,<0.16",
         "types-xmltodict>=1.0.1.20260508,<2",
         "pyrasite>=2.0,<3",
-        "taskiq[reload]>=0.12.3,<0.13",
+        "taskiq[reload]>=0.12.4,<0.13",
 ]
 
 [build-system]
