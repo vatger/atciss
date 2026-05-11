@@ -338,7 +338,7 @@ dev = [
     { name = "pyrasite", specifier = ">=2.0,<3" },
     { name = "pyright", specifier = ">=1.1.409,<2" },
     { name = "ruff", specifier = ">=0.15.12,<0.16" },
-    { name = "taskiq", extras = ["reload"], specifier = ">=0.12.3,<0.13" },
+    { name = "taskiq", extras = ["reload"], specifier = ">=0.12.4,<0.13" },
     { name = "types-beautifulsoup4", specifier = ">=4.12.0.20241020,<5" },
     { name = "types-python-jose", specifier = ">=3.4.0.20250224,<4" },
     { name = "types-xmltodict", specifier = ">=1.0.1.20260508,<2" },
