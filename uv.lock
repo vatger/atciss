@@ -341,7 +341,7 @@ dev = [
     { name = "taskiq", extras = ["reload"], specifier = ">=0.12.4,<0.13" },
     { name = "types-beautifulsoup4", specifier = ">=4.12.0.20241020,<5" },
     { name = "types-python-jose", specifier = ">=3.4.0.20250224,<4" },
-    { name = "types-xmltodict", specifier = ">=1.0.1.20260508,<2" },
+    { name = "types-xmltodict", specifier = ">=1.0.1.20260518,<2" },
 ]
 
 [[package]]
@@ -1914,11 +1914,11 @@ wheels = [
 
 [[package]]
 name = "types-xmltodict"
-version = "1.0.1.20260508"
+version = "1.0.1.20260518"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/92/21/57f03cfff0af1e2b946b980d940d96c35f4a98ea4577588f81b1e3ec31a0/types_xmltodict-1.0.1.20260508.tar.gz", hash = "sha256:4e37ffbd0f0255f0312d7677194cc63ed745f6c5dfcb303073ab75dfcfe51c83", size = 8874, upload-time = "2026-05-08T04:49:27.44Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8f/b8/5c43e147eec89125e3f56670c86bc6ba8ea4d0c4cb738a77b3f46940e50d/types_xmltodict-1.0.1.20260518.tar.gz", hash = "sha256:b9d0b364dc47508b4c9040635a94c28f5472f9ab588f6c864ae4c96823bccb33", size = 8890, upload-time = "2026-05-18T06:03:00.296Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/53/fa/3273397fa7ed6ee84394d0ca6323cd3ebeac3308ee0e1556b80b217c1a60/types_xmltodict-1.0.1.20260508-py3-none-any.whl", hash = "sha256:9268dfd98bd6dfff4cdbc215d33efd50a61d20855bf1a3aa93dcc3cc38debf5c", size = 8375, upload-time = "2026-05-08T04:49:26.318Z" },
+    { url = "https://files.pythonhosted.org/packages/f6/5d/e0eee00dd3c7299c1f5ae7ef596409c51dba4af93cfaf05ea7d27f4afc7d/types_xmltodict-1.0.1.20260518-py3-none-any.whl", hash = "sha256:b396dd53afbd8b034014922b95333f10d12515566a6a08282d39fdb1a3a529b9", size = 8377, upload-time = "2026-05-18T06:02:59.076Z" },
 ]
 
 [[package]]
