@@ -43,7 +43,7 @@ dependencies = [
         "taskiq-redis>=1,<2",
         "taskiq>=0.12.3,<0.13",
         "uvicorn[standard]>=0.47.0,<0.48",
-        "watchfiles>=1,<2",
+        "watchfiles>=1.2.0,<2",
         "xmltodict>=1,<2",
         "eaup",
         "loa",
