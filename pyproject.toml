@@ -50,7 +50,7 @@ dependencies = [
         "metar",
         "pynotam",
         "vatsim",
-        "geojson>=3.2.0,<4",
+        "geojson>=3.3.0,<4",
 ]
 
 [project.scripts]
