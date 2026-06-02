@@ -124,15 +124,14 @@ wheels = [
 
 [[package]]
 name = "asgi-correlation-id"
-version = "4.3.4"
+version = "5.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "packaging" },
     { name = "starlette" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f4/ff/a6538245ac1eaa7733ec6740774e9d5add019e2c63caa29e758c16c0afdd/asgi_correlation_id-4.3.4.tar.gz", hash = "sha256:ea6bc310380373cb9f731dc2e8b2b6fb978a76afe33f7a2384f697b8d6cd811d", size = 20075, upload-time = "2024-10-17T11:44:30.324Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a3/9b/eb19a8105d3ff02818e336a0abd87a28162f4e563486407b6b38923a33a5/asgi_correlation_id-5.0.0.tar.gz", hash = "sha256:31fb8e5bce229fdf01b7be83d7969957a5adc4f99c3c2bc31338d3ff3070f5fc", size = 10702, upload-time = "2026-05-31T19:47:02.725Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d9/ab/6936e2663c47a926e0659437b9333ad87d1ff49b1375d239026e0a268eba/asgi_correlation_id-4.3.4-py3-none-any.whl", hash = "sha256:36ce69b06c7d96b4acb89c7556a4c4f01a972463d3d49c675026cbbd08e9a0a2", size = 15262, upload-time = "2024-10-17T11:44:28.739Z" },
+    { url = "https://files.pythonhosted.org/packages/18/11/4311366203b4d8e05101f0794194cecfd03f34bb7819e2fc7ddb682eb80d/asgi_correlation_id-5.0.0-py3-none-any.whl", hash = "sha256:68d156ecd44e9c828dc7b20f8b7edb47070751c0739ba8ff0dd35a7b62bf579e", size = 12100, upload-time = "2026-05-31T19:47:03.624Z" },
 ]
 
 [[package]]
@@ -291,7 +290,7 @@ dev = [
 requires-dist = [
     { name = "aiohttp", specifier = ">=3.11.18,<4" },
     { name = "alembic", specifier = ">=1.15.2,<2" },
-    { name = "asgi-correlation-id", specifier = ">=4.3.4,<5" },
+    { name = "asgi-correlation-id", specifier = ">=5.0.0,<6" },
     { name = "asgiref", specifier = ">=3.8.1,<4" },
     { name = "astral", specifier = ">=3.2,<4" },
     { name = "asyncpg", specifier = ">=0.31.0,<0.32" },
