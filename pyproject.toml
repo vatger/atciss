@@ -11,7 +11,7 @@ license = "MIT"
 readme = "README.md"
 
 dependencies = [
-        "aiohttp>=3.14.0,<4",
+        "aiohttp>=3.14.1,<4",
         "alembic>=1.15.2,<2",
         "asgi-correlation-id>=5.0.0,<6",
         "asgiref>=3.8.1,<4",
