@@ -149,9 +149,7 @@ async def process_runways(aixm: AIXMData, session: AsyncSession, aerodrome_ids: 
         ad_icao = rwy["aixm:associatedAirportHeliport", "@xlink:title"].get()
 
         if ad not in aerodrome_ids:
-            logger.warning(
-                f"Runway {rwy_id} ({ad_icao}): AD {ad} not found, skipping."
-            )
+            logger.warning(f"Runway {rwy_id} ({ad_icao}): AD {ad} not found, skipping.")
             continue
 
         rwy_data = {
