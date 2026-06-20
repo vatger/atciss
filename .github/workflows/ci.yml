@@ -55,6 +55,44 @@ jobs:
       - name: Run eslint
         run: nix run .#eslint
 
+  pytest:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+    needs:
+      - devshell
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - name: Install Lix
+        uses: samueldr/lix-gha-installer-action@f526e761e1ad201b0f4231f61a2a569f17bcc2ac # latest
+      - uses: cachix/cachix-action@5f2d7c5294214f71b873db4b969586b980625e71 # v17
+        with:
+          name: atciss
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - name: Run pytest
+        run: nix run .#pytest
+
+  vitest:
+    name: Frontend Tests
+    runs-on: ubuntu-latest
+    needs:
+      - devshell
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - name: Install Lix
+        uses: samueldr/lix-gha-installer-action@f526e761e1ad201b0f4231f61a2a569f17bcc2ac # latest
+      - uses: cachix/cachix-action@5f2d7c5294214f71b873db4b969586b980625e71 # v17
+        with:
+          name: atciss
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - name: Run vitest
+        run: nix run .#vitest
+
   flake-check:
     name: Flake Check
     runs-on: ubuntu-latest
@@ -83,6 +121,8 @@ jobs:
       packages: write
     needs:
       - lint
+      - pytest
+      - vitest
       - flake-check
     steps:
       - name: Checkout repository

@@ -20,7 +20,7 @@ const pathOptions = {
   fillOpacity: 0.5,
 }
 
-const Sigmet = ({ sigmet }: { sigmet: SigmetType }) => {
+export const Sigmet = ({ sigmet }: { sigmet: SigmetType }) => {
   const [center, setCenter] = useState<LatLng | null>(null)
 
   const start = DateTime.fromISO(sigmet.validTimeFrom).toUTC()
@@ -87,8 +87,8 @@ const Sigmet = ({ sigmet }: { sigmet: SigmetType }) => {
               i === 0 ? { add: (p) => setCenter(p.target.getCenter()) } : {}
             }
           >
-            {i === 0 && verticalBoundary}
-            {i === 0 && tooltip}
+            {verticalBoundary}
+            {tooltip}
           </Polygon>
         ))}
       </>

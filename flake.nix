@@ -349,6 +349,12 @@
               eslint = mkCIApp "eslint" ''
                 nix develop .#ci -c ${lib.getExe pkgs.bash} -c '(cd atciss-frontend && npm install && npm run lint)'
               '';
+              pytest = mkCIApp "pytest" ''
+                nix develop .#ci -c pytest atciss/tests
+              '';
+              vitest = mkCIApp "vitest" ''
+                nix develop .#ci -c ${lib.getExe pkgs.bash} -c '(cd atciss-frontend && npm install && npm test -- run)'
+              '';
             };
         };
     };
