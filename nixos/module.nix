@@ -54,7 +54,7 @@ in
     services.postgresql = {
       enable = true;
       ensureDatabases = [ "atciss" ];
-      extraPlugins = with config.services.postgresql.package.pkgs; [ postgis ];
+      extensions = ps: with ps; [ postgis ];
       ensureUsers = [
         {
           name = "atciss";
@@ -78,7 +78,7 @@ in
           Type = "oneshot";
           User = "postgres";
         };
-        environment.PSQL = "psql --port=${toString config.services.postgresql.port}";
+        environment.PSQL = "psql --port=${toString config.services.postgresql.settings.port}";
         path = [ config.services.postgresql.package ];
         script = ''
           $PSQL atciss -c 'CREATE EXTENSION IF NOT EXISTS postgis'
