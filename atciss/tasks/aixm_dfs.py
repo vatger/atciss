@@ -68,8 +68,8 @@ async def fetch_dfs_aixm_data(
 
     aixm = AIXMData(aixm_data)
 
-    await process_aerodromes(aixm, db_session)
-    await process_runways(aixm, db_session)
+    aerodrome_ids = await process_aerodromes(aixm, db_session)
+    await process_runways(aixm, db_session, aerodrome_ids)
     await process_waypoints(aixm, db_session)
     await process_navaids(aixm, db_session)
     await process_routes(aixm, db_session)
@@ -80,8 +80,10 @@ async def http_get_bytesio(url: str, http_client: ClientSession):
         return io.BytesIO(await res.read())
 
 
-async def process_aerodromes(aixm: AIXMData, session: AsyncSession):
+async def process_aerodromes(aixm: AIXMData, session: AsyncSession) -> set[UUID]:
     logger.info("Processing DFS ADHP data")
+
+    aerodrome_ids: set[UUID] = set()
 
     for ad in aixm.type("AirportHeliport"):
         # Filter out ADs without ICAO
@@ -95,8 +97,9 @@ async def process_aerodromes(aixm: AIXMData, session: AsyncSession):
             logger.warning(f"AD {ad.id} is missing an ARP position, skipping.")
             continue
 
+        ad_id = UUID(ad.id)
         ad_data = {
-            "id": UUID(ad.id),
+            "id": ad_id,
             "name": ad["aixm:name"].get(),
             "type": ad["aixm:type"].get(),
             "local_designator": ad["aixm:designator"].get(),
@@ -116,9 +119,12 @@ async def process_aerodromes(aixm: AIXMData, session: AsyncSession):
         }
         logger.trace(f"Processing AD: {ad_data}")
         await create_or_update(session, Aerodrome, ad_data)
+        aerodrome_ids.add(ad_id)
+
+    return aerodrome_ids
 
 
-async def process_runways(aixm: AIXMData, session: AsyncSession):
+async def process_runways(aixm: AIXMData, session: AsyncSession, aerodrome_ids: set[UUID]):
     logger.info("Processing DFS RWY data")
 
     rwy_map = defaultdict(list)
@@ -140,6 +146,13 @@ async def process_runways(aixm: AIXMData, session: AsyncSession):
         rwy = aixm.id(rwy_id)
 
         ad = UUID(rwy["aixm:associatedAirportHeliport", "@xlink:href"].get()[9:])
+        ad_icao = rwy["aixm:associatedAirportHeliport", "@xlink:title"].get()
+
+        if ad not in aerodrome_ids:
+            logger.warning(
+                f"Runway {rwy_id} ({ad_icao}): AD {ad} not found, skipping."
+            )
+            continue
 
         rwy_data = {
             "id": UUID(rwy.id),
@@ -269,8 +282,8 @@ async def process_routes(aixm: AIXMData, session: AsyncSession):
                     Navaid,
                     {
                         "id": uuid,
-                        "designator": re.search(r"aixm:designator=([A-Z]+);", title).groups()[0],
-                        "type": re.search(r"aixm:type=([A-Z]+);", title).groups()[0],
+                        "designator": re.search(r"aixm:designator=([^;]+);", title).groups()[0],
+                        "type": re.search(r"aixm:type=([^;]+);", title).groups()[0],
                         "location": re.search(r"gml:pos=([0-9. ]+)", title).groups()[0],
                         "source": "DFS",
                     },
