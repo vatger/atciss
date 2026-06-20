@@ -13,4 +13,6 @@ def create_aiohttp_client_session():
 
 async def get_aiohttp_client():
     async with create_aiohttp_client_session() as client:
-        yield client
+        # FastAPI's yield-dependency pattern: Starlette drives this generator
+        # to completion via AsyncExitStack, so cleanup isn't left to chance.
+        yield client  # noqa: ASYNC119

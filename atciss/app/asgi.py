@@ -47,10 +47,12 @@ async def lifespan(_: FastAPI):
     if not broker.is_worker_process:
         await run_async_migrations()
         await broker.startup()
-    yield
-    if not broker.is_worker_process:
-        await broker.shutdown()
-        await redis_pool.disconnect()
+    try:
+        yield
+    finally:
+        if not broker.is_worker_process:
+            await broker.shutdown()
+            await redis_pool.disconnect()
 
 
 def get_application() -> FastAPI:

@@ -25,6 +25,7 @@ def _patch_file_watcher() -> None:
     # Imported locally: taskiq's reload extra (gitignore_parser, watchdog)
     # is a dev-only dependency, not installed in production, so this must
     # only run when reload is actually enabled.
+    # pylint: disable=import-outside-toplevel
     from taskiq.cli.watcher import FileWatcher
     from watchdog.events import FileSystemEvent
 
