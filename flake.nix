@@ -87,61 +87,41 @@
                   overlay
                   (final: prev: {
                     eaup = prev.eaup.overrideAttrs (old: {
-                      nativeBuildInputs = old.nativeBuildInputs ++ [
-                        (final.resolveBuildSystem { poetry-core = [ ]; })
-                      ];
+                      nativeBuildInputs = old.nativeBuildInputs ++ final.resolveBuildSystem { poetry-core = [ ]; };
                     });
                     gitignore-parser = prev.gitignore-parser.overrideAttrs (old: {
-                      nativeBuildInputs = old.nativeBuildInputs ++ [
-                        (final.resolveBuildSystem { setuptools = [ ]; })
-                      ];
+                      nativeBuildInputs = old.nativeBuildInputs ++ final.resolveBuildSystem { setuptools = [ ]; };
                     });
                     loa = prev.loa.overrideAttrs (old: {
-                      nativeBuildInputs = old.nativeBuildInputs ++ [
-                        (final.resolveBuildSystem { hatchling = [ ]; })
-                      ];
+                      nativeBuildInputs = old.nativeBuildInputs ++ final.resolveBuildSystem { hatchling = [ ]; };
                     });
                     vatsim = prev.vatsim.overrideAttrs (old: {
-                      nativeBuildInputs = old.nativeBuildInputs ++ [
-                        (final.resolveBuildSystem { hatchling = [ ]; })
-                      ];
+                      nativeBuildInputs = old.nativeBuildInputs ++ final.resolveBuildSystem { hatchling = [ ]; };
                     });
                     metar = prev.metar.overrideAttrs (old: {
-                      nativeBuildInputs = old.nativeBuildInputs ++ [
-                        (final.resolveBuildSystem { setuptools = [ ]; })
-                      ];
+                      nativeBuildInputs = old.nativeBuildInputs ++ final.resolveBuildSystem { setuptools = [ ]; };
                     });
-                    prometheus-fastapi-instrumentator = prev.prometheus-fastapi-instrumentator .overrideAttrs (old: {
-                      nativeBuildInputs = old.nativeBuildInputs ++ [
-                        (final.resolveBuildSystem { poetry-core = [ ]; })
-                      ];
+                    prometheus-fastapi-instrumentator = prev.prometheus-fastapi-instrumentator.overrideAttrs (old: {
+                      nativeBuildInputs = old.nativeBuildInputs ++ final.resolveBuildSystem { poetry-core = [ ]; };
                     });
                     pynotam = prev.pynotam.overrideAttrs (old: {
-                      nativeBuildInputs = old.nativeBuildInputs ++ [
-                        (final.resolveBuildSystem { poetry-core = [ ]; })
-                      ];
+                      nativeBuildInputs = old.nativeBuildInputs ++ final.resolveBuildSystem { poetry-core = [ ]; };
                     });
                     pyrasite = prev.pyrasite.overrideAttrs (old: {
-                      nativeBuildInputs = old.nativeBuildInputs ++ [
-                        (final.resolveBuildSystem { setuptools = [ ]; })
-                      ];
+                      nativeBuildInputs = old.nativeBuildInputs ++ final.resolveBuildSystem { setuptools = [ ]; };
                     });
                     stringcase = prev.stringcase.overrideAttrs (old: {
-                      nativeBuildInputs = old.nativeBuildInputs ++ [
-                        (final.resolveBuildSystem { setuptools = [ ]; })
-                      ];
+                      nativeBuildInputs = old.nativeBuildInputs ++ final.resolveBuildSystem { setuptools = [ ]; };
                     });
                     watchdog = prev.watchdog.overrideAttrs (old: {
-                      nativeBuildInputs = old.nativeBuildInputs ++ [
-                        (final.resolveBuildSystem { setuptools = [ ]; })
-                      ];
+                      nativeBuildInputs = old.nativeBuildInputs ++ final.resolveBuildSystem { setuptools = [ ]; };
                     });
                   })
                 ]
               );
         in
         {
-          formatter = pkgs.nixfmt-rfc-style;
+          formatter = pkgs.nixfmt;
           checks = lib.optionalAttrs pkgs.stdenv.isLinux {
             nixosTest = import ./nixos/test.nix { inherit inputs pkgs; };
           };
@@ -328,7 +308,7 @@
                 + (inputs.pre-commit-hooks.lib.${system}.run {
                   src = ./.;
                   hooks = {
-                    nixfmt-rfc-style.enable = true;
+                    nixfmt.enable = true;
                     statix.enable = true;
                     nil.enable = true;
                     eslint = {
