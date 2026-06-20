@@ -111,6 +111,11 @@
                         (final.resolveBuildSystem { setuptools = [ ]; })
                       ];
                     });
+                    prometheus-fastapi-instrumentator = prev.prometheus-fastapi-instrumentator .overrideAttrs (old: {
+                      nativeBuildInputs = old.nativeBuildInputs ++ [
+                        (final.resolveBuildSystem { poetry-core = [ ]; })
+                      ];
+                    });
                     pynotam = prev.pynotam.overrideAttrs (old: {
                       nativeBuildInputs = old.nativeBuildInputs ++ [
                         (final.resolveBuildSystem { poetry-core = [ ]; })
