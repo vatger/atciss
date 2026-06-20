@@ -2,6 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchWithReauth } from "app/auth"
 // import { tafFormat } from "app/utils"
 import { Agreements } from "services/agreementsApi"
+import { WorkerStatus } from "services/adminApi"
 import { Initials } from "services/initialsApi"
 // import { Booking } from "services/bookingApi"
 import { SectorStatus } from "services/sectorstatusApi"
@@ -280,6 +281,12 @@ export const api = createApi({
       query: (q) => ({
         url: "traffic",
         params: { icao: q },
+      }),
+    }),
+
+    workerStatus: builder.query<WorkerStatus, void>({
+      query: () => ({
+        url: "admin/worker-status",
       }),
     }),
   }),
