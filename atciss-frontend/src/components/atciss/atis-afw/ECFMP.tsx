@@ -2,7 +2,7 @@
 
 import { useAppSelector } from "app/hooks"
 import { DateTime, Duration } from "luxon"
-import { ReactNode } from "react"
+import { Fragment, ReactNode } from "react"
 import { selectActiveFir } from "services/configSlice"
 import { selectEcfmpMeasures, usePollEcfmpByFir } from "services/ecfmpApi"
 import { Box, Text } from "theme-ui"
@@ -43,7 +43,7 @@ export const ECFMP = () => {
             <Text variant="label">
               {fm.measure.type.replaceAll("_", " ").toUpperCase()}
             </Text>
-            {fm.measure.value &&
+            {!!fm.measure.value &&
               `: ${
                 [
                   "minimum_departure_interval",
@@ -62,9 +62,9 @@ export const ECFMP = () => {
           <Box>
             {fm.filters
               .map<ReactNode>((f) => (
-                <>
+                <Fragment key={f.type}>
                   {f.type.replaceAll("_", " ").toUpperCase()}
-                  {f.value && (
+                  {!!f.value && (
                     <>
                       :{" "}
                       <Text variant="label">
@@ -76,7 +76,7 @@ export const ECFMP = () => {
                       </Text>
                     </>
                   )}
-                </>
+                </Fragment>
               ))
               .reduce((prev, curr) => [prev, "; ", curr])}
           </Box>

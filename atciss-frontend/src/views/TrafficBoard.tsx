@@ -45,6 +45,7 @@ const BoardLine = ({ text }: { text: string }) => (
       .replaceAll("-", " ")
       .split("")
       .map((letter, idx) => (
+        // eslint-disable-next-line @eslint-react/no-array-index-key -- characters have no identity beyond position; list is replaced wholesale, never reordered
         <BoardLetter letter={letter} key={idx} />
       ))}
   </Box>
@@ -53,6 +54,7 @@ const BoardLine = ({ text }: { text: string }) => (
 const TrafficBoard = () => {
   const { icao, type } = useParams()
   const [searchParams] = useSearchParams()
+  const { data: results, isLoading, isSuccess } = usePollGetTraffic("EDDM")
 
   if (!icao) {
     return <h1>Missing Airport</h1>
@@ -60,8 +62,6 @@ const TrafficBoard = () => {
   if (!type) {
     return <h1>Set type: arr or dep</h1>
   }
-
-  const { data: results, isLoading, isSuccess } = usePollGetTraffic("EDDM")
 
   const adWidthStr = searchParams.get("ad_width")
   let adWidth = 18

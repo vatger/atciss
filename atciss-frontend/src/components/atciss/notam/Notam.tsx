@@ -109,26 +109,20 @@ export const Notam = ({ notam }: { notam: NotamType }) => {
             {notam.area.radius}nm
           </Box>
         </Flex>
-        {notam.schedule ? (
+        {notam.schedule && (
           <Box>
             <Text variant="label">Schedule</Text> {notam.schedule}
           </Box>
-        ) : (
-          <></>
         )}
-        {notam.limit_lower ? (
+        {notam.limit_lower && (
           <Box>
             <Text variant="label">Lower Limit</Text> {notam.limit_lower}
           </Box>
-        ) : (
-          <></>
         )}
-        {notam.limit_upper ? (
+        {notam.limit_upper && (
           <Box>
             <Text variant="label">Upper Limit</Text> {notam.limit_upper}
           </Box>
-        ) : (
-          <></>
         )}
         <Flex sx={{ gap: 5 }}>
           <Box>

@@ -8,7 +8,7 @@ import { LOCAL_STORAGE_ACCESS_KEY } from "../app/auth/slice"
 
 export const Admin = () => {
   const [tasks, setTasks] = useState<string[]>([])
-  const token = localStorage.getItem(LOCAL_STORAGE_ACCESS_KEY)
+  const [token] = useState(() => localStorage.getItem(LOCAL_STORAGE_ACCESS_KEY))
   const { data: workerStatus } = usePollWorkerStatus()
 
   const runTask = (name: string) => async () =>
@@ -26,7 +26,7 @@ export const Admin = () => {
     }
 
     fetchTasks()
-  }, [])
+  }, [token])
 
   return (
     <Box sx={{ width: "100%", m: 2 }}>

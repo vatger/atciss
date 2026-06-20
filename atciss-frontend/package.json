@@ -28,6 +28,7 @@
     "theme-ui": "^0.17.1"
   },
   "devDependencies": {
+    "@eslint-react/eslint-plugin": "^5.9.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
@@ -37,10 +38,9 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^6",
-    "eslint": "^9.39.2",
+    "eslint": "^10",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.6",
-    "eslint-plugin-react": "^7.37.5",
     "jsdom": "^29.1.1",
     "prettier": "^3.8.4",
     "prettier-config-nick": "^1.0.2",

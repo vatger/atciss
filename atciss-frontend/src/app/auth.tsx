@@ -31,7 +31,7 @@ export const RequireAuth = ({ children }: { children?: React.JSX.Element }) => {
     }
   }, [user, navigate, location])
 
-  return children || <></>
+  return children
 }
 
 export const RequireAdmin = ({
@@ -48,7 +48,7 @@ export const RequireAdmin = ({
     }
   }, [user, navigate])
 
-  return children || <></>
+  return children
 }
 
 export const Auth = () => {
@@ -191,7 +191,7 @@ export const Logout = () => {
   useEffect(() => {
     if (user) dispatch(logout())
     navigate("/auth")
-  }, [dispatch, user])
+  }, [dispatch, navigate, user])
 
   return (
     <ThemeUIProvider theme={theme}>

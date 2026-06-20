@@ -11,12 +11,14 @@ export const Agreements = () => {
   usePollAgreements(fir)
   const [edit] = api.useEditAgreementMutation()
   const [value, setValue] = useState(agreements)
-  const textarea = useRef<HTMLTextAreaElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   return (
     <Textarea
-      ref={textarea}
-      value={textarea.current === document.activeElement ? value : agreements}
+      ref={textareaRef}
+      value={
+        textareaRef.current === document.activeElement ? value : agreements
+      }
       onChange={(e) => {
         setValue(e.target.value)
       }}

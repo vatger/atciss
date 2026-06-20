@@ -41,7 +41,7 @@ export const LoaRow = ({ loa }: { loa: LoaItem }) => {
         {loa.transfer_type === "D" && <>&darr;</>}
         {loa.transfer_type === "C" && <>&uarr;</>}
 
-        {loa.sfl && <>{loa.qnh ? `${loa.sfl}00ft` : `FL${loa.sfl}`}-</>}
+        {!!loa.sfl && <>{loa.qnh ? `${loa.sfl}00ft` : `FL${loa.sfl}`}-</>}
         <strong>
           {loa.level === null
             ? "indiv. coord."

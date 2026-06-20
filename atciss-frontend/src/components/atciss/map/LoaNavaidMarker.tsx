@@ -49,6 +49,7 @@ export const LoaNavaidMarker = ({ designator }: { designator: string }) => {
               <tbody>
                 {xloasByNavaid.map((loa, idx) => (
                   <LoaRow
+                    // eslint-disable-next-line @eslint-react/no-array-index-key -- no stable id on this data; idx only disambiguates true duplicates
                     key={`${loa.cop}-${(loa.adep ?? []).join("_")}-${(loa.ades ?? []).join("_")}-${loa.from_sector}-${loa.to_sector}-${idx}`}
                     loa={loa}
                   />
@@ -66,6 +67,7 @@ export const LoaNavaidMarker = ({ designator }: { designator: string }) => {
               <tbody>
                 {nloasByNavaid?.map((loa, idx) => (
                   <LoaRow
+                    // eslint-disable-next-line @eslint-react/no-array-index-key -- no stable id on this data; idx only disambiguates true duplicates
                     key={`${loa.cop}-${(loa.adep ?? []).join("_")}-${(loa.ades ?? []).join("_")}-${loa.from_sector}-${loa.to_sector}-${idx}`}
                     loa={loa}
                   />

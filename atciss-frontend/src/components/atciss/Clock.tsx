@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { Box, Text, ThemeUIStyleObject } from "theme-ui"
 
 const Clock = ({ ssx }: { ssx?: ThemeUIStyleObject }) => {
-  const [time, setTime] = useState(new Date())
+  const [time, setTime] = useState(() => new Date())
 
   useEffect(() => {
     const interval = setInterval(() => {

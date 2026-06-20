@@ -52,7 +52,7 @@ export const Search = ({
                 <Box>{n.designator}</Box>
                 <Box>
                   {n.name}
-                  {n.frequency && ` (${n.frequency})`}
+                  {!!n.frequency && ` (${n.frequency})`}
                 </Box>
               </Box>
             </Fragment>

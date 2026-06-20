@@ -214,7 +214,7 @@ export const NavaidMarker = ({
               <Text variant="mapAd">{navaid.designator}</Text>{" "}
               {navaid.designator !== navaid.name && navaid.name}
             </Box>
-            {(navaid.frequency || navaid.channel) && (
+            {!!(navaid.frequency || navaid.channel) && (
               <Box>
                 {navaid.frequency} {navaid.channel}
               </Box>

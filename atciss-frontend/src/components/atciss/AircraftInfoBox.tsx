@@ -41,7 +41,7 @@ export const AircraftInfoBox = ({ ac }: { ac: AircraftPerformanceData }) => {
           item="ENG"
           value={ac.engine_count + " " + ac.engine_type}
         />
-        {ac.max_speed_indicated && (
+        {!!ac.max_speed_indicated && (
           <AircraftInfoBit
             textColor="black"
             backgroundColor="#B0BEC5"
@@ -53,7 +53,7 @@ export const AircraftInfoBox = ({ ac }: { ac: AircraftPerformanceData }) => {
             value={formatter.format(ac.max_speed_indicated) + " kt"}
           />
         )}
-        {ac.max_speed_mach && (
+        {!!ac.max_speed_mach && (
           <AircraftInfoBit
             textColor="black"
             backgroundColor="#B0BEC5"
@@ -66,7 +66,7 @@ export const AircraftInfoBox = ({ ac }: { ac: AircraftPerformanceData }) => {
           />
         )}
 
-        {ac.max_weight_takeoff && (
+        {!!ac.max_weight_takeoff && (
           <AircraftInfoBit
             textColor="black"
             backgroundColor="#FFCC80"
@@ -75,7 +75,7 @@ export const AircraftInfoBox = ({ ac }: { ac: AircraftPerformanceData }) => {
           />
         )}
 
-        {ac.cat_wtc && (
+        {!!ac.cat_wtc && (
           <AircraftInfoBit
             textColor="black"
             backgroundColor="#FFCC80"
@@ -84,7 +84,7 @@ export const AircraftInfoBox = ({ ac }: { ac: AircraftPerformanceData }) => {
           />
         )}
 
-        {ac.cat_recat && (
+        {!!ac.cat_recat && (
           <AircraftInfoBit
             textColor="black"
             backgroundColor="#FFCC80"
@@ -93,7 +93,7 @@ export const AircraftInfoBox = ({ ac }: { ac: AircraftPerformanceData }) => {
           />
         )}
 
-        {ac.wingspan && (
+        {!!ac.wingspan && (
           <AircraftInfoBit
             textColor="black"
             backgroundColor="#9FA8DA"
@@ -101,7 +101,7 @@ export const AircraftInfoBox = ({ ac }: { ac: AircraftPerformanceData }) => {
             value={formatter.format(ac.wingspan) + " m"}
           />
         )}
-        {ac.cat_arc && (
+        {!!ac.cat_arc && (
           <AircraftInfoBit
             textColor="black"
             backgroundColor="#9FA8DA"
@@ -110,7 +110,7 @@ export const AircraftInfoBox = ({ ac }: { ac: AircraftPerformanceData }) => {
           />
         )}
 
-        {ac.v_at && (
+        {!!ac.v_at && (
           <AircraftInfoBit
             textColor="black"
             backgroundColor="#80CBC4"
@@ -122,7 +122,7 @@ export const AircraftInfoBox = ({ ac }: { ac: AircraftPerformanceData }) => {
             value={formatter.format(ac.v_at) + " kt"}
           />
         )}
-        {ac.cat_app && (
+        {!!ac.cat_app && (
           <AircraftInfoBit
             textColor="black"
             backgroundColor="#80CBC4"
@@ -131,7 +131,7 @@ export const AircraftInfoBox = ({ ac }: { ac: AircraftPerformanceData }) => {
           />
         )}
 
-        {ac.length && (
+        {!!ac.length && (
           <AircraftInfoBit
             textColor="black"
             backgroundColor="#EEE"
@@ -140,7 +140,7 @@ export const AircraftInfoBox = ({ ac }: { ac: AircraftPerformanceData }) => {
           />
         )}
 
-        {ac.height && (
+        {!!ac.height && (
           <AircraftInfoBit
             textColor="black"
             backgroundColor="#EEE"

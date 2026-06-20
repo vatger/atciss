@@ -30,7 +30,7 @@ export const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const sigmetOnMap = useAppSelector(selectSigmetOnMap)
   const centre = useAppSelector(selectMapCentre)
   // FIXME react-leaflet type for MapControls seems to be broken
-  const map = useRef<L.Map>(null) as RefObject<L.Map>
+  const mapRef = useRef<L.Map>(null) as RefObject<L.Map>
 
   return (
     <SidebarLayout sx={sx}>
@@ -39,7 +39,7 @@ export const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         zoom={7}
         scrollWheelZoom={true}
         sx={{ height: "100%" }}
-        ref={map}
+        ref={mapRef}
       >
         <BackgroundTiles />
         {sectorsOnMap && (
@@ -70,7 +70,7 @@ export const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
       <Flex
         sx={{ flexDirection: "column", gap: 2, overflow: "hidden", padding: 2 }}
       >
-        <MapControls map={map} />
+        <MapControls map={mapRef} />
       </Flex>
     </SidebarLayout>
   )

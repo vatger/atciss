@@ -52,7 +52,12 @@ export const Sector = ({ id }: { id: string }) => {
 
   return owner
     ? sectorBounds.map((sectorBounds, index) => (
-        <SectorPolygon key={index} sectorBounds={sectorBounds} id={id} />
+        <SectorPolygon
+          // eslint-disable-next-line @eslint-react/no-array-index-key -- anonymous polygon geometry has no id; list is replaced wholesale, never reordered
+          key={`${id}-${index}`}
+          sectorBounds={sectorBounds}
+          id={id}
+        />
       ))
     : []
 }

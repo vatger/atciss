@@ -10,7 +10,69 @@ import { AreaBooking } from "types/area"
 const Area = ({ name }: { name: string }) => {
   const areas = useAppSelector((store) => selectArea(store, name))
 
-  return areas.map((area, index) => <AreaItem key={index} area={area} />)
+  return areas.map((area) => (
+    <AreaItem
+      key={area.reservation_id ?? `${area.name}-${area.start}`}
+      area={area}
+    />
+  ))
+}
+
+const VlaraAreaItem = ({
+  area,
+  active,
+  start,
+  end,
+}: {
+  area: AreaBooking
+  active: boolean
+  start: DateTime
+  end: DateTime
+}) => {
+  const [open, setOpen] = useState(false)
+
+  if (area.status === "cancelled") {
+    return
+  }
+
+  return (
+    <Box sx={{ cursor: "pointer" }} onClick={() => setOpen(!open)}>
+      <Text variant="label">{area.name}</Text>:
+      <Text
+        color={
+          active && area.status === "active"
+            ? "text"
+            : area.status === "pending"
+              ? "red"
+              : "text"
+        }
+      >
+        FL{z3(area.lower_limit)}-FL{z3(area.upper_limit)} {area.status}{" "}
+        {start.toFormat("HHmm")}z-{end.toFormat("HHmm")}z ({area.nbr_acft} ACFT,{" "}
+        {area.agency})
+      </Text>
+      <Text sx={{ marginLeft: 1 }}>{open ? "⏷" : "⏵"}</Text>
+      <Box sx={{ display: open ? "block" : "none", marginLeft: 3 }}>
+        Activity: <strong>{area.activity_type}</strong>
+        <br />
+        POC:{" "}
+        <strong>
+          <Link
+            href={`https://stats.vatsim.net/stats/${area.creator}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {area.creator}
+          </Link>
+        </strong>
+        <br />
+        Remark: <strong>{area.remarks}</strong>
+        <br />
+        Callsigns:{" "}
+        <strong>{area.callsigns && area.callsigns.join(", ")}</strong>
+      </Box>
+    </Box>
+  )
 }
 
 const AreaItem = ({ area }: { area: AreaBooking }) => {
@@ -21,66 +83,25 @@ const AreaItem = ({ area }: { area: AreaBooking }) => {
     DateTime.fromISO(area.start).toUTC() <=
     DateTime.utc().plus(Duration.fromObject({ minutes: 60 }))
 
-  if (active || soonActive) {
-    if (area.source === "dfs_aup") {
-      return (
-        <Box>
-          <Text variant="label">{area.name}</Text>:
-          <Text color={active ? "text" : "red"}>
-            FL{z3(area.lower_limit)}-FL{z3(area.upper_limit)}{" "}
-            {start.toFormat("HHmm")}z-{end.toFormat("HHmm")}z
-          </Text>
-        </Box>
-      )
-    } else if (area.source === "vlara") {
-      if (area.status === "cancelled") {
-        return <></>
-      }
-
-      const [open, setOpen] = useState(false)
-
-      return (
-        <Box sx={{ cursor: "pointer" }} onClick={() => setOpen(!open)}>
-          <Text variant="label">{area.name}</Text>:
-          <Text
-            color={
-              active && area.status === "active"
-                ? "text"
-                : area.status === "pending"
-                  ? "red"
-                  : "text"
-            }
-          >
-            FL{z3(area.lower_limit)}-FL{z3(area.upper_limit)} {area.status}{" "}
-            {start.toFormat("HHmm")}z-{end.toFormat("HHmm")}z ({area.nbr_acft}{" "}
-            ACFT, {area.agency})
-          </Text>
-          <Text sx={{ marginLeft: 1 }}>{open ? "⏷" : "⏵"}</Text>
-          <Box sx={{ display: open ? "block" : "none", marginLeft: 3 }}>
-            Activity: <strong>{area.activity_type}</strong>
-            <br />
-            POC:{" "}
-            <strong>
-              <Link
-                href={`https://stats.vatsim.net/stats/${area.creator}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {area.creator}
-              </Link>
-            </strong>
-            <br />
-            Remark: <strong>{area.remarks}</strong>
-            <br />
-            Callsigns:{" "}
-            <strong>{area.callsigns && area.callsigns.join(", ")}</strong>
-          </Box>
-        </Box>
-      )
-    }
+  if (!(active || soonActive)) {
+    return
   }
 
-  return <></>
+  if (area.source === "dfs_aup") {
+    return (
+      <Box>
+        <Text variant="label">{area.name}</Text>:
+        <Text color={active ? "text" : "red"}>
+          FL{z3(area.lower_limit)}-FL{z3(area.upper_limit)}{" "}
+          {start.toFormat("HHmm")}z-{end.toFormat("HHmm")}z
+        </Text>
+      </Box>
+    )
+  } else if (area.source === "vlara") {
+    return <VlaraAreaItem area={area} active={active} start={start} end={end} />
+  }
+
+  return
 }
 
 export const Areas = ({ sx }: { sx?: ThemeUIStyleObject }) => {

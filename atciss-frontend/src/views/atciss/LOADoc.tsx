@@ -11,12 +11,13 @@ import { Text, Badge, Box, Card, Flex, ThemeUIStyleObject } from "theme-ui"
 import { LoaDoc } from "types/loa"
 import { Cycle } from "airac-cc"
 import { LoaControls } from "components/atciss/LoaControls"
+import { useMemo } from "react"
 
 const Doc = ({ doc }: { doc: LoaDoc }) => {
   const dispatch = useAppDispatch()
   const openDoc = useAppSelector(selectOpenDocument)
   const myDoc = `${doc.filename}?airac=${doc.airac}`
-  const currentAirac = Cycle.fromDate(new Date())
+  const currentAirac = useMemo(() => Cycle.fromDate(new Date()), [])
 
   return (
     <Card

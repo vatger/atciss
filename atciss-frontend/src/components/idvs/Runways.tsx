@@ -23,7 +23,7 @@ const RVRValue = ({ point, value, trend }: RVRValueProps) => {
       <br />
       <Text sx={{ fontSize: "1.9rem" }}>
         {value || "\u00A0"}
-        {trend && value && (trend == "D" ? "↓" : trend == "U" ? "↑" : "")}
+        {!!trend && !!value && (trend == "D" ? "↓" : trend == "U" ? "↑" : "")}
       </Text>
     </Box>
   )
@@ -94,17 +94,15 @@ const ApproachStatus = ({ cat, suffix }: { cat: number; suffix?: string }) => {
         </>
       )}
       {cat === 1 && (
-        <>
-          <Box
-            sx={{
-              backgroundColor: "#7bd67d",
-              width: "4rem",
-              textAlign: "center",
-            }}
-          >
-            I{suffix}
-          </Box>
-        </>
+        <Box
+          sx={{
+            backgroundColor: "#7bd67d",
+            width: "4rem",
+            textAlign: "center",
+          }}
+        >
+          I{suffix}
+        </Box>
       )}
       {cat === 2 && (
         <>

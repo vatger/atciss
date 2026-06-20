@@ -84,7 +84,7 @@ const WindBox = ({ id }: { id: number }) => {
     selectMetar(store, aerodrome),
   )?.current
 
-  if (!runway || !metar) return <></>
+  if (!runway || !metar) return null
   const winds = runwayWinds(metar, runway)
 
   return (
@@ -120,7 +120,7 @@ const WindBox = ({ id }: { id: number }) => {
             alignItems: "flex-end",
           }}
         >
-          {metar.wind_dir_from && (
+          {!!metar.wind_dir_from && (
             <>
               <Text sx={{ fontSize: 4 }}>{metar.wind_dir_from}</Text>
               <Text sx={{ fontSize: 4 }}>&#9664;</Text>
@@ -129,7 +129,7 @@ const WindBox = ({ id }: { id: number }) => {
           <Text sx={{ fontSize: 6, textAlign: "center" }}>
             {metar.wind_dir ? z3(metar.wind_dir) : "VRB"}
           </Text>
-          {metar.wind_dir_to && (
+          {!!metar.wind_dir_to && (
             <>
               <Text sx={{ fontSize: 4 }}>&#9654;</Text>
               <Text sx={{ fontSize: 4 }}>{metar.wind_dir_to}</Text>
@@ -144,7 +144,7 @@ const WindBox = ({ id }: { id: number }) => {
             alignItems: "flex-end",
           }}
         >
-          {metar.wind_gust && (
+          {!!metar.wind_gust && (
             <>
               <Text sx={{ fontSize: 4 }}>{metar.wind_speed}</Text>
               <Text sx={{ fontSize: 4 }}>&#9660;</Text>
@@ -153,7 +153,7 @@ const WindBox = ({ id }: { id: number }) => {
           <Text sx={{ fontSize: 6, textAlign: "center" }}>
             {metar.wind_speed}
           </Text>
-          {metar.wind_gust && (
+          {!!metar.wind_gust && (
             <>
               <Text sx={{ fontSize: 4 }}>&#9650;</Text>
               <Text sx={{ fontSize: 4 }}>{metar.wind_gust}</Text>

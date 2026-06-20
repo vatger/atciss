@@ -17,6 +17,7 @@ export const ZoomableIframe = ({ src }: { src: string }) => {
           transform: `scale(${zoom})`,
         }}
         src={src}
+        sandbox="allow-scripts"
       ></iframe>
       <Flex
         sx={{

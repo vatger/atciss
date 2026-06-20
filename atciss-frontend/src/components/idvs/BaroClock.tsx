@@ -40,7 +40,7 @@ export const BaroClock = () => {
             {hpaToInhg(metar?.qnh)?.toFixed(2) ?? "////"}
           </InfoBox>
         </Flex>
-        {qfe && (
+        {qfe !== null && (
           <>
             <Box>QFE</Box>
             <Flex>
