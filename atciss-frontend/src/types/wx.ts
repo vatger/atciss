@@ -41,7 +41,7 @@ export interface Metar {
 }
 
 export interface Sigmet {
-  isigmetId: number
+  isigmetId: string
   icaoId: string
   firId: string
   receiptTime: string
@@ -56,6 +56,6 @@ export interface Sigmet {
   dir: string | null
   spd: number | null
   chng: string | null
-  coords: LatLngTuple[]
+  coords: LatLngTuple[] | LatLngTuple[][]
   rawSigmet: string
 }

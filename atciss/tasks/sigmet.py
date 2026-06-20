@@ -3,6 +3,7 @@ from typing import Annotated
 
 from aiohttp import ClientSession
 from loguru import logger
+from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 from taskiq_dependencies import Depends
@@ -22,10 +23,17 @@ async def fetch_sigmet(
         "https://aviationweather.gov/api/data/isigmet?format=json&loc=eur",
     ) as res:
         try:
-            sigmets = [Sigmet.model_validate(sigmet) for sigmet in await res.json()]
+            raw_sigmets = await res.json()
         except ValueError as e:
             logger.exception(f"Could not parse {e!s}")
             return
+
+    sigmets = []
+    for raw_sigmet in raw_sigmets:
+        try:
+            sigmets.append(Sigmet.model_validate(raw_sigmet))
+        except ValidationError as e:
+            logger.warning(f"Skipping unparseable SIGMET {raw_sigmet!r}: {e!s}")
 
     if sigmets:
         for sigmet in sigmets:
