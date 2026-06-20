@@ -1,0 +1,6 @@
+# Duplicated from the root .gitignore: taskiq's worker file-watcher (--reload)
+# only reads a .gitignore directly inside the directory it's told to watch
+# (see reload_dirs in atciss/cli/worker.py), not the repo root one.
+__pycache__/
+*.pyc
+*.pyo

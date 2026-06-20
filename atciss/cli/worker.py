@@ -16,6 +16,28 @@ Run taskiq worker.
 """
 
 
+def _patch_file_watcher() -> None:
+    # taskiq's FileWatcher only ignores the "opened" and "closed" watchdog
+    # event types, missing "closed_no_write", emitted whenever something
+    # merely reads a file (an LSP, mypy, an editor) without modifying it,
+    # which otherwise triggers a reload on every such read.
+    #
+    # Imported locally: taskiq's reload extra (gitignore_parser, watchdog)
+    # is a dev-only dependency, not installed in production, so this must
+    # only run when reload is actually enabled.
+    from taskiq.cli.watcher import FileWatcher
+    from watchdog.events import FileSystemEvent
+
+    original_dispatch = FileWatcher.dispatch
+
+    def _dispatch_ignoring_reads(self: FileWatcher, event: FileSystemEvent) -> None:
+        if event.event_type == "closed_no_write":
+            return
+        original_dispatch(self, event)
+
+    FileWatcher.dispatch = _dispatch_ignoring_reads  # type: ignore[method-assign]
+
+
 @click.command(
     help=CMD_HELP,
 )
@@ -31,6 +53,9 @@ def worker(workers: int) -> int | None:
     """Define command-line interface serve command."""
     setup_logging()
 
+    if settings.DEBUG:
+        _patch_file_watcher()
+
     return run_worker(
         WorkerArgs(
             broker="atciss.tkq:broker",
@@ -41,5 +66,6 @@ def worker(workers: int) -> int | None:
             ),
             workers=workers,
             reload=settings.DEBUG,
+            reload_dirs=["atciss"],
         )
     )
