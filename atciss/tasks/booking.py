@@ -29,7 +29,7 @@ async def fetch_booking(
         _ = await db_session.merge(booking)
 
     # Delete future bookings that were not in the fetched data (probably removed)
-    removed_bookings = await db_session.execute(
+    removed_bookings = await db_session.exec(
         select(Booking)
         .where(Booking.start >= datetime.now(tz=UTC))
         .where(Booking.id.not_in(booking.id for booking in bookings))  # pylint: disable=no-member
@@ -39,7 +39,7 @@ async def fetch_booking(
         db_session.delete(booking)
 
     # Remove old bookings
-    old_bookings = await db_session.execute(
+    old_bookings = await db_session.exec(
         select(Booking).where(Booking.end <= datetime.now(tz=UTC) - timedelta(days=1))
     )
     for booking in old_bookings.all():

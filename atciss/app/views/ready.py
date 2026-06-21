@@ -2,7 +2,12 @@
 
 from typing import Any
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
+
+
+def _json_schema_extra(schema: dict[str, Any]) -> None:
+    # Override schema description, by default is taken from docstring.
+    schema["description"] = "Ready response model."
 
 
 class ReadyResponse(BaseModel):
@@ -21,11 +26,4 @@ class ReadyResponse(BaseModel):
 
     status: str
 
-    class Config:
-        """Override model config."""
-
-        @staticmethod
-        def json_schema_extra(schema: dict[str, Any]) -> None:
-            """Override extra schema."""
-            # Override schema description, by default is taken from docstring.
-            schema["description"] = "Ready response model."
+    model_config = ConfigDict(json_schema_extra=_json_schema_extra)

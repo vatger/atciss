@@ -2,7 +2,7 @@ from collections.abc import Sequence
 from typing import Annotated, cast
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from fastapi.responses import ORJSONResponse, PlainTextResponse
+from fastapi.responses import PlainTextResponse
 
 from atciss.app.controllers.auth import get_user
 from atciss.app.models import User
@@ -15,7 +15,6 @@ router = APIRouter()
 
 @router.get(
     "/metar",
-    response_class=ORJSONResponse,
 )
 async def metars_get(
     airports: Annotated[Sequence[AirportIcao], Query(alias="icao")],
@@ -50,7 +49,6 @@ async def metar_raw_get(
 
 @router.get(
     "/metar/{icao}",
-    response_class=ORJSONResponse,
     responses={404: {}},
 )
 async def metar_get(

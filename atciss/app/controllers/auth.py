@@ -4,7 +4,6 @@ from typing import Annotated
 
 from aiohttp import ClientSession
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import ORJSONResponse
 from fastapi.security import OAuth2AuthorizationCodeBearer
 from jose import JWTError, jwt
 from loguru import logger
@@ -201,7 +200,6 @@ def auth_config() -> AuthInfoModel:
 
 @router.post(
     "/auth",
-    response_class=ORJSONResponse,
 )
 async def auth(
     req: AuthRequest,
@@ -266,7 +264,6 @@ async def auth(
 
 @router.post(
     "/auth/refresh",
-    response_class=ORJSONResponse,
 )
 def auth_refresh(
     user: Annotated[User, Depends(get_user)],

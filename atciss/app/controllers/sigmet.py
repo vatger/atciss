@@ -3,7 +3,6 @@ from datetime import UTC, datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Query
-from fastapi.responses import ORJSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
@@ -18,7 +17,6 @@ router = APIRouter()
 
 @router.get(
     "/sigmet",
-    response_class=ORJSONResponse,
 )
 async def auth_config(
     firs: Annotated[Sequence[str], Query(alias="fir", default_factory=list)],

@@ -3,7 +3,6 @@ from typing import Annotated
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import ORJSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
@@ -19,7 +18,6 @@ router = APIRouter()
 
 @router.get(
     "/initials/{fir}",
-    response_class=ORJSONResponse,
 )
 async def initials_get(
     fir: str,
@@ -35,7 +33,6 @@ async def initials_get(
 
 @router.post(
     "/initials/{fir}",
-    response_class=ORJSONResponse,
 )
 async def initials_add(
     user: Annotated[User, Depends(get_fir_admin)],
@@ -50,7 +47,7 @@ async def initials_add(
     return db_initials
 
 
-@router.delete("/initials/{fir}", response_class=ORJSONResponse, status_code=HTTP_204_NO_CONTENT)
+@router.delete("/initials/{fir}", status_code=HTTP_204_NO_CONTENT)
 async def initials_delete(
     user: Annotated[User, Depends(get_fir_admin)],
     session: Annotated[AsyncSession, Depends(get_session)],

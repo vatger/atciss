@@ -1,7 +1,6 @@
 from typing import Annotated, cast
 
 from fastapi import APIRouter, Depends
-from fastapi.responses import ORJSONResponse
 from pydantic import TypeAdapter
 from vatsim.types import Controller
 
@@ -14,7 +13,6 @@ router = APIRouter()
 
 @router.get(
     "/vatsim/controllers",
-    response_class=ORJSONResponse,
 )
 async def controllers_get(
     _: Annotated[User, Depends(get_user)],

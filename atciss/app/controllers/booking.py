@@ -3,7 +3,6 @@ from datetime import UTC, datetime, timedelta
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Query
-from fastapi.responses import ORJSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import and_, or_, select
 
@@ -18,7 +17,6 @@ router = APIRouter()
 
 @router.get(
     "/booking",
-    response_class=ORJSONResponse,
 )
 async def get_bookings(
     prefixes: Annotated[Sequence[str], Query(alias="region", default_factory=list)],

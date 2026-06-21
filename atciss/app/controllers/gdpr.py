@@ -1,7 +1,6 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import ORJSONResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from loguru import logger
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -18,7 +17,6 @@ token_scheme = HTTPBearer()
 
 @router.delete(
     "/admin/userdata/{cid}",
-    response_class=ORJSONResponse,
 )
 async def delete_user(
     bearer_token: Annotated[HTTPAuthorizationCredentials, Depends(token_scheme)],

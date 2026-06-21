@@ -3,7 +3,6 @@ from typing import Annotated, cast
 from eaup.dfs import Dfs_Aup, parse_dfs_areas_to_eaup
 from eaup.eaup import Eaup, EaupInfo, merge_to_eaup
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import ORJSONResponse
 from pydantic import TypeAdapter
 
 from atciss.app.controllers.auth import get_user
@@ -16,7 +15,6 @@ router = APIRouter()
 
 @router.get(
     "/areas",
-    response_class=ORJSONResponse,
     responses={404: {}},
 )
 async def get_areas(
@@ -33,7 +31,6 @@ async def get_areas(
 
 @router.get(
     "/areas/topsky",
-    response_class=ORJSONResponse,
     responses={404: {}},
 )
 async def get_topsky_areas(

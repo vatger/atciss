@@ -2,7 +2,6 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 from fastapi.exceptions import HTTPException
-from fastapi.responses import ORJSONResponse
 from loguru import logger
 from redis.exceptions import RedisError
 
@@ -14,7 +13,6 @@ router = APIRouter()
 
 @router.get(
     "/ready",
-    response_class=ORJSONResponse,
     response_model=ReadyResponse,
     summary="Simple health check.",
     status_code=200,

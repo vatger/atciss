@@ -1,7 +1,6 @@
 from typing import Annotated, cast
 
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import ORJSONResponse
 
 from atciss.app.controllers.auth import get_user
 from atciss.app.models import User
@@ -13,7 +12,6 @@ router = APIRouter()
 
 @router.get(
     "/traffic",
-    response_class=ORJSONResponse,
 )
 async def ad_get(
     icao: str,

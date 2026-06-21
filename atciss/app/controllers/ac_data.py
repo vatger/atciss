@@ -2,7 +2,6 @@ from collections.abc import Sequence
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
-from fastapi.responses import ORJSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import col, or_, select
 
@@ -16,7 +15,6 @@ router = APIRouter()
 
 @router.get(
     "/aircraft/search",
-    response_class=ORJSONResponse,
 )
 async def ad_get(
     query: str,

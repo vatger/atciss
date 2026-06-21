@@ -3,7 +3,7 @@ from collections.abc import Sequence
 from typing import Annotated, cast
 
 from fastapi import APIRouter, Depends, Query
-from fastapi.responses import ORJSONResponse, PlainTextResponse
+from fastapi.responses import PlainTextResponse
 from jinja2 import Environment, FileSystemLoader
 from loguru import logger
 from pydantic import TypeAdapter
@@ -123,7 +123,6 @@ AD_CONFIG = {
 
 @router.get(
     "/atis",
-    response_class=ORJSONResponse,
 )
 async def atis_get(
     airports: Annotated[Sequence[AirportIcao], Query(alias="icao", default_factory=list)],

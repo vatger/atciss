@@ -1,7 +1,6 @@
 from typing import Annotated, cast
 
 from fastapi import APIRouter, Depends, Query
-from fastapi.responses import ORJSONResponse
 from loa import Doc
 from pydantic import TypeAdapter
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -17,7 +16,6 @@ router = APIRouter()
 
 @router.get(
     "/loa",
-    response_class=ORJSONResponse,
 )
 async def metar_get(
     sector: Annotated[list[str], Query(...)],
@@ -35,7 +33,6 @@ async def metar_get(
 
 @router.get(
     "/loa/docs/{fir}",
-    response_class=ORJSONResponse,
 )
 async def get_loa_docs(
     fir: str,

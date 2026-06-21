@@ -2,7 +2,6 @@ from datetime import UTC, datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Body, Depends
-from fastapi.responses import ORJSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
@@ -17,7 +16,6 @@ router = APIRouter()
 
 @router.get(
     "/agreements/{fir}",
-    response_class=ORJSONResponse,
 )
 async def sectorstatus_get(
     fir: str,
@@ -37,7 +35,6 @@ async def sectorstatus_get(
 
 @router.post(
     "/agreements/{fir}",
-    response_class=ORJSONResponse,
 )
 async def sectorstatus_post(
     fir: str,
