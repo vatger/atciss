@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message:AIXMBasicMessage xmlns:gss="http://www.isotc211.org/2005/gss" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:message="http://www.aixm.aero/schema/5.1.1/message" xmlns:gsr="http://www.isotc211.org/2005/gsr" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:aixm="http://www.aixm.aero/schema/5.1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gts="http://www.isotc211.org/2005/gts" gml:id="ID-01">
+	<message:hasMember>
+		<aixm:AirportHeliport gml:id="ID_24d778db-86d8-476a-8269-fdafe3dfb6bc-0">
+			<gml:identifier codeSpace="urn:uuid:">24d778db-86d8-476a-8269-fdafe3dfb6bc</gml:identifier>
+			<aixm:timeSlice>
+				<aixm:AirportHeliportTimeSlice gml:id="ID_TS_24d778db-86d8-476a-8269-fdafe3dfb6bc-0">
+					<gml:validTime>
+						<gml:TimeInstant gml:id="ID_TS_VT_TI_24d778db-86d8-476a-8269-fdafe3dfb6bc-0">
+							<gml:timePosition>2025-06-12T00:00:00Z</gml:timePosition>
+						</gml:TimeInstant>
+					</gml:validTime>
+					<aixm:interpretation>SNAPSHOT</aixm:interpretation>
+					<aixm:featureLifetime>
+						<gml:TimePeriod gml:id="ID_TS_FL_TP_24d778db-86d8-476a-8269-fdafe3dfb6bc">
+							<gml:beginPosition>2015-05-01T00:00:00Z</gml:beginPosition>
+							<gml:endPosition indeterminatePosition="unknown"></gml:endPosition>
+						</gml:TimePeriod>
+					</aixm:featureLifetime>
+					<aixm:designator>EDRN</aixm:designator>
+					<aixm:name>NANNHAUSEN</aixm:name>
+					<aixm:locationIndicatorICAO>EDRN</aixm:locationIndicatorICAO>
+					<aixm:designatorIATA xsi:nil="true" nilReason="unknown"></aixm:designatorIATA>
+					<aixm:type>AD</aixm:type>
+					<aixm:controlType>CIVIL</aixm:controlType>
+					<aixm:fieldElevation uom="FT">1238</aixm:fieldElevation>
+					<aixm:verticalDatum>EGM_96</aixm:verticalDatum>
+					<aixm:magneticVariation>3</aixm:magneticVariation>
+					<aixm:magneticVariationAccuracy xsi:nil="true" nilReason="unknown"></aixm:magneticVariationAccuracy>
+					<aixm:dateMagneticVariation>2017</aixm:dateMagneticVariation>
+					<aixm:magneticVariationChange xsi:nil="true" nilReason="unknown"></aixm:magneticVariationChange>
+					<aixm:referenceTemperature xsi:nil="true" uom="C" nilReason="unknown"></aixm:referenceTemperature>
+					<aixm:transitionAltitude xsi:nil="true" nilReason="unknown"></aixm:transitionAltitude>
+					<aixm:transitionLevel xsi:nil="true" nilReason="unknown"></aixm:transitionLevel>
+					<aixm:lowestTemperature xsi:nil="true" nilReason="unknown"></aixm:lowestTemperature>
+					<aixm:abandoned>NO</aixm:abandoned>
+					<aixm:certificationDate xsi:nil="true" nilReason="unknown"></aixm:certificationDate>
+					<aixm:certificationExpirationDate xsi:nil="true" nilReason="unknown"></aixm:certificationExpirationDate>
+					<aixm:servedCity>
+						<aixm:City gml:id="ID_TS_C_24d778db-86d8-476a-8269-fdafe3dfb6bc-0">
+							<aixm:name>WOMRATH</aixm:name>
+						</aixm:City>
+					</aixm:servedCity>
+					<aixm:responsibleOrganisation>
+						<aixm:AirportHeliportResponsibilityOrganisation gml:id="ID_TS_AHPRORG_24d778db-86d8-476a-8269-fdafe3dfb6bc">
+							<aixm:role nilReason="unknown" xsi:nil="true"></aixm:role>
+							<aixm:theOrganisationAuthority xlink:href="urn:uuid:09424934-8352-0ae9-e053-0b751dc2b779"></aixm:theOrganisationAuthority>
+						</aixm:AirportHeliportResponsibilityOrganisation>
+					</aixm:responsibleOrganisation>
+					<aixm:ARP>
+						<aixm:ElevatedPoint gml:id="ID_TS_24d778db-86d8-476a-8269-fdafe3dfb6bc-0-0" srsName="urn:ogc:def:crs:EPSG::4326">
+							<gml:pos>49.970002778 7.478455556</gml:pos>
+							<aixm:horizontalAccuracy xsi:nil="true" nilReason="unknown"></aixm:horizontalAccuracy>
+							<aixm:elevation uom="FT">1231.0</aixm:elevation>
+							<aixm:geoidUndulation xsi:nil="true" nilReason="unknown"></aixm:geoidUndulation>
+							<aixm:verticalDatum>EGM_96</aixm:verticalDatum>
+							<aixm:verticalAccuracy xsi:nil="true" nilReason="unknown"></aixm:verticalAccuracy>
+						</aixm:ElevatedPoint>
+					</aixm:ARP>
+					<aixm:contact>
+						<aixm:ContactInformation gml:id="ID_TS_C_24d778db-86d8-476a-8269-fdafe3dfb6bc">
+							<aixm:name>FLUGPLATZ-HALTERVEREIN SIMMERN NANNHAUSEN E.V.</aixm:name>
+							<aixm:address>
+								<aixm:PostalAddress gml:id="ID_TS_C_A_24d778db-86d8-476a-8269-fdafe3dfb6bc-10">
+									<aixm:deliveryPoint>Andreas Dunkel, Auf der Norr 1, 55469 Nannhausen</aixm:deliveryPoint>
+									<aixm:city xsi:nil="true" nilReason="unknown"></aixm:city>
+									<aixm:postalCode xsi:nil="true" nilReason="unknown"></aixm:postalCode>
+									<aixm:country xsi:nil="true" nilReason="unknown"></aixm:country>
+								</aixm:PostalAddress>
+							</aixm:address>
+							<aixm:phoneFax>
+								<aixm:TelephoneContact gml:id="ID_TS_C_TC_24d778db-86d8-476a-8269-fdafe3dfb6bc">
+									<aixm:annotation>
+										<aixm:Note gml:id="ID_TS_C_TC_N_24d778db-86d8-476a-8269-fdafe3dfb6bc-0">
+											<aixm:propertyName>voice</aixm:propertyName>
+											<aixm:purpose>REMARK</aixm:purpose>
+											<aixm:translatedNote>
+												<aixm:LinguisticNote gml:id="ID_TS_C_TC_N_LN_24d778db-86d8-476a-8269-fdafe3dfb6bc-0">
+													<aixm:note>+49 173 7657396 
++49 6761 4703 OPS (Flugleitung) (PPR)
++49 173 7657396 OPS (PPR)
++49 172 2885964 OPS (PPR)</aixm:note>
+												</aixm:LinguisticNote>
+											</aixm:translatedNote>
+										</aixm:Note>
+									</aixm:annotation>
+								</aixm:TelephoneContact>
+							</aixm:phoneFax>
+						</aixm:ContactInformation>
+					</aixm:contact>
+					<aixm:availability>
+						<aixm:AirportHeliportAvailability gml:id="ID_TS_AHA_24d778db-86d8-476a-8269-fdafe3dfb6bc-0">
+							<aixm:timeInterval nilReason="unknown" xsi:nil="true"></aixm:timeInterval>
+							<aixm:annotation>
+								<aixm:Note gml:id="ID_TS_AHA_N_24d778db-86d8-476a-8269-fdafe3dfb6bc-0-0">
+									<aixm:propertyName>timeInterval</aixm:propertyName>
+									<aixm:purpose>REMARK</aixm:purpose>
+									<aixm:translatedNote>
+										<aixm:LinguisticNote gml:id="ID_TS_AHA_N_LN_24d778db-86d8-476a-8269-fdafe3dfb6bc-0-0">
+											<aixm:note>PPR</aixm:note>
+										</aixm:LinguisticNote>
+									</aixm:translatedNote>
+								</aixm:Note>
+							</aixm:annotation>
+							<aixm:annotation>
+								<aixm:Note gml:id="ID_TS_AHA_N_24d778db-86d8-476a-8269-fdafe3dfb6bc-0-1">
+									<aixm:propertyName>usage</aixm:propertyName>
+									<aixm:purpose>REMARK</aixm:purpose>
+									<aixm:translatedNote>
+										<aixm:LinguisticNote gml:id="ID_TS_AHA_N_LN_24d778db-86d8-476a-8269-fdafe3dfb6bc-0-1">
+											<aixm:note>2000 kg, HEL, GLD (P, self-launching), UL</aixm:note>
+										</aixm:LinguisticNote>
+									</aixm:translatedNote>
+								</aixm:Note>
+							</aixm:annotation>
+							<aixm:operationalStatus xsi:nil="true" nilReason="unknown"></aixm:operationalStatus>
+							<aixm:warning xsi:nil="true" nilReason="unknown"></aixm:warning>
+							<aixm:usage>
+								<aixm:AirportHeliportUsage gml:id="ID_TS_AHA_AHU_24d778db-86d8-476a-8269-fdafe3dfb6bc-0-286">
+									<aixm:type>PERMIT</aixm:type>
+									<aixm:selection>
+										<aixm:ConditionCombination gml:id="ID_TS_AHA_AHU_CC_24d778db-86d8-476a-8269-fdafe3dfb6bc-0-286-378">
+											<aixm:logicalOperator>NONE</aixm:logicalOperator>
+											<aixm:flight>
+												<aixm:FlightCharacteristic gml:id="ID_TS_AHA_AHU_CC_FC_24d778db-86d8-476a-8269-fdafe3dfb6bc-0-286-378-43">
+													<aixm:type>OTHER</aixm:type>
+													<aixm:rule>VFR</aixm:rule>
+													<aixm:status>OTHER</aixm:status>
+													<aixm:military>CIVIL</aixm:military>
+													<aixm:origin xsi:nil="true" nilReason="unknown"></aixm:origin>
+													<aixm:purpose xsi:nil="true" nilReason="unknown"></aixm:purpose>
+												</aixm:FlightCharacteristic>
+											</aixm:flight>
+										</aixm:ConditionCombination>
+									</aixm:selection>
+								</aixm:AirportHeliportUsage>
+							</aixm:usage>
+						</aixm:AirportHeliportAvailability>
+					</aixm:availability>
+					<aixm:annotation>
+						<aixm:Note gml:id="ID_TS_N_24d778db-86d8-476a-8269-fdafe3dfb6bc-1">
+							<aixm:propertyName>ARP</aixm:propertyName>
+							<aixm:purpose>REMARK</aixm:purpose>
+							<aixm:translatedNote>
+								<aixm:LinguisticNote gml:id="ID_TS_N_LN_24d778db-86d8-476a-8269-fdafe3dfb6bc-1">
+									<aixm:note>ARP site at AD: no data, Direction and distance from (city): 0.3 NM SW Nannhausen, 0.9 NM W Simmern</aixm:note>
+								</aixm:LinguisticNote>
+							</aixm:translatedNote>
+						</aixm:Note>
+					</aixm:annotation>
+					<aixm:annotation>
+						<aixm:Note gml:id="ID_TS_N_24d778db-86d8-476a-8269-fdafe3dfb6bc-2">
+							<aixm:propertyName>type</aixm:propertyName>
+							<aixm:purpose>REMARK</aixm:purpose>
+							<aixm:translatedNote>
+								<aixm:LinguisticNote gml:id="ID_TS_N_LN_24d778db-86d8-476a-8269-fdafe3dfb6bc-2">
+									<aixm:note>Airfield Civil</aixm:note>
+								</aixm:LinguisticNote>
+							</aixm:translatedNote>
+						</aixm:Note>
+					</aixm:annotation>
+					<aixm:annotation>
+						<aixm:Note gml:id="ID_TS_N_24d778db-86d8-476a-8269-fdafe3dfb6bc-3">
+							<aixm:propertyName>ARP</aixm:propertyName>
+							<aixm:purpose>REMARK</aixm:purpose>
+							<aixm:translatedNote>
+								<aixm:LinguisticNote gml:id="ID_TS_N_LN_24d778db-86d8-476a-8269-fdafe3dfb6bc-3">
+									<aixm:note>State of the Airport/Heliport based on the ARP: Rheinland-Pfalz</aixm:note>
+								</aixm:LinguisticNote>
+							</aixm:translatedNote>
+						</aixm:Note>
+					</aixm:annotation>
+				</aixm:AirportHeliportTimeSlice>
+			</aixm:timeSlice>
+		</aixm:AirportHeliport>
+	</message:hasMember>
+	<message:hasMember>
+		<aixm:AirportHeliport gml:id="ID_14aa1662-b648-47c2-a159-00e48ebc55b5-0">
+			<gml:identifier codeSpace="urn:uuid:">14aa1662-b648-47c2-a159-00e48ebc55b5</gml:identifier>
+			<aixm:timeSlice>
+				<aixm:AirportHeliportTimeSlice gml:id="ID_TS_14aa1662-b648-47c2-a159-00e48ebc55b5-0">
+					<gml:validTime>
+						<gml:TimeInstant gml:id="ID_TS_VT_TI_14aa1662-b648-47c2-a159-00e48ebc55b5-0">
+							<gml:timePosition>2025-06-12T00:00:00Z</gml:timePosition>
+						</gml:TimeInstant>
+					</gml:validTime>
+					<aixm:interpretation>SNAPSHOT</aixm:interpretation>
+					<aixm:featureLifetime>
+						<gml:TimePeriod gml:id="ID_TS_FL_TP_14aa1662-b648-47c2-a159-00e48ebc55b5">
+							<gml:beginPosition>2015-05-01T00:00:00Z</gml:beginPosition>
+							<gml:endPosition indeterminatePosition="unknown"></gml:endPosition>
+						</gml:TimePeriod>
+					</aixm:featureLifetime>
+					<aixm:designator>EDQA</aixm:designator>
+					<aixm:name>BAMBERG-BREITENAU</aixm:name>
+					<aixm:locationIndicatorICAO>EDQA</aixm:locationIndicatorICAO>
+					<aixm:designatorIATA xsi:nil="true" nilReason="unknown"></aixm:designatorIATA>
+					<aixm:type>AD</aixm:type>
+					<aixm:controlType>CIVIL</aixm:controlType>
+					<aixm:fieldElevation uom="FT">827</aixm:fieldElevation>
+					<aixm:verticalDatum>EGM_96</aixm:verticalDatum>
+					<aixm:magneticVariation>3.72</aixm:magneticVariation>
+					<aixm:magneticVariationAccuracy xsi:nil="true" nilReason="unknown"></aixm:magneticVariationAccuracy>
+					<aixm:dateMagneticVariation>2021</aixm:dateMagneticVariation>
+					<aixm:magneticVariationChange xsi:nil="true" nilReason="unknown"></aixm:magneticVariationChange>
+					<aixm:referenceTemperature xsi:nil="true" uom="C" nilReason="unknown"></aixm:referenceTemperature>
+					<aixm:transitionAltitude uom="FT">5000</aixm:transitionAltitude>
+					<aixm:transitionLevel xsi:nil="true" nilReason="unknown"></aixm:transitionLevel>
+					<aixm:lowestTemperature xsi:nil="true" nilReason="unknown"></aixm:lowestTemperature>
+					<aixm:abandoned>NO</aixm:abandoned>
+					<aixm:certificationDate xsi:nil="true" nilReason="unknown"></aixm:certificationDate>
+					<aixm:certificationExpirationDate xsi:nil="true" nilReason="unknown"></aixm:certificationExpirationDate>
+					<aixm:servedCity>
+						<aixm:City gml:id="ID_TS_C_14aa1662-b648-47c2-a159-00e48ebc55b5-0">
+							<aixm:name>BAMBERG</aixm:name>
+						</aixm:City>
+					</aixm:servedCity>
+					<aixm:responsibleOrganisation>
+						<aixm:AirportHeliportResponsibilityOrganisation gml:id="ID_TS_AHPRORG_14aa1662-b648-47c2-a159-00e48ebc55b5">
+							<aixm:role nilReason="unknown" xsi:nil="true"></aixm:role>
+							<aixm:theOrganisationAuthority xlink:href="urn:uuid:09424934-8352-0ae9-e053-0b751dc2b779"></aixm:theOrganisationAuthority>
+						</aixm:AirportHeliportResponsibilityOrganisation>
+					</aixm:responsibleOrganisation>
+					<aixm:ARP>
+						<aixm:ElevatedPoint gml:id="ID_TS_14aa1662-b648-47c2-a159-00e48ebc55b5-0-0" srsName="urn:ogc:def:crs:EPSG::4326">
+							<gml:pos>49.92055 10.914488889</gml:pos>
+							<aixm:horizontalAccuracy xsi:nil="true" nilReason="unknown"></aixm:horizontalAccuracy>
+							<aixm:elevation uom="FT">811.0</aixm:elevation>
+							<aixm:geoidUndulation xsi:nil="true" nilReason="unknown"></aixm:geoidUndulation>
+							<aixm:verticalDatum>EGM_96</aixm:verticalDatum>
+							<aixm:verticalAccuracy xsi:nil="true" nilReason="unknown"></aixm:verticalAccuracy>
+						</aixm:ElevatedPoint>
+					</aixm:ARP>
+					<aixm:contact>
+						<aixm:ContactInformation gml:id="ID_TS_C_14aa1662-b648-47c2-a159-00e48ebc55b5">
+							<aixm:name>AERO-CLUB BAMBERG E.V.</aixm:name>
+							<aixm:address>
+								<aixm:PostalAddress gml:id="ID_TS_C_A_14aa1662-b648-47c2-a159-00e48ebc55b5-10">
+									<aixm:deliveryPoint>Flugplatz Bamberg-Breitenau, Zeppelinstraße. 18,&amp;#xD;
+96052 BAMBERG</aixm:deliveryPoint>
+									<aixm:city xsi:nil="true" nilReason="unknown"></aixm:city>
+									<aixm:postalCode xsi:nil="true" nilReason="unknown"></aixm:postalCode>
+									<aixm:country xsi:nil="true" nilReason="unknown"></aixm:country>
+								</aixm:PostalAddress>
+							</aixm:address>
+							<aixm:networkNode>
+								<aixm:OnlineContact gml:id="ID_TS_C_NN_EM_14aa1662-b648-47c2-a159-00e48ebc55b5-10">
+									<aixm:network>INTERNET</aixm:network>
+									<aixm:linkage xsi:nil="true" nilReason="unknown"></aixm:linkage>
+									<aixm:eMail>ppr@aeroclub-bamberg.de</aixm:eMail>
+								</aixm:OnlineContact>
+							</aixm:networkNode>
+							<aixm:networkNode>
+								<aixm:OnlineContact gml:id="ID_TS_C_NN_EM_14aa1662-b648-47c2-a159-00e48ebc55b5-5">
+									<aixm:network>INTERNET</aixm:network>
+									<aixm:linkage xsi:nil="true" nilReason="unknown"></aixm:linkage>
+									<aixm:eMail>info@aeroclub-bamberg.de</aixm:eMail>
+								</aixm:OnlineContact>
+							</aixm:networkNode>
+							<aixm:networkNode>
+								<aixm:OnlineContact gml:id="ID_TS_C_NN_UR_14aa1662-b648-47c2-a159-00e48ebc55b5-10">
+									<aixm:network>INTERNET</aixm:network>
+									<aixm:linkage>www.aeroclub-bamberg.de</aixm:linkage>
+									<aixm:eMail xsi:nil="true" nilReason="unknown"></aixm:eMail>
+								</aixm:OnlineContact>
+							</aixm:networkNode>
+							<aixm:phoneFax>
+								<aixm:TelephoneContact gml:id="ID_TS_C_TC_14aa1662-b648-47c2-a159-00e48ebc55b5">
+									<aixm:annotation>
+										<aixm:Note gml:id="ID_TS_C_TC_N_14aa1662-b648-47c2-a159-00e48ebc55b5-0">
+											<aixm:propertyName>voice</aixm:propertyName>
+											<aixm:purpose>REMARK</aixm:purpose>
+											<aixm:translatedNote>
+												<aixm:LinguisticNote gml:id="ID_TS_C_TC_N_LN_14aa1662-b648-47c2-a159-00e48ebc55b5-0">
+													<aixm:note>+49 951 45145</aixm:note>
+												</aixm:LinguisticNote>
+											</aixm:translatedNote>
+										</aixm:Note>
+									</aixm:annotation>
+									<aixm:annotation>
+										<aixm:Note gml:id="ID_TS_C_TC_N_14aa1662-b648-47c2-a159-00e48ebc55b5-1">
+											<aixm:propertyName>facsimile</aixm:propertyName>
+											<aixm:purpose>REMARK</aixm:purpose>
+											<aixm:translatedNote>
+												<aixm:LinguisticNote gml:id="ID_TS_C_TC_N_LN_14aa1662-b648-47c2-a159-00e48ebc55b5-1">
+													<aixm:note>+49 951 132220</aixm:note>
+												</aixm:LinguisticNote>
+											</aixm:translatedNote>
+										</aixm:Note>
+									</aixm:annotation>
+								</aixm:TelephoneContact>
+							</aixm:phoneFax>
+						</aixm:ContactInformation>
+					</aixm:contact>
+					<aixm:availability>
+						<aixm:AirportHeliportAvailability gml:id="ID_TS_AHA_14aa1662-b648-47c2-a159-00e48ebc55b5-0">
+							<aixm:timeInterval nilReason="unknown" xsi:nil="true"></aixm:timeInterval>
+							<aixm:annotation>
+								<aixm:Note gml:id="ID_TS_AHA_N_14aa1662-b648-47c2-a159-00e48ebc55b5-0-0">
+									<aixm:propertyName>timeInterval</aixm:propertyName>
+									<aixm:purpose>REMARK</aixm:purpose>
+									<aixm:translatedNote>
+										<aixm:LinguisticNote gml:id="ID_TS_AHA_N_LN_14aa1662-b648-47c2-a159-00e48ebc55b5-0-0">
+											<aixm:note>PPR</aixm:note>
+										</aixm:LinguisticNote>
+									</aixm:translatedNote>
+								</aixm:Note>
+							</aixm:annotation>
+							<aixm:annotation>
+								<aixm:Note gml:id="ID_TS_AHA_N_14aa1662-b648-47c2-a159-00e48ebc55b5-0-1">
+									<aixm:propertyName>usage</aixm:propertyName>
+									<aixm:purpose>REMARK</aixm:purpose>
+									<aixm:translatedNote>
+										<aixm:LinguisticNote gml:id="ID_TS_AHA_N_LN_14aa1662-b648-47c2-a159-00e48ebc55b5-0-1">
+											<aixm:note>10000 kg, HEL 5700 kg, GLD (P), GLD, UL, balloon</aixm:note>
+										</aixm:LinguisticNote>
+									</aixm:translatedNote>
+								</aixm:Note>
+							</aixm:annotation>
+							<aixm:operationalStatus>NORMAL</aixm:operationalStatus>
+							<aixm:warning xsi:nil="true" nilReason="unknown"></aixm:warning>
+							<aixm:usage>
+								<aixm:AirportHeliportUsage gml:id="ID_TS_AHA_AHU_14aa1662-b648-47c2-a159-00e48ebc55b5-0-656">
+									<aixm:type>PERMIT</aixm:type>
+								</aixm:AirportHeliportUsage>
+							</aixm:usage>
+							<aixm:usage>
+								<aixm:AirportHeliportUsage gml:id="ID_TS_AHA_AHU_14aa1662-b648-47c2-a159-00e48ebc55b5-0-1141">
+									<aixm:type>OTHER</aixm:type>
+									<aixm:selection>
+										<aixm:ConditionCombination gml:id="ID_TS_AHA_AHU_CC_14aa1662-b648-47c2-a159-00e48ebc55b5-0-1141-1129">
+											<aixm:logicalOperator>OR</aixm:logicalOperator>
+											<aixm:flight>
+												<aixm:FlightCharacteristic gml:id="ID_TS_AHA_AHU_CC_FC_14aa1662-b648-47c2-a159-00e48ebc55b5-0-1141-1129-427">
+													<aixm:type>OTHER</aixm:type>
+													<aixm:rule>OTHER:NVFR</aixm:rule>
+													<aixm:status>OTHER</aixm:status>
+													<aixm:military>CIVIL</aixm:military>
+													<aixm:origin xsi:nil="true" nilReason="unknown"></aixm:origin>
+													<aixm:purpose xsi:nil="true" nilReason="unknown"></aixm:purpose>
+												</aixm:FlightCharacteristic>
+											</aixm:flight>
+											<aixm:flight>
+												<aixm:FlightCharacteristic gml:id="ID_TS_AHA_AHU_CC_FC_14aa1662-b648-47c2-a159-00e48ebc55b5-0-1141-1129-43">
+													<aixm:type>OTHER</aixm:type>
+													<aixm:rule>VFR</aixm:rule>
+													<aixm:status>OTHER</aixm:status>
+													<aixm:military>CIVIL</aixm:military>
+													<aixm:origin xsi:nil="true" nilReason="unknown"></aixm:origin>
+													<aixm:purpose xsi:nil="true" nilReason="unknown"></aixm:purpose>
+												</aixm:FlightCharacteristic>
+											</aixm:flight>
+											<aixm:flight>
+												<aixm:FlightCharacteristic gml:id="ID_TS_AHA_AHU_CC_FC_14aa1662-b648-47c2-a159-00e48ebc55b5-0-1141-1129-428">
+													<aixm:type>OTHER</aixm:type>
+													<aixm:rule>IFR</aixm:rule>
+													<aixm:status>OTHER</aixm:status>
+													<aixm:military>CIVIL</aixm:military>
+													<aixm:origin xsi:nil="true" nilReason="unknown"></aixm:origin>
+													<aixm:purpose xsi:nil="true" nilReason="unknown"></aixm:purpose>
+												</aixm:FlightCharacteristic>
+											</aixm:flight>
+											<aixm:flight>
+												<aixm:FlightCharacteristic gml:id="ID_TS_AHA_AHU_CC_FC_14aa1662-b648-47c2-a159-00e48ebc55b5-0-1141-1129-2">
+													<aixm:type>OTHER</aixm:type>
+													<aixm:rule>ALL</aixm:rule>
+													<aixm:status>OTHER</aixm:status>
+													<aixm:military>CIVIL</aixm:military>
+													<aixm:origin>NTL</aixm:origin>
+													<aixm:purpose>NON_SCHEDULED</aixm:purpose>
+												</aixm:FlightCharacteristic>
+											</aixm:flight>
+											<aixm:flight>
+												<aixm:FlightCharacteristic gml:id="ID_TS_AHA_AHU_CC_FC_14aa1662-b648-47c2-a159-00e48ebc55b5-0-1141-1129-3">
+													<aixm:type>OTHER</aixm:type>
+													<aixm:rule>ALL</aixm:rule>
+													<aixm:status>OTHER</aixm:status>
+													<aixm:military>CIVIL</aixm:military>
+													<aixm:origin>NTL</aixm:origin>
+													<aixm:purpose>PRIVATE</aixm:purpose>
+												</aixm:FlightCharacteristic>
+											</aixm:flight>
+										</aixm:ConditionCombination>
+									</aixm:selection>
+								</aixm:AirportHeliportUsage>
+							</aixm:usage>
+						</aixm:AirportHeliportAvailability>
+					</aixm:availability>
+					<aixm:annotation>
+						<aixm:Note gml:id="ID_TS_N_14aa1662-b648-47c2-a159-00e48ebc55b5-1">
+							<aixm:propertyName>ARP</aixm:propertyName>
+							<aixm:purpose>REMARK</aixm:purpose>
+							<aixm:translatedNote>
+								<aixm:LinguisticNote gml:id="ID_TS_N_LN_14aa1662-b648-47c2-a159-00e48ebc55b5-1">
+									<aixm:note>ARP site at AD: 413 m SW of THR 21 on RWY centre line, Direction and distance from (city): 1.9 km (1 NM) Bamberg</aixm:note>
+								</aixm:LinguisticNote>
+							</aixm:translatedNote>
+						</aixm:Note>
+					</aixm:annotation>
+					<aixm:annotation>
+						<aixm:Note gml:id="ID_TS_N_14aa1662-b648-47c2-a159-00e48ebc55b5-2">
+							<aixm:propertyName>type</aixm:propertyName>
+							<aixm:purpose>REMARK</aixm:purpose>
+							<aixm:translatedNote>
+								<aixm:LinguisticNote gml:id="ID_TS_N_LN_14aa1662-b648-47c2-a159-00e48ebc55b5-2">
+									<aixm:note>International Airport Civil</aixm:note>
+								</aixm:LinguisticNote>
+							</aixm:translatedNote>
+						</aixm:Note>
+					</aixm:annotation>
+					<aixm:annotation>
+						<aixm:Note gml:id="ID_TS_N_14aa1662-b648-47c2-a159-00e48ebc55b5-3">
+							<aixm:propertyName>ARP</aixm:propertyName>
+							<aixm:purpose>REMARK</aixm:purpose>
+							<aixm:translatedNote>
+								<aixm:LinguisticNote gml:id="ID_TS_N_LN_14aa1662-b648-47c2-a159-00e48ebc55b5-3">
+									<aixm:note>State of the Airport/Heliport based on the ARP: Bayern</aixm:note>
+								</aixm:LinguisticNote>
+							</aixm:translatedNote>
+						</aixm:Note>
+					</aixm:annotation>
+				</aixm:AirportHeliportTimeSlice>
+			</aixm:timeSlice>
+		</aixm:AirportHeliport>
+	</message:hasMember>
+</message:AIXMBasicMessage>

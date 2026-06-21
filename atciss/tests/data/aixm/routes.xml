@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message:AIXMBasicMessage xmlns:gss="http://www.isotc211.org/2005/gss" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:message="http://www.aixm.aero/schema/5.1.1/message" xmlns:gsr="http://www.isotc211.org/2005/gsr" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:aixm="http://www.aixm.aero/schema/5.1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gts="http://www.isotc211.org/2005/gts" gml:id="ID_01">
+	<message:hasMember>
+		<aixm:Route gml:id="id.25092197-6444-440c-8318-72d85d6e0993">
+			<gml:identifier codeSpace="urn:uuid:">25092197-6444-440c-8318-72d85d6e0993</gml:identifier>
+			<aixm:timeSlice>
+				<aixm:RouteTimeSlice gml:id="id.ts.25092197-6444-440c-8318-72d85d6e0993">
+					<gml:validTime>
+						<gml:TimeInstant gml:id="id.ts.vt.25092197-6444-440c-8318-72d85d6e0993">
+							<gml:timePosition>2025-06-12T00:00:00</gml:timePosition>
+						</gml:TimeInstant>
+					</gml:validTime>
+					<aixm:interpretation>SNAPSHOT</aixm:interpretation>
+					<aixm:featureLifetime>
+						<gml:TimePeriod gml:id="id.ts.flt.25092197-6444-440c-8318-72d85d6e0993">
+							<gml:beginPosition>2015-05-01T00:00:00</gml:beginPosition>
+							<gml:endPosition indeterminatePosition="unknown"></gml:endPosition>
+						</gml:TimePeriod>
+					</aixm:featureLifetime>
+					<aixm:designatorPrefix xsi:nil="true" nilReason="unknown"></aixm:designatorPrefix>
+					<aixm:designatorSecondLetter>Z</aixm:designatorSecondLetter>
+					<aixm:designatorNumber>999</aixm:designatorNumber>
+					<aixm:multipleIdentifier xsi:nil="true" nilReason="unknown"></aixm:multipleIdentifier>
+					<aixm:locationDesignator>ED-ED</aixm:locationDesignator>
+					<aixm:name xsi:nil="true" nilReason="unknown"></aixm:name>
+					<aixm:type xsi:nil="true" nilReason="unknown"></aixm:type>
+					<aixm:flightRule xsi:nil="true" nilReason="unknown"></aixm:flightRule>
+					<aixm:internationalUse xsi:nil="true" nilReason="unknown"></aixm:internationalUse>
+					<aixm:militaryUse xsi:nil="true" nilReason="unknown"></aixm:militaryUse>
+					<aixm:militaryTrainingType xsi:nil="true" nilReason="unknown"></aixm:militaryTrainingType>
+				</aixm:RouteTimeSlice>
+			</aixm:timeSlice>
+		</aixm:Route>
+	</message:hasMember>
+	<message:hasMember>
+		<aixm:RouteSegment gml:id="id.ff81ca66-dba9-4e94-8832-3c63e058e38d">
+			<gml:identifier codeSpace="urn:uuid:">ff81ca66-dba9-4e94-8832-3c63e058e38d</gml:identifier>
+			<aixm:timeSlice>
+				<aixm:RouteSegmentTimeSlice gml:id="id.ts.ff81ca66-dba9-4e94-8832-3c63e058e38d">
+					<gml:validTime>
+						<gml:TimeInstant gml:id="id.ts.vt.ff81ca66-dba9-4e94-8832-3c63e058e38d">
+							<gml:timePosition>2025-06-12T00:00:00</gml:timePosition>
+						</gml:TimeInstant>
+					</gml:validTime>
+					<aixm:interpretation>SNAPSHOT</aixm:interpretation>
+					<aixm:featureLifetime>
+						<gml:TimePeriod gml:id="id.ts.flt.ff81ca66-dba9-4e94-8832-3c63e058e38d">
+							<gml:beginPosition>2021-05-20T00:00:00</gml:beginPosition>
+							<gml:endPosition indeterminatePosition="unknown"></gml:endPosition>
+						</gml:TimePeriod>
+					</aixm:featureLifetime>
+					<aixm:level>LOWER</aixm:level>
+					<aixm:upperLimit uom="FL">245</aixm:upperLimit>
+					<aixm:upperLimitReference>STD</aixm:upperLimitReference>
+					<aixm:lowerLimit uom="FT">6500</aixm:lowerLimit>
+					<aixm:lowerLimitReference>MSL</aixm:lowerLimitReference>
+					<aixm:minimumObstacleClearanceAltitude xsi:nil="true" nilReason="unknown"></aixm:minimumObstacleClearanceAltitude>
+					<aixm:pathType xsi:nil="true" nilReason="unknown"></aixm:pathType>
+					<aixm:trueTrack>55.5</aixm:trueTrack>
+					<aixm:magneticTrack xsi:nil="true" nilReason="unknown"></aixm:magneticTrack>
+					<aixm:reverseTrueTrack>235.8</aixm:reverseTrueTrack>
+					<aixm:reverseMagneticTrack xsi:nil="true" nilReason="unknown"></aixm:reverseMagneticTrack>
+					<aixm:length uom="NM">19.6</aixm:length>
+					<aixm:widthLeft xsi:nil="true" nilReason="unknown"></aixm:widthLeft>
+					<aixm:widthRight xsi:nil="true" nilReason="unknown"></aixm:widthRight>
+					<aixm:turnDirection xsi:nil="true" nilReason="unknown"></aixm:turnDirection>
+					<aixm:signalGap xsi:nil="true" nilReason="unknown"></aixm:signalGap>
+					<aixm:minimumEnrouteAltitude xsi:nil="true" nilReason="unknown"></aixm:minimumEnrouteAltitude>
+					<aixm:minimumCrossingAtEnd xsi:nil="true" nilReason="unknown"></aixm:minimumCrossingAtEnd>
+					<aixm:minimumCrossingAtEndReference xsi:nil="true" nilReason="unknown"></aixm:minimumCrossingAtEndReference>
+					<aixm:maximumCrossingAtEnd xsi:nil="true" nilReason="unknown"></aixm:maximumCrossingAtEnd>
+					<aixm:maximumCrossingAtEndReference xsi:nil="true" nilReason="unknown"></aixm:maximumCrossingAtEndReference>
+					<aixm:navigationType>RNAV</aixm:navigationType>
+					<aixm:requiredNavigationPerformance xsi:nil="true" nilReason="unknown"></aixm:requiredNavigationPerformance>
+					<aixm:designatorSuffix xsi:nil="true" nilReason="unknown"></aixm:designatorSuffix>
+					<aixm:start>
+						<aixm:EnRouteSegmentPoint gml:id="id.ts.sp.ff81ca66-dba9-4e94-8832-3c63e058e38d">
+							<aixm:pointChoice_navaidSystem xlink:href="urn:uuid:3e4cf2fa-d1f7-43c4-9085-d05f042290f8" xlink:title="KPT"></aixm:pointChoice_navaidSystem>
+						</aixm:EnRouteSegmentPoint>
+					</aixm:start>
+					<aixm:routeFormed xlink:href="urn:uuid:25092197-6444-440c-8318-72d85d6e0993"></aixm:routeFormed>
+					<aixm:curveExtent>
+						<aixm:Curve gml:id="id.ts.curve.ff81ca66-dba9-4e94-8832-3c63e058e38d" srsName="urn:ogc:def:crs:EPSG::4326">
+							<gml:segments>
+								<gml:LineStringSegment>
+									<gml:posList>47.745774213 10.349834306 47.7642199753099 10.3897193281709 47.7826518083093 10.4296325505844 47.8010696933707 10.4695739901402 47.8194736118486 10.5095436636885 47.8378635450796 10.5495415880298 47.8562394743476 10.5895677798389 47.8746013810169 10.6296222559538 47.8929492463415 10.6697050329615 47.9112830515865 10.7098161274606 47.929602778 10.749955556</gml:posList>
+								</gml:LineStringSegment>
+							</gml:segments>
+						</aixm:Curve>
+					</aixm:curveExtent>
+					<aixm:end>
+						<aixm:EnRouteSegmentPoint gml:id="id.ts.ep.ff81ca66-dba9-4e94-8832-3c63e058e38d">
+							<aixm:pointChoice_fixDesignatedPoint xlink:href="urn:uuid:9ae790ed-ec68-4156-8752-80defbce6bc2" xlink:title="ATMAX"></aixm:pointChoice_fixDesignatedPoint>
+						</aixm:EnRouteSegmentPoint>
+					</aixm:end>
+					<aixm:availability>
+						<aixm:RouteAvailability gml:id="id.ts.avlbt.ff81ca66-dba9-4e94-8832-3c63e058e38d-7618">
+							<aixm:timeInterval>
+								<aixm:Timesheet gml:id="id.ts.avlbt.ff81ca66-dba9-4e94-8832-3c63e058e38d-7618-1">
+									<aixm:timeReference>UTC</aixm:timeReference>
+									<aixm:startDate>01-01</aixm:startDate>
+									<aixm:endDate>31-12</aixm:endDate>
+									<aixm:day>ANY</aixm:day>
+									<aixm:startTime>00:00</aixm:startTime>
+									<aixm:endTime>00:00</aixm:endTime>
+									<aixm:daylightSavingAdjust>NO</aixm:daylightSavingAdjust>
+									<aixm:excluded>NO</aixm:excluded>
+								</aixm:Timesheet>
+							</aixm:timeInterval>
+							<aixm:annotation>
+								<aixm:Note gml:id="id.ts.avlbt.note.ff81ca66-dba9-4e94-8832-3c63e058e38d-7618-1-1">
+									<aixm:propertyName>timeInterval</aixm:propertyName>
+									<aixm:purpose>DESCRIPTION</aixm:purpose>
+									<aixm:translatedNote>
+										<aixm:LinguisticNote gml:id="id.ts.avlbt.note.ff81ca66-dba9-4e94-8832-3c63e058e38d-7618-1-2">
+											<aixm:note>H24</aixm:note>
+										</aixm:LinguisticNote>
+									</aixm:translatedNote>
+								</aixm:Note>
+							</aixm:annotation>
+							<aixm:direction>BACKWARD</aixm:direction>
+							<aixm:cardinalDirection xsi:nil="true" nilReason="unknown"></aixm:cardinalDirection>
+							<aixm:status>OPEN</aixm:status>
+							<aixm:levels>
+								<aixm:AirspaceLayer gml:id="id.ts.avlbt.lvl.ff81ca66-dba9-4e94-8832-3c63e058e38d-7618-7913">
+									<aixm:upperLimit uom="FL">200</aixm:upperLimit>
+									<aixm:upperLimitReference>STD</aixm:upperLimitReference>
+									<aixm:lowerLimit uom="FL">80</aixm:lowerLimit>
+									<aixm:lowerLimitReference>STD</aixm:lowerLimitReference>
+									<aixm:altitudeInterpretation xsi:nil="true" nilReason="unknown"></aixm:altitudeInterpretation>
+									<aixm:discreteLevelSeries xlink:href="urn:uuid:0942496b-7ce7-0b22-e053-0b751dc2499f"></aixm:discreteLevelSeries>
+								</aixm:AirspaceLayer>
+							</aixm:levels>
+						</aixm:RouteAvailability>
+					</aixm:availability>
+					<aixm:availability>
+						<aixm:RouteAvailability gml:id="id.ts.avlbt.ff81ca66-dba9-4e94-8832-3c63e058e38d-7619">
+							<aixm:timeInterval>
+								<aixm:Timesheet gml:id="id.ts.avlbt.ff81ca66-dba9-4e94-8832-3c63e058e38d-7619-1">
+									<aixm:timeReference>UTC</aixm:timeReference>
+									<aixm:startDate>01-01</aixm:startDate>
+									<aixm:endDate>31-12</aixm:endDate>
+									<aixm:day>ANY</aixm:day>
+									<aixm:startTime>00:00</aixm:startTime>
+									<aixm:endTime>00:00</aixm:endTime>
+									<aixm:daylightSavingAdjust>NO</aixm:daylightSavingAdjust>
+									<aixm:excluded>NO</aixm:excluded>
+								</aixm:Timesheet>
+							</aixm:timeInterval>
+							<aixm:annotation>
+								<aixm:Note gml:id="id.ts.avlbt.note.ff81ca66-dba9-4e94-8832-3c63e058e38d-7619-1-1">
+									<aixm:propertyName>timeInterval</aixm:propertyName>
+									<aixm:purpose>DESCRIPTION</aixm:purpose>
+									<aixm:translatedNote>
+										<aixm:LinguisticNote gml:id="id.ts.avlbt.note.ff81ca66-dba9-4e94-8832-3c63e058e38d-7619-1-2">
+											<aixm:note>H24</aixm:note>
+										</aixm:LinguisticNote>
+									</aixm:translatedNote>
+								</aixm:Note>
+							</aixm:annotation>
+							<aixm:direction>FORWARD</aixm:direction>
+							<aixm:cardinalDirection xsi:nil="true" nilReason="unknown"></aixm:cardinalDirection>
+							<aixm:status>OPEN</aixm:status>
+							<aixm:levels>
+								<aixm:AirspaceLayer gml:id="id.ts.avlbt.lvl.ff81ca66-dba9-4e94-8832-3c63e058e38d-7619-7914">
+									<aixm:upperLimit uom="FL">210</aixm:upperLimit>
+									<aixm:upperLimitReference>STD</aixm:upperLimitReference>
+									<aixm:lowerLimit uom="FL">70</aixm:lowerLimit>
+									<aixm:lowerLimitReference>STD</aixm:lowerLimitReference>
+									<aixm:altitudeInterpretation xsi:nil="true" nilReason="unknown"></aixm:altitudeInterpretation>
+									<aixm:discreteLevelSeries xlink:href="urn:uuid:0942496b-7ce1-0b22-e053-0b751dc2499f"></aixm:discreteLevelSeries>
+								</aixm:AirspaceLayer>
+							</aixm:levels>
+						</aixm:RouteAvailability>
+					</aixm:availability>
+					<aixm:availability>
+						<aixm:RouteAvailability gml:id="id.ts.avlbt.ff81ca66-dba9-4e94-8832-3c63e058e38d-7620">
+							<aixm:timeInterval>
+								<aixm:Timesheet gml:id="id.ts.avlbt.ff81ca66-dba9-4e94-8832-3c63e058e38d-7620-1">
+									<aixm:timeReference>UTC</aixm:timeReference>
+									<aixm:startDate>01-01</aixm:startDate>
+									<aixm:endDate>31-12</aixm:endDate>
+									<aixm:day>ANY</aixm:day>
+									<aixm:startTime>00:00</aixm:startTime>
+									<aixm:endTime>00:00</aixm:endTime>
+									<aixm:daylightSavingAdjust>NO</aixm:daylightSavingAdjust>
+									<aixm:excluded>NO</aixm:excluded>
+								</aixm:Timesheet>
+							</aixm:timeInterval>
+							<aixm:annotation>
+								<aixm:Note gml:id="id.ts.avlbt.note.ff81ca66-dba9-4e94-8832-3c63e058e38d-7620-1-1">
+									<aixm:propertyName>timeInterval</aixm:propertyName>
+									<aixm:purpose>DESCRIPTION</aixm:purpose>
+									<aixm:translatedNote>
+										<aixm:LinguisticNote gml:id="id.ts.avlbt.note.ff81ca66-dba9-4e94-8832-3c63e058e38d-7620-1-2">
+											<aixm:note>H24</aixm:note>
+										</aixm:LinguisticNote>
+									</aixm:translatedNote>
+								</aixm:Note>
+							</aixm:annotation>
+							<aixm:annotation>
+								<aixm:Note gml:id="id.ts.avlbt.note.ff81ca66-dba9-4e94-8832-3c63e058e38d-7620-2-1">
+									<aixm:propertyName>timeInterval</aixm:propertyName>
+									<aixm:purpose>DESCRIPTION</aixm:purpose>
+									<aixm:translatedNote>
+										<aixm:LinguisticNote gml:id="id.ts.avlbt.note.ff81ca66-dba9-4e94-8832-3c63e058e38d-7620-2-2">
+											<aixm:note>Unavailability of CDR1 will be published in advance in the daily EAUP/EUUP. CDR1/SCC.</aixm:note>
+										</aixm:LinguisticNote>
+									</aixm:translatedNote>
+								</aixm:Note>
+							</aixm:annotation>
+							<aixm:direction>BACKWARD</aixm:direction>
+							<aixm:cardinalDirection xsi:nil="true" nilReason="unknown"></aixm:cardinalDirection>
+							<aixm:status>OTHER:CDR1</aixm:status>
+							<aixm:levels>
+								<aixm:AirspaceLayer gml:id="id.ts.avlbt.lvl.ff81ca66-dba9-4e94-8832-3c63e058e38d-7620-7915">
+									<aixm:upperLimit uom="FL">240</aixm:upperLimit>
+									<aixm:upperLimitReference>STD</aixm:upperLimitReference>
+									<aixm:lowerLimit uom="FL">220</aixm:lowerLimit>
+									<aixm:lowerLimitReference>STD</aixm:lowerLimitReference>
+									<aixm:altitudeInterpretation xsi:nil="true" nilReason="unknown"></aixm:altitudeInterpretation>
+									<aixm:discreteLevelSeries xlink:href="urn:uuid:0942496b-7ce7-0b22-e053-0b751dc2499f"></aixm:discreteLevelSeries>
+								</aixm:AirspaceLayer>
+							</aixm:levels>
+							<aixm:levels>
+								<aixm:AirspaceLayer gml:id="id.ts.avlbt.lvl.ff81ca66-dba9-4e94-8832-3c63e058e38d-7620-9268">
+									<aixm:upperLimit xsi:nil="true" nilReason="unknown"></aixm:upperLimit>
+									<aixm:upperLimitReference xsi:nil="true" nilReason="unknown"></aixm:upperLimitReference>
+									<aixm:lowerLimit uom="FL">215</aixm:lowerLimit>
+									<aixm:lowerLimitReference>STD</aixm:lowerLimitReference>
+									<aixm:altitudeInterpretation xsi:nil="true" nilReason="unknown"></aixm:altitudeInterpretation>
+								</aixm:AirspaceLayer>
+							</aixm:levels>
+							<aixm:levels>
+								<aixm:AirspaceLayer gml:id="id.ts.avlbt.lvl.ff81ca66-dba9-4e94-8832-3c63e058e38d-7620-9269">
+									<aixm:upperLimit xsi:nil="true" nilReason="unknown"></aixm:upperLimit>
+									<aixm:upperLimitReference xsi:nil="true" nilReason="unknown"></aixm:upperLimitReference>
+									<aixm:lowerLimit uom="FL">245</aixm:lowerLimit>
+									<aixm:lowerLimitReference>STD</aixm:lowerLimitReference>
+									<aixm:altitudeInterpretation xsi:nil="true" nilReason="unknown"></aixm:altitudeInterpretation>
+								</aixm:AirspaceLayer>
+							</aixm:levels>
+						</aixm:RouteAvailability>
+					</aixm:availability>
+					<aixm:availability>
+						<aixm:RouteAvailability gml:id="id.ts.avlbt.ff81ca66-dba9-4e94-8832-3c63e058e38d-7621">
+							<aixm:timeInterval>
+								<aixm:Timesheet gml:id="id.ts.avlbt.ff81ca66-dba9-4e94-8832-3c63e058e38d-7621-1">
+									<aixm:timeReference>UTC</aixm:timeReference>
+									<aixm:startDate>01-01</aixm:startDate>
+									<aixm:endDate>31-12</aixm:endDate>
+									<aixm:day>ANY</aixm:day>
+									<aixm:startTime>00:00</aixm:startTime>
+									<aixm:endTime>00:00</aixm:endTime>
+									<aixm:daylightSavingAdjust>NO</aixm:daylightSavingAdjust>
+									<aixm:excluded>NO</aixm:excluded>
+								</aixm:Timesheet>
+							</aixm:timeInterval>
+							<aixm:annotation>
+								<aixm:Note gml:id="id.ts.avlbt.note.ff81ca66-dba9-4e94-8832-3c63e058e38d-7621-1-1">
+									<aixm:propertyName>timeInterval</aixm:propertyName>
+									<aixm:purpose>DESCRIPTION</aixm:purpose>
+									<aixm:translatedNote>
+										<aixm:LinguisticNote gml:id="id.ts.avlbt.note.ff81ca66-dba9-4e94-8832-3c63e058e38d-7621-1-2">
+											<aixm:note>H24</aixm:note>
+										</aixm:LinguisticNote>
+									</aixm:translatedNote>
+								</aixm:Note>
+							</aixm:annotation>
+							<aixm:annotation>
+								<aixm:Note gml:id="id.ts.avlbt.note.ff81ca66-dba9-4e94-8832-3c63e058e38d-7621-2-1">
+									<aixm:propertyName>timeInterval</aixm:propertyName>
+									<aixm:purpose>DESCRIPTION</aixm:purpose>
+									<aixm:translatedNote>
+										<aixm:LinguisticNote gml:id="id.ts.avlbt.note.ff81ca66-dba9-4e94-8832-3c63e058e38d-7621-2-2">
+											<aixm:note>Unavailability of CDR1 will be published in advance in the daily EAUP/EUUP. CDR1/SCC.</aixm:note>
+										</aixm:LinguisticNote>
+									</aixm:translatedNote>
+								</aixm:Note>
+							</aixm:annotation>
+							<aixm:direction>FORWARD</aixm:direction>
+							<aixm:cardinalDirection xsi:nil="true" nilReason="unknown"></aixm:cardinalDirection>
+							<aixm:status>OTHER:CDR1</aixm:status>
+							<aixm:levels>
+								<aixm:AirspaceLayer gml:id="id.ts.avlbt.lvl.ff81ca66-dba9-4e94-8832-3c63e058e38d-7621-7916">
+									<aixm:upperLimit xsi:nil="true" nilReason="unknown"></aixm:upperLimit>
+									<aixm:upperLimitReference xsi:nil="true" nilReason="unknown"></aixm:upperLimitReference>
+									<aixm:lowerLimit uom="FL">230</aixm:lowerLimit>
+									<aixm:lowerLimitReference>STD</aixm:lowerLimitReference>
+									<aixm:altitudeInterpretation xsi:nil="true" nilReason="unknown"></aixm:altitudeInterpretation>
+								</aixm:AirspaceLayer>
+							</aixm:levels>
+						</aixm:RouteAvailability>
+					</aixm:availability>
+				</aixm:RouteSegmentTimeSlice>
+			</aixm:timeSlice>
+		</aixm:RouteSegment>
+	</message:hasMember>
+	<message:hasMember>
+		<aixm:RouteSegment gml:id="id.bddf3b53-95c7-4958-80a7-bee7879cdfda">
+			<gml:identifier codeSpace="urn:uuid:">bddf3b53-95c7-4958-80a7-bee7879cdfda</gml:identifier>
+			<aixm:timeSlice>
+				<aixm:RouteSegmentTimeSlice gml:id="id.ts.bddf3b53-95c7-4958-80a7-bee7879cdfda">
+					<gml:validTime>
+						<gml:TimeInstant gml:id="id.ts.vt.bddf3b53-95c7-4958-80a7-bee7879cdfda">
+							<gml:timePosition>2025-06-12T00:00:00</gml:timePosition>
+						</gml:TimeInstant>
+					</gml:validTime>
+					<aixm:interpretation>SNAPSHOT</aixm:interpretation>
+					<aixm:featureLifetime>
+						<gml:TimePeriod gml:id="id.ts.flt.bddf3b53-95c7-4958-80a7-bee7879cdfda">
+							<gml:beginPosition>2015-05-01T00:00:00</gml:beginPosition>
+							<gml:endPosition indeterminatePosition="unknown"></gml:endPosition>
+						</gml:TimePeriod>
+					</aixm:featureLifetime>
+					<aixm:level>BOTH</aixm:level>
+					<aixm:upperLimit uom="FL">660</aixm:upperLimit>
+					<aixm:upperLimitReference>STD</aixm:upperLimitReference>
+					<aixm:lowerLimit uom="FT">9500</aixm:lowerLimit>
+					<aixm:lowerLimitReference>MSL</aixm:lowerLimitReference>
+					<aixm:minimumObstacleClearanceAltitude xsi:nil="true" nilReason="unknown"></aixm:minimumObstacleClearanceAltitude>
+					<aixm:pathType xsi:nil="true" nilReason="unknown"></aixm:pathType>
+					<aixm:trueTrack>9.1</aixm:trueTrack>
+					<aixm:magneticTrack xsi:nil="true" nilReason="unknown"></aixm:magneticTrack>
+					<aixm:reverseTrueTrack>189.1</aixm:reverseTrueTrack>
+					<aixm:reverseMagneticTrack xsi:nil="true" nilReason="unknown"></aixm:reverseMagneticTrack>
+					<aixm:length uom="NM">11.3</aixm:length>
+					<aixm:widthLeft xsi:nil="true" uom="FT" nilReason="unknown"></aixm:widthLeft>
+					<aixm:widthRight xsi:nil="true" uom="FT" nilReason="unknown"></aixm:widthRight>
+					<aixm:turnDirection xsi:nil="true" nilReason="unknown"></aixm:turnDirection>
+					<aixm:signalGap xsi:nil="true" nilReason="unknown"></aixm:signalGap>
+					<aixm:minimumEnrouteAltitude xsi:nil="true" nilReason="unknown"></aixm:minimumEnrouteAltitude>
+					<aixm:minimumCrossingAtEnd xsi:nil="true" nilReason="unknown"></aixm:minimumCrossingAtEnd>
+					<aixm:minimumCrossingAtEndReference xsi:nil="true" nilReason="unknown"></aixm:minimumCrossingAtEndReference>
+					<aixm:maximumCrossingAtEnd xsi:nil="true" nilReason="unknown"></aixm:maximumCrossingAtEnd>
+					<aixm:maximumCrossingAtEndReference xsi:nil="true" nilReason="unknown"></aixm:maximumCrossingAtEndReference>
+					<aixm:navigationType>RNAV</aixm:navigationType>
+					<aixm:requiredNavigationPerformance xsi:nil="true" nilReason="unknown"></aixm:requiredNavigationPerformance>
+					<aixm:designatorSuffix xsi:nil="true" nilReason="unknown"></aixm:designatorSuffix>
+					<aixm:start>
+						<aixm:EnRouteSegmentPoint gml:id="id.ts.sp.bddf3b53-95c7-4958-80a7-bee7879cdfda">
+							<aixm:pointChoice_fixDesignatedPoint xlink:href="urn:uuid:b3733c50-b078-46fb-82a7-9eccdbd69c51" xlink:title="BEMKI"></aixm:pointChoice_fixDesignatedPoint>
+						</aixm:EnRouteSegmentPoint>
+					</aixm:start>
+					<aixm:routeFormed xlink:href="urn:uuid:25092197-6444-440c-8318-72d85d6e0993"></aixm:routeFormed>
+					<aixm:curveExtent>
+						<aixm:Curve gml:id="id.ts.curve.bddf3b53-95c7-4958-80a7-bee7879cdfda" srsName="urn:ogc:def:crs:EPSG::4326">
+							<gml:segments>
+								<gml:LineStringSegment>
+									<gml:posList>47.559388889 10.305594444 47.5780284614675 10.3100042883646 47.5966678034128 10.3144172640189 47.6153069146098 10.3188333752028 47.6339457948327 10.3232526261636 47.6525844438548 10.3276750211557 47.6712228614494 10.3321005644407 47.689861047389 10.3365292602878 47.7084990014462 10.3409611129731 47.727136723393 10.3453961267803 47.745774213 10.349834306</gml:posList>
+								</gml:LineStringSegment>
+							</gml:segments>
+						</aixm:Curve>
+					</aixm:curveExtent>
+					<aixm:end>
+						<aixm:EnRouteSegmentPoint gml:id="id.ts.ep.bddf3b53-95c7-4958-80a7-bee7879cdfda">
+							<aixm:pointChoice_navaidSystem xlink:href="urn:uuid:3e4cf2fa-d1f7-43c4-9085-d05f042290f8" xlink:title="KPT"></aixm:pointChoice_navaidSystem>
+						</aixm:EnRouteSegmentPoint>
+					</aixm:end>
+					<aixm:availability>
+						<aixm:RouteAvailability gml:id="id.ts.avlbt.bddf3b53-95c7-4958-80a7-bee7879cdfda-4054">
+							<aixm:timeInterval>
+								<aixm:Timesheet gml:id="id.ts.avlbt.bddf3b53-95c7-4958-80a7-bee7879cdfda-4054-1">
+									<aixm:timeReference>UTC</aixm:timeReference>
+									<aixm:startDate>01-01</aixm:startDate>
+									<aixm:endDate>31-12</aixm:endDate>
+									<aixm:day>ANY</aixm:day>
+									<aixm:startTime>00:00</aixm:startTime>
+									<aixm:endTime>00:00</aixm:endTime>
+									<aixm:daylightSavingAdjust>NO</aixm:daylightSavingAdjust>
+									<aixm:excluded>NO</aixm:excluded>
+								</aixm:Timesheet>
+							</aixm:timeInterval>
+							<aixm:annotation>
+								<aixm:Note gml:id="id.ts.avlbt.note.bddf3b53-95c7-4958-80a7-bee7879cdfda-4054-1-1">
+									<aixm:propertyName>timeInterval</aixm:propertyName>
+									<aixm:purpose>DESCRIPTION</aixm:purpose>
+									<aixm:translatedNote>
+										<aixm:LinguisticNote gml:id="id.ts.avlbt.note.bddf3b53-95c7-4958-80a7-bee7879cdfda-4054-1-2">
+											<aixm:note>H24</aixm:note>
+										</aixm:LinguisticNote>
+									</aixm:translatedNote>
+								</aixm:Note>
+							</aixm:annotation>
+							<aixm:direction>BACKWARD</aixm:direction>
+							<aixm:cardinalDirection xsi:nil="true" nilReason="unknown"></aixm:cardinalDirection>
+							<aixm:status>OPEN</aixm:status>
+							<aixm:levels>
+								<aixm:AirspaceLayer gml:id="id.ts.avlbt.lvl.bddf3b53-95c7-4958-80a7-bee7879cdfda-4054-2260">
+									<aixm:upperLimit uom="FL">650</aixm:upperLimit>
+									<aixm:upperLimitReference>STD</aixm:upperLimitReference>
+									<aixm:lowerLimit uom="FL">110</aixm:lowerLimit>
+									<aixm:lowerLimitReference>STD</aixm:lowerLimitReference>
+									<aixm:altitudeInterpretation xsi:nil="true" nilReason="unknown"></aixm:altitudeInterpretation>
+									<aixm:discreteLevelSeries xlink:href="urn:uuid:0942496b-7ce1-0b22-e053-0b751dc2499f"></aixm:discreteLevelSeries>
+								</aixm:AirspaceLayer>
+							</aixm:levels>
+						</aixm:RouteAvailability>
+					</aixm:availability>
+					<aixm:availability>
+						<aixm:RouteAvailability gml:id="id.ts.avlbt.bddf3b53-95c7-4958-80a7-bee7879cdfda-4055">
+							<aixm:timeInterval>
+								<aixm:Timesheet gml:id="id.ts.avlbt.bddf3b53-95c7-4958-80a7-bee7879cdfda-4055-1">
+									<aixm:timeReference>UTC</aixm:timeReference>
+									<aixm:startDate>01-01</aixm:startDate>
+									<aixm:endDate>31-12</aixm:endDate>
+									<aixm:day>ANY</aixm:day>
+									<aixm:startTime>00:00</aixm:startTime>
+									<aixm:endTime>00:00</aixm:endTime>
+									<aixm:daylightSavingAdjust>NO</aixm:daylightSavingAdjust>
+									<aixm:excluded>NO</aixm:excluded>
+								</aixm:Timesheet>
+							</aixm:timeInterval>
+							<aixm:annotation>
+								<aixm:Note gml:id="id.ts.avlbt.note.bddf3b53-95c7-4958-80a7-bee7879cdfda-4055-1-1">
+									<aixm:propertyName>timeInterval</aixm:propertyName>
+									<aixm:purpose>DESCRIPTION</aixm:purpose>
+									<aixm:translatedNote>
+										<aixm:LinguisticNote gml:id="id.ts.avlbt.note.bddf3b53-95c7-4958-80a7-bee7879cdfda-4055-1-2">
+											<aixm:note>H24</aixm:note>
+										</aixm:LinguisticNote>
+									</aixm:translatedNote>
+								</aixm:Note>
+							</aixm:annotation>
+							<aixm:direction>FORWARD</aixm:direction>
+							<aixm:cardinalDirection xsi:nil="true" nilReason="unknown"></aixm:cardinalDirection>
+							<aixm:status>OPEN</aixm:status>
+							<aixm:levels>
+								<aixm:AirspaceLayer gml:id="id.ts.avlbt.lvl.bddf3b53-95c7-4958-80a7-bee7879cdfda-4055-2261">
+									<aixm:upperLimit uom="FL">630</aixm:upperLimit>
+									<aixm:upperLimitReference>STD</aixm:upperLimitReference>
+									<aixm:lowerLimit uom="FL">100</aixm:lowerLimit>
+									<aixm:lowerLimitReference>STD</aixm:lowerLimitReference>
+									<aixm:altitudeInterpretation xsi:nil="true" nilReason="unknown"></aixm:altitudeInterpretation>
+									<aixm:discreteLevelSeries xlink:href="urn:uuid:0942496b-7ce7-0b22-e053-0b751dc2499f"></aixm:discreteLevelSeries>
+								</aixm:AirspaceLayer>
+							</aixm:levels>
+						</aixm:RouteAvailability>
+					</aixm:availability>
+				</aixm:RouteSegmentTimeSlice>
+			</aixm:timeSlice>
+		</aixm:RouteSegment>
+	</message:hasMember>
+</message:AIXMBasicMessage>

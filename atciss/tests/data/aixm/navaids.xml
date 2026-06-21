@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message:AIXMBasicMessage xmlns:gss="http://www.isotc211.org/2005/gss" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:message="http://www.aixm.aero/schema/5.1.1/message" xmlns:gsr="http://www.isotc211.org/2005/gsr" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:aixm="http://www.aixm.aero/schema/5.1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gts="http://www.isotc211.org/2005/gts" gml:id="ID_01">
+	<message:hasMember>
+		<aixm:Navaid gml:id="ID_NAVAID_VOR_432">
+			<gml:identifier codeSpace="urn:uuid:">3e4cf2fa-d1f7-43c4-9085-d05f042290f8</gml:identifier>
+			<aixm:timeSlice>
+				<aixm:NavaidTimeSlice gml:id="ID_NAVAID_VOR_TS_432">
+					<gml:validTime>
+						<gml:TimeInstant gml:id="ID_NAVAID_VOR_TS_VT_432">
+							<gml:timePosition>2025-06-12T00:00:00Z</gml:timePosition>
+						</gml:TimeInstant>
+					</gml:validTime>
+					<aixm:interpretation>SNAPSHOT</aixm:interpretation>
+					<aixm:featureLifetime>
+						<gml:TimePeriod gml:id="ID_NAVAID_VOR_TS_FLT_432">
+							<gml:beginPosition>2015-05-01T00:00:00Z</gml:beginPosition>
+							<gml:endPosition indeterminatePosition="unknown"></gml:endPosition>
+						</gml:TimePeriod>
+					</aixm:featureLifetime>
+					<aixm:type>VOR</aixm:type>
+					<aixm:designator>KPT</aixm:designator>
+					<aixm:name>KEMPTEN</aixm:name>
+					<aixm:flightChecked xsi:nil="true" nilReason="unknown"></aixm:flightChecked>
+					<aixm:purpose xsi:nil="true" nilReason="unknown"></aixm:purpose>
+					<aixm:signalPerformance xsi:nil="true" nilReason="inapplicable"></aixm:signalPerformance>
+					<aixm:courseQuality xsi:nil="true" nilReason="inapplicable"></aixm:courseQuality>
+					<aixm:integrityLevel xsi:nil="true" nilReason="inapplicable"></aixm:integrityLevel>
+					<aixm:navaidEquipment>
+						<aixm:NavaidComponent gml:id="ID_NAVAID_VOR_TS_COMP_432">
+							<aixm:markerPosition xsi:nil="true" nilReason="inapplicable"></aixm:markerPosition>
+							<aixm:providesNavigableLocation xsi:nil="true" nilReason="unknown"></aixm:providesNavigableLocation>
+							<aixm:theNavaidEquipment xlink:href="urn:uuid:6bb4cb95-978c-4051-aac0-f36bb6ebbf15"></aixm:theNavaidEquipment>
+						</aixm:NavaidComponent>
+					</aixm:navaidEquipment>
+					<aixm:location>
+						<aixm:ElevatedPoint gml:id="ID_NAVAID_VOR_TS_EPT_432" srsName="urn:ogc:def:crs:EPSG::4326">
+							<gml:pos>47.745774213 10.349834306</gml:pos>
+							<aixm:horizontalAccuracy uom="M">1.031</aixm:horizontalAccuracy>
+							<aixm:elevation uom="FT">2529.6723</aixm:elevation>
+							<aixm:geoidUndulation xsi:nil="true" nilReason="unknown"></aixm:geoidUndulation>
+							<aixm:verticalDatum>EGM_96</aixm:verticalDatum>
+							<aixm:verticalAccuracy uom="FT">1.64</aixm:verticalAccuracy>
+						</aixm:ElevatedPoint>
+					</aixm:location>
+					<aixm:servedAirport xlink:href="urn:uuid:70d4b346-2314-47f4-a1f0-3eef6409bae7" xlink:title="EDMA"></aixm:servedAirport>
+				</aixm:NavaidTimeSlice>
+			</aixm:timeSlice>
+		</aixm:Navaid>
+	</message:hasMember>
+	<message:hasMember>
+		<aixm:VOR gml:id="ID_VOR_432">
+			<gml:identifier codeSpace="urn:uuid:">6bb4cb95-978c-4051-aac0-f36bb6ebbf15</gml:identifier>
+			<aixm:timeSlice>
+				<aixm:VORTimeSlice gml:id="ID_VOR_TS_432">
+					<gml:validTime>
+						<gml:TimeInstant gml:id="ID_VOR_TS_VT_432">
+							<gml:timePosition>2025-06-12T00:00:00Z</gml:timePosition>
+						</gml:TimeInstant>
+					</gml:validTime>
+					<aixm:interpretation>SNAPSHOT</aixm:interpretation>
+					<aixm:featureLifetime>
+						<gml:TimePeriod gml:id="ID_VOR_TS_FLT_432">
+							<gml:beginPosition>2015-05-01T00:00:00Z</gml:beginPosition>
+							<gml:endPosition indeterminatePosition="unknown"></gml:endPosition>
+						</gml:TimePeriod>
+					</aixm:featureLifetime>
+					<aixm:designator>KPT</aixm:designator>
+					<aixm:name>KEMPTEN</aixm:name>
+					<aixm:emissionClass xsi:nil="true" nilReason="unknown"></aixm:emissionClass>
+					<aixm:mobile xsi:nil="true" nilReason="unknown"></aixm:mobile>
+					<aixm:magneticVariation>2.31</aixm:magneticVariation>
+					<aixm:magneticVariationAccuracy xsi:nil="true" nilReason="unknown"></aixm:magneticVariationAccuracy>
+					<aixm:dateMagneticVariation>2016</aixm:dateMagneticVariation>
+					<aixm:flightChecked xsi:nil="true" nilReason="unknown"></aixm:flightChecked>
+					<aixm:location>
+						<aixm:ElevatedPoint gml:id="ID_VOR_TS_EPT_432" srsName="urn:ogc:def:crs:EPSG::4326">
+							<gml:pos>47.745774213 10.349834306</gml:pos>
+							<aixm:horizontalAccuracy uom="M">1.031</aixm:horizontalAccuracy>
+							<aixm:elevation uom="FT">2529.6723</aixm:elevation>
+							<aixm:geoidUndulation xsi:nil="true" nilReason="unknown"></aixm:geoidUndulation>
+							<aixm:verticalDatum>EGM_96</aixm:verticalDatum>
+							<aixm:verticalAccuracy uom="FT">1.64</aixm:verticalAccuracy>
+						</aixm:ElevatedPoint>
+					</aixm:location>
+					<aixm:authority>
+						<aixm:AuthorityForNavaidEquipment gml:id="ID_VOR_TS_432-auth">
+							<aixm:theOrganisationAuthority xlink:href="urn:uuid:09424934-8352-0ae9-e053-0b751dc2b779"></aixm:theOrganisationAuthority>
+						</aixm:AuthorityForNavaidEquipment>
+					</aixm:authority>
+					<aixm:availability>
+						<aixm:NavaidOperationalStatus gml:id="ID_VOR_TS_NOS_432">
+							<aixm:timeInterval>
+								<aixm:Timesheet gml:id="ID_VOR_TS_NOS_TS_432">
+									<aixm:timeReference>UTC</aixm:timeReference>
+									<aixm:startDate>01-01</aixm:startDate>
+									<aixm:endDate>31-12</aixm:endDate>
+									<aixm:day>ANY</aixm:day>
+									<aixm:startTime>00:00</aixm:startTime>
+									<aixm:endTime>00:00</aixm:endTime>
+									<aixm:daylightSavingAdjust>NO</aixm:daylightSavingAdjust>
+									<aixm:excluded>NO</aixm:excluded>
+								</aixm:Timesheet>
+							</aixm:timeInterval>
+							<aixm:operationalStatus>OPERATIONAL</aixm:operationalStatus>
+						</aixm:NavaidOperationalStatus>
+					</aixm:availability>
+					<aixm:type>DVOR</aixm:type>
+					<aixm:frequency uom="MHZ">108.4</aixm:frequency>
+					<aixm:zeroBearingDirection>MAG</aixm:zeroBearingDirection>
+					<aixm:declination xsi:nil="true" nilReason="unknown"></aixm:declination>
+				</aixm:VORTimeSlice>
+			</aixm:timeSlice>
+		</aixm:VOR>
+	</message:hasMember>
+</message:AIXMBasicMessage>

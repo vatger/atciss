@@ -79,6 +79,7 @@ dev = [
         "pyrasite>=2.0,<3",
         "taskiq[reload]>=0.12.4,<0.13",
         "pytest>=9,<10",
+        "pytest-asyncio>=1,<2",
 ]
 
 [build-system]
@@ -87,6 +88,7 @@ build-backend = "hatchling.build"
 
 [tool.pytest.ini_options]
 testpaths = ["atciss/tests"]
+asyncio_mode = "auto"
 
 [tool.mypy]
 exclude = ["atciss/app/views/notam.py"]

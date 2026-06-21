@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message:AIXMBasicMessage xmlns:gss="http://www.isotc211.org/2005/gss" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:message="http://www.aixm.aero/schema/5.1.1/message" xmlns:gsr="http://www.isotc211.org/2005/gsr" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:aixm="http://www.aixm.aero/schema/5.1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gts="http://www.isotc211.org/2005/gts" gml:id="ID_01">
+	<message:hasMember>
+		<aixm:DesignatedPoint gml:id="id.b3733c50-b078-46fb-82a7-9eccdbd69c51">
+			<gml:identifier codeSpace="urn:uuid:">b3733c50-b078-46fb-82a7-9eccdbd69c51</gml:identifier>
+			<aixm:timeSlice>
+				<aixm:DesignatedPointTimeSlice gml:id="it.ts.b3733c50-b078-46fb-82a7-9eccdbd69c51">
+					<gml:validTime>
+						<gml:TimeInstant gml:id="id.vt.b3733c50-b078-46fb-82a7-9eccdbd69c51">
+							<gml:timePosition>2025-06-12T00:00:00Z</gml:timePosition>
+						</gml:TimeInstant>
+					</gml:validTime>
+					<aixm:interpretation>SNAPSHOT</aixm:interpretation>
+					<aixm:featureLifetime>
+						<gml:TimePeriod gml:id="is.ts.flt.b3733c50-b078-46fb-82a7-9eccdbd69c51">
+							<gml:beginPosition>2015-05-01T00:00:00Z</gml:beginPosition>
+							<gml:endPosition indeterminatePosition="unknown"></gml:endPosition>
+						</gml:TimePeriod>
+					</aixm:featureLifetime>
+					<aixm:designator>BEMKI</aixm:designator>
+					<aixm:type>ICAO</aixm:type>
+					<aixm:name>BEMKI</aixm:name>
+					<aixm:location>
+						<aixm:Point gml:id="id.ts.pt.b3733c50-b078-46fb-82a7-9eccdbd69c51" srsName="urn:ogc:def:crs:EPSG::4326">
+							<gml:pos>47.559388889 10.305594444</gml:pos>
+							<aixm:horizontalAccuracy xsi:nil="true" nilReason="inapplicable"></aixm:horizontalAccuracy>
+						</aixm:Point>
+					</aixm:location>
+				</aixm:DesignatedPointTimeSlice>
+			</aixm:timeSlice>
+		</aixm:DesignatedPoint>
+	</message:hasMember>
+	<message:hasMember>
+		<aixm:DesignatedPoint gml:id="id.9ae790ed-ec68-4156-8752-80defbce6bc2">
+			<gml:identifier codeSpace="urn:uuid:">9ae790ed-ec68-4156-8752-80defbce6bc2</gml:identifier>
+			<aixm:timeSlice>
+				<aixm:DesignatedPointTimeSlice gml:id="it.ts.9ae790ed-ec68-4156-8752-80defbce6bc2">
+					<gml:validTime>
+						<gml:TimeInstant gml:id="id.vt.9ae790ed-ec68-4156-8752-80defbce6bc2">
+							<gml:timePosition>2025-06-12T00:00:00Z</gml:timePosition>
+						</gml:TimeInstant>
+					</gml:validTime>
+					<aixm:interpretation>SNAPSHOT</aixm:interpretation>
+					<aixm:featureLifetime>
+						<gml:TimePeriod gml:id="is.ts.flt.9ae790ed-ec68-4156-8752-80defbce6bc2">
+							<gml:beginPosition>2017-02-02T00:00:00Z</gml:beginPosition>
+							<gml:endPosition indeterminatePosition="unknown"></gml:endPosition>
+						</gml:TimePeriod>
+					</aixm:featureLifetime>
+					<aixm:designator>ATMAX</aixm:designator>
+					<aixm:type>ICAO</aixm:type>
+					<aixm:name>ATMAX</aixm:name>
+					<aixm:location>
+						<aixm:Point gml:id="id.ts.pt.9ae790ed-ec68-4156-8752-80defbce6bc2" srsName="urn:ogc:def:crs:EPSG::4326">
+							<gml:pos>47.929602778 10.749955556</gml:pos>
+							<aixm:horizontalAccuracy xsi:nil="true" nilReason="inapplicable"></aixm:horizontalAccuracy>
+						</aixm:Point>
+					</aixm:location>
+				</aixm:DesignatedPointTimeSlice>
+			</aixm:timeSlice>
+		</aixm:DesignatedPoint>
+	</message:hasMember>
+</message:AIXMBasicMessage>

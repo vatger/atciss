@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<message:AIXMBasicMessage xmlns:gss="http://www.isotc211.org/2005/gss" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:message="http://www.aixm.aero/schema/5.1.1/message" xmlns:gsr="http://www.isotc211.org/2005/gsr" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:aixm="http://www.aixm.aero/schema/5.1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gts="http://www.isotc211.org/2005/gts" gml:id="ID-01">
+	<message:hasMember>
+		<aixm:Runway gml:id="ID_70b14295-69fd-407f-86bd-7a4f3f21eb48">
+			<gml:identifier codeSpace="urn:uuid:">70b14295-69fd-407f-86bd-7a4f3f21eb48</gml:identifier>
+			<aixm:timeSlice>
+				<aixm:RunwayTimeSlice gml:id="ID_TS_70b14295-69fd-407f-86bd-7a4f3f21eb48">
+					<gml:validTime>
+						<gml:TimeInstant gml:id="ID_TS_VT_TI_70b14295-69fd-407f-86bd-7a4f3f21eb48">
+							<gml:timePosition>2025-06-12T00:00:00Z</gml:timePosition>
+						</gml:TimeInstant>
+					</gml:validTime>
+					<aixm:interpretation>SNAPSHOT</aixm:interpretation>
+					<aixm:featureLifetime>
+						<gml:TimePeriod gml:id="ID_TS_FL_TP_70b14295-69fd-407f-86bd-7a4f3f21eb48">
+							<gml:beginPosition>2015-05-01T00:00:00Z</gml:beginPosition>
+							<gml:endPosition indeterminatePosition="unknown"></gml:endPosition>
+						</gml:TimePeriod>
+					</aixm:featureLifetime>
+					<aixm:designator>05/23</aixm:designator>
+					<aixm:type>RWY</aixm:type>
+					<aixm:nominalLength uom="M">560</aixm:nominalLength>
+					<aixm:lengthAccuracy xsi:nil="true" nilReason="unknown"></aixm:lengthAccuracy>
+					<aixm:nominalWidth uom="M">30</aixm:nominalWidth>
+					<aixm:widthAccuracy xsi:nil="true" nilReason="unknown"></aixm:widthAccuracy>
+					<aixm:widthShoulder xsi:nil="true" nilReason="unknown"></aixm:widthShoulder>
+					<aixm:lengthStrip xsi:nil="true" nilReason="unknown"></aixm:lengthStrip>
+					<aixm:widthStrip xsi:nil="true" nilReason="unknown"></aixm:widthStrip>
+					<aixm:lengthOffset xsi:nil="true" nilReason="unknown"></aixm:lengthOffset>
+					<aixm:widthOffset xsi:nil="true" nilReason="unknown"></aixm:widthOffset>
+					<aixm:abandoned xsi:nil="true" nilReason="unknown"></aixm:abandoned>
+					<aixm:surfaceProperties>
+						<aixm:SurfaceCharacteristics gml:id="ID_TS_SC_70b14295-69fd-407f-86bd-7a4f3f21eb48">
+							<aixm:composition>GRASS</aixm:composition>
+							<aixm:preparation xsi:nil="true" nilReason="unknown"></aixm:preparation>
+							<aixm:surfaceCondition xsi:nil="true" nilReason="unknown"></aixm:surfaceCondition>
+							<aixm:classPCN xsi:nil="true" nilReason="unknown"></aixm:classPCN>
+							<aixm:pavementTypePCN xsi:nil="true" nilReason="unknown"></aixm:pavementTypePCN>
+							<aixm:pavementSubgradePCN xsi:nil="true" nilReason="unknown"></aixm:pavementSubgradePCN>
+							<aixm:maxTyrePressurePCN xsi:nil="true" nilReason="unknown"></aixm:maxTyrePressurePCN>
+							<aixm:evaluationMethodPCN xsi:nil="true" nilReason="unknown"></aixm:evaluationMethodPCN>
+							<aixm:classLCN xsi:nil="true" nilReason="unknown"></aixm:classLCN>
+							<aixm:weightSIWL xsi:nil="true" nilReason="unknown"></aixm:weightSIWL>
+							<aixm:tyrePressureSIWL xsi:nil="true" nilReason="unknown"></aixm:tyrePressureSIWL>
+							<aixm:weightAUW xsi:nil="true" nilReason="unknown"></aixm:weightAUW>
+							<aixm:annotation xsi:nil="true"></aixm:annotation>
+						</aixm:SurfaceCharacteristics>
+					</aixm:surfaceProperties>
+					<aixm:associatedAirportHeliport xlink:href="urn:uuid:24d778db-86d8-476a-8269-fdafe3dfb6bc" xlink:title="EDRN"></aixm:associatedAirportHeliport>
+					<aixm:annotation>
+						<aixm:Note gml:id="ID_TS_N_70b14295-69fd-407f-86bd-7a4f3f21eb48-0">
+							<aixm:purpose>REMARK</aixm:purpose>
+							<aixm:translatedNote>
+								<aixm:LinguisticNote gml:id="ID_TS_N_LN_70b14295-69fd-407f-86bd-7a4f3f21eb48-0">
+									<aixm:note>2000 kg MPW</aixm:note>
+								</aixm:LinguisticNote>
+							</aixm:translatedNote>
+						</aixm:Note>
+					</aixm:annotation>
+				</aixm:RunwayTimeSlice>
+			</aixm:timeSlice>
+		</aixm:Runway>
+	</message:hasMember>
+	<message:hasMember>
+		<aixm:RunwayDirection gml:id="ID_f252892c-0f7e-4f7a-9023-86e9685a557d">
+			<gml:identifier codeSpace="urn:uuid:">f252892c-0f7e-4f7a-9023-86e9685a557d</gml:identifier>
+			<aixm:timeSlice>
+				<aixm:RunwayDirectionTimeSlice gml:id="ID_TS_f252892c-0f7e-4f7a-9023-86e9685a557d">
+					<gml:validTime>
+						<gml:TimeInstant gml:id="ID_TS_VT_TI_f252892c-0f7e-4f7a-9023-86e9685a557d">
+							<gml:timePosition>2025-06-12T00:00:00Z</gml:timePosition>
+						</gml:TimeInstant>
+					</gml:validTime>
+					<aixm:interpretation>SNAPSHOT</aixm:interpretation>
+					<aixm:featureLifetime>
+						<gml:TimePeriod gml:id="ID_TS_FL_TP_f252892c-0f7e-4f7a-9023-86e9685a557d">
+							<gml:beginPosition>2015-05-01T00:00:00Z</gml:beginPosition>
+							<gml:endPosition indeterminatePosition="unknown"></gml:endPosition>
+						</gml:TimePeriod>
+					</aixm:featureLifetime>
+					<aixm:designator>05</aixm:designator>
+					<aixm:trueBearing>57</aixm:trueBearing>
+					<aixm:trueBearingAccuracy xsi:nil="true" nilReason="unknown"></aixm:trueBearingAccuracy>
+					<aixm:magneticBearing>54</aixm:magneticBearing>
+					<aixm:patternVFR xsi:nil="true" nilReason="unknown"></aixm:patternVFR>
+					<aixm:slopeTDZ xsi:nil="true" nilReason="unknown"></aixm:slopeTDZ>
+					<aixm:elevationTDZ xsi:nil="true" nilReason="unknown"></aixm:elevationTDZ>
+					<aixm:elevationTDZAccuracy xsi:nil="true" nilReason="unknown"></aixm:elevationTDZAccuracy>
+					<aixm:approachMarkingType xsi:nil="true" nilReason="unknown"></aixm:approachMarkingType>
+					<aixm:approachMarkingCondition xsi:nil="true" nilReason="unknown"></aixm:approachMarkingCondition>
+					<aixm:classLightingJAR xsi:nil="true" nilReason="unknown"></aixm:classLightingJAR>
+					<aixm:precisionApproachGuidance xsi:nil="true" nilReason="unknown"></aixm:precisionApproachGuidance>
+					<aixm:usedRunway xlink:href="urn:uuid:70b14295-69fd-407f-86bd-7a4f3f21eb48" xlink:title="05/23"></aixm:usedRunway>
+				</aixm:RunwayDirectionTimeSlice>
+			</aixm:timeSlice>
+		</aixm:RunwayDirection>
+	</message:hasMember>
+	<message:hasMember>
+		<aixm:RunwayDirection gml:id="ID_590a5aeb-a5ef-442a-aeb1-ed3d2ee9c2fd">
+			<gml:identifier codeSpace="urn:uuid:">590a5aeb-a5ef-442a-aeb1-ed3d2ee9c2fd</gml:identifier>
+			<aixm:timeSlice>
+				<aixm:RunwayDirectionTimeSlice gml:id="ID_TS_590a5aeb-a5ef-442a-aeb1-ed3d2ee9c2fd">
+					<gml:validTime>
+						<gml:TimeInstant gml:id="ID_TS_VT_TI_590a5aeb-a5ef-442a-aeb1-ed3d2ee9c2fd">
+							<gml:timePosition>2025-06-12T00:00:00Z</gml:timePosition>
+						</gml:TimeInstant>
+					</gml:validTime>
+					<aixm:interpretation>SNAPSHOT</aixm:interpretation>
+					<aixm:featureLifetime>
+						<gml:TimePeriod gml:id="ID_TS_FL_TP_590a5aeb-a5ef-442a-aeb1-ed3d2ee9c2fd">
+							<gml:beginPosition>2015-05-01T00:00:00Z</gml:beginPosition>
+							<gml:endPosition indeterminatePosition="unknown"></gml:endPosition>
+						</gml:TimePeriod>
+					</aixm:featureLifetime>
+					<aixm:designator>23</aixm:designator>
+					<aixm:trueBearing>237</aixm:trueBearing>
+					<aixm:trueBearingAccuracy xsi:nil="true" nilReason="unknown"></aixm:trueBearingAccuracy>
+					<aixm:magneticBearing>234</aixm:magneticBearing>
+					<aixm:patternVFR xsi:nil="true" nilReason="unknown"></aixm:patternVFR>
+					<aixm:slopeTDZ xsi:nil="true" nilReason="unknown"></aixm:slopeTDZ>
+					<aixm:elevationTDZ xsi:nil="true" nilReason="unknown"></aixm:elevationTDZ>
+					<aixm:elevationTDZAccuracy xsi:nil="true" nilReason="unknown"></aixm:elevationTDZAccuracy>
+					<aixm:approachMarkingType xsi:nil="true" nilReason="unknown"></aixm:approachMarkingType>
+					<aixm:approachMarkingCondition xsi:nil="true" nilReason="unknown"></aixm:approachMarkingCondition>
+					<aixm:classLightingJAR xsi:nil="true" nilReason="unknown"></aixm:classLightingJAR>
+					<aixm:precisionApproachGuidance xsi:nil="true" nilReason="unknown"></aixm:precisionApproachGuidance>
+					<aixm:usedRunway xlink:href="urn:uuid:70b14295-69fd-407f-86bd-7a4f3f21eb48" xlink:title="05/23"></aixm:usedRunway>
+				</aixm:RunwayDirectionTimeSlice>
+			</aixm:timeSlice>
+		</aixm:RunwayDirection>
+	</message:hasMember>
+</message:AIXMBasicMessage>
