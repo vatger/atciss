@@ -140,4 +140,5 @@ def postgis_geometry_serialize(
     if isinstance(shape, MultiPolygon):
         return [[(point[1], point[0]) for point in geom.exterior.coords] for geom in shape.geoms]
 
-    raise ValueError(f"Unsupported geometry type: {shape.geom_type}")
+    msg = f"Unsupported geometry type: {shape.geom_type}"
+    raise ValueError(msg)

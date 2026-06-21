@@ -52,13 +52,15 @@ class Sigmet(SQLModel, table=True):
 
         if "isigmetId" not in data:
             if "firId" not in data or "seriesId" not in data:
-                raise ValueError("SIGMET missing firId/seriesId")
+                msg = "SIGMET missing firId/seriesId"
+                raise ValueError(msg)
             data = {**data, "isigmetId": f"{data['firId']}-{data['seriesId']}"}
 
         geom = data.get("geom")
         coords = data.get("coords")
         if coords is None:
-            raise ValueError("SIGMET missing coords")
+            msg = "SIGMET missing coords"
+            raise ValueError(msg)
         if geom == "AREA":
             coords = postgis_polygon_validate(coords)
         elif geom == "LINE":
@@ -66,7 +68,8 @@ class Sigmet(SQLModel, table=True):
         elif geom == "AREAS":
             coords = postgis_multipolygon_validate(coords)
         else:
-            raise ValueError(f"Unsupported SIGMET geom type: {geom!r}")
+            msg = f"Unsupported SIGMET geom type: {geom!r}"
+            raise ValueError(msg)
 
         return {**data, "coords": coords}
 
