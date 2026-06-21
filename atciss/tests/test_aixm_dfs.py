@@ -38,7 +38,10 @@ async def test_fetch_dfs_aixm_data_persists_expected_rows(monkeypatch: pytest.Mo
     monkeypatch.setattr(aixm_dfs, "http_get_bytesio", fake_http_get_bytesio)
 
     session = FakeAsyncSession()
-    await aixm_dfs.fetch_dfs_aixm_data(http_client=MagicMock(), db_session=session)  # type: ignore[arg-type]
+    await aixm_dfs.fetch_dfs_aixm_data(
+        http_client=MagicMock(),
+        db_session=session,  # type: ignore[arg-type]
+    )
 
     aerodromes = session.merged_of(Aerodrome)
     assert {a.icao_designator for a in aerodromes} == {"EDRN", "EDQA"}
