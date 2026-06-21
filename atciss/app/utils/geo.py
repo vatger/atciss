@@ -54,7 +54,7 @@ def postgis_line_validate(
 
     if isinstance(data, str):
         it = iter(data.split(" "))
-        data = cast("list[tuple[str, str]]", zip(it, it, strict=False))
+        data = list(zip(it, it, strict=False))
 
     if len(data) and isinstance(data[0], dict):
         line = ",".join(f"{p['lon']} {p['lat']}" for p in cast("list[LatLonDict]", data))
