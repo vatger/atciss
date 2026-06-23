@@ -17,16 +17,16 @@ const sortBy = (attrs: (keyof LoaItem)[]) => (a: LoaItem, b: LoaItem) => {
   return 0
 }
 
-const selectByOwnedSectors = createSelector(
+export const selectByOwnedSectors = createSelector(
   selectOwnedSectors,
   api.endpoints.loaBySectors.select,
 )
-const selectOwnedLoas = createSelector(
+export const selectOwnedLoas = createSelector(
   (state: RootState) => state,
   selectByOwnedSectors,
   (state, selector) => selector(state)?.data ?? [],
 )
-const selectRelevantLoas = createSelector(
+export const selectRelevantLoas = createSelector(
   selectOwnedLoas,
   selectOwnedSectors,
   (loas, ownedSectors) =>
@@ -35,6 +35,69 @@ const selectRelevantLoas = createSelector(
         !ownedSectors.includes(loa.from_sector) ||
         !ownedSectors.includes(loa.to_sector),
     ),
+)
+
+export const selectBorderAgreements = createSelector(
+  selectRelevantLoas,
+  (relevantLoas) => relevantLoas.filter((loa) => loa.cop === null),
+)
+
+export interface BorderAgreementGroup {
+  from_sector: string
+  to_sector: string
+  vertical: boolean
+  level: number | null
+  exitAgreements: LoaItem[]
+  entryAgreements: LoaItem[]
+}
+
+export const selectGroupedBorderAgreements = createSelector(
+  selectBorderAgreements,
+  selectOwnedSectors,
+  (borderAgreements, ownedSectors) =>
+    borderAgreements.reduce<BorderAgreementGroup[]>((groups, loa) => {
+      const [s1, s2] = [loa.from_sector, loa.to_sector].sort() as [
+        string,
+        string,
+      ]
+      const isExit = ownedSectors.includes(loa.from_sector)
+
+      const existing = groups.find(
+        (g) =>
+          ((g.from_sector === s1 && g.to_sector === s2) ||
+            (g.from_sector === s2 && g.to_sector === s1)) &&
+          g.vertical === loa.vertical &&
+          (loa.vertical || g.level === loa.level),
+      )
+
+      if (existing) {
+        return groups.map((g) =>
+          g === existing
+            ? {
+                ...g,
+                exitAgreements: isExit
+                  ? [...g.exitAgreements, loa]
+                  : g.exitAgreements,
+                entryAgreements: isExit
+                  ? g.entryAgreements
+                  : [...g.entryAgreements, loa],
+              }
+            : g,
+        )
+      }
+
+      return [
+        ...groups,
+        {
+          from_sector: loa.from_sector,
+          to_sector: loa.to_sector,
+          vertical: loa.vertical,
+          level: loa.vertical ? null : loa.level,
+          exitAgreements: isExit ? [loa] : [],
+          entryAgreements: isExit ? [] : [loa],
+        },
+      ]
+    }, []),
 )
 
 export const selectRelevantExitLoas = createSelector(

@@ -24,8 +24,7 @@ const stubWindEndpoint = (delayMs = 0) => {
     // fetchBaseQuery builds a `Request` and calls `fetchFn(request)` with a
     // single argument, so the abort signal lives on `input`, not `init`.
     const signal = (input instanceof Request ? input.signal : init?.signal) as
-      | AbortSignal
-      | undefined
+      AbortSignal | undefined
     calls.push({ url, signal })
     if (delayMs) await new Promise((resolve) => setTimeout(resolve, delayMs))
     if (signal?.aborted) {

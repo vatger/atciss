@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit"
 import { useAppSelector } from "app/hooks"
 import { Tooltip } from "components/atciss/map/Tooltip"
+import { memo } from "react"
 import { CircleMarker, LayerGroup } from "react-leaflet"
 import {
   selectAirportControllers,
@@ -28,7 +29,7 @@ const selectAirportCoordinates = createSelector(
     (dfsAd ? [dfsAd.arp_location[0], dfsAd.arp_location[1]] : null),
 )
 
-const AerodromeMarker = ({ icao }: { icao: string }) => {
+const AerodromeMarkerComponent = ({ icao }: { icao: string }) => {
   const airport = useAppSelector((store) => selectAirport(store, icao))
   const topdownOwner = useAppSelector((store) =>
     selectAirportTopdownController(store, icao),
@@ -136,6 +137,8 @@ const AerodromeMarker = ({ icao }: { icao: string }) => {
     )
   )
 }
+
+const AerodromeMarker = memo(AerodromeMarkerComponent)
 
 export const AerodromeLayer = () => {
   usePollControllers()

@@ -1,17 +1,20 @@
 from dataclasses import dataclass, field
-from typing import Any, cast
+from itertools import groupby
+from typing import Any
 
 from loguru import logger
 from pydantic import BaseModel, field_validator, model_validator
+from shapely import Polygon as ShapelyPolygon
+from shapely.geometry.polygon import orient
 
 from ..utils.geo import Coordinate, convert_degsecmin_coordinate
 
 
 def convert_point(point: tuple[str, str] | Coordinate) -> Coordinate:
-    if isinstance(point[0], float):
-        return cast("Coordinate", point)
-
-    return cast("Coordinate", [convert_degsecmin_coordinate(cast("str", coord)) for coord in point])
+    lat, lng = point
+    if isinstance(lat, float) and isinstance(lng, float):
+        return (lat, lng)
+    return (convert_degsecmin_coordinate(str(lat)), convert_degsecmin_coordinate(str(lng)))
 
 
 @dataclass
@@ -29,7 +32,13 @@ class Sector(BaseModel):
     @field_validator("points", mode="before")
     @classmethod
     def point_validator(cls, inp: list[tuple[str, str] | Coordinate]) -> list[Coordinate]:
-        return [convert_point(point) for point in inp]
+        pts = [convert_point(point) for point in inp]
+        # Remove consecutive duplicate points
+        # groupby preserves the closing point so the ring stays closed (first == last)
+        deduped = [pt for pt, _ in groupby(pts)]
+        # Ensure CCW winding
+        poly = orient(ShapelyPolygon([(pt[1], pt[0]) for pt in deduped]), sign=1.0)
+        return [(y, x) for x, y in poly.exterior.coords]
 
     @field_validator("min", "max", mode="before")
     @classmethod
@@ -96,8 +105,14 @@ def reformat_airspace(airspaces: list[dict[str, Any]], region: str | None) -> di
             else:
                 owners.append(f"{region}/{owner}")
         airspace["owner"] = owners
-        if key not in result:
+        existing = result.get(key)
+        if existing is None:
             result[key] = airspace
+        elif existing["id"] == airspace["id"]:
+            existing["sectors"] = [*existing["sectors"], *airspace["sectors"]]
+            existing["owner"] = existing["owner"] + [
+                owner for owner in airspace["owner"] if owner not in existing["owner"]
+            ]
         else:
             for i in range(2, 20):
                 if f"{key}{i}" not in result:

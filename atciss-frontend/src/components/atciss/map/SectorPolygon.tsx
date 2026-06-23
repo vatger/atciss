@@ -5,7 +5,7 @@ import { z3 } from "app/utils"
 import { Tooltip } from "components/atciss/map/Tooltip"
 import { VerticalBoundary } from "components/atciss/map/VerticalBoundary"
 import { LatLng } from "leaflet"
-import { useState } from "react"
+import { memo, useState } from "react"
 import { Polygon } from "react-leaflet"
 import {
   selectControllerFromPosition,
@@ -20,7 +20,7 @@ import { selectSector } from "services/sectorApi"
 import { Box, Text } from "theme-ui"
 import { Sector as SectorBounds } from "types/vatglasses"
 
-const selectSectorBounds = createSelector(
+export const selectSectorBounds = createSelector(
   selectSector,
   selectLevel,
   selectAirports,
@@ -67,7 +67,7 @@ interface SectorPolygonProps {
   id: string
 }
 
-export const SectorPolygon = ({
+const SectorPolygonComponent = ({
   sectorBounds: { points, min, max },
   id,
 }: SectorPolygonProps) => {
@@ -120,3 +120,5 @@ export const SectorPolygon = ({
     )
   )
 }
+
+export const SectorPolygon = memo(SectorPolygonComponent)
