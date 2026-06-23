@@ -4,11 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "useDefineForClassFields": true,
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
     "skipLibCheck": true,
     "strict": true,
@@ -16,35 +12,17 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": [
-      "jest-dom"
-    ],
-    "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules/@testing-library"
-    ],
+    "types": ["jest-dom"],
+    "typeRoots": ["./node_modules/@types", "./node_modules/@testing-library"],
     "paths": {
-      "app/*": [
-        "./src/app/*"
-      ],
-      "components/*": [
-        "./src/components/*"
-      ],
-      "views/*": [
-        "./src/views/*"
-      ],
-      "services/*": [
-        "./src/services/*"
-      ],
-      "types/*": [
-        "./src/types/*"
-      ]
+      "app/*": ["./src/app/*"],
+      "components/*": ["./src/components/*"],
+      "views/*": ["./src/views/*"],
+      "services/*": ["./src/services/*"],
+      "types/*": ["./src/types/*"]
     }
   },
-  "include": [
-    "src",
-    "e2e"
-  ],
+  "include": ["src", "e2e"],
   "references": [
     {
       "path": "./tsconfig.node.json"

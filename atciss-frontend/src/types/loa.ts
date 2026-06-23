@@ -16,6 +16,7 @@ export interface LoaItem {
   remarks: string | null
   areas: string[] | null
   rfl: string | null
+  vertical: boolean
 }
 
 export interface LoaDoc {

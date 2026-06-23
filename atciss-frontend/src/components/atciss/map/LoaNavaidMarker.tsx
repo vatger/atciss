@@ -1,7 +1,5 @@
-/** @jsxImportSource theme-ui */
-
 import { useAppSelector } from "app/hooks"
-import { LoaRow } from "components/atciss/LoaRow"
+import { LoaTooltipTable } from "components/atciss/LoaTooltipTable"
 import { NavaidMarker } from "components/atciss/map/NavaidMarker"
 import {
   selectEntryLoasByNavaid,
@@ -21,61 +19,10 @@ export const LoaNavaidMarker = ({ designator }: { designator: string }) => {
   return (
     navaid && (
       <NavaidMarker navaid={navaid}>
-        <table
-          sx={{
-            fontSize: 2,
-            fontFamily: "body",
-            whiteSpace: "normal",
-            minWidth: "50vw",
-          }}
-        >
-          <thead>
-            <tr>
-              <th sx={{ pt: 0 }}>ROUTE</th>
-              <th sx={{ pt: 0 }}>ADEP/ADES</th>
-              <th sx={{ pt: 0 }}>FL</th>
-              <th sx={{ pt: 0 }}>REMARK</th>
-              <th sx={{ pt: 0 }}>FROM</th>
-              <th sx={{ pt: 0 }}>TO</th>
-            </tr>
-          </thead>
-          {!!xloasByNavaid.length && (
-            <>
-              <thead>
-                <tr>
-                  <th sx={{ pt: 1 }}>Exit</th>
-                </tr>
-              </thead>
-              <tbody>
-                {xloasByNavaid.map((loa, idx) => (
-                  <LoaRow
-                    // eslint-disable-next-line @eslint-react/no-array-index-key -- no stable id on this data; idx only disambiguates true duplicates
-                    key={`${loa.cop}-${(loa.adep ?? []).join("_")}-${(loa.ades ?? []).join("_")}-${loa.from_sector}-${loa.to_sector}-${idx}`}
-                    loa={loa}
-                  />
-                ))}
-              </tbody>
-            </>
-          )}
-          {!!nloasByNavaid.length && (
-            <>
-              <thead>
-                <tr>
-                  <th sx={{ pt: 1 }}>Entry</th>
-                </tr>
-              </thead>
-              <tbody>
-                {nloasByNavaid?.map((loa, idx) => (
-                  <LoaRow
-                    // eslint-disable-next-line @eslint-react/no-array-index-key -- no stable id on this data; idx only disambiguates true duplicates
-                    key={`${loa.cop}-${(loa.adep ?? []).join("_")}-${(loa.ades ?? []).join("_")}-${loa.from_sector}-${loa.to_sector}-${idx}`}
-                    loa={loa}
-                  />
-                ))}
-              </tbody>
-            </>
-          )}
-        </table>
+        <LoaTooltipTable
+          exitAgreements={xloasByNavaid}
+          entryAgreements={nloasByNavaid}
+        />
       </NavaidMarker>
     )
   )

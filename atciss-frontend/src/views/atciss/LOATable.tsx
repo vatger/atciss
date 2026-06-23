@@ -44,8 +44,10 @@ export const LOATable = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           <tbody>
             {xLoas?.map((loa, idx) => (
               <LoaRow
-                // eslint-disable-next-line @eslint-react/no-array-index-key -- no stable id on this data; idx only disambiguates true duplicates
-                key={`${loa.cop}-${loa.adep?.join("_")}-${loa.ades?.join("_")}-${loa.from_sector}-${loa.to_sector}-${idx}`}
+                key={
+                  // eslint-disable-next-line @eslint-react/no-array-index-key
+                  `${loa.cop}-${loa.adep?.join("_")}-${loa.ades?.join("_")}-${loa.from_sector}-${loa.to_sector}-${idx}`
+                }
                 loa={loa}
               />
             ))}
@@ -63,8 +65,10 @@ export const LOATable = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           <tbody>
             {nLoas?.map((loa, idx) => (
               <LoaRow
-                // eslint-disable-next-line @eslint-react/no-array-index-key -- no stable id on this data; idx only disambiguates true duplicates
-                key={`${loa.cop}-${loa.adep?.join("_")}-${loa.ades?.join("_")}-${loa.from_sector}-${loa.to_sector}-${idx}`}
+                key={
+                  // eslint-disable-next-line @eslint-react/no-array-index-key
+                  `${loa.cop}-${loa.adep?.join("_")}-${loa.ades?.join("_")}-${loa.from_sector}-${loa.to_sector}-${idx}`
+                }
                 loa={loa}
               />
             ))}

@@ -6,6 +6,7 @@ import { AerodromeLayer } from "components/atciss/map/AerodromeLayer"
 import { AirwayLayer } from "components/atciss/map/AirwayLayer"
 import { AreaLayer } from "components/atciss/map/AreaLayer"
 import { BackgroundTiles } from "components/atciss/map/BackgroundTiles"
+import { BorderAgreementLayer } from "components/atciss/map/BorderAgreementLayer"
 import { MapControls } from "components/atciss/map/MapControls"
 import { NavaidLayer } from "components/atciss/map/NavaidLayer"
 import { SectorLayer } from "components/atciss/map/SectorLayer"
@@ -19,6 +20,7 @@ import { selectMapCentre } from "services/configSlice"
 import {
   selectAirwayOnMap,
   selectAreasOnMap,
+  selectLoaOnMap,
   selectSectorsOnMap,
   selectSigmetOnMap,
 } from "services/mapSlice"
@@ -29,6 +31,7 @@ export const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
   const areasOnMap = useAppSelector(selectAreasOnMap)
   const airwaysOnMap = useAppSelector(selectAirwayOnMap)
   const sigmetOnMap = useAppSelector(selectSigmetOnMap)
+  const loaOnMap = useAppSelector(selectLoaOnMap)
   const centre = useAppSelector(selectMapCentre)
   // FIXME react-leaflet type for MapControls seems to be broken
   const mapRef = useRef<L.Map>(null) as RefObject<L.Map>
@@ -49,6 +52,11 @@ export const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         {sectorsOnMap && (
           <Pane name="sectors" style={{ zIndex: 320 }}>
             <SectorLayer />
+          </Pane>
+        )}
+        {loaOnMap && (
+          <Pane name="loaBorders" style={{ zIndex: 325 }}>
+            <BorderAgreementLayer />
           </Pane>
         )}
         {areasOnMap && (

@@ -14,7 +14,7 @@ import { Controller } from "types/vatsim"
 
 const controllerMatchString = (c: Controller) =>
   `${c.callsign.slice(0, c.callsign.indexOf("_"))}${c.frequency}`
-const selectControllerMatchStrings = createSelector(
+export const selectControllerMatchStrings = createSelector(
   selectControllers,
   (controllers) => controllers.map(controllerMatchString),
 )
