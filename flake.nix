@@ -268,6 +268,14 @@
                 virtualenv
                 pkgs.uv
               ];
+              # nixpkgs ships browsers separately from the npm `playwright`/`@playwright/test`
+              # package; point Playwright at the Nix-built browsers instead of letting it try
+              # to download its own, and skip its (non-NixOS) host dependency check.
+              # https://nixos.org/manual/nixpkgs/stable/#sec-language-javascript-playwright
+              playwrightEnv = {
+                PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+                PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
+              };
             in
             {
               ci = pkgs.mkShell {
@@ -276,6 +284,7 @@
                   pkgs.git
                   pkgs.cachix
                 ];
+                env = playwrightEnv;
               };
               impure = pkgs.mkShell {
                 packages = [
@@ -289,7 +298,7 @@
 
               default = pkgs.mkShell {
                 packages = commonPackages;
-                env = {
+                env = playwrightEnv // {
                   # Don't create venv using uv
                   UV_NO_SYNC = "1";
 

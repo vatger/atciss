@@ -1,5 +1,6 @@
 import { defineConfig } from "vitest/config"
 import react from "@vitejs/plugin-react"
+import { playwright } from "@vitest/browser-playwright"
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -29,9 +30,32 @@ export default defineConfig({
     sourcemap: true,
   },
   test: {
-    globals: true,
-    environment: "jsdom",
-    setupFiles: "src/setupTests",
-    mockReset: true,
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: "unit",
+          globals: true,
+          environment: "jsdom",
+          setupFiles: "src/setupTests",
+          mockReset: true,
+          exclude: ["**/node_modules/**", "e2e/**"],
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: "browser",
+          globals: true,
+          mockReset: true,
+          include: ["e2e/**/*.browser.test.{ts,tsx}"],
+          browser: {
+            enabled: true,
+            provider: playwright(),
+            instances: [{ browser: "chromium" }],
+          },
+        },
+      },
+    ],
   },
 })

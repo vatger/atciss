@@ -42,7 +42,8 @@
     }
   },
   "include": [
-    "src"
+    "src",
+    "e2e"
   ],
   "references": [
     {
