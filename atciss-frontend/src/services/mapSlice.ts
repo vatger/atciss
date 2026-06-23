@@ -2,6 +2,31 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { RootState } from "../app/store"
 import { localStorageOrDefault, setLocalStorage } from "../app/utils"
 
+export const WIND_LEVELS = [
+  "surface",
+  1000,
+  975,
+  950,
+  925,
+  900,
+  850,
+  800,
+  700,
+  600,
+  500,
+  400,
+  300,
+  250,
+  200,
+  150,
+  100,
+  70,
+  50,
+  30,
+] as const
+
+export type WindLevel = (typeof WIND_LEVELS)[number]
+
 interface MapState {
   level: number
   ofm: boolean
@@ -19,6 +44,8 @@ interface MapState {
   selectedAirway: string | null
   airway: boolean
   airwayLowerUpper: "LOWER" | "UPPER"
+  wind: boolean
+  windLevel: WindLevel
 }
 
 const queryParams = new URLSearchParams(window.location.search)
@@ -43,6 +70,8 @@ const mapSlice = createSlice({
     selectedAirway: null,
     airway: localStorageOrDefault("map.airway", false),
     airwayLowerUpper: localStorageOrDefault("map.airwayLowerUpper", "LOWER"),
+    wind: localStorageOrDefault("map.wind", false),
+    windLevel: localStorageOrDefault<WindLevel>("map.windLevel", "surface"),
   } as MapState,
   reducers: {
     setLevel(state, { payload: level }: PayloadAction<number>) {
@@ -63,6 +92,7 @@ const mapSlice = createSlice({
         "map.satellite",
         state.satellite && !active,
       )
+      if (active) state.wind = setLocalStorage("map.wind", false)
     },
     setDWD(state, { payload: active }: PayloadAction<boolean>) {
       state.dwd = setLocalStorage("map.dwd", active)
@@ -71,6 +101,7 @@ const mapSlice = createSlice({
       state.satellite = setLocalStorage("map.satellite", active)
       state.ofm = setLocalStorage("map.ofm", state.ofm && !active)
       state.dfs = setLocalStorage("map.dfs", state.dfs && !active)
+      if (active) state.wind = setLocalStorage("map.wind", false)
     },
     setLightning(state, { payload: active }: PayloadAction<boolean>) {
       state.lightning = setLocalStorage("map.lightning", active)
@@ -114,6 +145,20 @@ const mapSlice = createSlice({
         lowerUpper,
       )
     },
+    setWind(state, { payload: active }: PayloadAction<boolean>) {
+      state.wind = setLocalStorage("map.wind", active)
+      // Wind is mutually exclusive with the SAT/ICAO basemaps: those tile
+      // sets aren't a good backdrop for the particle field, so fall back to
+      // OFM (a light, mostly-empty basemap) when wind is turned on.
+      if (active && (state.dfs || state.satellite)) {
+        state.dfs = setLocalStorage("map.dfs", false)
+        state.satellite = setLocalStorage("map.satellite", false)
+        state.ofm = setLocalStorage("map.ofm", true)
+      }
+    },
+    setWindLevel(state, { payload: level }: PayloadAction<WindLevel>) {
+      state.windLevel = setLocalStorage("map.windLevel", level)
+    },
   },
 })
 
@@ -135,6 +180,8 @@ export const selectSelectedAirway = (store: RootState) =>
   store.map.selectedAirway
 export const selectAirwayLowerUpper = (store: RootState) =>
   store.map.airwayLowerUpper
+export const selectWindOnMap = (store: RootState) => store.map.wind
+export const selectWindLevel = (store: RootState) => store.map.windLevel
 
 export const {
   setLevel,
@@ -153,5 +200,7 @@ export const {
   setAirwayOnMap,
   setAirwayLowerUpper,
   setSelectedAirway,
+  setWind,
+  setWindLevel,
 } = mapSlice.actions
 export const { reducer: mapReducer } = mapSlice

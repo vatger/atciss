@@ -19,6 +19,7 @@
     "airac-cc": "^1.0.6",
     "async-mutex": "^0.5.0",
     "leaflet": "^1.9.4",
+    "leaflet-velocity": "^2.1.4",
     "luxon": "^3.7.2",
     "react": "^19",
     "react-dom": "^19",

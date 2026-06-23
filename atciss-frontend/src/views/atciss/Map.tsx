@@ -10,6 +10,7 @@ import { MapControls } from "components/atciss/map/MapControls"
 import { NavaidLayer } from "components/atciss/map/NavaidLayer"
 import { SectorLayer } from "components/atciss/map/SectorLayer"
 import { SigmetLayer } from "components/atciss/map/SigmetLayer"
+import { WindLayer } from "components/atciss/map/WindLayer"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 import { RefObject, useRef } from "react"
@@ -42,6 +43,9 @@ export const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         ref={mapRef}
       >
         <BackgroundTiles />
+        <Pane name="wind" style={{ zIndex: 310 }}>
+          <WindLayer />
+        </Pane>
         {sectorsOnMap && (
           <Pane name="sectors" style={{ zIndex: 320 }}>
             <SectorLayer />

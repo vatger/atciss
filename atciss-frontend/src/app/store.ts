@@ -10,10 +10,12 @@ import { notamReducer } from "../services/notamSlice"
 import { idvsReducer } from "services/idvsSlice"
 import { api } from "services/api"
 import { loaDocsReducer } from "services/loaDocsSlice"
+import { windApi } from "services/windApi"
 
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
+    [windApi.reducerPath]: windApi.reducer,
     activePositions: activePositionReducer,
     aircraft: aircraftReducer,
     atisAfw: atisAfwReducer,
@@ -25,7 +27,7 @@ export const store = configureStore({
     loaDocs: loaDocsReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware),
+    getDefaultMiddleware().concat(api.middleware, windApi.middleware),
 })
 
 setupListeners(store.dispatch)
