@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "target": "es2018",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "useDefineForClassFields": true,
     "lib": [
       "DOM",
@@ -40,7 +42,8 @@
     }
   },
   "include": [
-    "src"
+    "src",
+    "e2e"
   ],
   "references": [
     {

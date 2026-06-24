@@ -16,6 +16,7 @@ import {
   selectSatelliteOnMap,
   selectSectorsOnMap,
   selectSigmetOnMap,
+  selectWindOnMap,
   setAirwayLowerUpper,
   setAirwayOnMap,
   setAreas,
@@ -29,10 +30,12 @@ import {
   setSatellite,
   setSectors,
   setSigmet,
+  setWind,
 } from "services/mapSlice"
 import { Button, Flex } from "theme-ui"
 import { SectorControls } from "../SectorControls"
 import { LevelChoice } from "./LevelChoice"
+import { WindLevelChoice } from "./WindLevelChoice"
 import { Search } from "./search/Search"
 
 export const MapControls = ({ map }: { map: RefObject<Map> }) => {
@@ -53,6 +56,7 @@ export const MapControls = ({ map }: { map: RefObject<Map> }) => {
   const airways = useAppSelector(selectAirwayOnMap)
   const airwayLowerUpper = useAppSelector(selectAirwayLowerUpper)
   const sigmet = useAppSelector(selectSigmetOnMap)
+  const wind = useAppSelector(selectWindOnMap)
 
   return (
     <Search map={map}>
@@ -149,6 +153,85 @@ export const MapControls = ({ map }: { map: RefObject<Map> }) => {
           strokeLinecap="round"
           strokeLinejoin="round"
         >
+          <path d="M9.59 4.59A2 2 0 1 1 11 8H2"></path>
+          <path d="M12.59 11.59A2 2 0 1 1 14 15H2"></path>
+          <path d="M10.59 17.59A2 2 0 1 1 12 21H2"></path>
+        </svg>
+        <Button
+          variant={wind ? "selectedSecondaryNav" : "secondaryNav"}
+          sx={{ flex: 1 }}
+          onClick={() => dispatch(setWind(!wind))}
+        >
+          Wind
+        </Button>
+      </Flex>
+      {wind && <WindLevelChoice />}
+      <Flex
+        sx={{ justifyContent: "space-evenly", gap: 2, alignItems: "center" }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="12" cy="12" r="4"></circle>
+          <line x1="1.05" y1="12" x2="7" y2="12"></line>
+          <line x1="17.01" y1="12" x2="22.96" y2="12"></line>
+        </svg>
+        <Button
+          variant={airways ? "selectedSecondaryNav" : "secondaryNav"}
+          sx={{ flex: 1 }}
+          onClick={() => dispatch(setAirwayOnMap(!airways))}
+        >
+          Airways
+        </Button>
+        <Button
+          variant={
+            airwayLowerUpper === "LOWER"
+              ? "selectedSecondaryNav"
+              : "secondaryNav"
+          }
+          sx={{
+            flex: 1,
+            visibility: airways ? "visible" : "hidden",
+          }}
+          onClick={() => dispatch(setAirwayLowerUpper("LOWER"))}
+        >
+          lower
+        </Button>
+        <Button
+          variant={
+            airwayLowerUpper === "UPPER"
+              ? "selectedSecondaryNav"
+              : "secondaryNav"
+          }
+          sx={{ flex: 1, visibility: airways ? "visible" : "hidden" }}
+          onClick={() => dispatch(setAirwayLowerUpper("UPPER"))}
+        >
+          upper
+        </Button>
+      </Flex>
+
+      <Flex
+        sx={{ justifyContent: "space-evenly", gap: 2, alignItems: "center" }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
           <polyline points="2 17 12 22 22 17"></polyline>
           <polyline points="2 12 12 17 22 12"></polyline>
@@ -216,58 +299,6 @@ export const MapControls = ({ map }: { map: RefObject<Map> }) => {
           VATSIM
         </Button>
       </Flex>
-      <Flex
-        sx={{ justifyContent: "space-evenly", gap: 2, alignItems: "center" }}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="12" cy="12" r="4"></circle>
-          <line x1="1.05" y1="12" x2="7" y2="12"></line>
-          <line x1="17.01" y1="12" x2="22.96" y2="12"></line>
-        </svg>
-        <Button
-          variant={airways ? "selectedSecondaryNav" : "secondaryNav"}
-          sx={{ flex: 1 }}
-          onClick={() => dispatch(setAirwayOnMap(!airways))}
-        >
-          Airways
-        </Button>
-        <Button
-          variant={
-            airwayLowerUpper === "LOWER"
-              ? "selectedSecondaryNav"
-              : "secondaryNav"
-          }
-          sx={{
-            flex: 1,
-            visibility: airways ? "visible" : "hidden",
-          }}
-          onClick={() => dispatch(setAirwayLowerUpper("LOWER"))}
-        >
-          lower
-        </Button>
-        <Button
-          variant={
-            airwayLowerUpper === "UPPER"
-              ? "selectedSecondaryNav"
-              : "secondaryNav"
-          }
-          sx={{ flex: 1, visibility: airways ? "visible" : "hidden" }}
-          onClick={() => dispatch(setAirwayLowerUpper("UPPER"))}
-        >
-          upper
-        </Button>
-      </Flex>
-
       {(areas || sectors || loa) && <LevelChoice />}
       {sectors && <SectorControls />}
     </Search>
