@@ -17,7 +17,8 @@ export const ZoomableIframe = ({ src }: { src: string }) => {
           transform: `scale(${zoom})`,
         }}
         src={src}
-        sandbox="allow-scripts"
+        // eslint-disable-next-line @eslint-react/dom-no-unsafe-iframe-sandbox
+        sandbox="allow-scripts allow-same-origin"
       ></iframe>
       <Flex
         sx={{
