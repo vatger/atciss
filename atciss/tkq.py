@@ -146,6 +146,7 @@ class PrometheusWorkerMiddleware(PrometheusMiddleware):
 
 broker = ListQueueBroker(
     url=str(settings.REDIS_URL),
+    socket_timeout=None,
 ).with_middlewares(
     TaskStatusMiddleware(),
     PrometheusWorkerMiddleware(metrics_path=Path("/tmp")),
