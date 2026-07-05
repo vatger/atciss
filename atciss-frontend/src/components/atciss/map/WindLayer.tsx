@@ -16,6 +16,7 @@ const DISPLAY_OPTIONS = {
   position: "topright" as const,
   emptyString: "No wind data",
   speedUnit: "kt" as const,
+  angleConvention: "meteoCW",
 }
 
 export const WindLayer = () => {
