@@ -9,13 +9,29 @@ import {
   selectVerticalBorderGroups,
 } from "services/loaMapSelectors"
 
-export const BorderAgreementLayer = () => {
+export const VerticalBorderAgreementLayer = () => {
   const ownedSectors = useAppSelector(selectOwnedSectors)
   api.useLoaBySectorsQuery(ownedSectors, {
     skip: ownedSectors.length == 0,
   })
-  const lateralBorderAgreements = useAppSelector(selectLateralBorderSegments)
   const verticalBorderAgreements = useAppSelector(selectVerticalBorderGroups)
+
+  return (
+    <LayerGroup>
+      {verticalBorderAgreements.map((group) => (
+        <BorderAgreementArea
+          key={group.key}
+          exitAgreements={group.exitAgreements}
+          entryAgreements={group.entryAgreements}
+          polygons={group.polygons}
+        />
+      ))}
+    </LayerGroup>
+  )
+}
+
+export const LateralBorderAgreementLayer = () => {
+  const lateralBorderAgreements = useAppSelector(selectLateralBorderSegments)
 
   return (
     <LayerGroup>
@@ -29,14 +45,6 @@ export const BorderAgreementLayer = () => {
           />
         ),
       )}
-      {verticalBorderAgreements.map((group) => (
-        <BorderAgreementArea
-          key={group.key}
-          exitAgreements={group.exitAgreements}
-          entryAgreements={group.entryAgreements}
-          polygons={group.polygons}
-        />
-      ))}
     </LayerGroup>
   )
 }

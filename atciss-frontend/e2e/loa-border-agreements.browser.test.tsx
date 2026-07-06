@@ -326,7 +326,7 @@ test("LOA toggle renders a dashed border line and a hatched border area", async 
       .poll(
         () =>
           screen.container.querySelectorAll(
-            ".leaflet-loaBorders-pane path[stroke-dasharray]",
+            ".leaflet-loaBorderLines-pane path[stroke-dasharray]",
           ).length,
         { timeout: 15000 },
       )
@@ -336,7 +336,7 @@ test("LOA toggle renders a dashed border line and a hatched border area", async 
       .poll(
         () =>
           screen.container.querySelectorAll(
-            '.leaflet-loaBorders-pane path[fill^="url("]',
+            '.leaflet-loaBorderAreas-pane path[fill^="url("]',
           ).length,
         { timeout: 15000 },
       )
@@ -354,12 +354,12 @@ test("LOA toggle renders a dashed border line and a hatched border area", async 
     // a lateral footprint across altitude bands), it must render as one line,
     // not two stacked on top of each other, for a total of three.
     const lateralLines = screen.container.querySelectorAll(
-      '.leaflet-loaBorders-pane path[stroke-dasharray]:not([fill^="url("])',
+      ".leaflet-loaBorderLines-pane path[stroke-dasharray]",
     )
     expect(lateralLines.length).toBe(3)
     expect(
       screen.container.querySelectorAll(
-        '.leaflet-loaBorders-pane path[fill^="url("]',
+        '.leaflet-loaBorderAreas-pane path[fill^="url("]',
       ).length,
     ).toBe(1)
 

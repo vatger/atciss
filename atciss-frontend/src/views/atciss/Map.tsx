@@ -6,7 +6,10 @@ import { AerodromeLayer } from "components/atciss/map/AerodromeLayer"
 import { AirwayLayer } from "components/atciss/map/AirwayLayer"
 import { AreaLayer } from "components/atciss/map/AreaLayer"
 import { BackgroundTiles } from "components/atciss/map/BackgroundTiles"
-import { BorderAgreementLayer } from "components/atciss/map/BorderAgreementLayer"
+import {
+  LateralBorderAgreementLayer,
+  VerticalBorderAgreementLayer,
+} from "components/atciss/map/BorderAgreementLayer"
 import { MapControls } from "components/atciss/map/MapControls"
 import { NavaidLayer } from "components/atciss/map/NavaidLayer"
 import { SectorLayer } from "components/atciss/map/SectorLayer"
@@ -57,26 +60,31 @@ export const Map = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           </Pane>
         )}
         {loaOnMap && (
-          <Pane name="loaBorders" style={{ zIndex: 325 }}>
-            <BorderAgreementLayer />
+          <Pane name="loaBorderAreas" style={{ zIndex: 330 }}>
+            <VerticalBorderAgreementLayer />
+          </Pane>
+        )}
+        {loaOnMap && (
+          <Pane name="loaBorderLines" style={{ zIndex: 340 }}>
+            <LateralBorderAgreementLayer />
           </Pane>
         )}
         {areasOnMap && (
-          <Pane name="areas" style={{ zIndex: 330 }}>
+          <Pane name="areas" style={{ zIndex: 350 }}>
             <AreaLayer />
           </Pane>
         )}
         {sigmetOnMap && (
-          <Pane name="sigmet" style={{ zIndex: 340 }}>
+          <Pane name="sigmet" style={{ zIndex: 360 }}>
             <SigmetLayer />
           </Pane>
         )}
         {airwaysOnMap && (
-          <Pane name="airways" style={{ zIndex: 350 }}>
+          <Pane name="airways" style={{ zIndex: 370 }}>
             <AirwayLayer />
           </Pane>
         )}
-        <Pane name="navaids" style={{ zIndex: 360 }}>
+        <Pane name="navaids" style={{ zIndex: 380 }}>
           <NavaidLayer />
         </Pane>
         <AerodromeLayer />
