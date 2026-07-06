@@ -1,3 +1,5 @@
+/** @jsxImportSource theme-ui */
+
 import { useAppSelector } from "app/hooks"
 import { selectOwner, selectSelectedPosition } from "services/activePositions"
 import { LoaItem } from "types/loa"
@@ -26,10 +28,12 @@ const PositionInformation = ({
 export const LoaRow = ({ loa }: { loa: LoaItem }) => {
   return (
     <tr>
-      <td>
-        {loa.route_before} <strong>{loa.cop ?? "LoR"}</strong> {loa.route_after}
+      <td sx={{ overflowWrap: "break-word", wordBreak: "break-word" }}>
+        {loa.route_before}{" "}
+        <strong sx={{ whiteSpace: "nowrap" }}>{loa.cop ?? "LoR"}</strong>{" "}
+        {loa.route_after}
       </td>
-      <td>
+      <td sx={{ overflowWrap: "break-word", wordBreak: "break-word" }}>
         {loa.adep && loa.adep.length > 0 && (
           <>&#x02197; {loa.adep.join(", ")}</>
         )}{" "}

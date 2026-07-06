@@ -16,7 +16,8 @@ export const LoaTooltipTable = ({
         fontSize: 2,
         fontFamily: "body",
         whiteSpace: "normal",
-        minWidth: "50vw",
+        minWidth: "40vw",
+        maxWidth: "50vw",
       }}
     >
       <thead>
