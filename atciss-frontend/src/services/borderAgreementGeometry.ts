@@ -45,18 +45,27 @@ export const verticalBorderPolygons = (
           (a.min !== null && a.min === b.max),
       )
       .flatMap((b) => {
-        const result = OverlayOp.intersection(
-          toJstsPolygon(a.points),
-          toJstsPolygon(b.points),
-        )
-        if (result.isEmpty() || result.getArea() <= 0) return []
-        return Array.from({ length: result.getNumGeometries() }, (_, i) =>
-          result
-            .getGeometryN(i)
-            .getExteriorRing()
-            .getCoordinates()
-            .map((c: Coordinate): [number, number] => [c.y, c.x]),
-        )
+        try {
+          const result = OverlayOp.intersection(
+            toJstsPolygon(a.points),
+            toJstsPolygon(b.points),
+          )
+          if (result.isEmpty() || result.getArea() <= 0) return []
+          return Array.from({ length: result.getNumGeometries() }, (_, i) =>
+            result
+              .getGeometryN(i)
+              .getExteriorRing()
+              .getCoordinates()
+              .map((c: Coordinate): [number, number] => [c.y, c.x]),
+          )
+        } catch (error) {
+          console.warn(
+            "verticalBorderPolygons: skipping degenerate sector pair",
+            { a: { min: a.min, max: a.max }, b: { min: b.min, max: b.max } },
+            error,
+          )
+          return []
+        }
       }),
   )
 
@@ -141,18 +150,27 @@ export const findSharedBorder = (
   a: Sector,
   b: Sector,
 ): [number, number][][] => {
-  const intersection = OverlayOp.intersection(
-    toJstsPolygon(a.points).getBoundary(),
-    toJstsPolygon(b.points).getBoundary(),
-  )
-  const merger = new LineMerger()
-  merger.add(intersection)
-  const merged = merger.getMergedLineStrings()
-  return merged
-    .toArray()
-    .map((line: LineString) =>
-      line
-        .getCoordinates()
-        .map((c: Coordinate): [number, number] => [c.y, c.x]),
+  try {
+    const intersection = OverlayOp.intersection(
+      toJstsPolygon(a.points).getBoundary(),
+      toJstsPolygon(b.points).getBoundary(),
     )
+    const merger = new LineMerger()
+    merger.add(intersection)
+    const merged = merger.getMergedLineStrings()
+    return merged
+      .toArray()
+      .map((line: LineString) =>
+        line
+          .getCoordinates()
+          .map((c: Coordinate): [number, number] => [c.y, c.x]),
+      )
+  } catch (error) {
+    console.warn(
+      "findSharedBorder: skipping degenerate sector pair",
+      { a: { min: a.min, max: a.max }, b: { min: b.min, max: b.max } },
+      error,
+    )
+    return []
+  }
 }
