@@ -141,6 +141,55 @@ describe("verticalBorderPolygons", () => {
       [],
     )
   })
+
+  it("returns an empty array instead of throwing for a self-intersecting (bowtie) ring", () => {
+    // A bowtie ring (crossing diagonals) is self-intersecting, which makes
+    // JTS throw a "non-noded intersection" error during polygon overlay,
+    // the same class of failure real-world degenerate sector data triggers.
+    const bowtie: Sector = {
+      points: [
+        [0, 0],
+        [1, 1],
+        [1, 0],
+        [0, 1],
+      ],
+      min: null,
+      max: 195,
+      runways: [],
+    }
+    const other = square(0, 0, 1, 1, 195, null)
+
+    expect(
+      verticalBorderPolygons(airspace([bowtie]), airspace([other])),
+    ).toEqual([])
+  })
+
+  it("skips a degenerate pair instead of throwing, without affecting other pairs", () => {
+    const bowtie: Sector = {
+      points: [
+        [0, 0],
+        [1, 1],
+        [1, 0],
+        [0, 1],
+      ],
+      min: null,
+      max: 100,
+      runways: [],
+    }
+    const matchingButBroken = square(0, 0, 1, 1, 100, null)
+    const goodLow = square(5, 5, 6, 6, null, 300)
+    const goodHigh = square(5, 5, 6, 6, 300, null)
+
+    const rings = verticalBorderPolygons(
+      airspace([bowtie, goodLow]),
+      airspace([matchingButBroken, goodHigh]),
+    )
+
+    expect(rings.length).toBe(1)
+    const points = rings[0].map(([lat, lng]) => `${lat},${lng}`)
+    expect(points).toContain("5,5")
+    expect(points).toContain("6,6")
+  })
 })
 
 describe("findSharedBorder", () => {
@@ -161,6 +210,30 @@ describe("findSharedBorder", () => {
     const b = square(10, 10, 11, 11)
 
     expect(findSharedBorder(a, b)).toEqual([])
+  })
+
+  it("returns an empty array instead of throwing for a degenerate ring with a duplicated closing edge", () => {
+    // Mirrors real-world vatglasses data (EDGG "Köln") whose ring closes at
+    // its first point, then repeats the last edge a second time, producing
+    // a non-simple ring that makes JTS throw a "non-noded intersection"
+    // error during boundary intersection.
+    const degenerate: Sector = {
+      points: [
+        [0, 0],
+        [0, 1],
+        [1, 1],
+        [1, 0],
+        [0, 0],
+        [1, 0],
+        [0, 0],
+      ],
+      min: null,
+      max: null,
+      runways: [],
+    }
+    const other = square(0, 1, 1, 2)
+
+    expect(findSharedBorder(degenerate, other)).toEqual([])
   })
 })
 
