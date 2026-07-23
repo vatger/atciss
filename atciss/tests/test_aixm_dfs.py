@@ -31,7 +31,8 @@ async def test_fetch_dfs_aixm_data_persists_expected_rows(monkeypatch: pytest.Mo
     monkeypatch.setattr(aixm_dfs, "get_dfs_aixm_datasets", AsyncMock(return_value={}))
     monkeypatch.setattr(aixm_dfs, "get_dfs_aixm_url", fake_get_dfs_aixm_url)
 
-    async def fake_http_get_bytesio(url: str, _http_client: object) -> io.BytesIO:  # noqa: RUF029
+    # ruff:ignore[unused-async]
+    async def fake_http_get_bytesio(url: str, _http_client: object) -> io.BytesIO:
         dataset_name = url.removeprefix("fixture://")
         return io.BytesIO(FIXTURE_FILES[dataset_name].read_bytes())
 

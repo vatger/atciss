@@ -25,7 +25,7 @@ async def get_session() -> AsyncIterator[AsyncSession]:
     async with session.begin():  # type: ignore
         # FastAPI's yield-dependency pattern: Starlette drives this generator
         # to completion via AsyncExitStack, so cleanup isn't left to chance.
-        yield session  # type: ignore  # noqa: ASYNC119
+        yield session  # ruff:ignore[yield-in-context-manager-in-async-generator]
 
 
 def run_migrations(connection: AsyncSession, cfg: alembic.config.Config):

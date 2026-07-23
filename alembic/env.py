@@ -5,7 +5,7 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from sqlmodel import SQLModel
 
-import atciss.app.models  # noqa: F401
+import atciss.app.models  # ruff:ignore[unused-import]
 from alembic import context
 from atciss.config import settings
 from atciss.log import setup_logging
