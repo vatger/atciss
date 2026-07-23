@@ -12,7 +12,10 @@ const Area = ({ name }: { name: string }) => {
 
   return areas.map((area) => (
     <AreaItem
-      key={area.reservation_id ?? `${area.name}-${area.start}`}
+      key={
+        area.reservation_id ??
+        `${area.name}-${area.start}-${area.end}-${area.lower_limit}-${area.upper_limit}`
+      }
       area={area}
     />
   ))
