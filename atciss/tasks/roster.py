@@ -78,7 +78,7 @@ async def fetch_roster(
     if req.status == 200:
         removed_from_roster_stmt = select(User).where(
             User.cid.notin_(rostered_cids),  # pyright: ignore[reportAttributeAccessIssue]  # pylint: disable=no-member
-            User.rostered == True,  # noqa: E712  # pylint: disable=singleton-comparison
+            User.rostered == True,  # ruff:ignore[true-false-comparison]  # pylint: disable=singleton-comparison
         )
         for user in await db_session.scalars(removed_from_roster_stmt):
             logger.info(f"{user.cid} is not rostered anymore")

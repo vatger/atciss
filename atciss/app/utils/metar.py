@@ -15,7 +15,7 @@ async def _fetch_metar(key: str, redis: Redis) -> MetarModel | None:
 
         parsed = MetarModel.from_str(metar)
         parsed.raw = metar
-        return parsed  # noqa: TRY300
+        return parsed  # ruff:ignore[try-consider-else]
     except ParserError as e:
         logger.warning(e)
     return None

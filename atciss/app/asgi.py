@@ -19,7 +19,7 @@ from loguru import logger
 from prometheus_fastapi_instrumentator import Instrumentator as PrometheusInstrumentator
 
 # for tasks discovery by broker
-import atciss.tasks  # pyright: ignore # noqa: F401
+import atciss.tasks  # pyright: ignore # ruff:ignore[unused-import]
 from atciss.app.router import root_api_router
 from atciss.app.utils.db import run_async_migrations
 from atciss.app.utils.redis import redis_pool

@@ -1,1 +1,1 @@
-from .cli import cli  # pyright: ignore # noqa: F401
+from .cli import cli  # pyright: ignore # ruff:ignore[unused-import]

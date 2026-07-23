@@ -2,8 +2,8 @@ import uuid
 
 from sqlmodel import Field, SQLModel
 
-from .views.booking import Booking  # noqa: F401
-from .views.dfs_aixm import (  # noqa: F401
+from .views.booking import Booking  # ruff:ignore[unused-import]
+from .views.dfs_aixm import (  # ruff:ignore[unused-import]
     Aerodrome,
     Navaid,
     Runway,

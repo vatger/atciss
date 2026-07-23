@@ -9,7 +9,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    systems.url = "github:nix-systems/default";
+    systems.url = "github:nix-systems/triplet";
 
     pre-commit-hooks = {
       url = "github:cachix/pre-commit-hooks.nix";
