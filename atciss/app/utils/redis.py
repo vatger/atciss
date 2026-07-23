@@ -14,4 +14,4 @@ async def get_redis():
     async with Redis(connection_pool=redis_pool) as client:
         # FastAPI's yield-dependency pattern: Starlette drives this generator
         # to completion via AsyncExitStack, so cleanup isn't left to chance.
-        yield client  # noqa: ASYNC119
+        yield client  # ruff:ignore[yield-in-context-manager-in-async-generator]
