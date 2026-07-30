@@ -45,7 +45,7 @@ dependencies = [
         "taskiq-fastapi>=0.5.0,<0.6",
         "taskiq-redis>=1,<2",
         "taskiq>=0.12.3,<0.13",
-        "uvicorn[standard]>=0.51.0,<0.52",
+        "uvicorn[standard]>=0.52.0,<0.53",
         "watchfiles>=1.2.0,<2",
         "xmltodict>=1,<2",
         "eaup",
