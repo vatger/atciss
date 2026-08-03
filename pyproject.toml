@@ -37,7 +37,7 @@ dependencies = [
         "pydantic>=2.13.4,<3",
         "python-dateutil>=2.9.0,<3",
         "python-jose>=3.4.0,<4",
-        "redis>=8.0.1,<9",
+        "redis>=8.1.0,<9",
         "regex==2026.7.19",
         "shapely>=2.0.6,<3",
         "sqlalchemy[asyncio]>=2.0.51,<3",
