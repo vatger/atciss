@@ -1,4 +1,4 @@
-FROM python:3.14.6-slim@sha256:44dd04494ee8f3b538294360e7c4b3acb87c8268e4d0a4828a6500b1eff50061 AS base
+FROM python:3.15.0b3-slim@sha256:a13b3ba393211ef88d09ca75de22e9b8412a98713f7cf8ca7274fc61d34799a6 AS base
 
 FROM base AS requirements-stage
 WORKDIR /tmp
