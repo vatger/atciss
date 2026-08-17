@@ -40,7 +40,7 @@ dependencies = [
         "redis>=8.1.0,<9",
         "regex==2026.7.19",
         "shapely>=2.0.6,<3",
-        "sqlalchemy[asyncio]>=2.0.51,<3",
+        "sqlalchemy[asyncio]>=2.0.52,<3",
         "sqlmodel==0.0.39",
         "taskiq-fastapi>=0.5.0,<0.6",
         "taskiq-redis>=1,<2",
