@@ -28,7 +28,7 @@ dependencies = [
         "lark>=1,<2",
         "loguru>=0.7.2",
         "lxml>=6.1.1",
-        "orjson>=3.11.9,<4",
+        "orjson>=3.12.0,<4",
         # "prometheus-fastapi-instrumentator>=8.0.0",
         # fix for fastapi 0.137 below
         "prometheus-fastapi-instrumentator",
