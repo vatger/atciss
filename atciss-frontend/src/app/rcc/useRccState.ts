@@ -33,10 +33,12 @@ export function useRccState() {
 
   const toggleRunway = useCallback((designator: string, siblings: string[]) => {
     setSelectedRunways((prev) => {
-      const withoutSiblings = prev.filter((r) => !siblings.includes(r))
+      const withoutGroup = prev.filter(
+        (r) => r !== designator && !siblings.includes(r),
+      )
       return prev.includes(designator)
-        ? withoutSiblings
-        : [...withoutSiblings, designator]
+        ? withoutGroup
+        : [...withoutGroup, designator]
     })
   }, [])
 
