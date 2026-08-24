@@ -2,6 +2,7 @@
 import { useAppSelector } from "app/hooks"
 import { selectFirMajorAerodromes } from "services/configSlice"
 import { api } from "services/api"
+import { EXCLUDED_RUNWAYS } from "app/rcc/config"
 import { useRccState } from "app/rcc/useRccState"
 import { useMemo } from "react"
 import {
@@ -25,15 +26,19 @@ const Rcc = ({ sx }: { sx?: ThemeUIStyleObject }) => {
 
   const rcc = useRccState()
 
-  const runwayGroups = useMemo(
-    () =>
-      rcc.icao
-        ? (aerodromes[rcc.icao]?.runways ?? []).map((rw) =>
-            rw.directions.map((d) => d.designator),
-          )
-        : [],
-    [aerodromes, rcc.icao],
-  )
+  const runwayGroups = useMemo(() => {
+    if (!rcc.icao) return []
+
+    const excluded = EXCLUDED_RUNWAYS[rcc.icao] ?? []
+
+    return (aerodromes[rcc.icao]?.runways ?? [])
+      .map((rw) =>
+        rw.directions
+          .map((d) => d.designator)
+          .filter((designator) => !excluded.includes(designator)),
+      )
+      .filter((group) => group.length > 0)
+  }, [aerodromes, rcc.icao])
 
   const icaos = [...majorAerodromes].sort()
 
