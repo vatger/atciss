@@ -1911,7 +1911,7 @@ sdist = { url = "https://files.pythonhosted.org/packages/f3/1f/1241aa3d66e8dc161
 
 [[package]]
 name = "taskiq"
-version = "0.12.4"
+version = "0.12.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -1921,9 +1921,9 @@ dependencies = [
     { name = "pydantic" },
     { name = "taskiq-dependencies" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/fd/7d/32bdfddd09fe3520bfb4978618dd87292201ca3f0bf9b9c413eb4ee946eb/taskiq-0.12.4.tar.gz", hash = "sha256:887e6acc72eea322a1515d9863551f00be7c81c6a0f72b2961569e58d68edc34", size = 397640, upload-time = "2026-05-08T10:43:59.724Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e4/68/7b3c557782af291e22b26479127f287520fdf066d4684838e1bdd146cdc0/taskiq-0.12.5.tar.gz", hash = "sha256:fbdfc949fdefe746f771195faa34769fa6dbbb109cbd41cb1d056b794f933f43", size = 407451, upload-time = "2026-08-21T14:25:50.031Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/28/0a/35b7b2673f923fd57bda8820afee03a6bb57883c1a61ee9e04e31e37ca50/taskiq-0.12.4-py3-none-any.whl", hash = "sha256:b910d3676e45b317678b4a8a1865ba6c261f696a02541461c765a7773cf4fa4b", size = 91804, upload-time = "2026-05-08T10:44:00.889Z" },
+    { url = "https://files.pythonhosted.org/packages/0a/4b/c37a3cdfaff2ff53c3ca5d5289636b42141c9964f67d16df3017a97be9c6/taskiq-0.12.5-py3-none-any.whl", hash = "sha256:3937969fcb5290d1a007e068e7af45d0a44f885e3bfe4bf1860f7e81794930f8", size = 94204, upload-time = "2026-08-21T14:25:48.948Z" },
 ]
 
 [package.optional-dependencies]
