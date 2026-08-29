@@ -15,11 +15,18 @@ import { Notam } from "types/notam"
 import { SectorData } from "types/vatglasses"
 import { AerodromeTraffic, Atis, Controller } from "types/vatsim"
 import { MetarTuple, Sigmet } from "types/wx"
+import { AppConfig } from "types/appConfig"
 
 export const api = createApi({
   baseQuery: fetchWithReauth,
   tagTypes: ["agreements", "initials", "notamSeen", "sectorstatus"],
   endpoints: (builder) => ({
+    appConfig: builder.query<AppConfig, void>({
+      query: () => ({
+        url: "app-config",
+      }),
+    }),
+
     aerodromesByIcaos: builder.query<Record<string, Aerodrome>, string[]>({
       query: (icaoList) => ({
         url: "aerodrome",

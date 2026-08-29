@@ -2,6 +2,7 @@ import { useAppSelector } from "app/hooks"
 import { DateTime } from "luxon"
 import { useEffect, useState } from "react"
 import { Pane, TileLayer, WMSTileLayer } from "react-leaflet"
+import { api } from "services/api"
 import {
   selectDFSOnMap,
   selectDWDOnMap,
@@ -20,6 +21,8 @@ export const BackgroundTiles = () => {
   const [colorMode] = useColorMode()
   const [cachebust, setCachebust] = useState(DateTime.now())
 
+  const { data: appConfig } = api.endpoints.appConfig.useQuery()
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCachebust(DateTime.now())
@@ -34,7 +37,7 @@ export const BackgroundTiles = () => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
         url={`https://{s}.basemaps.cartocdn.com/${
           colorMode === "default" ? "light" : "dark"
-        }_nolabels/{z}/{x}/{y}.png`}
+        }_nolabels/{z}/{x}/{y}.png?key=${appConfig?.cartoMapToken}`}
       />
       {satellite && (
         <TileLayer

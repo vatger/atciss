@@ -38,6 +38,7 @@ class Application(BaseSettings):
     ROSTER_API_URL: str = "https://vatsim-germany.org/api/vateud/roster"
     ROSTER_API_TOKEN: str = "invalid"
     GDPR_API_TOKEN: str = "invalid"
+    CARTO_MAP_TOKEN: str = "invalid"
 
     DATABASE_DSN: PostgresDsn = cast(
         "PostgresDsn", "postgresql+asyncpg://postgres:fnord@localhost/atciss"
