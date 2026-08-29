@@ -5,9 +5,6 @@ import ReactDOM from "react-dom/client"
 import { Provider } from "react-redux"
 import { RouterProvider } from "react-router"
 import "./index.css"
-import { api } from "services/api"
-
-store.dispatch(api.endpoints.appConfig.initiate())
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 ReactDOM.createRoot(document.getElementById("root")!).render(
