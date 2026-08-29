@@ -10,6 +10,7 @@ from .controllers import (
     airspace,
     airway,
     aliases,
+    app_config,
     areas,
     atis,
     auth,
@@ -55,3 +56,4 @@ root_api_router.include_router(sigmet.router, tags=["wx"])
 root_api_router.include_router(taf.router, tags=["wx"])
 root_api_router.include_router(traffic.router, tags=["vatsim"])
 root_api_router.include_router(vatsim.router, tags=["vatsim"])
+root_api_router.include_router(app_config.router, tags=["internal"])
