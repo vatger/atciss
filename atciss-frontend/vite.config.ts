@@ -4,6 +4,19 @@ import { playwright } from "@vitest/browser-playwright"
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // Works around vitest 5 browser-mode dropping a define hoist that kept
+  // Vite's JSX transform and the browser's process.env.NODE_ENV in sync,
+  // which otherwise breaks theme-ui/emotion's jsx-dev-runtime at test time.
+  // https://github.com/vitest-dev/vitest/issues/11265
+  optimizeDeps: {
+    rolldownOptions: {
+      transform: {
+        define: {
+          "process.env.NODE_ENV": JSON.stringify("development"),
+        },
+      },
+    },
+  },
   plugins: [react()],
   resolve: {
     alias: {
