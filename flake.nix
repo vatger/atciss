@@ -143,7 +143,7 @@
               NODE_ENV = "production";
               inherit nodejs;
               npmCommands = [
-                "npm install --include=dev --nodedir=${nodejs}/include/node --loglevel verbose --ignore-scripts"
+                "npm install --include=dev --legacy-peer-deps --nodedir=${nodejs}/include/node --loglevel verbose --ignore-scripts"
                 "npm run build"
               ];
               installPhase = ''
