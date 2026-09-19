@@ -143,7 +143,7 @@ const Atis = ({ sx }: { sx?: ThemeUIStyleObject }) => {
                     sx={{ flexGrow: 1, borderStyle: "inset", display: "block" }}
                   >
                     {atis?.[aerodrome]?.text_atis?.match(
-                      /(EXPECT.*)\s(DEPARTURE\sRWYS|RUNWAYS? IN USE|AIRCRAFT WITH PARKING)/s,
+                      /(EXPECT.*?)\s(DEPARTURE\sRWYS|TRL|WHEN\sPASSING|WHEN\sAIRBORNE|RUNWAYS?\sIN USE|AIRCRAFT\sWITH\sPARKING)/s,
                     )?.[1] ??
                       atis?.[aerodrome]?.text_atis ??
                       "Offline"}
