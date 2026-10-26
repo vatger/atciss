@@ -35,7 +35,7 @@ dependencies = [
         "pydantic-settings>=2.15.0,<3",
         "pydantic-xml[lxml]>=2.21.1,<3",
         "pydantic>=2.13.4,<3",
-        "python-dateutil>=2.9.0,<3",
+        "python-dateutil>=2.9.0,<4",
         "python-jose>=3.4.0,<4",
         "redis>=8.1.0,<9",
         "regex==2026.9.29",
