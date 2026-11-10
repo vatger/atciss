@@ -21,6 +21,7 @@ import { Initials } from "views/atciss/Initials"
 import { LOA } from "views/atciss/LOA"
 import { Map } from "views/atciss/Map"
 import { Notams } from "views/atciss/Notam"
+import { Rcc } from "views/atciss/Rcc"
 import { Windy } from "views/atciss/Windy"
 import { Wx } from "views/atciss/Wx"
 import { Afw } from "views/idvs/Afw"
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
       {
         path: "loa",
         element: <LOA />,
+      },
+      {
+        path: "rcc",
+        element: <Rcc sx={{ flex: "auto" }} />,
       },
       {
         path: "aip-ifr",

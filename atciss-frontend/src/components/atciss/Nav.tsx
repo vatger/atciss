@@ -56,6 +56,7 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
           <option value="wx">Wx</option>
           <option value="loa">LOA</option>
           <option value="notam">NOTAM</option>
+          <option value="rcc">RCC</option>
           {user?.admin && <option value="idvs">IDVS</option>}
           <option value="alias">Alias</option>
           {FIR_SETTINGS[activeFir].initials.enabled && (
@@ -90,6 +91,9 @@ const Nav = ({ sx }: { sx?: ThemeUIStyleObject }) => {
         </Link>
         <Link to="notam">
           <Button variant="nav">NOTAM</Button>
+        </Link>
+        <Link to="rcc">
+          <Button variant="nav">RCC</Button>
         </Link>
         {user?.admin && (
           <Link to="idvs">
