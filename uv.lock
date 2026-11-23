@@ -1879,9 +1879,12 @@ dependencies = [
 
 [[package]]
 name = "pyrasite"
-version = "2.0"
+version = "2.3.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/8e/d0/507f2bd9a6f9e9b475e0f62f04eeda72eeb920a79f2cc28a6a8c402e4550/pyrasite-2.0.tar.gz", hash = "sha256:e5f7a36a04379d00a46688c60a8e9bbba7c807526a9252a60cbed8de701f6ccf", size = 32074, upload-time = "2012-05-09T19:11:33.354Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d6/a8/3443bd550c3eb91ebacea86a5b48d61d060f86a8c70e8702c7bc68c9a483/pyrasite-2.3.0.tar.gz", hash = "sha256:6a9b12c2a227d1d25bc698f816355021d01d273a35db4f40fd47949c40a6c40f", size = 58029, upload-time = "2026-11-18T17:36:36.285Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/82/d9/e961f87f73f9c52fe3c228c0cd0530a5f89567310a0e7a95a32915cee7f1/pyrasite-2.3.0-py3-none-any.whl", hash = "sha256:b2f06c99d8c4f88c8ddb276349d96b39d3238930f00c238573b7eec94a63f58a", size = 55046, upload-time = "2026-11-18T17:36:34.998Z" },
+]
 
 [[package]]
 name = "pyright"
